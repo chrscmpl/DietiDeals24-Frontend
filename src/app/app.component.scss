@@ -1,0 +1,7 @@
+@import "flex";
+
+.auctions-container {
+  @include flex(column, start, stretch, 2rem);
+  width: 100%;
+  padding: 10%;
+}

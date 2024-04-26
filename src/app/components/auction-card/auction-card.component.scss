@@ -1,0 +1,62 @@
+@import "flex";
+@import "grid";
+@import "mobile";
+
+.auction-card {
+  --height: 15rem;
+
+  @include grid($template: "image details" 1fr / auto 1fr, $gap: 1rem);
+  height: var(--height);
+  width: 100%;
+  border: var(--border);
+  border-radius: var(--border-radius-large);
+  overflow: hidden;
+
+  #{&}-image-container {
+    @include flex(row, center, center);
+    grid-area: image;
+    height: var(--height);
+    width: var(--height);
+    border-right: var(--border);
+
+    img {
+      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  #{&}-details-container {
+    @include flex(column, start, start, 0);
+    grid-area: details;
+    color: var(--text-color-1);
+
+    .auction-card-title {
+      font-size: var(--font-size-large);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .auction-card-secondary-line {
+      font-size: var(--font-size-medium);
+      color: var(--text-color-2);
+      margin-bottom: 1rem;
+    }
+
+    .auction-card-sum {
+      font-size: var(--font-size-large);
+      font-weight: var(--font-weight-bold);
+    }
+    .auction-card-time-left {
+      font-size: var(--font-size-medium);
+      color: var(--text-color-2);
+
+      .auction-card-time-left-amount {
+        font-weight: var(--font-weight-bold);
+      }
+    }
+  }
+
+  @include mobile {
+    // --height: 1000px;
+  }
+}

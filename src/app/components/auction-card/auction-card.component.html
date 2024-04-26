@@ -1,0 +1,34 @@
+<div class="auction-card">
+  <div class="auction-card-image-container">
+    <img
+      class="auction-card-image"
+      [src]="auction.imageUrl"
+      alt="Auction image"
+    />
+  </div>
+  <div class="auction-card-details-container">
+    <span class="auction-card-title">{{ auction.title }}</span>
+    <span class="auction-card-secondary-line">
+      from {{ auction.location.nation }}, {{ auction.location.city }} |
+      {{ auction.conditions }}
+    </span>
+    <dd24-auction-type-link
+      class="auction-card-auction-type"
+      [type]="auction.auctionType"
+      >{{ auction.auctionType }}</dd24-auction-type-link
+    >
+    <span class="auction-card-sum"
+      >{{ auction.sumDescription | oneCharUpper }}:
+      {{ auction.sum | currency : currencyCode : "symbol" : "1.2-2" }}</span
+    >
+    <span class="auction-card-time-left">
+      Time left:
+      <span
+        class="auction-card-time-left-amount"
+        [class.danger]="auction.timeLeft < 86400"
+        >{{ auction.timeLeft | interval }}</span
+      >
+      (Until {{ auction.endDate | localDate }})</span
+    >
+  </div>
+</div>
