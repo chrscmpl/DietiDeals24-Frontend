@@ -1,10 +1,14 @@
 <div class="auction-card">
   <div class="auction-card-image-container">
+    @if (auction.images.length > 0){
     <img
       class="auction-card-image"
-      [src]="auction.imageUrl"
+      [src]="auction.images[0]"
       alt="Auction image"
     />
+    } @else {
+    <i class="auction-card-missing-image bi bi-image"></i>
+    }
   </div>
   <div class="auction-card-details-container">
     <span class="auction-card-title">{{ auction.title }}</span>
