@@ -1,0 +1,16 @@
+
+@import 'grid';
+
+.authentication-page {
+
+    height: 100vh;
+    @include grid(
+        $template: "banner main" 1fr / 55% 45%,
+        $align-content: stretch
+    );
+
+    .banner {
+        grid-area: banner;
+        background-color: var(--side-color);
+    };
+}
