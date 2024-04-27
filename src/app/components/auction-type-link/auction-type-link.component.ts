@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AuctionType } from '../../models/auction.model';
+import { Auction, AuctionType } from '../../models/auction.model';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -10,5 +10,6 @@ import { UpperCasePipe } from '@angular/common';
   styleUrl: './auction-type-link.component.scss',
 })
 export class AuctionTypeLinkComponent {
-  @Input({ required: true }) type!: AuctionType;
+  @Input({ required: true })
+  type!: AuctionType;
 }

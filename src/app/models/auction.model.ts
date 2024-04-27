@@ -1,42 +1,59 @@
 import { Location } from './location.model';
-import { userSummary } from './user.model';
+import { Money } from './money.model';
+import { UserSummary } from './user.model';
 
 export enum AuctionType {
   silent = 'silent auction',
   reverse = 'reverse auction',
 }
 
+enum auctionStatus {
+  active,
+  pending,
+  accepted,
+  rejected,
+}
+
 interface AuctionInterface {
   id: string;
   title: string;
   description?: string;
-  user?: userSummary;
+  user?: UserSummary;
   conditions: string;
   location: Location;
   timeLeft: number;
   endTime: number;
   endDate: Date;
   images: string[];
-  sum: number;
-  sumDescription: string;
+  lastBid: Money;
+  lastBidDescription: string;
   auctionType: AuctionType;
+  status: auctionStatus;
 }
 
 type AuctionParameters = Omit<
   AuctionInterface,
-  'sum' | 'sumDescription' | 'auctionType' | 'endDate' | 'images' | 'timeLeft'
+  | 'lastBid'
+  | 'lastBidDescription'
+  | 'auctionType'
+  | 'endDate'
+  | 'images'
+  | 'timeLeft'
 > &
   Partial<Pick<AuctionInterface, 'images'>>;
 
 export abstract class Auction implements AuctionInterface {
+  public static STATUSES = auctionStatus;
+  public static TYPES = AuctionType;
   private _id: string;
   private _title: string;
   private _description?: string;
-  private _user?: userSummary;
+  private _user?: UserSummary;
   private _conditions: string;
   private _location: Location;
   private _endTime: number;
   private _images: string[];
+  private _status: auctionStatus;
 
   constructor(auction: AuctionParameters) {
     this._id = auction.id;
@@ -47,6 +64,7 @@ export abstract class Auction implements AuctionInterface {
     this._location = auction.location;
     this._endTime = auction.endTime;
     this._images = auction.images ?? [];
+    this._status = auction.status;
   }
 
   public get id(): string {
@@ -65,11 +83,11 @@ export abstract class Auction implements AuctionInterface {
     this._description = value;
   }
 
-  public get user(): userSummary | undefined {
+  public get user(): UserSummary | undefined {
     return this._user;
   }
 
-  private set user(value: userSummary) {
+  private set user(value: UserSummary) {
     this._user = value;
   }
 
@@ -99,9 +117,13 @@ export abstract class Auction implements AuctionInterface {
     return this._images;
   }
 
-  public abstract get sum(): number;
+  public get status(): auctionStatus {
+    return this._status;
+  }
 
-  public abstract get sumDescription(): string;
+  public abstract get lastBid(): Money;
+
+  public abstract get lastBidDescription(): string;
 
   public abstract get auctionType(): AuctionType;
 
@@ -116,25 +138,25 @@ export abstract class Auction implements AuctionInterface {
 }
 
 export class SilentAuction extends Auction {
-  private _minimumBid: number;
+  private _minimumBid: Money;
   constructor(
     auction: AuctionParameters & {
-      minimumBid: number;
+      minimumBid: Money;
     }
   ) {
     super(auction);
     this._minimumBid = auction.minimumBid;
   }
 
-  public get minimumBid(): number {
+  public get minimumBid(): Money {
     return this._minimumBid;
   }
 
-  public override get sum(): number {
+  public override get lastBid(): Money {
     return this._minimumBid;
   }
 
-  public override get sumDescription(): string {
+  public override get lastBidDescription(): string {
     return 'minimum bid';
   }
 
@@ -146,13 +168,13 @@ export class SilentAuction extends Auction {
 }
 
 export class ReverseAuction extends Auction {
-  private _maximumStartingBid: number;
-  private _lowestBid: number;
+  private _maximumStartingBid: Money;
+  private _lowestBid: Money;
 
   constructor(
     auction: AuctionParameters & {
-      maximumStartingBid: number;
-      lowestBid: number;
+      maximumStartingBid: Money;
+      lowestBid: Money;
     }
   ) {
     super(auction);
@@ -160,19 +182,19 @@ export class ReverseAuction extends Auction {
     this._lowestBid = auction.lowestBid;
   }
 
-  public get maximumStartingBid(): number {
+  public get maximumStartingBid(): Money {
     return this._maximumStartingBid;
   }
 
-  public get lowestBid(): number {
+  public get lowestBid(): Money {
     return this._lowestBid;
   }
 
-  public override get sum(): number {
+  public override get lastBid(): Money {
     return this._lowestBid;
   }
 
-  public override get sumDescription(): string {
+  public override get lastBidDescription(): string {
     return this._lowestBid === this._maximumStartingBid
       ? 'maximum starting bid'
       : 'lowest bid';

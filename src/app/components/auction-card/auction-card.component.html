@@ -21,16 +21,19 @@
       [type]="auction.auctionType"
       >{{ auction.auctionType }}</dd24-auction-type-link
     >
-    <span class="auction-card-sum"
-      >{{ auction.sumDescription | oneCharUpper }}:
-      {{ auction.sum | currency : currencyCode : "symbol" : "1.2-2" }}</span
+    <span class="auction-card-sum">
+      @if(auction.status === statuses.active){
+      {{ auction.lastBidDescription | oneCharUpper }}:
+      {{ auction.lastBid | money }}
+      }</span
     >
+
     <span class="auction-card-time-left">
       Time left:
       <span
         class="auction-card-time-left-amount"
-        [class.danger]="auction.timeLeft < 86400"
-        >{{ auction.timeLeft | interval }}</span
+        [class.danger]="timeLeft > 0 && timeLeft < 86400"
+        >{{ timeLeft | interval : "minutes" }}</span
       >
       (Until {{ auction.endDate | localDate }})</span
     >

@@ -5,7 +5,9 @@ import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { DatePipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
+import { MoneyPipe } from './pipes/money.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +16,7 @@ export const appConfig: ApplicationConfig = {
     OneCharUpperPipe,
     DatePipe,
     IntervalPipe,
+    MoneyPipe,
+    CurrencyPipe,
   ],
 };

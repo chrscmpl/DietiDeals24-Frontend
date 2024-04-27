@@ -23,17 +23,22 @@ interface Interval {
   standalone: true,
 })
 export class IntervalPipe implements PipeTransform {
-  transform(value: number, precision: Precision = Precision.seconds): string {
-    const interval = this.getValues(value, precision);
+  transform(value: number, precision: string = 'seconds'): string {
+    const precisionValue: Precision =
+      precision in Precision
+        ? Precision[precision as keyof typeof Precision]
+        : Precision.seconds;
+    if (value <= 0) return 'now';
+    const interval = this.getValues(value, precisionValue);
     if (
       interval.years ||
       interval.months ||
       interval.days ||
-      precision < Precision.days
+      precisionValue < Precision.days
     ) {
-      return this.buildLongString(interval, precision);
+      return this.buildLongString(interval, precisionValue);
     }
-    return this.buildShortString(interval, precision);
+    return this.buildShortString(interval, precisionValue);
   }
 
   private buildLongString(interval: Interval, precision: Precision) {

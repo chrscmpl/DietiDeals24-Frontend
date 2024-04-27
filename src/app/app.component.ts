@@ -15,22 +15,24 @@ export class AppComponent {
   auctions: Auction[] = [
     new SilentAuction({
       id: '1',
+      status: Auction.STATUSES.active,
       title: 'Iphone 14',
       description: 'New Iphone 14',
       conditions: 'new',
       location: { nation: 'USA', city: 'New York' },
-      minimumBid: 1000,
+      minimumBid: { amount: 1000, currency: 'EUR' },
       endTime: Math.floor(Date.now() / 1000) + 10 + 2 * 60 + 5 * 60 * 60,
     }),
 
     new ReverseAuction({
       id: '2',
+      status: Auction.STATUSES.active,
       title: 'BMW',
       description: 'New BMW',
       conditions: 'new',
       location: { nation: 'Italy', city: 'Palermo' },
-      maximumStartingBid: 4000,
-      lowestBid: 3000,
+      maximumStartingBid: { amount: 4000, currency: 'EUR' },
+      lowestBid: { amount: 3000, currency: 'EUR' },
       endTime: Math.floor(Date.now() / 1000) + 1003823,
       images: [
         'https://www.bmw.it/content/dam/bmw/common/all-models/m-series/series-overview/bmw-m-series-seo-overview-ms-04.jpg',

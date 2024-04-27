@@ -10,7 +10,7 @@ export interface User {
   pastDeals: number;
 }
 
-export type userSummary = Pick<User, 'username' | 'location'>;
+export type UserSummary = Pick<User, 'username' | 'location'>;
 
 interface link {
   name: string;
