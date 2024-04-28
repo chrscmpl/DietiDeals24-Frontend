@@ -51,10 +51,14 @@
 
     .navbar-tabs-section {
       @include flex($justify: space-between);
+
+      .navbar-tab,
+      .navbar-path-entry {
+        @include custom-link(var(--text-color-1));
+      }
       .navbar-tabs {
         @include flex($align: stretch);
         .navbar-tab {
-          @include custom-link(var(--text-color-1));
           padding: 0.2em 0.4em;
           font-weight: var(--font-weight-bold);
           border-right: var(--border);
@@ -64,9 +68,10 @@
         }
       }
       .navbar-path {
-        @include flex($align: center, $gap: 1ch);
+        @include flex($align: center);
         :first-child {
           color: var(--text-color-2);
+          margin-right: 1ch;
         }
       }
     }

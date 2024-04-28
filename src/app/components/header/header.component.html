@@ -33,7 +33,14 @@
         }
       </section>
       <section class="navbar-path">
-        <span>You are here: </span>{{ router.url }}
+        <span>You are here: </span>
+        <a class="navbar-path-entry" routerLink="">DietiDeals24</a>
+        @for(entry of routes; track $index){
+        <i class="bi bi-chevron-right"></i>
+        <a class="navbar-path-entry" [routerLink]="entry.url">{{
+          entry.name | titlecase
+        }}</a>
+        }
       </section>
     </section>
   </nav>
