@@ -1,0 +1,47 @@
+<header class="header">
+  <nav class="navbar">
+    <section class="navbar-user-section">
+      <button class="hamburger-btn btn">
+        <i class="bi bi-list"></i>
+      </button>
+      <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />
+      <div class="spacer"></div>
+      @if(!user.isLogged()){
+      <button
+        class="nav-auth-btn nav-login-btn btn btn-light"
+        routerLink="login"
+      >
+        Login
+      </button>
+      <button
+        class="nav-auth-btn nav-register-btn btn btn-light"
+        routerLink="register"
+      >
+        Register
+      </button>
+      } @else {
+      <span>logged</span>
+      }
+    </section>
+    <section class="navbar-search-section">
+      <dd24-search-section></dd24-search-section>
+    </section>
+    <section class="navbar-tabs-section">
+      <section class="navbar-tabs">
+        @for(tab of tabs; track $index){
+        <a class="navbar-tab" [routerLink]="tab.url">{{ tab.name }}</a>
+        }
+      </section>
+      <section class="navbar-path">
+        <span>You are here: </span>
+        <a class="navbar-path-entry" routerLink="">DietiDeals24</a>
+        @for(entry of routes; track $index){
+        <i class="bi bi-chevron-right"></i>
+        <a class="navbar-path-entry" [routerLink]="entry.url">{{
+          entry.name | titlecase
+        }}</a>
+        }
+      </section>
+    </section>
+  </nav>
+</header>
