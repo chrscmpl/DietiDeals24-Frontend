@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AuctionCardComponent } from './components/auction-card/auction-card.component';
 import { Auction, SilentAuction, ReverseAuction } from './models/auction.model';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'dd24-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, AuctionCardComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
