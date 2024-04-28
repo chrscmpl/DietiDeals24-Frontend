@@ -5,6 +5,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { YourPageComponent } from './pages/your-page/your-page.component';
 import { CreateAuctionPageComponent } from './pages/create-auction-page/create-auction-page.component';
 import { HelpPageComponent } from './pages/help-page/help-page.component';
+import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomePageComponent },
@@ -12,7 +13,7 @@ export const routes: Routes = [
   { path: 'create-auction', component: CreateAuctionPageComponent },
   { path: 'help', component: HelpPageComponent },
   { path: 'login', component: LoginPageComponent },
-  { path: 'register', component: LoginPageComponent },
+  { path: 'register', component: RegistrationPageComponent },
   { path: 'auth', component: AuthenticationPageComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];

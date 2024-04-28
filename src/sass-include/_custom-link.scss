@@ -1,6 +1,7 @@
 @mixin custom-link($color: var(--text-color-1)) {
   color: $color;
   text-decoration: none;
+  font-style: normal;
   cursor: pointer;
 
   &:hover {

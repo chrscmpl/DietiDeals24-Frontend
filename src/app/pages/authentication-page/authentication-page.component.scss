@@ -1,34 +1,39 @@
-
-@import 'grid';
-@import 'overlay';
+@import "grid";
+@import "overlay";
+@import "flex";
 
 .authentication-page {
+  height: 100vh;
+  background-color: var(--background-color);
 
-    height: 100vh;
-    
-    @include overlay;
+  @include overlay;
 
-    @include grid(
-        $template: "banner main" 1fr / 55% 45%,
-        $align-content: stretch
-    );
+  @include grid(
+    $template: "banner main" 1fr / 52% 48%,
+    $align-content: stretch,
+    $justify-content: stretch
+  );
 
-    .banner {
+  .banner {
+    grid-area: banner;
+    background-color: var(--side-color);
+    position: relative;
+    @include flex(column, center, center);
+    border-right: 2px solid var(--outline-color);
 
-        .arrow-in-top-left-corner {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        grid-area: banner;
-        background-color: var(--side-color);
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
+    .back-arrow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--text-accent-color);
     }
 
     .logo {
-        width: 70%;
+      width: 70%;
     }
+  }
+
+  main {
+    @include flex(column, center, center);
+  }
 }

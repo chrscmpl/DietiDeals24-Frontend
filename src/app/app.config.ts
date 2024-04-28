@@ -8,15 +8,18 @@ import { DatePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
 import { MoneyPipe } from './pipes/money.pipe';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes),
-    LocalDatePipe,
-    OneCharUpperPipe,
-    DatePipe,
-    IntervalPipe,
-    MoneyPipe,
-    CurrencyPipe,
-  ],
+    providers: [
+        provideRouter(routes),
+        provideHttpClient(),
+        LocalDatePipe,
+        OneCharUpperPipe,
+        DatePipe,
+        IntervalPipe,
+        MoneyPipe,
+        CurrencyPipe,
+        HttpClient,
+    ],
 };

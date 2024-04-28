@@ -1,46 +1,69 @@
+@import "flex";
+@import "grid";
+@import "padding-horizontal";
+@import "padding-vertical";
 
-.form-card-area {
+.form-card {
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    @include flex(column, flex-start, center, 0.2rem);
+    @include padding-vertical(1.2rem);
 
-    display: grid;
-    justify-content: center; /* horizontally center the card */
-    align-items: center; /* vertically center the card */
+    > :not(.separator) {
+        @include padding-horizontal(1rem);
+    }
 
-    .form-card {
-        display: inline-flex;
-        background-color: aqua;
-        width: 300px;
-        height: 300px;
-        position:relative;
-        top:100%;
+    h1 {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+    }
 
-        margin: 0px;
-        padding: 0px;
+    .separator {
+        width: 100%;
+        @include grid(
+            $template: "." 1fr / 1fr,
+            $justify-content: center,
+            $align-content: center,
+            $justify-items: center,
+            $align-items: center
+        );
 
-        border: 1px solid black;
-        border-radius: 10px;
-
-        .google-login {
-            margin: 0px;
-            padding: 0px;
-            width: 100%;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
+        .separator-or {
+            @include padding-horizontal(0.5ch);
+            color: var(--text-color-2);
+            font-weight: var(--font-weight-bold);
+            text-align: center;
+            grid-row: 1;
+            grid-column: 1;
+            background-color: var(--component-color);
         }
 
-        .login-form {
-            margin: 0px;
-            padding: 0px;
-            width: 100%;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
+        .separator-line {
+            grid-row: 1;
+            grid-column: 1;
+            border-top: var(--border);
+            justify-self: stretch;
+            height: 1px;
         }
+    }
+
+    a {
+        font-size: var(--font-size-small);
+    }
+
+    .google-login {
+        margin: 1rem 0;
+        .btn {
+            @include flex(row, center, center, 1ch);
+            padding: 0.2rem 2rem;
+            border: var(--border);
+            font-size: var(--font-size-small);
+            font-weight: var(--font-weight-bold);
+        }
+    }
+
+    .login-form {
+        @include flex(column, flex-start, center);
     }
 }
