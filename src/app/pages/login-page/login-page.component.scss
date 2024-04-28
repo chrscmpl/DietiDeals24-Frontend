@@ -1,0 +1,45 @@
+.form-card-area {
+
+    display: grid;
+    justify-content: center; /* horizontally center the card */
+    align-items: center; /* vertically center the card */
+
+    .form-card {
+        display: inline-flex;
+        background-color: aqua;
+        width: 300px;
+        height: 300px;
+        position:relative;
+        top:100%;
+
+        margin: 0px;
+        padding: 0px;
+
+        border: 1px solid black;
+        border-radius: 10px;
+
+        .google-login {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .login-form {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+        }
+    }
+}

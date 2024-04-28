@@ -1,1 +1,36 @@
-<p>login-page works!</p>
+<dd24-authentication-page>
+    <div class="form-card-area">
+        <div class="form-card">
+
+            <form class="google-login">
+                <a href="https://example.com">
+                    you don't have an account?
+                </a>
+                <button type="submit">
+                    CONTINUE WITH GOOGLE
+                </button>
+            </form>
+
+            <form class="login-form" [formGroup]="loginForm">
+                <input 
+                    type="email" 
+                    placeholder="Your Email" 
+                    class="form-field" 
+                    formControlName="email">
+                <input 
+                    type="password" 
+                    placeholder="Your Password" 
+                    class="form-field" 
+                    formControlName="password"
+                >
+                <a href="https://example.com">
+                    forgot your password?
+                </a>
+                <button type="submit" (click)="dd24Login()" [disabled]="!loginForm.valid">
+                    Login
+                </button>
+            </form>
+
+        </div>
+    </div>
+</dd24-authentication-page>

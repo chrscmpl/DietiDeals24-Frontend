@@ -4,13 +4,28 @@
 .authentication-page {
 
     height: 100vh;
+    
     @include grid(
         $template: "banner main" 1fr / 55% 45%,
         $align-content: stretch
     );
 
     .banner {
+
+        .arrow-in-top-left-corner {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
         grid-area: banner;
         background-color: var(--side-color);
-    };
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+
+    .logo {
+        width: 70%;
+    }
 }
