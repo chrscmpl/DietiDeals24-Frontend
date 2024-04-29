@@ -40,12 +40,7 @@
             @if(error){
             <span class="error">{{ error }}</span>
             }
-            <button
-                class="button-primary"
-                type="submit"
-                (click)="dd24Login()"
-                [disabled]="!loginForm.valid"
-            >
+            <button class="button-primary" type="submit" (click)="dd24Login()">
                 Login
             </button>
         </form>

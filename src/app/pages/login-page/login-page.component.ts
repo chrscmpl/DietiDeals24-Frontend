@@ -41,6 +41,10 @@ export class LoginPageComponent {
     });
 
     dd24Login() {
+        if (this.loginForm.invalid) {
+            this.error = 'Please fill in all fields';
+            return;
+        }
         this.userService
             .login(this.loginForm.value as UserCredentials)
             .subscribe({

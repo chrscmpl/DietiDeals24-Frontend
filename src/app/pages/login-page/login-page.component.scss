@@ -36,8 +36,11 @@
 
     .google-login {
         margin: 1rem 0;
+        width: 100%;
+        @include padding-horizontal(3rem);
         button {
             @include flex(row, center, center, 1ch);
+            width: 100%;
             padding: 0.2rem 2rem;
             border: var(--border);
             font-size: var(--font-size-small);
@@ -84,12 +87,9 @@
 
     .login-form {
         @include flex(column, flex-start, stretch);
+        @include padding-horizontal(3rem);
         font-size: var(--font-size-medium);
         width: 100%;
-
-        @include mobile {
-            width: 70%;
-        }
 
         .inputs {
             @include flex(column, flex-start, stretch, 0.5rem);
