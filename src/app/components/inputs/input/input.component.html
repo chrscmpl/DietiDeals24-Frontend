@@ -5,7 +5,7 @@
         [placeholder]="placeholder"
         [value]="value"
         [disabled]="disabled"
-        (input)="onChange($event)"
+        (input)="onChangeWrapper($event.target)"
         (blur)="onTouched()"
         [class.error]="ngControl.touched && ngControl.invalid"
     />

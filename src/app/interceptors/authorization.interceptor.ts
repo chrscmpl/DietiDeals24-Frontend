@@ -33,7 +33,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             tap((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    const newToken = event.headers.get('X-SetAuthorization');
+                    const newToken = event.headers.get('X-Auth-Token');
                     if (newToken) {
                         localStorage.setItem('authorizationToken', newToken);
                     }

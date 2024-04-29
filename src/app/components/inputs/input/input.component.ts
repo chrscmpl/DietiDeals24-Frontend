@@ -17,7 +17,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     @Input() error: string = 'Invalid input';
 
     value: any = '';
-    public onChange(e: Event) {}
+    public onChange(e: any) {}
     public onTouched() {}
 
     constructor(
@@ -45,5 +45,10 @@ export class InputComponent implements OnInit, ControlValueAccessor {
 
     registerOnTouched(fn: any): void {
         this.onTouched = fn;
+    }
+
+    onChangeWrapper(t: EventTarget | null) {
+        if (!t) return;
+        this.onChange((t as HTMLInputElement).value);
     }
 }

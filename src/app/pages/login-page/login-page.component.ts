@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { InputComponent } from '../../components/inputs/input/input.component';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { UserCredentials } from '../../models/user.model';
 
 @Component({
     selector: 'dd24-login-page',
@@ -22,16 +24,21 @@ import { RouterLink } from '@angular/router';
     styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
-    loginForm = new FormGroup({
-        email: new FormControl(null, [Validators.required, Validators.email]),
-        password: new FormControl(null, [
+    constructor(private userService: UserService) {}
+    loginForm = new FormGroup<any>({
+        email: new FormControl<any>(null, [
+            Validators.required,
+            Validators.email,
+        ]),
+        password: new FormControl<any>(null, [
             Validators.required,
             Validators.minLength(8),
         ]),
     });
 
     dd24Login() {
-        console.log('Login form values:', this.loginForm);
+        console.log(this.loginForm.value);
+        // this.userService.login(this.loginForm.value);
     }
 
     googleLogin() {

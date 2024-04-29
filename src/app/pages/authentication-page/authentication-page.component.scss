@@ -30,6 +30,7 @@
             @include flex(row, space-between, center);
             padding: 0.3rem;
             border-right: none;
+            border-bottom: 2px solid var(--outline-color);
         }
 
         .page-back-button {
@@ -56,12 +57,22 @@
         .logo {
             width: 70%;
             @include mobile {
-                width: 30%;
+                // width: 30%;
+                display: none;
             }
         }
     }
 
     main {
         @include flex(column, center, center);
+
+        .logo {
+            display: none;
+            @include mobile {
+                margin-top: 1rem;
+                display: block;
+                width: 50%;
+            }
+        }
     }
 }
