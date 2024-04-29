@@ -63,11 +63,11 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "proxyConfig": "proxy.conf.json",
+                            "proxyConfig": "src/proxy.conf.json",
                             "buildTarget": "DietiDeals24Frontend:build:production"
                         },
                         "development": {
-                            "proxyConfig": "proxy.conf.json",
+                            "proxyConfig": "src/proxy.conf.json",
                             "buildTarget": "DietiDeals24Frontend:build:development"
                         }
                     },
