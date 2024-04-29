@@ -3,6 +3,7 @@
 @import "padding-vertical";
 @import "padding-horizontal";
 @import "custom-link";
+@import "mobile";
 .header {
     color: var(--text-color-1);
     background-color: var(--component-color);
@@ -70,6 +71,10 @@
             }
             .navbar-path {
                 @include flex($align: center);
+                @include mobile {
+                    display: none;
+                }
+
                 :first-child {
                     color: var(--text-color-2);
                     margin-right: 1ch;

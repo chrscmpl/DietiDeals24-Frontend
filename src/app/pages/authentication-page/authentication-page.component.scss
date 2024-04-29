@@ -29,6 +29,7 @@
         @include mobile {
             @include flex(row, space-between, center);
             padding: 0.3rem;
+            border-right: none;
         }
 
         .page-back-button {
