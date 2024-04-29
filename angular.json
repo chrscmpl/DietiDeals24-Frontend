@@ -26,12 +26,11 @@
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": [
                             "node_modules/normalize.css/normalize.css",
-                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
                             "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
-                            "src/styles.scss"
+                            "src/styles/styles.scss"
                         ],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["src/sass-include"]
+                            "includePaths": ["src/styles/sass-include"]
                         },
                         "scripts": []
                     },
@@ -86,7 +85,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "inlineStyleLanguage": "scss",
                         "assets": ["src/favicon.ico", "src/assets"],
-                        "styles": ["src/styles.scss"],
+                        "styles": ["src/styles/styles.scss"],
                         "scripts": []
                     }
                 }

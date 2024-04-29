@@ -4,76 +4,77 @@
 @import "padding-horizontal";
 @import "custom-link";
 .header {
-  .navbar {
-    @include grid($template: 1fr 1fr auto / 1fr, $justify-content: stretch);
-    width: 100%;
-    height: calc(var(--font-size-medium) * 10);
-    $section-padding: 0.5rem;
     color: var(--text-color-1);
+    background-color: var(--component-color);
     font-weight: var(--font-weight-normal);
     font-size: var(--font-size-medium);
+    .navbar {
+        @include grid($template: 1fr 1fr auto / 1fr, $justify-content: stretch);
+        width: 100%;
+        height: calc(var(--font-size-medium) * 10);
+        $section-padding: 0.5rem;
 
-    > * {
-      overflow: hidden;
-      border-bottom: var(--border);
-      padding: 0 1rem;
-    }
-
-    .navbar-user-section {
-      font-size: var(--font-size-medium);
-      @include flex($align: stretch, $gap: 0.5em);
-      @include padding-vertical(0$section-padding);
-
-      .hamburger-btn {
-        color: var(--outline-color);
-        padding: 0;
-        aspect-ratio: 1/1;
-        font-size: var(--font-size-large);
-      }
-
-      .logo {
-        display: block;
-        height: 100%;
-      }
-
-      .spacer {
-        flex-grow: 1;
-      }
-
-      .btn:not(.hamburger-btn) {
-        border: var(--border);
-        font-weight: var(--font-weight-bold);
-      }
-    }
-
-    .navbar-search-section {
-    }
-
-    .navbar-tabs-section {
-      @include flex($justify: space-between);
-
-      .navbar-tab,
-      .navbar-path-entry {
-        @include custom-link(var(--text-color-1));
-      }
-      .navbar-tabs {
-        @include flex($align: stretch);
-        .navbar-tab {
-          padding: 0.2em 0.4em;
-          font-weight: var(--font-weight-bold);
-          border-right: var(--border);
-          &:first-child {
-            border-left: var(--border);
-          }
+        > * {
+            overflow: hidden;
+            border-bottom: var(--border);
+            padding: 0 1rem;
         }
-      }
-      .navbar-path {
-        @include flex($align: center);
-        :first-child {
-          color: var(--text-color-2);
-          margin-right: 1ch;
+
+        .navbar-user-section {
+            font-size: var(--font-size-medium);
+            @include flex($align: stretch, $gap: 0.5em);
+            @include padding-vertical(0$section-padding);
+
+            .hamburger-btn {
+                color: var(--outline-color);
+                padding: 0;
+                aspect-ratio: 1/1;
+                font-size: var(--font-size-large);
+            }
+
+            .logo {
+                display: block;
+                height: 100%;
+            }
+
+            .spacer {
+                flex-grow: 1;
+            }
+
+            .btn:not(.hamburger-btn) {
+                border: var(--border);
+                font-weight: var(--font-weight-bold);
+            }
         }
-      }
+
+        .navbar-search-section {
+        }
+
+        .navbar-tabs-section {
+            @include flex($justify: space-between);
+
+            .navbar-tab,
+            .navbar-path-entry {
+                @include custom-link(var(--text-color-1));
+            }
+            .navbar-tabs {
+                @include flex($align: stretch);
+                .navbar-tab {
+                    padding: 0.2em 0.4em;
+                    font-weight: var(--font-weight-bold);
+                    border-right: var(--border);
+                    &:first-child {
+                        border-left: var(--border);
+                    }
+                }
+            }
+            .navbar-path {
+                @include flex($align: center);
+                :first-child {
+                    color: var(--text-color-2);
+                    margin-right: 1ch;
+                }
+            }
+        }
     }
-  }
 }
