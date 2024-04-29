@@ -7,11 +7,12 @@
         [disabled]="disabled"
         (input)="onChange($event)"
         (blur)="onTouched()"
+        [class.error]="ngControl.touched && ngControl.invalid"
     />
-
-    @if(ngControl.touched){ @if(ngControl.hasError('required')){
-    <span class="error">{{ requiredError }}</span>
-    } @else if(ngControl.errors){
-    <span class="error">{{ error }}</span>
-    }}
+    @if(ngControl.touched){
+    <span class="error error-message">
+        @if(ngControl.hasError('required')){ {{ requiredError }} } 
+        @else if(ngControl.errors){ {{ error }} }
+    </span>
+    }
 </div>

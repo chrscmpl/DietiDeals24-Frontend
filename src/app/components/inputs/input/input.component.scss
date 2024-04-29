@@ -1,14 +1,33 @@
 @import "flex";
 
 .input-container {
-    @include flex(column, start, center);
+    @include flex(column, flex-start, stretch);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-normal);
+    width: 100%;
 
     label {
-        font-size: var(--font-size-medium);
-        margin-bottom: 0.2em;
-        font-weight: var(--font-weight-bold);
+        margin-bottom: 0.1em;
     }
     input {
         border-radius: var(--border-radius-small);
+        border: var(--border);
+        padding: 0.2em;
+
+        &:focus {
+            outline: 2px solid var(--border-color);
+            border: var(--border);
+        }
+
+        &.error {
+            border: 2px solid var(--error-color);
+            color: var(--error-color);
+            &:focus {
+                outline-color: var(--error-color);
+            }
+        }
+    }
+    .error-message {
+        font-size: var(--font-size-small);
     }
 }

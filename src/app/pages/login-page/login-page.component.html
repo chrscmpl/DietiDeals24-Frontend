@@ -17,23 +17,26 @@
         </div>
 
         <form class="login-form" [formGroup]="loginForm">
-            <dd24-input
-                label="Email"
-                type="email"
-                placeholder="Your Email"
-                class="form-field"
-                formControlName="email"
-            />
+            <section class="inputs">
+                <dd24-input
+                    label="Email"
+                    type="email"
+                    placeholder="Your Email"
+                    class="form-field"
+                    formControlName="email"
+                />
 
-            <dd24-input
-                label="Password"
-                type="password"
-                placeholder="Your Password"
-                class="form-field"
-                formControlName="password"
-            />
+                <dd24-input
+                    label="Password"
+                    type="password"
+                    placeholder="Your Password"
+                    class="form-field"
+                    formControlName="password"
+                />
+            </section>
             <a href="https://example.com"> forgot your password? </a>
             <button
+                class="button-primary"
                 type="submit"
                 (click)="dd24Login()"
                 [disabled]="!loginForm.valid"

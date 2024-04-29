@@ -2,12 +2,23 @@
 @import "grid";
 @import "padding-horizontal";
 @import "padding-vertical";
+@import "mobile";
 
 .form-card {
     border: var(--border);
     border-radius: var(--border-radius-large);
     @include flex(column, flex-start, center, 0.2rem);
     @include padding-vertical(1.2rem);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-normal);
+    min-width: 35ch;
+
+    @include mobile {
+        border: none;
+        border-radius: 0;
+        width: 100%;
+        height: 100%;
+    }
 
     > :not(.separator) {
         @include padding-horizontal(1rem);
@@ -17,6 +28,28 @@
         font-size: var(--font-size-large);
         font-weight: var(--font-weight-bold);
         margin: 0;
+    }
+
+    a {
+        font-size: var(--font-size-small);
+    }
+
+    .google-login {
+        margin: 1rem 0;
+        button {
+            @include flex(row, center, center, 1ch);
+            padding: 0.2rem 2rem;
+            border: var(--border);
+            font-size: var(--font-size-small);
+            font-weight: var(--font-weight-bold);
+            background-color: #ffffff;
+            border-radius: var(--border-radius-small);
+            transition: background-color 0.2s ease-in-out;
+
+            &:hover {
+                background-color: darken(#ffffff, 8%);
+            }
+        }
     }
 
     .separator {
@@ -48,22 +81,21 @@
         }
     }
 
-    a {
-        font-size: var(--font-size-small);
-    }
-
-    .google-login {
-        margin: 1rem 0;
-        .btn {
-            @include flex(row, center, center, 1ch);
-            padding: 0.2rem 2rem;
-            border: var(--border);
-            font-size: var(--font-size-small);
-            font-weight: var(--font-weight-bold);
-        }
-    }
-
     .login-form {
-        @include flex(column, flex-start, center);
+        @include flex(column, flex-start, stretch);
+        width: 100%;
+
+        @include mobile {
+            width: 70%;
+        }
+
+        .inputs {
+            @include flex(column, flex-start, stretch, 0.5rem);
+        }
+
+        a {
+            align-self: center;
+            margin-bottom: 1rem;
+        }
     }
 }

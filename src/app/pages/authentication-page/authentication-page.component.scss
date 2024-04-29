@@ -1,6 +1,7 @@
 @import "grid";
 @import "overlay";
 @import "flex";
+@import "mobile";
 
 .authentication-page {
     height: 100vh;
@@ -14,6 +15,10 @@
         $justify-content: stretch
     );
 
+    @include mobile {
+        grid-template: "banner" auto "main" 1fr / 1fr;
+    }
+
     .banner {
         grid-area: banner;
         background-color: var(--side-color);
@@ -21,8 +26,14 @@
         @include flex(column, center, center);
         border-right: 2px solid var(--outline-color);
 
+        @include mobile {
+            @include flex(row, space-between, center);
+            padding: 0.3rem;
+        }
+
         .page-back-button {
-            $size: 6rem;
+            --size: 6rem;
+
             @include flex(row, center, center);
             position: absolute;
             top: 0;
@@ -30,14 +41,22 @@
             background-color: transparent;
             border: none;
             color: var(--text-accent-color);
-            height: $size;
-            width: $size;
+            height: var(--size);
+            width: var(--size);
             overflow: hidden;
-            font-size: $size;
+            font-size: var(--size);
+
+            @include mobile {
+                position: static;
+                --size: 3rem;
+            }
         }
 
         .logo {
             width: 70%;
+            @include mobile {
+                width: 30%;
+            }
         }
     }
 
