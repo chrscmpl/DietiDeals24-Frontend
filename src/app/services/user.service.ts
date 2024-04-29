@@ -1,35 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserCredentials, User } from '../models/user.model';
+import { UserCredentials, User, UserDTO } from '../models/user.model';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
-    private _loggedUser?: User;
+    private _loggedUser: User | null = null;
     constructor(private http: HttpClient) {}
     public isLogged(): boolean {
         return false;
     }
-    public loggedUser(): User {
-        return {
-            username: 'test',
-            name: 'test',
-            surname: 'test',
-            birthday: 'test',
-            profilePictureUrl: 'test',
-            bio: 'test',
-            links: [],
-            onlineAuctions: 0,
-            pastDeals: 0,
-            contactData: [],
-        };
+    public loggedUser(): User | null {
+        return this._loggedUser;
     }
-    public login(credentials: UserCredentials) {
-        this.http
-            .post<User>('http://localhost:3000/login', credentials)
-            .subscribe((value: User) => {
-                this._loggedUser = value;
-            });
+    public login(credentials: UserCredentials): Observable<UserDTO> {
+        return this.http.post<UserDTO>('dd24-backend/login', credentials).pipe(
+            tap((value: UserDTO) => {
+                this._loggedUser = new User(value);
+                console.log(this._loggedUser);
+            })
+        );
     }
 }

@@ -9,7 +9,12 @@ import {
 import { InputComponent } from '../../components/inputs/input/input.component';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { UserCredentials } from '../../models/user.model';
+import { User, UserCredentials } from '../../models/user.model';
+
+interface loginForm {
+    email: FormControl<string | null>;
+    password: FormControl<string | null>;
+}
 
 @Component({
     selector: 'dd24-login-page',
@@ -25,20 +30,20 @@ import { UserCredentials } from '../../models/user.model';
 })
 export class LoginPageComponent {
     constructor(private userService: UserService) {}
-    loginForm = new FormGroup<any>({
-        email: new FormControl<any>(null, [
-            Validators.required,
-            Validators.email,
-        ]),
-        password: new FormControl<any>(null, [
+    loginForm = new FormGroup<loginForm>({
+        email: new FormControl(null, [Validators.required, Validators.email]),
+        password: new FormControl(null, [
             Validators.required,
             Validators.minLength(8),
         ]),
     });
 
     dd24Login() {
-        console.log(this.loginForm.value);
-        // this.userService.login(this.loginForm.value);
+        this.userService
+            .login(this.loginForm.value as UserCredentials)
+            .subscribe(() => {
+                alert('Logged in?');
+            });
     }
 
     googleLogin() {
