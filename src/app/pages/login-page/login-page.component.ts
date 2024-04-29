@@ -10,6 +10,7 @@ import { InputComponent } from '../../components/inputs/input/input.component';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User, UserCredentials } from '../../models/user.model';
+import { Location } from '@angular/common';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -29,7 +30,8 @@ interface loginForm {
     styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
-    constructor(private userService: UserService) {}
+    error: string = '';
+    constructor(private userService: UserService, private location: Location) {}
     loginForm = new FormGroup<loginForm>({
         email: new FormControl(null, [Validators.required, Validators.email]),
         password: new FormControl(null, [
@@ -41,12 +43,21 @@ export class LoginPageComponent {
     dd24Login() {
         this.userService
             .login(this.loginForm.value as UserCredentials)
-            .subscribe(() => {
-                alert('Logged in?');
+            .subscribe({
+                next: () => {
+                    this.location.back();
+                },
+                error: (err) => {
+                    this.error = `Error with status ${err.status}`;
+                },
             });
     }
 
     googleLogin() {
         console.log('Google login');
+    }
+
+    clearError() {
+        this.error = '';
     }
 }

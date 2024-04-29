@@ -9,9 +9,9 @@
     border-radius: var(--border-radius-large);
     @include flex(column, flex-start, center, 0.2rem);
     @include padding-vertical(1.2rem);
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
     font-weight: var(--font-weight-normal);
-    min-width: 35ch;
+    width: 25ch;
 
     @include mobile {
         border: none;
@@ -54,6 +54,7 @@
 
     .separator {
         width: 100%;
+        font-size: var(--font-size-medium);
         @include grid(
             $template: "." 1fr / 1fr,
             $justify-content: center,
@@ -83,6 +84,7 @@
 
     .login-form {
         @include flex(column, flex-start, stretch);
+        font-size: var(--font-size-medium);
         width: 100%;
 
         @include mobile {
@@ -93,9 +95,11 @@
             @include flex(column, flex-start, stretch, 0.5rem);
         }
 
-        a {
+        a,
+        .error {
             align-self: center;
             margin-bottom: 1rem;
+            word-wrap: break-word;
         }
     }
 }

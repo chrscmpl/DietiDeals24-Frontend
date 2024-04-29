@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Self, Optional } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Self,
+    EventEmitter,
+    Output,
+} from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -15,6 +22,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     @Input() type: 'text' | 'email' | 'password' = 'text';
     @Input() requiredError: string = 'This field is required';
     @Input() error: string = 'Invalid input';
+    @Output() focus: EventEmitter<any> = new EventEmitter();
 
     value: any = '';
     public onChange(e: any) {}
@@ -50,5 +58,9 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     onChangeWrapper(t: EventTarget | null) {
         if (!t) return;
         this.onChange((t as HTMLInputElement).value);
+    }
+
+    handleFocus(event: any) {
+        this.focus.emit(event);
     }
 }

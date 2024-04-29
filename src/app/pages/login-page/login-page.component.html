@@ -24,6 +24,7 @@
                     placeholder="Your Email"
                     class="form-field"
                     formControlName="email"
+                    (focus)="clearError()"
                 />
 
                 <dd24-input
@@ -32,9 +33,13 @@
                     placeholder="Your Password"
                     class="form-field"
                     formControlName="password"
+                    (focus)="clearError()"
                 />
             </section>
             <a routerLink="/forgot-password"> forgot your password? </a>
+            @if(error){
+            <span class="error">{{ error }}</span>
+            }
             <button
                 class="button-primary"
                 type="submit"

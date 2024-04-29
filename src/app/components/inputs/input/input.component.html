@@ -7,6 +7,7 @@
         [disabled]="disabled"
         (input)="onChangeWrapper($event.target)"
         (blur)="onTouched()"
+        (focus)="handleFocus($event)"
         [class.error]="ngControl.touched && ngControl.invalid"
     />
     @if(ngControl.touched){
