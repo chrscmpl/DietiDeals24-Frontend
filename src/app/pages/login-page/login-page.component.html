@@ -1,7 +1,7 @@
 <dd24-authentication-page>
     <div class="form-card">
         <h1>Log in to DietiDeals24</h1>
-        <a href="https://example.com" class="registration-link">
+        <a routerLink="/register" class="registration-link">
             you don't have an account?
         </a>
         <form class="google-login">
@@ -19,7 +19,7 @@
         <form class="login-form" [formGroup]="loginForm">
             <section class="inputs">
                 <dd24-input
-                    label="Email"
+                    label="Email address"
                     type="email"
                     placeholder="Your Email"
                     class="form-field"
@@ -34,7 +34,7 @@
                     formControlName="password"
                 />
             </section>
-            <a href="https://example.com"> forgot your password? </a>
+            <a routerLink="/forgot-password"> forgot your password? </a>
             <button
                 class="button-primary"
                 type="submit"

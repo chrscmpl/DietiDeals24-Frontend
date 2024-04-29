@@ -1,17 +1,11 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'dd24-logo',
     standalone: true,
-    imports: [],
+    imports: [RouterLink],
     templateUrl: './logo.component.html',
     styleUrl: './logo.component.scss',
 })
-export class LogoComponent {
-    constructor(private router: Router) {}
-
-    goToHomePage() {
-        this.router.navigate(['/home']);
-    }
-}
+export class LogoComponent {}

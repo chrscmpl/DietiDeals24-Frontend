@@ -7,15 +7,21 @@ import {
     Validators,
 } from '@angular/forms';
 import { InputComponent } from '../../components/inputs/input/input.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'dd24-login-page',
     standalone: true,
-    imports: [AuthenticationPageComponent, ReactiveFormsModule, InputComponent],
+    imports: [
+        AuthenticationPageComponent,
+        ReactiveFormsModule,
+        InputComponent,
+        RouterLink,
+    ],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent extends AuthenticationPageComponent {
+export class LoginPageComponent {
     loginForm = new FormGroup({
         email: new FormControl(null, [Validators.required, Validators.email]),
         password: new FormControl(null, [
