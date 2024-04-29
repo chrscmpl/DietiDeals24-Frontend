@@ -6,11 +6,12 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
+import { InputComponent } from '../../components/inputs/input/input.component';
 
 @Component({
     selector: 'dd24-login-page',
     standalone: true,
-    imports: [AuthenticationPageComponent, ReactiveFormsModule],
+    imports: [AuthenticationPageComponent, ReactiveFormsModule, InputComponent],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
 })

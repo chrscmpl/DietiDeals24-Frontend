@@ -1,0 +1,17 @@
+<div class="input-container">
+    <label>{{ label }}</label>
+    <input
+        [type]="type"
+        [placeholder]="placeholder"
+        [value]="value"
+        [disabled]="disabled"
+        (input)="onChange($event)"
+        (blur)="onTouched()"
+    />
+
+    @if(ngControl.touched){ @if(ngControl.hasError('required')){
+    <span class="error">{{ requiredError }}</span>
+    } @else if(ngControl.errors){
+    <span class="error">{{ error }}</span>
+    }}
+</div>

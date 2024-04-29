@@ -17,27 +17,21 @@
         </div>
 
         <form class="login-form" [formGroup]="loginForm">
-            <input
+            <dd24-input
+                label="Email"
                 type="email"
                 placeholder="Your Email"
                 class="form-field"
                 formControlName="email"
             />
 
-            @if(!loginForm.controls.email.valid &&
-            loginForm.controls.email.touched){
-            <span class="form-error">dsdg</span>
-            }
-            <input
+            <dd24-input
+                label="Password"
                 type="password"
                 placeholder="Your Password"
                 class="form-field"
                 formControlName="password"
             />
-            @if(!loginForm.controls.password.valid &&
-            loginForm.controls.password.touched){
-            <span class="form-error">dsdg</span>
-            }
             <a href="https://example.com"> forgot your password? </a>
             <button
                 type="submit"

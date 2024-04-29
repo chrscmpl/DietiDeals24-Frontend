@@ -1,7 +1,9 @@
 <div class="authentication-page">
     <div class="banner">
-        <dd24-arrow-back-button class="back-arrow"></dd24-arrow-back-button>
-        <img src="assets/logo.svg" alt="logo" class="logo" />
+        <button class="page-back-button" (click)="goBack()">
+            <i class="bi bi-arrow-left-short" id="arrow-back-button-icon"></i>
+        </button>
+        <dd24-logo class="logo"></dd24-logo>
     </div>
     <main>
         <ng-content id="authentication-form"></ng-content>

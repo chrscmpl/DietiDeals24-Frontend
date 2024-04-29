@@ -1,0 +1,14 @@
+@import "flex";
+
+.input-container {
+    @include flex(column, start, center);
+
+    label {
+        font-size: var(--font-size-medium);
+        margin-bottom: 0.2em;
+        font-weight: var(--font-weight-bold);
+    }
+    input {
+        border-radius: var(--border-radius-small);
+    }
+}
