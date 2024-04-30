@@ -5,8 +5,26 @@ import {
     Self,
     EventEmitter,
     Output,
+    ViewChild,
+    ElementRef,
+    AfterViewInit,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+
+type validation =
+    | 'required'
+    | 'email'
+    | 'min'
+    | 'max'
+    | 'pattern'
+    | 'minlength'
+    | 'maxlength'
+    | 'all';
+
+interface errorMessage {
+    validation: validation | validation[];
+    message: string;
+}
 
 @Component({
     selector: 'dd24-input',
@@ -15,16 +33,25 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
     standalone: true,
     imports: [],
 })
-export class InputComponent implements OnInit, ControlValueAccessor {
+export class InputComponent
+    implements OnInit, AfterViewInit, ControlValueAccessor
+{
     @Input() disabled: boolean = false;
     @Input() label: string = '';
     @Input() placeholder: string = '';
     @Input() type: 'text' | 'email' | 'password' = 'text';
-    @Input() requiredError: string = 'This field is required';
-    @Input() error: string = 'Invalid input';
+    @Input() errorMessages: errorMessage[] = [];
     @Output() focus: EventEmitter<any> = new EventEmitter();
+    @ViewChild('inputElement', { static: false })
+    inputElement!: ElementRef<HTMLInputElement>;
 
     value: any = '';
+    isPassword: boolean = false;
+    isPasswordVisible: boolean = false;
+    static defaultError = 'Invalid input';
+    errorMessage: string = '';
+    shouldDisplayError: boolean = false;
+
     public onChange(e: any) {}
     public onTouched() {}
 
@@ -37,7 +64,24 @@ export class InputComponent implements OnInit, ControlValueAccessor {
         }
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.isPassword = this.type === 'password';
+        this.ngControl.control?.statusChanges.subscribe(() => {
+            if (this.ngControl.control?.invalid) {
+                this.errorMessage = this.getErrorMessage();
+            }
+            this.shouldDisplayError = this.getShouldDisplayError();
+        });
+    }
+
+    ngAfterViewInit() {
+        this.inputElement.nativeElement.addEventListener('focus', () => {
+            this.shouldDisplayError = false;
+        });
+        this.inputElement.nativeElement.addEventListener('blur', () => {
+            this.shouldDisplayError = this.getShouldDisplayError();
+        });
+    }
 
     writeValue(value: any): void {
         this.value = value;
@@ -55,12 +99,40 @@ export class InputComponent implements OnInit, ControlValueAccessor {
         this.onTouched = fn;
     }
 
-    onChangeWrapper(t: EventTarget | null) {
+    onChangeWrapper(t: EventTarget | null): void {
         if (!t) return;
         this.onChange((t as HTMLInputElement).value);
     }
 
-    handleFocus(event: any) {
+    handleFocus(event: any): void {
         this.focus.emit(event);
+    }
+
+    togglePasswordVisibility(): void {
+        this.isPasswordVisible = !this.isPasswordVisible;
+        this.type = this.isPasswordVisible ? 'text' : 'password';
+    }
+
+    private getShouldDisplayError(): boolean {
+        return (
+            (this.ngControl.control?.invalid &&
+                this.ngControl.control?.touched &&
+                this.inputElement.nativeElement !== document.activeElement) ??
+            false
+        );
+    }
+
+    private getErrorMessage(): string {
+        const errors = this.ngControl.control?.errors;
+        if (!errors) return '';
+        const errorKeys = Object.keys(errors);
+        const error = this.errorMessages.find((e) => {
+            if (e.validation === 'all') return true;
+            if (Array.isArray(e.validation)) {
+                return e.validation.some((v) => errorKeys.includes(v));
+            }
+            return errorKeys.includes(e.validation);
+        });
+        return error?.message || InputComponent.defaultError;
     }
 }

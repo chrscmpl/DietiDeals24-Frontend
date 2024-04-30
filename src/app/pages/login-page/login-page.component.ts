@@ -37,6 +37,7 @@ export class LoginPageComponent {
         password: new FormControl(null, [
             Validators.required,
             Validators.minLength(8),
+            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/),
         ]),
     });
 
@@ -52,7 +53,16 @@ export class LoginPageComponent {
                     this.location.back();
                 },
                 error: (err) => {
-                    this.error = `Error with status ${err.status}`;
+                    if (err.status === 401) {
+                        this.error = 'Incorrect email or password';
+                    } else if (err.status >= 500) {
+                        this.error =
+                            "Couldn't reach the server, please try again later";
+                    } else if (err.status >= 400) {
+                        this.error = 'Invalid input';
+                    } else {
+                        this.error = 'An unknown error occurred';
+                    }
                 },
             });
     }

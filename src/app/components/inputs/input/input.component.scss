@@ -1,4 +1,5 @@
 @import "flex";
+@import "grid";
 
 .input-container {
     @include flex(column, flex-start, stretch);
@@ -7,23 +8,57 @@
     width: 100%;
 
     label {
+        color: var(--text-color-1);
         margin-bottom: 0.1em;
     }
-    input {
-        border-radius: var(--border-radius-small);
-        border: var(--border);
-        padding: 0.2em;
 
-        &:focus {
-            outline: 2px solid var(--border-color);
+    .input-element-container {
+        @include grid(
+            $justify-items: stretch,
+            $align-items: stretch,
+            $justify-content: stretch,
+            $align-content: stretch
+        );
+
+        > * {
+            grid-row: 1;
+            grid-column: 1;
+        }
+
+        input {
+            color: var(--text-color-3);
+            border-radius: var(--border-radius-small);
             border: var(--border);
+            padding: 0.2em;
+
+            &.password {
+                padding-right: 2em;
+            }
+
+            &:focus {
+                outline: 2px solid var(--border-color);
+                border: var(--border);
+            }
+        }
+
+        .password-visibility-button {
+            color: var(--basic-affordances-color);
+            justify-self: end;
+            width: 2em;
+            background-color: transparent;
+            border: none;
         }
 
         &.error {
-            border: 2px solid var(--error-color);
-            color: var(--error-color);
-            &:focus {
-                outline-color: var(--error-color-transparent);
+            input {
+                color: var(--error-color);
+                border: 2px solid var(--error-color);
+                &:focus {
+                    outline-color: var(--error-color-transparent);
+                }
+            }
+            .password-visibility-button {
+                color: var(--error-color);
             }
         }
     }

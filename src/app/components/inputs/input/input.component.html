@@ -1,19 +1,30 @@
 <div class="input-container">
     <label>{{ label }}</label>
-    <input
-        [type]="type"
-        [placeholder]="placeholder"
-        [value]="value"
-        [disabled]="disabled"
-        (input)="onChangeWrapper($event.target)"
-        (blur)="onTouched()"
-        (focus)="handleFocus($event)"
-        [class.error]="ngControl.touched && ngControl.invalid"
-    />
-    @if(ngControl.touched){
+    <div class="input-element-container" [class.error]="shouldDisplayError">
+        <input
+            #inputElement
+            [type]="type"
+            [placeholder]="placeholder"
+            [value]="value"
+            [disabled]="disabled"
+            (input)="onChangeWrapper($event.target)"
+            (blur)="onTouched()"
+            (focus)="handleFocus($event)"
+            [class.password]="isPassword"
+        />
+        @if(isPassword){
+        <button
+            class="password-visibility-button"
+            type="button"
+            (click)="togglePasswordVisibility(); inputElement.focus()"
+        >
+            <i [class]="'bi bi-eye' + (!isPasswordVisible ? '' : '-slash')"></i>
+        </button>
+        }
+    </div>
+    @if(shouldDisplayError){
     <span class="error error-message">
-        @if(ngControl.hasError('required')){ {{ requiredError }} } 
-        @else if(ngControl.errors){ {{ error }} }
+        {{ errorMessage }}
     </span>
     }
 </div>
