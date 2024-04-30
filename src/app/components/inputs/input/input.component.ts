@@ -51,7 +51,7 @@ export class InputComponent
     static defaultError = 'Invalid input';
     errorMessage: string = '';
     shouldDisplayError: boolean = false;
-    unfocusedWithError: boolean = false;
+    aggressiveValidation: boolean = false;
 
     public onChange(e: any) {}
     public onTouched() {}
@@ -72,7 +72,8 @@ export class InputComponent
                 this.errorMessage = this.getErrorMessage();
             }
             this.shouldDisplayError =
-                (this.ngControl.control?.invalid && this.unfocusedWithError) ??
+                (this.ngControl.control?.invalid &&
+                    this.aggressiveValidation) ??
                 false;
         });
     }
@@ -83,7 +84,10 @@ export class InputComponent
                 (this.ngControl.control?.invalid &&
                     this.ngControl.control?.touched) ??
                 false;
-            this.unfocusedWithError = this.shouldDisplayError;
+            this.aggressiveValidation = this.shouldDisplayError;
+            if (this.shouldDisplayError) {
+                this.errorMessage = this.getErrorMessage();
+            }
         });
     }
 

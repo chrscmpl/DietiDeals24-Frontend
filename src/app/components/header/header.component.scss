@@ -24,13 +24,15 @@
         .navbar-user-section {
             font-size: var(--font-size-medium);
             @include flex($align: stretch, $gap: 0.5em);
-            @include padding-vertical(0$section-padding);
+            @include padding-vertical($section-padding);
 
             .hamburger-btn {
                 color: var(--outline-color);
                 padding: 0;
                 aspect-ratio: 1/1;
-                font-size: var(--font-size-large);
+                font-size: calc(var(--font-size-large) * 1.5);
+                background-color: transparent;
+                border: none;
             }
 
             .logo {
@@ -42,9 +44,12 @@
                 flex-grow: 1;
             }
 
-            .btn:not(.hamburger-btn) {
+            .nav-auth-btn {
                 border: var(--border);
                 font-weight: var(--font-weight-bold);
+                background-color: var(--component-color);
+                border-radius: var(--border-radius-medium);
+                @include padding-horizontal(2ch);
             }
         }
 

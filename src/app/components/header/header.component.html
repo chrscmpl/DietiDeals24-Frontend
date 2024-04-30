@@ -6,7 +6,7 @@
             </button>
             <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />
             <div class="spacer"></div>
-            @if(!user.isLogged()){
+            @if(!userService.isLogged()){
             <button class="nav-auth-btn nav-login-btn" routerLink="login">
                 Login
             </button>
@@ -29,7 +29,7 @@
             <section class="navbar-path">
                 <span>You are here: </span>
                 <a class="navbar-path-entry" routerLink="">DietiDeals24</a>
-                @for(entry of routes; track $index){
+                @for(entry of routingUtils.currentRoutes; track $index){
                 <i class="bi bi-chevron-right"></i>
                 <a class="navbar-path-entry" [routerLink]="entry.url">{{
                     entry.name | titlecase

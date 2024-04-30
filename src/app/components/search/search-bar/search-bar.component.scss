@@ -1,0 +1,31 @@
+@import "grid";
+
+.search-bar-container {
+    @include grid();
+
+    font-size: var(--font-size-medium);
+
+    > * {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .search-bar-icon {
+        color: var(--basic-affordances-color);
+        align-self: center;
+        justify-self: start;
+        padding-left: 1ch;
+    }
+
+    .search-bar-input {
+        background-color: var(--component-color);
+        border: var(--border);
+        border-radius: var(--border-radius-medium);
+        color: var(--text-color-3);
+        padding: 0.2rem 3ch;
+
+        &:focus {
+            outline: 2px solid var(--border-color-transparent);
+        }
+    }
+}

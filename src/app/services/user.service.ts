@@ -10,7 +10,7 @@ export class UserService {
     private _loggedUser: User | null = null;
     constructor(private http: HttpClient) {}
     public isLogged(): boolean {
-        return false;
+        return this._loggedUser != null;
     }
     public loggedUser(): User | null {
         return this._loggedUser;
