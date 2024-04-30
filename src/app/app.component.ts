@@ -23,6 +23,7 @@ export class AppComponent {
             location: { nation: 'USA', city: 'New York' },
             minimumBid: { amount: 1000, currency: 'EUR' },
             endTime: Math.floor(Date.now() / 1000) + 10 + 2 * 60 + 5 * 60 * 60,
+            category: 'Electronics',
         }),
 
         new ReverseAuction({
@@ -38,6 +39,7 @@ export class AppComponent {
             images: [
                 'https://www.bmw.it/content/dam/bmw/common/all-models/m-series/series-overview/bmw-m-series-seo-overview-ms-04.jpg',
             ],
+            category: 'Cars',
         }),
     ];
 }

@@ -12,7 +12,9 @@
     @include grid(
         $template: "banner main" 1fr / 52% 48%,
         $align-content: stretch,
-        $justify-content: stretch
+        $justify-content: stretch,
+        $align-items: stretch,
+        $justify-items: stretch
     );
 
     @include mobile {
@@ -30,7 +32,6 @@
             @include flex(row, space-between, center);
             padding: 0.3rem;
             border-right: none;
-            border-bottom: 2px solid var(--outline-color);
         }
 
         .page-back-button {
@@ -57,22 +58,23 @@
         .logo {
             width: 70%;
             @include mobile {
-                // width: 30%;
                 display: none;
             }
         }
     }
 
     main {
+        grid-area: main;
         @include flex(column, center, center);
-
         .logo {
             display: none;
             @include mobile {
-                margin-top: 1rem;
                 display: block;
-                width: 50%;
+                width: 75%;
             }
+        }
+        @include mobile {
+            @include flex(column, center, center, 1ch);
         }
     }
 }
