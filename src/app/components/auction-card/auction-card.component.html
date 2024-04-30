@@ -13,8 +13,10 @@
   <div class="auction-card-details-container">
     <span class="auction-card-title">{{ auction.title }}</span>
     <span class="auction-card-secondary-line">
-      from {{ auction.location.nation }}, {{ auction.location.city }} |
-      {{ auction.conditions }}
+      from {{ auction.location.nation }}, {{ auction.location.city }} 
+      @if(auction.conditions){
+      | {{ auction.conditions }}
+      }
     </span>
     <dd24-auction-type-link
       class="auction-card-auction-type"
