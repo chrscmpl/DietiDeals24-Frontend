@@ -51,6 +51,7 @@ export class InputComponent
     static defaultError = 'Invalid input';
     errorMessage: string = '';
     shouldDisplayError: boolean = false;
+    unfocusedWithError: boolean = false;
 
     public onChange(e: any) {}
     public onTouched() {}
@@ -70,16 +71,19 @@ export class InputComponent
             if (this.ngControl.control?.invalid) {
                 this.errorMessage = this.getErrorMessage();
             }
-            this.shouldDisplayError = this.getShouldDisplayError();
+            this.shouldDisplayError =
+                (this.ngControl.control?.invalid && this.unfocusedWithError) ??
+                false;
         });
     }
 
     ngAfterViewInit() {
-        this.inputElement.nativeElement.addEventListener('focus', () => {
-            this.shouldDisplayError = false;
-        });
         this.inputElement.nativeElement.addEventListener('blur', () => {
-            this.shouldDisplayError = this.getShouldDisplayError();
+            this.shouldDisplayError =
+                (this.ngControl.control?.invalid &&
+                    this.ngControl.control?.touched) ??
+                false;
+            this.unfocusedWithError = this.shouldDisplayError;
         });
     }
 
@@ -111,15 +115,6 @@ export class InputComponent
     togglePasswordVisibility(): void {
         this.isPasswordVisible = !this.isPasswordVisible;
         this.type = this.isPasswordVisible ? 'text' : 'password';
-    }
-
-    private getShouldDisplayError(): boolean {
-        return (
-            (this.ngControl.control?.invalid &&
-                this.ngControl.control?.touched &&
-                this.inputElement.nativeElement !== document.activeElement) ??
-            false
-        );
     }
 
     private getErrorMessage(): string {
