@@ -58,7 +58,6 @@ export class LoginPageComponent implements OnInit {
     dd24Login() {
         if (this.loginForm.invalid) {
             this.formError = true;
-            this.error = 'Please fill in all fields';
             return;
         }
         this.formError = false;
