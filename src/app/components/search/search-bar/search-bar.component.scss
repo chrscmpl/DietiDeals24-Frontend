@@ -2,7 +2,7 @@
 
 .search-bar-container {
     @include grid();
-
+    width: 100%;
     font-size: var(--font-size-medium);
 
     > * {
@@ -26,6 +26,17 @@
 
         &:focus {
             outline: 2px solid var(--border-color-transparent);
+        }
+    }
+
+    &.alternate {
+        .search-bar-input {
+            border: none;
+            border-radius: 0;
+            &:focus {
+                outline: none;
+            }
+            padding-right: 1ch;
         }
     }
 }

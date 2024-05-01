@@ -12,15 +12,11 @@ import { TitleCasePipe } from '@angular/common';
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
     constructor(
         public userService: UserService,
         public routingUtils: RoutingUtilsService
     ) {}
-
-    ngOnInit(): void {
-        console.log('header :)');
-    }
 
     tabs: { name: string; url: string }[] = [
         { name: 'Home', url: 'home' },

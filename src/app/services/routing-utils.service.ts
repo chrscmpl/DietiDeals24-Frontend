@@ -8,7 +8,6 @@ export class RoutingUtilsService {
     constructor(private router: Router) {}
 
     get currentRoutes(): { name: string; url: string }[] {
-        console.log('routes :(');
         const ret: { name: string; url: string }[] = [];
         const route = this.router.url.replace(/^\/+|\/+$/g, '');
         let i: number = 0;

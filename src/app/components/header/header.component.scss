@@ -54,6 +54,7 @@
         }
 
         .navbar-search-section {
+            @include flex(column, center, stretch);
         }
 
         .navbar-tabs-section {

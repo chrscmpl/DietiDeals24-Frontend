@@ -1,4 +1,19 @@
-<div>
-  <dd24-search-bar></dd24-search-bar>
-  this is a search section
-</div>
+<form
+    class="search-section"
+    [formGroup]="searchForm"
+    (ngSubmit)="handleSubmit()"
+>
+    <div class="search-inputs-container">
+        <dd24-search-bar
+            class="search-bar"
+            variant="alternate"
+            formControlName="keywords"
+            placeholder="What are you looking for?"
+        ></dd24-search-bar>
+        <div class="type-selection">type</div>
+        <div class="category-selection">category</div>
+    </div>
+    <button class="search-button button-primary" type="submit">
+        <i class="bi bi-search"></i> Search
+    </button>
+</form>

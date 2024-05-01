@@ -1,8 +1,13 @@
-<div class="search-bar-container">
+<div [class]="'search-bar-container ' + variant">
     <input
         type="text"
         class="search-bar-input"
-        placeholder="what are you looking for?"
+        [placeholder]="placeholder"
+        [value]="value"
+        [disabled]="disabled"
+        (input)="onChangeWrapper($event.target)"
+        (blur)="onTouched()"
+        (focus)="handleFocus($event)"
     />
     <i class="search-bar-icon bi bi-search"></i>
 </div>
