@@ -19,10 +19,10 @@
         .trending-categories-buttons {
             @include flex(row, space-between, stretch, 3ch);
             flex-wrap: nowrap;
+            min-height: 3.5em;
             .trending-category-button {
                 @include flex(row, center, center);
                 width: 15ch;
-                min-height: 3.5em;
                 word-wrap: break-word;
                 padding: 0.3em;
             }

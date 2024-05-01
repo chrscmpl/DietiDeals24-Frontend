@@ -2,11 +2,8 @@
     <section class="trending-categories">
         <h2>Trending Categories</h2>
         <div class="trending-categories-buttons">
-            @defer {
-                @for (
-                    category of accessoryInformation.trendingCategories | async;
-                    track $index
-                ) {
+            @if (!(categoryButtonsLoadingIndicator.isLoading$ | async)) {
+                @for (category of trendingCategories; track $index) {
                     <button
                         class="trending-category-button button-secondary"
                         type="button"
@@ -15,7 +12,7 @@
                         {{ category }}
                     </button>
                 }
-            } @loading (after 50ms; minimum 100ms) {
+            } @else {
                 @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
                     <button
                         class="trending-category-button trending-category-loading-button button-secondary"

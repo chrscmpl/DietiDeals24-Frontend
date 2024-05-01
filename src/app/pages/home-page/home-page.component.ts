@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -8,6 +8,7 @@ import {
     ReverseAuction,
 } from '../../models/auction.model';
 import { AuctionCardComponent } from '../../components/auction-card/auction-card.component';
+import { LoadingIndicator } from '../../helpers/loadingIndicator';
 
 @Component({
     selector: 'dd24-home-page',
@@ -17,7 +18,16 @@ import { AuctionCardComponent } from '../../components/auction-card/auction-card
     styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent {
-    constructor(public accessoryInformation: AccessoryInformationService) {}
+    public categoryButtonsLoadingIndicator: LoadingIndicator =
+        new LoadingIndicator(1000);
+    public trendingCategories: string[] = [];
+    constructor(public accessoryInformation: AccessoryInformationService) {
+        this.categoryButtonsLoadingIndicator.start();
+        this.accessoryInformation.trendingCategories.subscribe((categories) => {
+            this.categoryButtonsLoadingIndicator.stop();
+            this.trendingCategories = categories;
+        });
+    }
 
     trendingAuctions: Auction[] = [
         new SilentAuction({
