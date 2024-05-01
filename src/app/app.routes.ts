@@ -7,10 +7,12 @@ import { CreateAuctionPageComponent } from './pages/create-auction-page/create-a
 import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+import { SearchResultsPageComponent } from './pages/search-results-page/search-results-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomePageComponent },
+    { path: 'search/:category', component: SearchResultsPageComponent },
     { path: 'your-page', component: YourPageComponent },
     { path: 'create-auction', component: CreateAuctionPageComponent },
     { path: 'help', component: HelpPageComponent },

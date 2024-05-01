@@ -1,8 +1,19 @@
-@import "flex";
+@import "grid";
 
 .app {
-  @include flex(column, space-between, stretch);
-  width: 100vw;
-  min-height: 100vh;
-  position: relative;
+    @include grid("header" auto "main" 1fr "footer" auto / 1fr);
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    .header {
+        grid-area: header;
+    }
+
+    .content {
+        display: main;
+    }
+
+    .footer {
+        grid-area: footer;
+    }
 }

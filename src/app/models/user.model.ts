@@ -28,7 +28,6 @@ export class User implements UserInterface {
         surname: string;
         birthday: Date;
         location: Location | null;
-        email: string;
         bio: string | null;
         links: link[];
         onlineAuctions: number;

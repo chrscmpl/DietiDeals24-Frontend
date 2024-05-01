@@ -3,11 +3,30 @@
     border-radius: var(--border-radius-medium);
     border: none;
     font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-normal);
     color: var(--text-accent-color);
     transition: background-color 0.2s ease-in-out;
     padding: calc(var(--font-size-medium) / 2) 3ch;
 
     &:hover {
         background-color: var(--accent-color-1-hover);
+    }
+}
+
+.button-secondary {
+    background-color: transparent;
+    border: 1px solid var(--accent-color-1);
+    color: var(--accent-color-1);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-normal);
+    transition:
+        background-color 0.2s ease-in-out,
+        color 0.2s ease-in-out;
+    padding: calc(var(--font-size-medium) / 2) 3ch;
+
+    &:hover {
+        background-color: var(--accent-color-1);
+        color: var(--text-accent-color);
     }
 }

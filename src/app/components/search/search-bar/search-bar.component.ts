@@ -26,10 +26,7 @@ export class SearchBarComponent implements ControlValueAccessor {
 
     value: any = '';
 
-    constructor(
-        @Self()
-        public ngControl: NgControl
-    ) {
+    constructor(@Self() public ngControl: NgControl) {
         if (this.ngControl) {
             this.ngControl.valueAccessor = this;
         }

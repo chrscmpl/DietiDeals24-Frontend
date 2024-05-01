@@ -65,7 +65,7 @@ export class InputComponent
 
     constructor(
         @Self()
-        public ngControl: NgControl
+        public ngControl: NgControl,
     ) {
         if (this.ngControl) {
             this.ngControl.valueAccessor = this;
