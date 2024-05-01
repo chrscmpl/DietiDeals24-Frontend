@@ -16,7 +16,11 @@
             <span class="separator-or">or</span>
         </div>
 
-        <form class="login-form" [formGroup]="loginForm">
+        <form
+            class="login-form"
+            [formGroup]="loginForm"
+            (ngSubmit)="dd24Login()"
+        >
             <section class="inputs">
                 <dd24-input
                     label="Email address"
@@ -24,6 +28,7 @@
                     placeholder="Your Email"
                     class="form-field"
                     formControlName="email"
+                    [formError]="formError"
                     (focus)="clearError()"
                     [errorMessages]="[
                         {
@@ -43,6 +48,7 @@
                     placeholder="Your Password"
                     class="form-field"
                     formControlName="password"
+                    [formError]="formError"
                     (focus)="clearError()"
                     [errorMessages]="[
                         {
@@ -61,9 +67,7 @@
             @if(error){
             <span class="error">{{ error }}</span>
             }
-            <button class="button-primary" type="submit" (click)="dd24Login()">
-                Login
-            </button>
+            <button class="button-primary" type="submit">Login</button>
         </form>
     </div>
 </dd24-authentication-page>

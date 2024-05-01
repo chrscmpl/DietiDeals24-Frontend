@@ -41,6 +41,13 @@ export class InputComponent
     @Input() placeholder: string = '';
     @Input() type: 'text' | 'email' | 'password' = 'text';
     @Input() errorMessages: errorMessage[] = [];
+    @Input() set formError(err: boolean) {
+        if (err && this.ngControl.control?.invalid) {
+            this.errorMessage = this.getErrorMessage();
+            this.shouldDisplayError = true;
+            this.aggressiveValidation = true;
+        }
+    }
     @Output() focus: EventEmitter<any> = new EventEmitter();
     @ViewChild('inputElement', { static: false })
     inputElement!: ElementRef<HTMLInputElement>;
