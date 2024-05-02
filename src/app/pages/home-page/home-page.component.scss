@@ -1,5 +1,6 @@
 @import "flex";
 @import "grid";
+@import "center";
 
 .home-page {
     @include flex(column, start, stretch, 1em);
@@ -17,12 +18,12 @@
             align-self: start;
         }
         .trending-categories-buttons {
-            @include flex(row, space-between, stretch, 3ch);
+            @include flex(row, space-between, stretch, 0.2ch);
             flex-wrap: nowrap;
             min-height: 3.5em;
             .trending-category-button {
                 @include flex(row, center, center);
-                width: 15ch;
+                flex: 0 1 15ch;
                 word-wrap: break-word;
                 padding: 0.3em;
             }
@@ -49,14 +50,25 @@
         overflow: hidden;
         border-radius: var(--border-radius-large);
         border: var(--border);
+        height: var(--card-height);
         .create-auction-banner-img-container {
+            @include flex(row, end, stretch);
             flex-grow: 1;
             border-right: none;
-            @include grid($align-content: stretch, $align-items: stretch);
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: fill;
+            background: url("/assets/create-auction-banner.webp") center / cover;
+            .create-auction-banner-text {
+                @include center;
+                width: 15ch;
+                padding: 2ch;
+                color: white;
+                background: linear-gradient(
+                    to right,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.5) 20%,
+                    black 110%
+                );
+                text-align: end;
+                user-select: none;
             }
         }
         .create-auction-button {
@@ -71,14 +83,20 @@
         overflow: hidden;
         border-radius: var(--border-radius-large);
         border: var(--border);
+
+        height: calc(var(--card-height) * 0.75);
         .your-page-banner-img-container {
+            @include flex(row, end, end);
             flex-grow: 1;
             border-bottom: none;
-            @include grid($align-content: stretch, $align-items: stretch);
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: fill;
+            background: url("/assets/your-page-banner.webp") center / cover;
+            .your-page-banner-text {
+                @include center;
+                padding: 1ch;
+                color: white;
+                background: radial-gradient(black 0%, transparent 70%);
+                text-align: end;
+                user-select: none;
             }
         }
         .your-page-button {

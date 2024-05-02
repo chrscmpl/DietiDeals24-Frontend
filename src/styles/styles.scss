@@ -34,7 +34,10 @@
     --font-weight-normal: 400;
     --font-weight-bold: 700;
 
-    --line-height: 1.5rem;
+    --line-height-medium: 1.5rem;
+    --line-height-large: 2.4rem;
+
+    --card-height: 15rem;
 
     font-family:
         system-ui,
@@ -61,7 +64,7 @@
 
 body {
     background-color: var(--background-color);
-    line-height: var(--line-height);
+    line-height: var(--line-height-medium);
 }
 
 @import "./global-styles/danger";
@@ -69,3 +72,4 @@ body {
 @import "./global-styles/links";
 @import "./global-styles/icons";
 @import "./global-styles/buttons";
+@import "./global-styles/text";

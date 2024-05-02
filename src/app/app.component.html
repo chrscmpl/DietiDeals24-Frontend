@@ -2,6 +2,13 @@
     <dd24-header class="header"></dd24-header>
     <div class="content">
         <router-outlet></router-outlet>
+        @if (isLoadingRouteIndicator.isLoading$ | async) {
+            <div class="loading-placeholder">
+                @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+                    <div class="loading-block"></div>
+                }
+            </div>
+        }
     </div>
     <dd24-footer class="footer"></dd24-footer>
 </div>

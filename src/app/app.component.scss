@@ -1,4 +1,5 @@
 @import "grid";
+@import "flex";
 
 .app {
     @include grid("header" auto "main" 1fr "footer" auto / 1fr);
@@ -11,6 +12,21 @@
 
     .content {
         display: main;
+
+        .loading-placeholder {
+            width: 100%;
+            padding: 1rem 15%;
+            @include flex(column, start, stretch, 1rem);
+            .loading-block {
+                border-radius: var(--border-radius-large);
+                background: linear-gradient(
+                    to right,
+                    var(--border-color) 0%,
+                    transparent 160%
+                );
+                height: var(--card-height);
+            }
+        }
     }
 
     .footer {
