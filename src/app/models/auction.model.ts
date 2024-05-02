@@ -32,7 +32,7 @@ interface AuctionInterface {
     status: auctionStatus;
 }
 
-type AuctionParameters = Omit<
+type AuctionDTO = Omit<
     AuctionInterface,
     | 'lastBid'
     | 'lastBidDescription'
@@ -42,6 +42,12 @@ type AuctionParameters = Omit<
     | 'timeLeft'
 > &
     Partial<Pick<AuctionInterface, 'images'>>;
+
+export type AuctionSearchParameters = Partial<{
+    keywords: string;
+    type: string;
+    category: string;
+}>;
 
 export abstract class Auction implements AuctionInterface {
     public static STATUSES = auctionStatus;
@@ -57,7 +63,7 @@ export abstract class Auction implements AuctionInterface {
     private _images: string[];
     private _status: auctionStatus;
 
-    constructor(auction: AuctionParameters) {
+    constructor(auction: AuctionDTO) {
         this._id = auction.id;
         this._title = auction.title;
         this._description = auction.description;
@@ -147,9 +153,9 @@ export abstract class Auction implements AuctionInterface {
 export class SilentAuction extends Auction {
     private _minimumBid: Money;
     constructor(
-        auction: AuctionParameters & {
+        auction: AuctionDTO & {
             minimumBid: Money;
-        }
+        },
     ) {
         super(auction);
         this._minimumBid = auction.minimumBid;
@@ -179,10 +185,10 @@ export class ReverseAuction extends Auction {
     private _lowestBid: Money;
 
     constructor(
-        auction: AuctionParameters & {
+        auction: AuctionDTO & {
             maximumStartingBid: Money;
             lowestBid: Money;
-        }
+        },
     ) {
         super(auction);
         this._maximumStartingBid = auction.maximumStartingBid;

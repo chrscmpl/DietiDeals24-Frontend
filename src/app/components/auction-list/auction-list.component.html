@@ -1,0 +1,12 @@
+<div class="auction-list">
+    @for (auction of auctions; track $index) {
+        @defer (on viewport) {
+            <dd24-auction-card
+                [auction]="auction"
+                (loaded)="scrolled($index)"
+            ></dd24-auction-card>
+        } @placeholder {
+            <div class="card-placeholder"></div>
+        }
+    }
+</div>

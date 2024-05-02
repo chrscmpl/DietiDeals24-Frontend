@@ -17,15 +17,6 @@
             width: 100%;
             padding: 1rem 15%;
             @include flex(column, start, stretch, 1rem);
-            .loading-block {
-                border-radius: var(--border-radius-large);
-                background: linear-gradient(
-                    to right,
-                    var(--border-color) 0%,
-                    transparent 160%
-                );
-                height: var(--card-height);
-            }
         }
     }
 

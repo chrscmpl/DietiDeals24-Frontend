@@ -1,0 +1,6 @@
+@import "flex";
+
+.auction-list {
+    @include flex(column, start, stretch, 1rem);
+    width: 100%;
+}

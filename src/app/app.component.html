@@ -5,7 +5,7 @@
         @if (isLoadingRouteIndicator.isLoading$ | async) {
             <div class="loading-placeholder">
                 @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-                    <div class="loading-block"></div>
+                    <div class="card-placeholder"></div>
                 }
             </div>
         }

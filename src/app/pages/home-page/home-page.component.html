@@ -54,8 +54,8 @@
         </button>
     </section>
     <section class="trending-auctions">
-        @for (auction of trendingAuctions; track $index) {
-            <dd24-auction-card [auction]="auction"></dd24-auction-card>
-        }
+        <dd24-auction-list
+            [request]="trendingAuctionsRequest"
+        ></dd24-auction-list>
     </section>
 </main>

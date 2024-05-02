@@ -1,0 +1,9 @@
+.card-placeholder {
+    border-radius: var(--border-radius-large);
+    background: linear-gradient(
+        to right,
+        var(--border-color) 0%,
+        transparent 160%
+    );
+    height: var(--card-height);
+}
