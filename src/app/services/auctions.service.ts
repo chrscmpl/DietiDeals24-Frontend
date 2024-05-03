@@ -1,16 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auction, AuctionSearchParameters } from '../models/auction.model';
-import { Observable, ReplaySubject, finalize, of, take } from 'rxjs';
+import {
+    Auction,
+    AuctionDTO,
+    AuctionSearchParameters,
+    AuctionType,
+    ReverseAuction,
+    SilentAuction,
+} from '../models/auction.model';
+import { Observable, ReplaySubject, finalize, map, of, take } from 'rxjs';
 import { PaginationParameters } from '../models/pagination-parameters.model';
+import { Money } from '../models/money.model';
 
 export class AuctionsRequest {
     private paginationParameters: PaginationParameters;
     private searchParameters: AuctionSearchParameters;
     private http: HttpClient;
-    private eagerSubject: ReplaySubject<Auction[]> = new ReplaySubject<
-        Auction[]
-    >(1);
+    private eagerSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
     private useEager: boolean = false;
 
     constructor(
@@ -24,8 +30,11 @@ export class AuctionsRequest {
         this.paginationParameters = paginationParameters;
         if (eager) {
             this.useEager = true;
-            this.newHttpRequest().subscribe((data) => {
-                this.eagerSubject!.next(data);
+            this.newRequest().subscribe({
+                next: (data) => {
+                    this.eagerSubject.next(data);
+                },
+                error: (error) => this.eagerSubject.next(error),
             });
         }
     }
@@ -39,29 +48,66 @@ export class AuctionsRequest {
         );
     }
 
-    private newHttpRequest(): Observable<Auction[]> {
+    private getHttpRequest(): Observable<AuctionDTO[]> {
+        return this.http.get<AuctionDTO[]>('dd24-backend', {
+            params: {
+                ...this.searchParameters,
+                page: this.paginationParameters.pageNumber,
+                pageSize: this.paginationParameters.pageSize,
+            },
+        });
+    }
+
+    private dataToAuctionArray(data: AuctionDTO[]): Auction[] {
+        return data.map((auction) => {
+            switch (auction.auctionType) {
+                case AuctionType.silent:
+                    return new SilentAuction(
+                        auction as AuctionDTO & {
+                            minimumBid: Money;
+                        },
+                    );
+                case AuctionType.reverse:
+                    return new ReverseAuction(
+                        auction as AuctionDTO & {
+                            maximumStartingBid: Money;
+                            lowestBid: Money;
+                        },
+                    );
+            }
+        });
+    }
+
+    private newRequest(): Observable<Auction[]> {
         return this.wasMaximumResultsExceeded()
             ? of([])
-            : this.http.get<Auction[]>('dd24-backend', {
-                  params: {
-                      ...this.searchParameters,
-                      ...this.paginationParameters,
-                  },
-              });
+            : this.getHttpRequest().pipe(
+                  map((data) => this.dataToAuctionArray(data)),
+              );
+    }
+
+    private get eagerRequest(): Observable<Auction[]> {
+        return this.eagerSubject.asObservable().pipe(
+            take(1),
+            map((data) => {
+                if (Array.isArray(data) && data[0] instanceof Auction) {
+                    return data;
+                }
+                throw data;
+            }),
+            finalize(() => {
+                this.eagerSubject.complete();
+                this.useEager = false;
+            }),
+        );
     }
 
     public more(): Observable<Auction[]> {
         if (this.useEager) {
-            return this.eagerSubject.asObservable().pipe(
-                take(1),
-                finalize(() => {
-                    this.eagerSubject.complete();
-                    this.useEager = false;
-                }),
-            );
+            return this.eagerRequest;
         }
         this.paginationParameters.pageNumber++;
-        return this.newHttpRequest();
+        return this.newRequest();
     }
 
     // safety net necessary only if the request is eager and no

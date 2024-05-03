@@ -18,6 +18,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     @Input({ required: true }) request!: AuctionsRequest;
 
     public auctions: Auction[] = [];
+    public error: boolean = false;
 
     public constructor() {}
 
@@ -30,15 +31,20 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     loadMore(): void {
-        this.request.more().subscribe((auctions) => {
-            this.auctions.push(...auctions);
+        this.request.more().subscribe({
+            next: (auctions) => {
+                this.auctions.push(...auctions);
+            },
+            error: (err) => {
+                this.error = true;
+                console.error(err);
+            },
         });
     }
 
     scrolled(index: number): void {
         if (index === this.auctions.length - 1) {
             this.loadMore();
-            console.log(this.auctions);
         }
     }
 

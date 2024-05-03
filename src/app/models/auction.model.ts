@@ -3,8 +3,8 @@ import { Money } from './money.model';
 import { UserSummary } from './user.model';
 
 export enum AuctionType {
-    silent = 'silent auction',
-    reverse = 'reverse auction',
+    silent = 'silent',
+    reverse = 'reverse',
 }
 
 enum auctionStatus {
@@ -32,14 +32,9 @@ interface AuctionInterface {
     status: auctionStatus;
 }
 
-type AuctionDTO = Omit<
+export type AuctionDTO = Omit<
     AuctionInterface,
-    | 'lastBid'
-    | 'lastBidDescription'
-    | 'auctionType'
-    | 'endDate'
-    | 'images'
-    | 'timeLeft'
+    'lastBid' | 'lastBidDescription' | 'endDate' | 'images' | 'timeLeft'
 > &
     Partial<Pick<AuctionInterface, 'images'>>;
 
@@ -63,7 +58,7 @@ export abstract class Auction implements AuctionInterface {
     private _images: string[];
     private _status: auctionStatus;
 
-    constructor(auction: AuctionDTO) {
+    constructor(auction: Omit<AuctionDTO, 'auctionType'>) {
         this._id = auction.id;
         this._title = auction.title;
         this._description = auction.description;
@@ -153,7 +148,7 @@ export abstract class Auction implements AuctionInterface {
 export class SilentAuction extends Auction {
     private _minimumBid: Money;
     constructor(
-        auction: AuctionDTO & {
+        auction: Omit<AuctionDTO, 'auctionType'> & {
             minimumBid: Money;
         },
     ) {
@@ -185,7 +180,7 @@ export class ReverseAuction extends Auction {
     private _lowestBid: Money;
 
     constructor(
-        auction: AuctionDTO & {
+        auction: Omit<AuctionDTO, 'auctionType'> & {
             maximumStartingBid: Money;
             lowestBid: Money;
         },
