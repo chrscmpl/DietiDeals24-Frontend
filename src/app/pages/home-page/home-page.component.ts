@@ -25,8 +25,7 @@ export class HomePageComponent {
     public trendingCategories: string[] = [];
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest(
         { keywords: '', category: '', type: '' },
-        { pageNumber: 1, pageSize: 5, maximumResults: 15 },
-        true,
+        { pageNumber: 1, pageSize: 5, maximumResults: 15, eager: true },
     );
     constructor(
         public accessoryInformation: AccessoryInformationService,

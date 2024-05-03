@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     Auction,
-    AuctionDTO,
     ReverseAuction,
     SilentAuction,
 } from '../../models/auction.model';
@@ -24,15 +23,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public constructor() {}
 
     ngOnInit(): void {
-        this.loadMore();
-    }
-
-    ngOnDestroy(): void {
-        this.request.clear();
-    }
-
-    loadMore(): void {
-        this.request.more().subscribe({
+        this.request.data$.subscribe({
             next: (auctions) => {
                 this.auctions.push(...auctions);
             },
@@ -41,6 +32,15 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                 console.error(err);
             },
         });
+        this.loadMore();
+    }
+
+    ngOnDestroy(): void {
+        this.request.clear();
+    }
+
+    loadMore(): void {
+        this.request.more();
     }
 
     scrolled(index: number): void {
@@ -56,7 +56,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
             title: 'Iphone 14',
             description: 'New Iphone 14',
             conditions: 'new',
-            location: { nation: 'USA', city: 'New York' },
+            location: { country: 'USA', city: 'New York' },
             minimumBid: { amount: 1000, currency: 'EUR' },
             endTime: Math.floor(Date.now() / 1000) + 10 + 2 * 60 + 5 * 60 * 60,
             category: 'Electronics',
@@ -68,7 +68,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
             title: 'BMW',
             description: 'New BMW',
             conditions: 'new',
-            location: { nation: 'Italy', city: 'Palermo' },
+            location: { country: 'Italy', city: 'Palermo' },
             maximumStartingBid: { amount: 4000, currency: 'EUR' },
             lowestBid: { amount: 3000, currency: 'EUR' },
             endTime: Math.floor(Date.now() / 1000) + 1003823,

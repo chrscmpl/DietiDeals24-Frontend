@@ -38,7 +38,7 @@ export class LoginPageComponent implements OnInit {
     constructor(
         private userService: UserService,
         private location: Location,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
     ) {}
 
     ngOnInit(): void {
@@ -82,9 +82,7 @@ export class LoginPageComponent implements OnInit {
             });
     }
 
-    googleLogin() {
-        console.log('Google login');
-    }
+    googleLogin() {}
 
     clearError() {
         this.error = '';

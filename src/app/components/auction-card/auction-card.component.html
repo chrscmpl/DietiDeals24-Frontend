@@ -1,43 +1,43 @@
 <div class="auction-card">
-  <div class="auction-card-image-container">
-    @if (auction.images.length > 0){
-    <img
-      class="auction-card-image"
-      [src]="auction.images[0]"
-      alt="Auction image"
-    />
-    } @else {
-    <i class="auction-card-missing-image bi bi-image"></i>
-    }
-  </div>
-  <div class="auction-card-details-container">
-    <span class="auction-card-title">{{ auction.title }}</span>
-    <span class="auction-card-secondary-line">
-      from {{ auction.location.nation }}, {{ auction.location.city }} 
-      @if(auction.conditions){
-      | {{ auction.conditions }}
-      }
-    </span>
-    <dd24-auction-type-link
-      class="auction-card-auction-type"
-      [type]="auction.auctionType"
-      >{{ auction.auctionType }}</dd24-auction-type-link
-    >
-    <span class="auction-card-sum">
-      @if(auction.status === statuses.active){
-      {{ auction.lastBidDescription | oneCharUpper }}:
-      {{ auction.lastBid | money }}
-      }</span
-    >
+    <div class="auction-card-image-container">
+        @if (auction.images.length > 0) {
+            <img
+                class="auction-card-image"
+                [src]="auction.images[0]"
+                alt="Auction image"
+            />
+        } @else {
+            <i class="auction-card-missing-image bi bi-image"></i>
+        }
+    </div>
+    <div class="auction-card-details-container">
+        <span class="auction-card-title">{{ auction.title }}</span>
+        <span class="auction-card-secondary-line">
+            from {{ auction.location.country }}, {{ auction.location.city }}
+            @if (auction.conditions) {
+                | {{ auction.conditions }}
+            }
+        </span>
+        <dd24-auction-type-link
+            class="auction-card-auction-type"
+            [type]="auction.auctionType"
+            >{{ auction.auctionType }}</dd24-auction-type-link
+        >
+        <span class="auction-card-sum">
+            @if (auction.status === statuses.active) {
+                {{ auction.lastBidDescription | oneCharUpper }}:
+                {{ auction.lastBid | money }}
+            }
+        </span>
 
-    <span class="auction-card-time-left">
-      Time left:
-      <span
-        class="auction-card-time-left-amount"
-        [class.danger]="timeLeft > 0 && timeLeft < 86400"
-        >{{ timeLeft | interval : "minutes" }}</span
-      >
-      (Until {{ auction.endDate | localDate }})</span
-    >
-  </div>
+        <span class="auction-card-time-left">
+            Time left:
+            <span
+                class="auction-card-time-left-amount"
+                [class.danger]="timeLeft > 0 && timeLeft < 86400"
+                >{{ timeLeft | interval: "minutes" }}</span
+            >
+            (Until {{ auction.endDate | localDate }})</span
+        >
+    </div>
 </div>

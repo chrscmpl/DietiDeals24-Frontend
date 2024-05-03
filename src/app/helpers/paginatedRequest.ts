@@ -1,10 +1,19 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, ReplaySubject, finalize, map, of, take } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import {
+    Observable,
+    ReplaySubject,
+    catchError,
+    map,
+    of,
+    take,
+    tap,
+} from 'rxjs';
 
 export interface PaginationParameters {
     pageNumber: number;
     pageSize: number;
     maximumResults?: number;
+    eager?: boolean;
 }
 
 export class PaginatedRequest<Entity> {
@@ -13,8 +22,12 @@ export class PaginatedRequest<Entity> {
     private http: HttpClient;
     private url: string;
     private factory: (input: any[]) => Entity[];
-    private eagerSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
-    private useEager: boolean = false;
+    private dataSubject: ReplaySubject<Entity[]> = new ReplaySubject<Entity[]>(
+        1,
+    );
+    private isEager: boolean = false;
+
+    public data$: Observable<Entity[]> = this.dataSubject.asObservable();
 
     constructor(
         http: HttpClient,
@@ -22,21 +35,15 @@ export class PaginatedRequest<Entity> {
         factory: (input: any[]) => Entity[],
         queryParameters: any,
         paginationParameters: PaginationParameters,
-        eager: boolean,
     ) {
         this.http = http;
         this.url = url;
         this.factory = factory;
         this.queryParameters = queryParameters;
         this.paginationParameters = paginationParameters;
-        if (eager) {
-            this.useEager = true;
-            this.newRequest().subscribe({
-                next: (data) => {
-                    this.eagerSubject.next(data);
-                },
-                error: (error) => this.eagerSubject.next(error),
-            });
+        if (paginationParameters.eager) {
+            this.more();
+            this.isEager = true; // do not invert order
         }
     }
 
@@ -65,37 +72,24 @@ export class PaginatedRequest<Entity> {
             : this.makeHttpRequest().pipe(map((data) => this.factory(data)));
     }
 
-    private get eagerRequest(): Observable<Entity[]> {
-        return this.eagerSubject.asObservable().pipe(
-            take(1),
-            map((data) => {
-                if (
-                    data instanceof HttpErrorResponse ||
-                    data instanceof Error
-                ) {
-                    throw data;
-                }
-                return data;
-            }),
-            finalize(() => {
-                this.eagerSubject.complete();
-                this.useEager = false;
-            }),
-        );
-    }
-
-    public more(): Observable<Entity[]> {
-        if (this.useEager) {
-            return this.eagerRequest;
+    public more(): void {
+        if (this.isEager) {
+            this.isEager = false;
+            return;
         }
-        this.paginationParameters.pageNumber++;
-        return this.newRequest();
+        this.newRequest()
+            .pipe(
+                catchError((err) => {
+                    this.dataSubject.error(err);
+                    return of([]);
+                }),
+                take(1),
+                tap(() => this.paginationParameters.pageNumber++),
+            )
+            .subscribe((data) => this.dataSubject.next(data));
     }
 
-    // safety net necessary only if the request is eager and no
-    // subscriptions to the observable returned by more() where made
     public clear(): void {
-        this.eagerSubject.complete();
-        this.useEager = false;
+        this.dataSubject.complete();
     }
 }

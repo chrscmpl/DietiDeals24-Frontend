@@ -19,9 +19,8 @@ export class UserService {
         return this.http.post<UserDTO>('dd24-backend/login', credentials).pipe(
             map((value: UserDTO) => {
                 this._loggedUser = new User(value);
-                console.log(this._loggedUser);
                 return this._loggedUser;
-            })
+            }),
         );
     }
 }

@@ -16,7 +16,6 @@ export class AuctionsService {
     public getAuctionsRequest(
         searchParameters: AuctionSearchParameters,
         paginationParameters: PaginationParameters,
-        eager: boolean = false,
     ): PaginatedRequest<Auction> {
         return new PaginatedRequest<Auction>(
             this.http,
@@ -24,7 +23,6 @@ export class AuctionsService {
             auctionBuilder.buildArray,
             searchParameters,
             paginationParameters,
-            eager,
         );
     }
 }
