@@ -2,11 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import {
-    Auction,
-    SilentAuction,
-    ReverseAuction,
-} from '../../models/auction.model';
 import { AuctionCardComponent } from '../../components/auction-card/auction-card.component';
 import { LoadingIndicator } from '../../helpers/loadingIndicator';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';

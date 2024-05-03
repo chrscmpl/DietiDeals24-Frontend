@@ -1,11 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
     Auction,
+    AuctionDTO,
     ReverseAuction,
     SilentAuction,
 } from '../../models/auction.model';
-import { AuctionsRequest } from '../../services/auctions.service';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
+import { PaginatedRequest } from '../../helpers/paginatedRequest';
 
 @Component({
     selector: 'dd24-auction-list',
@@ -15,7 +16,7 @@ import { AuctionCardComponent } from '../auction-card/auction-card.component';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) request!: AuctionsRequest;
+    @Input({ required: true }) request!: PaginatedRequest<Auction>;
 
     public auctions: Auction[] = [];
     public error: boolean = false;
