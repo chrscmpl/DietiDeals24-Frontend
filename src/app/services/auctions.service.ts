@@ -1,10 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    Auction,
-    AuctionDTO,
-    AuctionSearchParameters,
-} from '../models/auction.model';
+import { Auction, AuctionSearchParameters } from '../models/auction.model';
 import {
     PaginatedRequest,
     PaginationParameters,
@@ -20,7 +16,7 @@ export class AuctionsService {
     public getAuctionsRequest(
         searchParameters: AuctionSearchParameters,
         paginationParameters: PaginationParameters,
-        eager: boolean = true,
+        eager: boolean = false,
     ): PaginatedRequest<Auction> {
         return new PaginatedRequest<Auction>(
             this.http,

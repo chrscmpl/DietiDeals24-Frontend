@@ -26,6 +26,7 @@ export class HomePageComponent {
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest(
         { keywords: '', category: '', type: '' },
         { pageNumber: 1, pageSize: 5, maximumResults: 15 },
+        true,
     );
     constructor(
         public accessoryInformation: AccessoryInformationService,
