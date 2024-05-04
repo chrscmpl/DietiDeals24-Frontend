@@ -3,6 +3,7 @@ import {
     Observable,
     ReplaySubject,
     catchError,
+    finalize,
     map,
     of,
     take,
@@ -34,9 +35,10 @@ export class PaginatedRequest<Entity> {
     );
     private isEager: boolean = false;
 
-    public data$: Observable<Entity[]> = this.dataSubject.asObservable();
+    public data$: Observable<Entity[]>;
 
     constructor(params: PaginatedRequestParams<Entity>) {
+        this.data$ = this.createDataObservable();
         this.http = params.http;
         this.url = params.url;
         this.factory = params.factory;
@@ -49,6 +51,12 @@ export class PaginatedRequest<Entity> {
             this.more();
             this.isEager = true; // do not invert order
         }
+    }
+
+    private createDataObservable(): Observable<Entity[]> {
+        return this.dataSubject
+            .asObservable()
+            .pipe(finalize(() => this.dataSubject.complete()));
     }
 
     private wasMaximumResultsExceeded(): boolean {
@@ -92,15 +100,11 @@ export class PaginatedRequest<Entity> {
     public refresh(): void {
         this.dataSubject.complete();
         this.dataSubject = new ReplaySubject<Entity[]>(1);
-        this.data$ = this.dataSubject.asObservable();
+        this.data$ = this.createDataObservable();
     }
 
     public reset(): void {
         this.currentPage = this.pageNumber;
         this.refresh();
-    }
-
-    public clear(): void {
-        this.dataSubject.complete();
     }
 }

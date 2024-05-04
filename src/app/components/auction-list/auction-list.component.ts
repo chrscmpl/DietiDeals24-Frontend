@@ -7,6 +7,7 @@ import {
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { PaginatedRequest } from '../../helpers/paginatedRequest';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-auction-list',
@@ -18,6 +19,7 @@ import { ReloadButtonComponent } from '../reload-button/reload-button.component'
 export class AuctionListComponent implements OnInit, OnDestroy {
     @Input({ required: true }) request!: PaginatedRequest<Auction>;
 
+    private dataSubscription!: Subscription;
     public auctions: Auction[] = [];
     public error: boolean = false;
 
@@ -29,7 +31,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.request.clear();
+        this.dataSubscription.unsubscribe();
     }
 
     scrolled(index: number): void {
@@ -45,7 +47,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToData(): void {
-        this.request.data$.subscribe({
+        this.dataSubscription = this.request.data$.subscribe({
             next: (auctions) => {
                 this.error = false;
                 this.auctions.push(...auctions);
