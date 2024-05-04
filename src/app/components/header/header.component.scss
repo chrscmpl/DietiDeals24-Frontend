@@ -2,12 +2,11 @@
 @import "grid";
 @import "padding-vertical";
 @import "padding-horizontal";
-@import "custom-link";
 @import "mobile";
 .header {
     color: var(--text-color-1);
     background-color: var(--component-color);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-regular);
     font-size: var(--font-size-medium);
     .navbar {
         @include grid($template: 1fr 1fr auto / 1fr, $justify-content: stretch);
@@ -60,10 +59,6 @@
         .navbar-tabs-section {
             @include flex($justify: space-between);
 
-            .navbar-tab,
-            .navbar-path-entry {
-                @include custom-link(var(--text-color-1));
-            }
             .navbar-tabs {
                 @include flex($align: stretch);
                 .navbar-tab {

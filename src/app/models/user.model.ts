@@ -1,3 +1,4 @@
+import { link } from '../helpers/links';
 import { Location } from './location.model';
 
 export interface UserInterface {
@@ -53,11 +54,6 @@ export type UserSummary = {
 export interface UserCredentials {
     email: string;
     password: string;
-}
-
-interface link {
-    name: string;
-    url: string;
 }
 
 export interface contactData {

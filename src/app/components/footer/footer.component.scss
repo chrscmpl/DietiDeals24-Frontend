@@ -1,0 +1,15 @@
+@import "flex";
+
+.page-footer {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    padding: 0.2em 2em;
+    border-top: var(--border);
+    .footer-links {
+        @include flex(row, center, center, 5ch);
+        .footer-link {
+            color: var(--text-color-2);
+            font-weight: var(--font-weight-bold);
+        }
+    }
+}

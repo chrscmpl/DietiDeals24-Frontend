@@ -6,15 +6,18 @@
             </button>
             <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />
             <div class="spacer"></div>
-            @if(!userService.isLogged()){
-            <button class="nav-auth-btn nav-login-btn" routerLink="login">
-                Login
-            </button>
-            <button class="nav-auth-btn nav-register-btn" routerLink="register">
-                Register
-            </button>
+            @if (!userService.isLogged()) {
+                <button class="nav-auth-btn nav-login-btn" routerLink="login">
+                    Login
+                </button>
+                <button
+                    class="nav-auth-btn nav-register-btn"
+                    routerLink="register"
+                >
+                    Register
+                </button>
             } @else {
-            <span>logged</span>
+                <span>logged</span>
             }
         </section>
         <section class="navbar-search-section">
@@ -22,18 +25,24 @@
         </section>
         <section class="navbar-tabs-section">
             <section class="navbar-tabs">
-                @for(tab of tabs; track $index){
-                <a class="navbar-tab" [routerLink]="tab.url">{{ tab.name }}</a>
+                @for (tab of tabs; track $index) {
+                    <a class="navbar-tab custom-link" [routerLink]="tab.url">{{
+                        tab.name
+                    }}</a>
                 }
             </section>
             <section class="navbar-path">
                 <span>You are here: </span>
-                <a class="navbar-path-entry" routerLink="">DietiDeals24</a>
-                @for(entry of routingUtils.currentRoutes; track $index){
-                <i class="bi bi-chevron-right"></i>
-                <a class="navbar-path-entry" [routerLink]="entry.url">{{
-                    entry.name | titlecase
-                }}</a>
+                <a class="navbar-path-entry custom-link" routerLink=""
+                    >DietiDeals24</a
+                >
+                @for (entry of routingUtils.currentRoutes; track $index) {
+                    <i class="bi bi-chevron-right"></i>
+                    <a
+                        class="navbar-path-entry custom-link"
+                        [routerLink]="entry.url"
+                        >{{ entry.name | titlecase }}</a
+                    >
                 }
             </section>
         </section>

@@ -2,3 +2,14 @@ a {
     color: #0000ff;
     font-style: italic;
 }
+
+.custom-link {
+    color: var(--text-color-1);
+    text-decoration: none;
+    font-style: normal;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

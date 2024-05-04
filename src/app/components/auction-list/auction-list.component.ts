@@ -6,6 +6,7 @@ import {
 } from '../../models/auction.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { PaginatedRequest } from '../../helpers/paginatedRequest';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-auction-list',
@@ -23,8 +24,30 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public constructor() {}
 
     ngOnInit(): void {
+        this.subscribeToData();
+        this.request.more();
+    }
+
+    ngOnDestroy(): void {
+        this.request.clear();
+    }
+
+    scrolled(index: number): void {
+        if (index === this.auctions.length - 1) {
+            this.request.more();
+        }
+    }
+
+    refreshAfterError(): void {
+        this.request.refresh();
+        this.subscribeToData();
+        this.request.more();
+    }
+
+    private subscribeToData(): void {
         this.request.data$.subscribe({
             next: (auctions) => {
+                this.error = false;
                 this.auctions.push(...auctions);
             },
             error: (err) => {
@@ -32,21 +55,6 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                 console.error(err);
             },
         });
-        this.loadMore();
-    }
-
-    ngOnDestroy(): void {
-        this.request.clear();
-    }
-
-    loadMore(): void {
-        this.request.more();
-    }
-
-    scrolled(index: number): void {
-        if (index === this.auctions.length - 1) {
-            this.loadMore();
-        }
     }
 
     trendingAuctions: Auction[] = [

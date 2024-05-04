@@ -18,6 +18,7 @@ export interface PaginationParameters {
 
 export class PaginatedRequest<Entity> {
     private paginationParameters: PaginationParameters;
+    private currentPage: number = 0;
     private queryParameters: any;
     private http: HttpClient;
     private url: string;
@@ -41,6 +42,7 @@ export class PaginatedRequest<Entity> {
         this.factory = factory;
         this.queryParameters = queryParameters;
         this.paginationParameters = paginationParameters;
+        this.currentPage = paginationParameters.pageNumber;
         if (paginationParameters.eager) {
             this.more();
             this.isEager = true; // do not invert order
@@ -50,8 +52,7 @@ export class PaginatedRequest<Entity> {
     private wasMaximumResultsExceeded(): boolean {
         if (!this.paginationParameters.maximumResults) return false;
         return (
-            this.paginationParameters.pageNumber *
-                this.paginationParameters.pageSize >
+            this.currentPage * this.paginationParameters.pageSize >
             this.paginationParameters.maximumResults
         );
     }
@@ -60,7 +61,7 @@ export class PaginatedRequest<Entity> {
         return this.http.get<any[]>(this.url, {
             params: {
                 ...this.queryParameters,
-                page: this.paginationParameters.pageNumber,
+                page: this.currentPage,
                 pageSize: this.paginationParameters.pageSize,
             },
         });
@@ -80,13 +81,20 @@ export class PaginatedRequest<Entity> {
         this.newRequest()
             .pipe(
                 catchError((err) => {
+                    this.currentPage--;
                     this.dataSubject.error(err);
                     return of([]);
                 }),
                 take(1),
-                tap(() => this.paginationParameters.pageNumber++),
+                tap(() => this.currentPage++),
             )
             .subscribe((data) => this.dataSubject.next(data));
+    }
+
+    public refresh(): void {
+        this.dataSubject.complete();
+        this.dataSubject = new ReplaySubject<Entity[]>(1);
+        this.data$ = this.dataSubject.asObservable();
     }
 
     public clear(): void {

@@ -1,1 +1,15 @@
-<p>footer works!</p>
+<footer class="page-footer">
+    <section class="footer-links">
+        @for (link of links; track $index) {
+            <a class="footer-link custom-link" [routerLink]="link.url">{{
+                link.name
+            }}</a>
+        }
+    </section>
+    <section class="footer-info">
+        <p>
+            <strong class="footer-info-platform-name">DietiDeals24</strong>
+            2023-2024, INGSW2324_12
+        </p>
+    </section>
+</footer>

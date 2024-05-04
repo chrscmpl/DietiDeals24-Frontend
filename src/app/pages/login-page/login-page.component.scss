@@ -10,7 +10,7 @@
     @include flex(column, flex-start, center, 0.2rem);
     @include padding-vertical(1.2rem);
     font-size: var(--font-size-large);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-regular);
     width: 25ch;
 
     @include mobile {

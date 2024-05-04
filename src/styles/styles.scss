@@ -31,7 +31,7 @@
     --font-size-large: 1.6rem;
 
     --font-weight-light: 300;
-    --font-weight-normal: 400;
+    --font-weight-regular: 400;
     --font-weight-bold: 700;
 
     --line-height-medium: 1.5rem;
@@ -53,7 +53,7 @@
         sans-serif;
 
     font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-regular);
 }
 
 * {

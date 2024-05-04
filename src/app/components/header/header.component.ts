@@ -4,6 +4,7 @@ import { SearchSectionComponent } from '../search/search-section/search-section.
 import { RouterLink } from '@angular/router';
 import { RoutingUtilsService } from '../../services/routing-utils.service';
 import { TitleCasePipe } from '@angular/common';
+import { link, mainPages } from '../../helpers/links';
 
 @Component({
     selector: 'dd24-header',
@@ -15,14 +16,8 @@ import { TitleCasePipe } from '@angular/common';
 export class HeaderComponent {
     constructor(
         public userService: UserService,
-        public routingUtils: RoutingUtilsService
+        public routingUtils: RoutingUtilsService,
     ) {}
 
-    tabs: { name: string; url: string }[] = [
-        { name: 'Home', url: 'home' },
-        { name: 'Your Page', url: 'your-page' },
-        { name: 'Create Auction', url: 'create-auction' },
-        { name: 'Security & Privacy', url: 'your-page' },
-        { name: 'Help', url: 'help' },
-    ];
+    tabs: link[] = mainPages;
 }
