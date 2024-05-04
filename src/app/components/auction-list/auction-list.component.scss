@@ -3,4 +3,8 @@
 .auction-list {
     @include flex(column, start, stretch, 1rem);
     width: 100%;
+
+    .no-results {
+        margin: 2rem 0;
+    }
 }
