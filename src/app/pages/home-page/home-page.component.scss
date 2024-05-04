@@ -28,19 +28,8 @@
                 padding: 0.3em;
             }
             .trending-category-loading-button {
-                overflow: hidden;
                 height: 3.5em;
                 width: 15ch;
-                color: var(--accent-color-1-transparent);
-                background: linear-gradient(
-                    to right,
-                    var(--accent-color-1-transparent) 0%,
-                    transparent 40%
-                );
-                i {
-                    font-size: 3em;
-                    transform: scaleX(2);
-                }
             }
         }
     }

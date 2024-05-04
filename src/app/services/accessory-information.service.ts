@@ -18,7 +18,7 @@ export class AccessoryInformationService {
 
     constructor(private http: HttpClient) {}
 
-    public get trendingCategories(): Observable<string[]> {
+    public getTrendingCategories(): Observable<string[]> {
         return this._trendingCategories !== null
             ? of<string[]>(this._trendingCategories)
             : this.http.get<string[]>('dd24-backend/info').pipe(
