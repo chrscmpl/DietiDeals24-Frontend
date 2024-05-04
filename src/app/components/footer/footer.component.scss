@@ -1,12 +1,14 @@
 @import "flex";
 
 .page-footer {
+    @include flex(column, center, start, 1ch);
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     padding: 0.2em 2em;
     border-top: var(--border);
     .footer-links {
         @include flex(row, center, center, 5ch);
+        align-self: center;
         .footer-link {
             color: var(--text-color-2);
             font-weight: var(--font-weight-bold);

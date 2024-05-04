@@ -57,9 +57,6 @@
 
         .logo {
             width: 70%;
-            @include mobile {
-                display: none;
-            }
         }
     }
 
@@ -67,11 +64,8 @@
         grid-area: main;
         @include flex(column, center, center);
         .logo {
-            display: none;
-            @include mobile {
-                display: block;
-                width: 75%;
-            }
+            display: block;
+            width: 75%;
         }
         @include mobile {
             @include flex(column, center, center, 1ch);

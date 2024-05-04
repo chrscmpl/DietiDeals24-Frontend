@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    Output,
+} from '@angular/core';
 
 @Component({
     selector: 'dd24-reload-button',
@@ -7,16 +13,21 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     templateUrl: './reload-button.component.html',
     styleUrl: './reload-button.component.scss',
 })
-export class ReloadButtonComponent {
+export class ReloadButtonComponent implements OnDestroy {
     @Input() message: string = "Could'nt load data. Click to try again";
     @Output() reload = new EventEmitter<void>();
-    spin: boolean = false;
+    private unSpinTimeout: any;
+    public spin: boolean = false;
 
     emitReload(): void {
         this.spin = true;
-        setTimeout(() => {
+        this.unSpinTimeout = setTimeout(() => {
             this.spin = false;
         }, 150);
         this.reload.emit();
+    }
+
+    ngOnDestroy(): void {
+        if (this.unSpinTimeout) clearTimeout(this.unSpinTimeout);
     }
 }
