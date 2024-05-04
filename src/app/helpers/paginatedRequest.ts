@@ -9,7 +9,11 @@ import {
     tap,
 } from 'rxjs';
 
-export interface PaginationParameters {
+export interface PaginatedRequestParams<Entity> {
+    http: HttpClient;
+    url: string;
+    factory: (input: any[]) => Entity[];
+    queryParameters: any;
     pageNumber: number;
     pageSize: number;
     maximumResults?: number;
@@ -17,8 +21,10 @@ export interface PaginationParameters {
 }
 
 export class PaginatedRequest<Entity> {
-    private paginationParameters: PaginationParameters;
+    private pageNumber: number;
+    private pageSize: number;
     private currentPage: number = 0;
+    private maximumResults: number;
     private queryParameters: any;
     private http: HttpClient;
     private url: string;
@@ -30,31 +36,23 @@ export class PaginatedRequest<Entity> {
 
     public data$: Observable<Entity[]> = this.dataSubject.asObservable();
 
-    constructor(
-        http: HttpClient,
-        url: string,
-        factory: (input: any[]) => Entity[],
-        queryParameters: any,
-        paginationParameters: PaginationParameters,
-    ) {
-        this.http = http;
-        this.url = url;
-        this.factory = factory;
-        this.queryParameters = queryParameters;
-        this.paginationParameters = paginationParameters;
-        this.currentPage = paginationParameters.pageNumber;
-        if (paginationParameters.eager) {
+    constructor(params: PaginatedRequestParams<Entity>) {
+        this.http = params.http;
+        this.url = params.url;
+        this.factory = params.factory;
+        this.queryParameters = params.queryParameters;
+        this.pageSize = params.pageSize;
+        this.pageNumber = params.pageNumber;
+        this.currentPage = params.pageNumber;
+        this.maximumResults = params.maximumResults ?? Infinity;
+        if (params.eager) {
             this.more();
             this.isEager = true; // do not invert order
         }
     }
 
     private wasMaximumResultsExceeded(): boolean {
-        if (!this.paginationParameters.maximumResults) return false;
-        return (
-            this.currentPage * this.paginationParameters.pageSize >
-            this.paginationParameters.maximumResults
-        );
+        return this.currentPage * this.pageSize > this.maximumResults;
     }
 
     private makeHttpRequest(): Observable<any[]> {
@@ -62,7 +60,7 @@ export class PaginatedRequest<Entity> {
             params: {
                 ...this.queryParameters,
                 page: this.currentPage,
-                pageSize: this.paginationParameters.pageSize,
+                pageSize: this.pageSize,
             },
         });
     }
@@ -95,6 +93,11 @@ export class PaginatedRequest<Entity> {
         this.dataSubject.complete();
         this.dataSubject = new ReplaySubject<Entity[]>(1);
         this.data$ = this.dataSubject.asObservable();
+    }
+
+    public reset(): void {
+        this.currentPage = this.pageNumber;
+        this.refresh();
     }
 
     public clear(): void {

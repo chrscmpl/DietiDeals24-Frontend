@@ -1,0 +1,36 @@
+@import "flex";
+@import "center";
+
+.reload-prompt {
+    @include flex(column, start, center, 1rem);
+    align-self: center;
+    color: var(--text-color-2);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    .reload-prompt-button {
+        @include center;
+        color: var(--text-color-2);
+        --size: calc(2 * var(--font-size-large));
+        --padding: 1rem;
+        font-size: var(--size);
+        padding: var(--padding);
+        height: calc(var(--size) + var(--padding));
+        width: calc(var(--size) + var(--padding));
+        i {
+            line-height: normal;
+
+            &.spin {
+                animation: spin 0.15s linear;
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

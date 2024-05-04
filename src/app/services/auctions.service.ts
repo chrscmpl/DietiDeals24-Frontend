@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Auction, AuctionSearchParameters } from '../models/auction.model';
 import {
     PaginatedRequest,
-    PaginationParameters,
+    PaginatedRequestParams,
 } from '../helpers/paginatedRequest';
 import { auctionBuilder } from '../helpers/auctionBuilder';
 
@@ -14,15 +14,17 @@ export class AuctionsService {
     constructor(private http: HttpClient) {}
 
     public getAuctionsRequest(
-        searchParameters: AuctionSearchParameters,
-        paginationParameters: PaginationParameters,
+        params: Omit<
+            PaginatedRequestParams<Auction>,
+            'http' | 'factory' | 'url'
+        >,
     ): PaginatedRequest<Auction> {
         return new PaginatedRequest<Auction>(
-            this.http,
-            'dd24-backend/auctions',
-            auctionBuilder.buildArray,
-            searchParameters,
-            paginationParameters,
+            Object.assign(params, {
+                http: this.http,
+                url: 'dd24-backend/auctions',
+                factory: auctionBuilder.buildArray,
+            }),
         );
     }
 }

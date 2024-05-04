@@ -23,10 +23,13 @@ export class HomePageComponent {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(1000);
     public trendingCategories: string[] = [];
-    public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest(
-        { keywords: '', category: '', type: '' },
-        { pageNumber: 1, pageSize: 5, maximumResults: 15, eager: true },
-    );
+    public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
+        queryParameters: { keywords: '', category: '', type: '' },
+        pageNumber: 1,
+        pageSize: 5,
+        maximumResults: 15,
+        eager: true,
+    });
     constructor(
         public accessoryInformation: AccessoryInformationService,
         public auctionsService: AuctionsService,

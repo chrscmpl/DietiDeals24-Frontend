@@ -10,14 +10,10 @@
         }
     }
     @if (error) {
-        <div class="no-results">
-            <p class="no-results-message">Couldn't find any auctions</p>
-            <button
-                class="no-results-refresh-button"
-                (click)="refreshAfterError()"
-            >
-                refresh
-            </button>
-        </div>
+        <dd24-reload-button
+            class="no-results"
+            message="Couldn't find any auctions"
+            (reload)="reloadAfterError()"
+        ></dd24-reload-button>
     }
 </div>

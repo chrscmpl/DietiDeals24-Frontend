@@ -6,12 +6,12 @@ import {
 } from '../../models/auction.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { PaginatedRequest } from '../../helpers/paginatedRequest';
-import { Subscription } from 'rxjs';
+import { ReloadButtonComponent } from '../reload-button/reload-button.component';
 
 @Component({
     selector: 'dd24-auction-list',
     standalone: true,
-    imports: [AuctionCardComponent],
+    imports: [AuctionCardComponent, ReloadButtonComponent],
     templateUrl: './auction-list.component.html',
     styleUrl: './auction-list.component.scss',
 })
@@ -38,7 +38,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         }
     }
 
-    refreshAfterError(): void {
+    reloadAfterError(): void {
         this.request.refresh();
         this.subscribeToData();
         this.request.more();

@@ -30,3 +30,17 @@
         color: var(--text-accent-color);
     }
 }
+
+.button-tertiary {
+    background: transparent;
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-color-1);
+    transition: background-color 0.2s ease-in-out;
+    padding: calc(var(--font-size-medium) / 2) 3ch;
+    &:hover {
+        background-color: var(--darkened-color);
+    }
+}
