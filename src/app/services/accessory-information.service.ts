@@ -5,6 +5,7 @@ import { Observable, ReplaySubject, tap } from 'rxjs';
 interface CategoriesSubscribeCallbacks {
     next?: (data: string[]) => void;
     error?: (err: any) => void;
+    complete?: () => void;
 }
 
 @Injectable({

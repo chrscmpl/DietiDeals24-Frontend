@@ -27,6 +27,7 @@ import { Observable, Subscription } from 'rxjs';
 export class InputComponent
     implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor
 {
+    @Input({ required: true }) name!: string;
     @Input() disabled: boolean = false;
     @Input() label: string = '';
     @Input() placeholder: string = '';
@@ -35,7 +36,7 @@ export class InputComponent
     @Input() formError$?: Observable<boolean>;
     private formErrorSubscription?: Subscription;
 
-    @Output() focus: EventEmitter<any> = new EventEmitter();
+    @Output() focusEvent: EventEmitter<any> = new EventEmitter();
     @ViewChild('inputElement', { static: false })
     inputElement!: ElementRef<HTMLInputElement>;
 
@@ -46,7 +47,7 @@ export class InputComponent
     shouldDisplayError: boolean = false;
     aggressiveValidation: boolean = false;
 
-    public onChange(e: any) {}
+    public onChange(_: any) {}
     public onTouched() {}
 
     constructor(
@@ -128,7 +129,7 @@ export class InputComponent
     }
 
     handleFocus(event: any): void {
-        this.focus.emit(event);
+        this.focusEvent.emit(event);
     }
 
     togglePasswordVisibility(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search/search-section/search-section.component';
 import { RouterLink } from '@angular/router';

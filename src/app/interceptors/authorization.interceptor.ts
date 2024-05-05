@@ -17,7 +17,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
     intercept(
         request: HttpRequest<any>,
-        next: HttpHandler
+        next: HttpHandler,
     ): Observable<HttpEvent<any>> {
         if (request.url != AuthorizationInterceptor.BACKEND_HOSTNAME) {
             return next.handle(request);
@@ -38,7 +38,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
                         localStorage.setItem('authorizationToken', newToken);
                     }
                 }
-            })
+            }),
         );
     }
 }

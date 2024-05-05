@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationPageComponent } from '../authentication-page/authentication-page.component';
 import {
     FormBuilder,
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
-import { ReplaySubject, Subject, shareReplay, startWith } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 interface loginForm {
     email: FormControl<string | null>;

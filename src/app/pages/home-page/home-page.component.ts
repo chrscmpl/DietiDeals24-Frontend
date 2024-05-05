@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';

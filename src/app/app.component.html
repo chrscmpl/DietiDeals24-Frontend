@@ -1,5 +1,5 @@
 <div class="app">
-    @if (!(windowService.isMobile$ | async)) {
+    @if ((windowService.isMobile$ | async) === false) {
         <dd24-header class="header"></dd24-header>
     } @else {
         <dd24-mobile-header></dd24-mobile-header>
@@ -14,7 +14,7 @@
             </div>
         }
     </div>
-    @if (!(windowService.isMobile$ | async)) {
+    @if ((windowService.isMobile$ | async) === false) {
         <dd24-footer class="footer"></dd24-footer>
     } @else {
         <dd24-mobile-navbar></dd24-mobile-navbar>

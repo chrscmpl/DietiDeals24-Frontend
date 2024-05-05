@@ -1,9 +1,10 @@
 <div class="input-container">
-    <label>{{ label }}</label>
+    <label [for]="name">{{ label }}</label>
     <div class="input-element-container" [class.error]="shouldDisplayError">
         <input
             #inputElement
             [type]="type"
+            [name]="name"
             [placeholder]="placeholder"
             [value]="value"
             [disabled]="disabled"
@@ -12,19 +13,21 @@
             (focus)="handleFocus($event)"
             [class.password]="isPassword"
         />
-        @if(isPassword){
-        <button
-            class="password-visibility-button"
-            type="button"
-            (click)="togglePasswordVisibility(); inputElement.focus()"
-        >
-            <i [class]="'bi bi-eye' + (!isPasswordVisible ? '' : '-slash')"></i>
-        </button>
+        @if (isPassword) {
+            <button
+                class="password-visibility-button"
+                type="button"
+                (click)="togglePasswordVisibility(); inputElement.focus()"
+            >
+                <i
+                    [class]="'bi bi-eye' + (!isPasswordVisible ? '' : '-slash')"
+                ></i>
+            </button>
         }
     </div>
-    @if(shouldDisplayError){
-    <span class="error error-message">
-        {{ errorMessage }}
-    </span>
+    @if (shouldDisplayError) {
+        <span class="error error-message">
+            {{ errorMessage }}
+        </span>
     }
 </div>

@@ -24,12 +24,13 @@
             <section class="inputs">
                 <dd24-input
                     label="Email address"
+                    name="email"
                     type="email"
                     placeholder="Your Email"
                     class="form-field"
                     formControlName="email"
                     [formError$]="formError$"
-                    (focus)="clearError()"
+                    (focusEvent)="clearError()"
                     [errorMessages]="[
                         {
                             validation: 'required',
@@ -44,12 +45,13 @@
 
                 <dd24-input
                     label="Password"
+                    name="password"
                     type="password"
                     placeholder="Your Password"
                     class="form-field"
                     formControlName="password"
                     [formError$]="formError$"
-                    (focus)="clearError()"
+                    (focusEvent)="clearError()"
                     [errorMessages]="[
                         {
                             validation: 'required',

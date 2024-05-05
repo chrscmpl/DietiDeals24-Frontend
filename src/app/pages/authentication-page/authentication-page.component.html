@@ -3,7 +3,7 @@
         <button class="page-back-button" (click)="goBack()">
             <i class="bi bi-arrow-left-short" id="arrow-back-button-icon"></i>
         </button>
-        @if (!(windowService.isMobile$ | async)) {
+        @if ((windowService.isMobile$ | async) === false) {
             <dd24-logo class="logo"></dd24-logo>
         }
     </div>

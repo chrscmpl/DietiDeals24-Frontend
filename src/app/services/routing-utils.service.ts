@@ -12,7 +12,7 @@ export class RoutingUtilsService {
         const route = this.router.url.replace(/^\/+|\/+$/g, '');
         let i: number = 0;
         while (i != -1) {
-            let j: number = route.indexOf('/', i);
+            const j: number = route.indexOf('/', i);
             ret.push({
                 name: route
                     .substring(i, j !== -1 ? j : route.length)

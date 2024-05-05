@@ -1,11 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    Self,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -19,9 +12,9 @@ export class SearchBarComponent implements ControlValueAccessor {
     @Input() variant: 'default' | 'alternate' = 'default';
     @Input() disabled: boolean = false;
     @Input() placeholder: string = '';
-    @Output() focus: EventEmitter<any> = new EventEmitter();
+    @Output() focusEvent: EventEmitter<any> = new EventEmitter();
 
-    public onChange(e: any) {}
+    public onChange(_: any) {}
     public onTouched() {}
 
     value: any = '';
@@ -54,6 +47,6 @@ export class SearchBarComponent implements ControlValueAccessor {
     }
 
     handleFocus(event: any): void {
-        this.focus.emit(event);
+        this.focusEvent.emit(event);
     }
 }

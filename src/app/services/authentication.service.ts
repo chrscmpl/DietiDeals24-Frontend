@@ -13,6 +13,7 @@ import {
 interface UserSubscribeCallbacks {
     next?: (data: User) => void;
     error?: (err: any) => void;
+    complete?: () => void;
 }
 
 @Injectable({
