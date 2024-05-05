@@ -3,13 +3,13 @@ import { UserService } from '../../services/user.service';
 import { SearchSectionComponent } from '../search/search-section/search-section.component';
 import { RouterLink } from '@angular/router';
 import { RoutingUtilsService } from '../../services/routing-utils.service';
-import { TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 
 @Component({
     selector: 'dd24-header',
     standalone: true,
-    imports: [SearchSectionComponent, RouterLink, TitleCasePipe],
+    imports: [SearchSectionComponent, RouterLink, TitleCasePipe, AsyncPipe],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
 })
