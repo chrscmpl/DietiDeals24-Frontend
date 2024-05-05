@@ -43,9 +43,5 @@ export class AppComponent implements OnInit {
                 this.isLoadingRouteIndicator.stop();
             }
         });
-
-        this.windowService.isMobile$.subscribe((isMobile) => {
-            console.log('isMobile', isMobile);
-        });
     }
 }

@@ -68,9 +68,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             return;
         }
         this.formErrorSubject.next(false);
-        this.authenticationService
-            .login(this.loginForm.value as UserCredentials)
-            .subscribe({
+        this.authenticationService.login(
+            this.loginForm.value as UserCredentials,
+            {
                 next: () => {
                     this.location.back();
                 },
@@ -86,7 +86,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
                         this.error = 'An error occurred';
                     }
                 },
-            });
+            },
+        );
     }
 
     googleLogin() {}
