@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationPageComponent } from '../authentication-page/authentication-page.component';
 import {
     FormBuilder,
@@ -10,8 +10,9 @@ import {
 import { InputComponent } from '../../components/inputs/input/input.component';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { User, UserCredentials } from '../../models/user.model';
+import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
+import { ReplaySubject, Subject, shareReplay, startWith } from 'rxjs';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -30,10 +31,11 @@ interface loginForm {
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, OnDestroy {
     error: string = '';
     loginForm!: FormGroup<loginForm>;
-    formError: boolean = false;
+    formErrorSubject: Subject<boolean> = new ReplaySubject<boolean>(1);
+    formError$ = this.formErrorSubject.asObservable();
 
     constructor(
         private userService: UserService,
@@ -42,6 +44,7 @@ export class LoginPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.formErrorSubject.next(false);
         this.loginForm = this.formBuilder.group<loginForm>({
             email: new FormControl(null, [
                 Validators.required,
@@ -55,12 +58,16 @@ export class LoginPageComponent implements OnInit {
         });
     }
 
+    ngOnDestroy(): void {
+        this.formErrorSubject.complete();
+    }
+
     dd24Login() {
         if (this.loginForm.invalid) {
-            this.formError = true;
+            this.formErrorSubject.next(true);
             return;
         }
-        this.formError = false;
+        this.formErrorSubject.next(false);
         this.userService
             .login(this.loginForm.value as UserCredentials)
             .subscribe({

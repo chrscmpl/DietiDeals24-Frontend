@@ -28,7 +28,7 @@
                     placeholder="Your Email"
                     class="form-field"
                     formControlName="email"
-                    [formError]="formError"
+                    [formError$]="formError$"
                     (focus)="clearError()"
                     [errorMessages]="[
                         {
@@ -48,7 +48,7 @@
                     placeholder="Your Password"
                     class="form-field"
                     formControlName="password"
-                    [formError]="formError"
+                    [formError$]="formError$"
                     (focus)="clearError()"
                     [errorMessages]="[
                         {
@@ -64,8 +64,8 @@
                 />
             </section>
             <a routerLink="/forgot-password"> forgot your password? </a>
-            @if(error){
-            <span class="error">{{ error }}</span>
+            @if (error) {
+                <span class="error">{{ error }}</span>
             }
             <button class="button-primary" type="submit">Login</button>
         </form>

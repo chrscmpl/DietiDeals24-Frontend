@@ -8,23 +8,14 @@ import {
     ViewChild,
     ElementRef,
     AfterViewInit,
+    OnDestroy,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-
-type validation =
-    | 'required'
-    | 'email'
-    | 'min'
-    | 'max'
-    | 'pattern'
-    | 'minlength'
-    | 'maxlength'
-    | 'all';
-
-interface errorMessage {
-    validation: validation | validation[];
-    message: string;
-}
+import {
+    defaultErrorString,
+    errorMessage,
+} from '../../../helpers/inputErrorMessages';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-input',
@@ -34,20 +25,16 @@ interface errorMessage {
     imports: [],
 })
 export class InputComponent
-    implements OnInit, AfterViewInit, ControlValueAccessor
+    implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor
 {
     @Input() disabled: boolean = false;
     @Input() label: string = '';
     @Input() placeholder: string = '';
     @Input() type: 'text' | 'email' | 'password' = 'text';
     @Input() errorMessages: errorMessage[] = [];
-    @Input() set formError(err: boolean) {
-        if (err && this.ngControl.control?.invalid) {
-            this.errorMessage = this.getErrorMessage();
-            this.shouldDisplayError = true;
-            this.aggressiveValidation = true;
-        }
-    }
+    @Input() formError$?: Observable<boolean>;
+    private formErrorSubscription?: Subscription;
+
     @Output() focus: EventEmitter<any> = new EventEmitter();
     @ViewChild('inputElement', { static: false })
     inputElement!: ElementRef<HTMLInputElement>;
@@ -55,7 +42,6 @@ export class InputComponent
     value: any = '';
     isPassword: boolean = false;
     isPasswordVisible: boolean = false;
-    static defaultError = 'Invalid input';
     errorMessage: string = '';
     shouldDisplayError: boolean = false;
     aggressiveValidation: boolean = false;
@@ -83,6 +69,19 @@ export class InputComponent
                     this.aggressiveValidation) ??
                 false;
         });
+        this.formErrorSubscription = this.formError$?.subscribe(
+            (err: boolean) => {
+                if (err && this.ngControl.control?.invalid) {
+                    this.errorMessage = this.getErrorMessage();
+                    this.shouldDisplayError = true;
+                    this.aggressiveValidation = true;
+                }
+            },
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.formErrorSubscription?.unsubscribe();
     }
 
     ngAfterViewInit() {
@@ -139,6 +138,6 @@ export class InputComponent
             }
             return errorKeys.includes(e.validation);
         });
-        return error?.message || InputComponent.defaultError;
+        return error?.message || defaultErrorString;
     }
 }
