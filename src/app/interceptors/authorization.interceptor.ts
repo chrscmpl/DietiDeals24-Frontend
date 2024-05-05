@@ -16,9 +16,9 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     private static BACKEND_HOSTNAME: string = 'dd24-backend';
 
     intercept(
-        request: HttpRequest<any>,
+        request: HttpRequest<unknown>,
         next: HttpHandler,
-    ): Observable<HttpEvent<any>> {
+    ): Observable<HttpEvent<unknown>> {
         if (request.url != AuthorizationInterceptor.BACKEND_HOSTNAME) {
             return next.handle(request);
         }
@@ -31,7 +31,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
             });
         }
         return next.handle(request).pipe(
-            tap((event: HttpEvent<any>) => {
+            tap((event: HttpEvent<unknown>) => {
                 if (event instanceof HttpResponse) {
                     const newToken = event.headers.get('X-Auth-Token');
                     if (newToken) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 

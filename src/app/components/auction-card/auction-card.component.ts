@@ -33,7 +33,7 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     @Output() loaded = new EventEmitter<number>();
     statuses = Auction.STATUSES;
     timeLeft: number = 0;
-    timerInterval: any;
+    timerInterval: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     ngOnInit(): void {
         this.timeLeft = this.auction.timeLeft;

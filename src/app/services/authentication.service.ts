@@ -3,18 +3,13 @@ import { Injectable } from '@angular/core';
 import { UserCredentials, User, UserDTO } from '../models/user.model';
 import {
     Observable,
+    Observer,
     ReplaySubject,
     filter,
     map,
     tap,
     withLatestFrom,
 } from 'rxjs';
-
-interface UserSubscribeCallbacks {
-    next?: (data: User) => void;
-    error?: (err: any) => void;
-    complete?: () => void;
-}
 
 @Injectable({
     providedIn: 'root',
@@ -40,7 +35,7 @@ export class AuthenticationService {
 
     public login(
         credentials: UserCredentials,
-        cb?: UserSubscribeCallbacks,
+        cb?: Partial<Observer<User>>,
     ): void {
         this.http
             .post<UserDTO>('dd24-backend/login', credentials)
