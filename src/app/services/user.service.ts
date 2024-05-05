@@ -1,14 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserCredentials, User, UserDTO } from '../models/user.model';
-import {
-    Observable,
-    ReplaySubject,
-    catchError,
-    map,
-    startWith,
-    tap,
-} from 'rxjs';
+import { Observable, ReplaySubject, catchError, map, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',

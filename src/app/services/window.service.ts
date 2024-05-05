@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
     distinctUntilChanged,
-    filter,
     fromEvent,
     map,
     shareReplay,
     startWith,
-    tap,
 } from 'rxjs';
 
 @Injectable({

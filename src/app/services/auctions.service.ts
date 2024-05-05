@@ -16,8 +16,10 @@ export class AuctionsService {
     public getAuctionsRequest(
         params: Omit<
             PaginatedRequestParams<Auction>,
-            'http' | 'factory' | 'url'
-        >,
+            'http' | 'factory' | 'url' | 'queryParameters'
+        > & {
+            queryParameters: AuctionSearchParameters;
+        },
     ): PaginatedRequest<Auction> {
         return new PaginatedRequest<Auction>(
             Object.assign(params, {
