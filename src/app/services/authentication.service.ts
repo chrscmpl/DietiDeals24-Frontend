@@ -49,8 +49,8 @@ export class AuthenticationService {
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap((user) => {
-                    this.loggedUser = user;
                     this.isLogged = true;
+                    this.loggedUser = user;
                 }),
             )
             .subscribe(cb);
