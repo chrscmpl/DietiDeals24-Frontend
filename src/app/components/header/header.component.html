@@ -6,7 +6,7 @@
             </button>
             <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />
             <div class="spacer"></div>
-            @if (!(userService.isLogged$ | async)) {
+            @if (!(authenticationService.isLogged$ | async)) {
                 <button class="nav-auth-btn nav-login-btn" routerLink="login">
                     Login
                 </button>

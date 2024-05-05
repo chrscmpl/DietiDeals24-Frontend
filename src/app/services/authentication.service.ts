@@ -6,14 +6,12 @@ import { Observable, ReplaySubject, catchError, map, tap } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
-    private loggedUserSubject = new ReplaySubject<User | null>(1);
+export class AuthenticationService {
+    private loggedUserSubject = new ReplaySubject<User>(1);
 
-    constructor(private http: HttpClient) {
-        this.loggedUserSubject.next(null);
-    }
+    constructor(private http: HttpClient) {}
 
-    public loggedUser$: Observable<User | null> =
+    public loggedUser$: Observable<User> =
         this.loggedUserSubject.asObservable();
 
     public isLogged$: Observable<boolean> = this.loggedUser$.pipe(
@@ -24,10 +22,6 @@ export class UserService {
         return this.http.post<UserDTO>('dd24-backend/login', credentials).pipe(
             map((dto: UserDTO) => new User(dto)),
             tap((user) => this.loggedUserSubject.next(user)),
-            catchError((err) => {
-                this.loggedUserSubject.next(null);
-                throw err;
-            }),
         );
     }
 }

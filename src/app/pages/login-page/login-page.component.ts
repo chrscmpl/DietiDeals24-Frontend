@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { InputComponent } from '../../components/inputs/input/input.component';
 import { RouterLink } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
 import { ReplaySubject, Subject, shareReplay, startWith } from 'rxjs';
@@ -38,7 +38,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     formError$ = this.formErrorSubject.asObservable();
 
     constructor(
-        private userService: UserService,
+        private authenticationService: AuthenticationService,
         private location: Location,
         private formBuilder: FormBuilder,
     ) {}
@@ -68,7 +68,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             return;
         }
         this.formErrorSubject.next(false);
-        this.userService
+        this.authenticationService
             .login(this.loginForm.value as UserCredentials)
             .subscribe({
                 next: () => {
