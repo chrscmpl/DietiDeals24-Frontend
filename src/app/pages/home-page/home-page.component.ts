@@ -21,7 +21,7 @@ import { AuctionsService } from '../../services/auctions.service';
 })
 export class HomePageComponent implements OnInit {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
-        new LoadingIndicator(10);
+        new LoadingIndicator(0);
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
         queryParameters: { keywords: '', category: '', type: '' },
         pageNumber: 1,

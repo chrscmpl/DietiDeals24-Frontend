@@ -44,11 +44,10 @@
             }
 
             .nav-auth-btn {
-                border: var(--border);
                 font-weight: var(--font-weight-bold);
-                background-color: var(--component-color);
                 border-radius: var(--border-radius-medium);
-                @include padding-horizontal(2ch);
+                align-self: center;
+                @include padding-vertical(calc(var(--font-size-medium) / 1.5));
             }
         }
 
