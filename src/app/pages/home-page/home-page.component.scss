@@ -30,6 +30,11 @@
             .trending-category-loading-button {
                 height: 3.5em;
                 width: 15ch;
+                &:hover {
+                    cursor: progress;
+                    background-color: transparent;
+                    transition: none;
+                }
             }
         }
     }

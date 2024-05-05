@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import {
-    defaultErrorString,
+    ErrorMessagesManager,
     errorMessage,
 } from '../../../helpers/inputErrorMessages';
 import { Observable, Subscription } from 'rxjs';
@@ -62,7 +62,10 @@ export class InputComponent
         this.isPassword = this.type === 'password';
         this.ngControl.control?.statusChanges.subscribe(() => {
             if (this.ngControl.control?.invalid) {
-                this.errorMessage = this.getErrorMessage();
+                this.errorMessage = ErrorMessagesManager.getErrorMessage(
+                    this.ngControl,
+                    this.errorMessages,
+                );
             }
             this.shouldDisplayError =
                 (this.ngControl.control?.invalid &&
@@ -72,7 +75,10 @@ export class InputComponent
         this.formErrorSubscription = this.formError$?.subscribe(
             (err: boolean) => {
                 if (err && this.ngControl.control?.invalid) {
-                    this.errorMessage = this.getErrorMessage();
+                    this.errorMessage = ErrorMessagesManager.getErrorMessage(
+                        this.ngControl,
+                        this.errorMessages,
+                    );
                     this.shouldDisplayError = true;
                     this.aggressiveValidation = true;
                 }
@@ -92,7 +98,10 @@ export class InputComponent
                 false;
             this.aggressiveValidation = this.shouldDisplayError;
             if (this.shouldDisplayError) {
-                this.errorMessage = this.getErrorMessage();
+                this.errorMessage = ErrorMessagesManager.getErrorMessage(
+                    this.ngControl,
+                    this.errorMessages,
+                );
             }
         });
     }
@@ -125,19 +134,5 @@ export class InputComponent
     togglePasswordVisibility(): void {
         this.isPasswordVisible = !this.isPasswordVisible;
         this.type = this.isPasswordVisible ? 'text' : 'password';
-    }
-
-    private getErrorMessage(): string {
-        const errors = this.ngControl.control?.errors;
-        if (!errors) return '';
-        const errorKeys = Object.keys(errors);
-        const error = this.errorMessages.find((e) => {
-            if (e.validation === 'all') return true;
-            if (Array.isArray(e.validation)) {
-                return e.validation.some((v) => errorKeys.includes(v));
-            }
-            return errorKeys.includes(e.validation);
-        });
-        return error?.message || defaultErrorString;
     }
 }
