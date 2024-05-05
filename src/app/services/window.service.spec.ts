@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WindowService } from './window-service.service';
+import { WindowService } from './window.service';
 
 describe('WindowService', () => {
     let service: WindowService;

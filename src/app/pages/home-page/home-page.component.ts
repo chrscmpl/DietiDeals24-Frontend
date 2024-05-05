@@ -22,7 +22,6 @@ import { AuctionsService } from '../../services/auctions.service';
 export class HomePageComponent implements OnInit {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(10);
-    public trendingCategories: string[] = [];
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
         queryParameters: { keywords: '', category: '', type: '' },
         pageNumber: 1,
@@ -30,6 +29,7 @@ export class HomePageComponent implements OnInit {
         maximumResults: 15,
         eager: true,
     });
+
     constructor(
         public accessoryInformation: AccessoryInformationService,
         public auctionsService: AuctionsService,
@@ -37,11 +37,9 @@ export class HomePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.categoryButtonsLoadingIndicator.start();
-        this.accessoryInformation
-            .getTrendingCategories()
-            .subscribe((categories) => {
-                this.categoryButtonsLoadingIndicator.stop();
-                this.trendingCategories = categories;
-            });
+        this.accessoryInformation.trendingCategories$.subscribe(() => {
+            this.categoryButtonsLoadingIndicator.stop();
+        });
+        this.accessoryInformation.refreshTrendingCategories();
     }
 }

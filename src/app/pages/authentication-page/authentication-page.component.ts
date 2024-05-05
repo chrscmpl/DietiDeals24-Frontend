@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, Location } from '@angular/common';
 import { LogoComponent } from '../../components/logo/logo.component';
-import { WindowService } from '../../services/window-service.service';
+import { WindowService } from '../../services/window.service';
 @Component({
     selector: 'dd24-authentication-page',
     standalone: true,

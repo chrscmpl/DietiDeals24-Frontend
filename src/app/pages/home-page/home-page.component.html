@@ -3,7 +3,11 @@
         <h2>Trending Categories</h2>
         <div class="trending-categories-buttons">
             @if (!(categoryButtonsLoadingIndicator.isLoading$ | async)) {
-                @for (category of trendingCategories; track $index) {
+                @for (
+                    category of accessoryInformation.trendingCategories$
+                        | async;
+                    track $index
+                ) {
                     <button
                         class="trending-category-button button-secondary"
                         type="button"

@@ -1,5 +1,9 @@
 <div class="app">
-    <dd24-header class="header"></dd24-header>
+    @if (!(windowService.isMobile$ | async)) {
+        <dd24-header class="header"></dd24-header>
+    } @else {
+        <dd24-mobile-header></dd24-mobile-header>
+    }
     <div class="content">
         <router-outlet></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
@@ -10,5 +14,9 @@
             </div>
         }
     </div>
-    <dd24-footer class="footer"></dd24-footer>
+    @if (!(windowService.isMobile$ | async)) {
+        <dd24-footer class="footer"></dd24-footer>
+    } @else {
+        <dd24-mobile-navbar></dd24-mobile-navbar>
+    }
 </div>
