@@ -16,7 +16,7 @@ import {
 export class ReloadButtonComponent implements OnDestroy {
     @Input() message: string = "Could'nt load data. Click to try again";
     @Output() reload = new EventEmitter<void>();
-    private unSpinTimeout: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    private unSpinTimeout?: ReturnType<typeof setTimeout>;
     public spin: boolean = false;
 
     emitReload(): void {
