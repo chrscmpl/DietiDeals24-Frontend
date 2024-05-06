@@ -15,7 +15,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import {
     ErrorMessagesManager,
     errorMessage,
-} from '../../helpers/inputErrorMessages';
+} from '../../helpers/inputErrorMessagesManager';
 import { Observable, Subscription } from 'rxjs';
 import { TextInputComponent } from './text-input/text-input.component';
 
