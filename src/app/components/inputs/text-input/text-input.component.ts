@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { dd24Input } from '../input.component';
 
 @Component({
     selector: 'dd24-text-input',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
     templateUrl: './text-input.component.html',
     styleUrl: './text-input.component.scss',
 })
-export class TextInputComponent implements OnInit {
+export class TextInputComponent implements dd24Input, OnInit {
     @Input() name: string = '';
     @Input() disabled: boolean = false;
     @Input() value: string = '';

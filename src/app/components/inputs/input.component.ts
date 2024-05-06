@@ -19,6 +19,17 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { TextInputComponent } from './text-input/text-input.component';
 
+export interface dd24Input {
+    name: string;
+    placeholder: string;
+    value: string;
+    disabled: boolean;
+
+    focusEvent: EventEmitter<void>;
+    blurEvent: EventEmitter<void>;
+    inputEvent: EventEmitter<string>;
+}
+
 @Component({
     selector: 'dd24-input',
     templateUrl: './input.component.html',
@@ -40,8 +51,6 @@ export class InputComponent
 
     @Output() focusEvent: EventEmitter<any> = new EventEmitter();
 
-    public TextInputComponent = TextInputComponent;
-
     public value: any = '';
     public errorMessage: string = '';
     public aggressiveValidation: boolean = false;
@@ -59,6 +68,8 @@ export class InputComponent
     private formErrorSubscription?: Subscription;
 
     @ContentChild(TextInputComponent) textInputComponent?: TextInputComponent;
+
+    private inputChild!: dd24Input;
 
     constructor(
         @Self()
@@ -97,22 +108,29 @@ export class InputComponent
     }
 
     ngAfterContentInit(): void {
+        const input: dd24Input | undefined = [this.textInputComponent].find(
+            (component) => component !== undefined,
+        );
+        if (!input) {
+            throw new Error('No input component found');
+        }
+        this.inputChild = input;
+        this.inputChild.name = this.name;
+        this.inputChild.disabled = this.disabled;
+        this.inputChild.placeholder = this.placeholder;
+        this.inputChild.value = this.value;
+        this.inputChild.focusEvent.subscribe((event: any) => {
+            this.handleFocus(event);
+        });
+        this.inputChild.blurEvent.subscribe(() => {
+            this.handleBlur();
+        });
+        this.inputChild.inputEvent.subscribe((value: string) => {
+            this.value = value;
+            this.onChange(value);
+        });
         if (this.textInputComponent) {
-            this.textInputComponent.disabled = this.disabled;
-            this.textInputComponent.value = this.value;
-            this.textInputComponent.placeholder = this.placeholder;
             this.textInputComponent.type = this.type;
-            this.textInputComponent.name = this.name;
-            this.textInputComponent.focusEvent.subscribe((event: any) => {
-                this.handleFocus(event);
-            });
-            this.textInputComponent.blurEvent.subscribe(() => {
-                this.handleBlur();
-            });
-            this.textInputComponent.inputEvent.subscribe((value: string) => {
-                this.value = value;
-                this.onChange(value);
-            });
         }
     }
 
