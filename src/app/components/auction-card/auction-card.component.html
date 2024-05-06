@@ -1,9 +1,9 @@
 <div class="auction-card">
     <div class="auction-card-image-container">
-        @if (auction.images.length > 0) {
+        @if (auction.pictureUrl) {
             <img
                 class="auction-card-image"
-                [src]="auction.images[0]"
+                [src]="auction.pictureUrl"
                 alt="Auction image"
             />
         } @else {
@@ -20,8 +20,8 @@
         </span>
         <dd24-auction-type-link
             class="auction-card-auction-type"
-            [type]="auction.auctionType"
-            >{{ auction.auctionType }}</dd24-auction-type-link
+            [type]="auction.type"
+            >{{ auction.type }}</dd24-auction-type-link
         >
         <span class="auction-card-sum">
             @if (auction.status === statuses.active) {

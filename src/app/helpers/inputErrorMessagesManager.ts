@@ -15,7 +15,7 @@ export interface errorMessage {
     message: string;
 }
 
-class errorMessagesManager {
+class inputErrorMessagesManager {
     private defaultErrorString = 'Invalid input';
 
     public getErrorMessage(
@@ -36,4 +36,4 @@ class errorMessagesManager {
     }
 }
 
-export const ErrorMessagesManager = new errorMessagesManager();
+export const ErrorMessagesManager = new inputErrorMessagesManager();

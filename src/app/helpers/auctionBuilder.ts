@@ -9,7 +9,7 @@ import { Money } from '../models/money.model';
 
 export const auctionBuilder = (() => {
     const build = (auction: AuctionDTO): Auction => {
-        switch (auction.auctionType) {
+        switch (auction.type) {
             case AuctionType.silent:
                 return new SilentAuction(
                     auction as AuctionDTO & {

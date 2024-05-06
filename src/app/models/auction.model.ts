@@ -17,26 +17,29 @@ enum auctionStatus {
 interface AuctionInterface {
     id: string;
     title: string;
-    description?: string;
-    user?: UserSummary;
     conditions: string | null;
-    category: string;
     location: Location;
     timeLeft: number;
     endTime: number;
     endDate: Date;
-    images: string[];
+    pictureUrl: string | null;
     lastBid: Money;
     lastBidDescription: string;
-    auctionType: AuctionType;
+    type: AuctionType;
     status: auctionStatus;
 }
 
 export type AuctionDTO = Omit<
     AuctionInterface,
-    'lastBid' | 'lastBidDescription' | 'endDate' | 'images' | 'timeLeft'
+    | 'lastBid'
+    | 'lastBidDescription'
+    | 'endDate'
+    | 'pictureUrl'
+    | 'timeLeft'
+    | 'location'
 > &
-    Partial<Pick<AuctionInterface, 'images'>>;
+    Partial<Pick<AuctionInterface, 'pictureUrl'>> &
+    Location;
 
 export type AuctionSearchParameters = Partial<{
     keywords: string;
@@ -52,22 +55,18 @@ export abstract class Auction implements AuctionInterface {
     private _description?: string;
     private _user?: UserSummary;
     private _conditions: string | null;
-    private _category: string;
     private _location: Location;
     private _endTime: number;
-    private _images: string[];
+    private _pictureUrl: string | null;
     private _status: auctionStatus;
 
     constructor(auction: Omit<AuctionDTO, 'auctionType'>) {
         this._id = auction.id;
         this._title = auction.title;
-        this._description = auction.description;
-        this._user = auction.user;
         this._conditions = auction.conditions;
-        this._category = auction.category;
-        this._location = auction.location;
+        this._location = { country: auction.country, city: auction.city };
         this._endTime = auction.endTime;
-        this._images = auction.images ?? [];
+        this._pictureUrl = auction.pictureUrl ?? null;
         this._status = auction.status;
     }
 
@@ -99,10 +98,6 @@ export abstract class Auction implements AuctionInterface {
         return this._conditions;
     }
 
-    public get category(): string {
-        return this._category;
-    }
-
     public get location(): Location {
         return this._location;
     }
@@ -121,8 +116,8 @@ export abstract class Auction implements AuctionInterface {
         return date;
     }
 
-    public get images(): string[] {
-        return this._images;
+    public get pictureUrl(): string | null {
+        return this._pictureUrl;
     }
 
     public get status(): auctionStatus {
@@ -133,7 +128,7 @@ export abstract class Auction implements AuctionInterface {
 
     public abstract get lastBidDescription(): string;
 
-    public abstract get auctionType(): AuctionType;
+    public abstract get type(): AuctionType;
 
     private missingFields(): string[] {
         const missing = [];
@@ -168,7 +163,7 @@ export class SilentAuction extends Auction {
         return 'minimum bid';
     }
 
-    public override get auctionType(): AuctionType {
+    public override get type(): AuctionType {
         return AuctionType.silent;
     }
 
@@ -208,7 +203,7 @@ export class ReverseAuction extends Auction {
             : 'lowest bid';
     }
 
-    public override get auctionType(): AuctionType {
+    public override get type(): AuctionType {
         return AuctionType.reverse;
     }
 
