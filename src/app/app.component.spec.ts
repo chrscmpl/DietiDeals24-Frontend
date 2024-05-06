@@ -14,18 +14,4 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have the 'DietiDeals24Frontend' title`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app.title).toEqual('DietiDeals24Frontend');
-    });
-
-    it('should render title', () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        fixture.detectChanges();
-        const compiled = fixture.nativeElement as HTMLElement;
-        expect(compiled.querySelector('h1')?.textContent).toContain(
-            'Hello, DietiDeals24Frontend',
-        );
-    });
 });

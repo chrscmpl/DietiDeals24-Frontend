@@ -1,0 +1,56 @@
+@import "grid";
+
+.text-input-container {
+    @include grid(
+        $justify-items: stretch,
+        $align-items: stretch,
+        $justify-content: stretch,
+        $align-content: stretch
+    );
+
+    > * {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .text-input {
+        color: var(--text-color-3);
+        border-radius: var(--border-radius-medium);
+        border: var(--border);
+        padding: 0.2em;
+
+        &.password {
+            padding-right: 2em;
+        }
+
+        &:focus {
+            outline: 2px solid var(--border-color);
+            border: var(--border);
+        }
+    }
+
+    .password-visibility-button {
+        color: var(--basic-affordances-color);
+        justify-self: end;
+        width: 2em;
+        background-color: transparent;
+        border: none;
+    }
+
+    &.error {
+        input {
+            color: var(--error-color);
+            border: 2px solid var(--error-color);
+            &:focus {
+                border: 2px solid var(--error-color);
+                outline: 2px solid var(--error-color-transparent);
+            }
+        }
+        .password-visibility-button {
+            color: var(--error-color);
+        }
+    }
+}
+.error-message {
+    font-size: var(--font-size-small);
+}

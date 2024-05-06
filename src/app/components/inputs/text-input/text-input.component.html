@@ -1,0 +1,24 @@
+<div class="text-input-container" [class.error]="error">
+    <input
+        #inputElement
+        class="text-input"
+        [type]="type"
+        [name]="name"
+        [placeholder]="placeholder"
+        [value]="value"
+        [disabled]="disabled"
+        (input)="emitInput($event)"
+        (blur)="emitBlur()"
+        (focus)="emitFocus()"
+        [class.password]="isPassword"
+    />
+    @if (isPassword) {
+        <button
+            class="password-visibility-button"
+            type="button"
+            (click)="togglePasswordVisibility(); inputElement.focus()"
+        >
+            <i [class]="'bi bi-eye' + (!isPasswordVisible ? '' : '-slash')"></i>
+        </button>
+    }
+</div>

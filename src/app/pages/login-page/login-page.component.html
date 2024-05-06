@@ -41,7 +41,9 @@
                             message: 'please enter a valid email'
                         }
                     ]"
-                />
+                >
+                    <dd24-text-input></dd24-text-input>
+                </dd24-input>
 
                 <dd24-input
                     label="Password"
@@ -63,7 +65,9 @@
                                 'A password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
                         }
                     ]"
-                />
+                >
+                    <dd24-text-input></dd24-text-input>
+                </dd24-input>
             </section>
             <a routerLink="/forgot-password"> forgot your password? </a>
             @if (error) {

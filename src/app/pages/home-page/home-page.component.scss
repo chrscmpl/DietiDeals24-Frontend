@@ -1,6 +1,7 @@
 @import "flex";
 @import "grid";
 @import "center";
+@import "mobile";
 
 .home-page {
     @include flex(column, start, stretch, 1em);
@@ -9,6 +10,10 @@
     min-height: 100%;
     width: 100%;
     padding: 1em 15%;
+
+    @include mobile {
+        padding: 1em 2%;
+    }
 
     .trending-categories {
         @include flex(column, start, stretch, 0.5em);
