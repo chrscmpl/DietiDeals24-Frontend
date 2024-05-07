@@ -19,6 +19,7 @@ import {
 import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { TextInputComponent } from './text-input/text-input.component';
 import { AsyncPipe } from '@angular/common';
+import { SelectInputComponent } from './select-input/select-input.component';
 
 export interface dd24Input {
     name: string;
@@ -47,9 +48,10 @@ export class InputComponent
     @Input() disabled: boolean = false;
     @Input() label: string = '';
     @Input() placeholder: string = '';
-    @Input() type: 'text' | 'email' | 'password' = 'text';
     @Input() errorMessages: errorMessage[] = [];
     @Input() formError$?: Observable<boolean>;
+    @Input() type: 'text' | 'email' | 'password' = 'text';
+    @Input() options: string[] = [];
 
     @Output() focusEvent: EventEmitter<any> = new EventEmitter();
 
@@ -65,6 +67,8 @@ export class InputComponent
     private formErrorSubscription?: Subscription;
 
     @ContentChild(TextInputComponent) textInputComponent?: TextInputComponent;
+    @ContentChild(SelectInputComponent)
+    selectInputComponent?: SelectInputComponent;
 
     private inputChild?: dd24Input;
 
@@ -106,9 +110,10 @@ export class InputComponent
     }
 
     ngAfterContentInit(): void {
-        const input: dd24Input | undefined = [this.textInputComponent].find(
-            (component) => component !== undefined,
-        );
+        const input: dd24Input | undefined = [
+            this.textInputComponent,
+            this.selectInputComponent,
+        ].find((component) => component !== undefined);
         if (!input) {
             throw new Error('No input component found');
         }
@@ -130,6 +135,9 @@ export class InputComponent
         });
         if (this.textInputComponent) {
             this.textInputComponent.type = this.type;
+        }
+        if (this.selectInputComponent) {
+            this.selectInputComponent.options = this.options;
         }
     }
 

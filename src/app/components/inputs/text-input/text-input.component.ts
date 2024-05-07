@@ -17,6 +17,9 @@ export class TextInputComponent implements dd24Input, OnInit {
     @Input() placeholder: string = '';
     @Input() type: 'text' | 'email' | 'password' = 'text';
     @Input() error$: Observable<boolean> = of(false);
+    @Input() set error(err: boolean) {
+        this.error$ = of(err);
+    }
 
     @Output() focusEvent: EventEmitter<void> = new EventEmitter();
     @Output() blurEvent: EventEmitter<void> = new EventEmitter();
