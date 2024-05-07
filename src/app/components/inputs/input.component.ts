@@ -62,7 +62,7 @@ export class InputComponent
     }
 
     public set shouldDisplayError(value: boolean) {
-        this.inputChild.error = value;
+        if (this.inputChild) this.inputChild.error = value;
         this._shouldDisplayError = value;
     }
 
@@ -70,7 +70,7 @@ export class InputComponent
 
     @ContentChild(TextInputComponent) textInputComponent?: TextInputComponent;
 
-    private inputChild!: dd24Input;
+    private inputChild?: dd24Input;
 
     constructor(
         @Self()
@@ -144,7 +144,7 @@ export class InputComponent
 
     public writeValue(value: any): void {
         this.value = value;
-        this.inputChild.value = value;
+        if (this.inputChild) this.inputChild.value = value;
     }
 
     public setDisabledState(isDisabled: boolean): void {
