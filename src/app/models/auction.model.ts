@@ -19,27 +19,28 @@ interface AuctionInterface {
     title: string;
     conditions: string | null;
     location: Location;
-    timeLeft: number;
-    endTime: number;
-    endDate: Date;
+    endTime: Date;
     pictureUrl: string | null;
+    status: auctionStatus;
+
+    type: AuctionType;
+    timeLeft: number;
     lastBid: Money;
     lastBidDescription: string;
-    type: AuctionType;
-    status: auctionStatus;
 }
 
 export type AuctionDTO = Omit<
     AuctionInterface,
+    | 'conditions'
     | 'lastBid'
     | 'lastBidDescription'
-    | 'endDate'
+    | 'endTime'
     | 'pictureUrl'
     | 'timeLeft'
     | 'location'
 > &
-    Partial<Pick<AuctionInterface, 'pictureUrl'>> &
-    Location;
+    Partial<Pick<AuctionInterface, 'pictureUrl' | 'conditions'>> &
+    Location & { endTime: string };
 
 export type AuctionSearchParameters = Partial<{
     keywords: string;
@@ -56,16 +57,16 @@ export abstract class Auction implements AuctionInterface {
     private _user?: UserSummary;
     private _conditions: string | null;
     private _location: Location;
-    private _endTime: number;
+    private _endTime: Date;
     private _pictureUrl: string | null;
     private _status: auctionStatus;
 
     constructor(auction: Omit<AuctionDTO, 'auctionType'>) {
         this._id = auction.id;
         this._title = auction.title;
-        this._conditions = auction.conditions;
+        this._conditions = auction.conditions ?? null;
         this._location = { country: auction.country, city: auction.city };
-        this._endTime = auction.endTime;
+        this._endTime = new Date(auction.endTime);
         this._pictureUrl = auction.pictureUrl ?? null;
         this._status = auction.status;
     }
@@ -103,17 +104,11 @@ export abstract class Auction implements AuctionInterface {
     }
 
     public get timeLeft(): number {
-        return this._endTime - Math.floor(Date.now() / 1000);
+        return Math.floor((this._endTime.getTime() - Date.now()) / 1000);
     }
 
-    public get endTime(): number {
+    public get endTime(): Date {
         return this._endTime;
-    }
-
-    public get endDate(): Date {
-        const date = new Date();
-        date.setSeconds(this._endTime);
-        return date;
     }
 
     public get pictureUrl(): string | null {
@@ -129,15 +124,6 @@ export abstract class Auction implements AuctionInterface {
     public abstract get lastBidDescription(): string;
 
     public abstract get type(): AuctionType;
-
-    private missingFields(): string[] {
-        const missing = [];
-        if (this._description === undefined) missing.push('description');
-        if (this._user === undefined) missing.push('user');
-        return missing;
-    }
-
-    public abstract complete(): void;
 }
 
 export class SilentAuction extends Auction {
@@ -166,8 +152,6 @@ export class SilentAuction extends Auction {
     public override get type(): AuctionType {
         return AuctionType.silent;
     }
-
-    public override complete(): void {}
 }
 
 export class ReverseAuction extends Auction {
@@ -206,6 +190,4 @@ export class ReverseAuction extends Auction {
     public override get type(): AuctionType {
         return AuctionType.reverse;
     }
-
-    public override complete(): void {}
 }

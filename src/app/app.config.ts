@@ -8,19 +8,13 @@ import { DatePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
 import { MoneyPipe } from './pipes/money.pipe';
-import {
-    HTTP_INTERCEPTORS,
-    HttpClient,
-    provideHttpClient,
-} from '@angular/common/http';
-import { AuthorizationInterceptor } from './interceptors/authorization.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authorizationInterceptor } from './interceptors/authorization.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
-        provideHttpClient(),
-        { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor },
-        HttpClient,
+        provideHttpClient(withInterceptors([authorizationInterceptor])),
         Location,
         LocalDatePipe,
         OneCharUpperPipe,

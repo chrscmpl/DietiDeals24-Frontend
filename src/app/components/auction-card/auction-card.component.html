@@ -37,7 +37,7 @@
                 [class.danger]="timeLeft > 0 && timeLeft < 86400"
                 >{{ timeLeft | interval: "minutes" }}</span
             >
-            (Until {{ auction.endDate | localDate }})</span
+            (Until {{ auction.endTime | localDate }})</span
         >
     </div>
 </div>

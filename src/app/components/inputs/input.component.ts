@@ -24,6 +24,7 @@ export interface dd24Input {
     placeholder: string;
     value: string;
     disabled: boolean;
+    error: boolean;
 
     focusEvent: EventEmitter<void>;
     blurEvent: EventEmitter<void>;
@@ -61,7 +62,7 @@ export class InputComponent
     }
 
     public set shouldDisplayError(value: boolean) {
-        this.setErrorState(value);
+        this.inputChild.error = value;
         this._shouldDisplayError = value;
     }
 
@@ -138,17 +139,12 @@ export class InputComponent
         this.formErrorSubscription?.unsubscribe();
     }
 
-    private setErrorState(value: boolean): void {
-        if (this.textInputComponent) {
-            this.textInputComponent.error = value;
-        }
-    }
-
     public onChange(_: any) {}
     public onTouched() {}
 
     public writeValue(value: any): void {
         this.value = value;
+        this.inputChild.value = value;
     }
 
     public setDisabledState(isDisabled: boolean): void {

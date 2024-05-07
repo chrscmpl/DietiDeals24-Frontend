@@ -1,44 +1,32 @@
-import { tap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
 import {
-    HttpInterceptor,
-    HttpHandler,
-    HttpRequest,
     HttpEvent,
+    HttpInterceptorFn,
     HttpResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { tap } from 'rxjs';
 
-@Injectable()
-export class AuthorizationInterceptor implements HttpInterceptor {
-    constructor() {}
+const BACKEND_HOSTNAME: string = 'dd24-backend';
 
-    private static BACKEND_HOSTNAME: string = 'dd24-backend';
-
-    intercept(
-        request: HttpRequest<unknown>,
-        next: HttpHandler,
-    ): Observable<HttpEvent<unknown>> {
-        if (request.url != AuthorizationInterceptor.BACKEND_HOSTNAME) {
-            return next.handle(request);
-        }
-        const authorizationToken = localStorage.getItem('authorizationToken');
-        if (authorizationToken) {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${authorizationToken}`,
-                },
-            });
-        }
-        return next.handle(request).pipe(
-            tap((event: HttpEvent<unknown>) => {
-                if (event instanceof HttpResponse) {
-                    const newToken = event.headers.get('X-Auth-Token');
-                    if (newToken) {
-                        localStorage.setItem('authorizationToken', newToken);
-                    }
-                }
-            }),
-        );
+export const authorizationInterceptor: HttpInterceptorFn = (request, next) => {
+    if (request.url != BACKEND_HOSTNAME) {
+        return next(request);
     }
-}
+    const authorizationToken = localStorage.getItem('authorizationToken');
+    if (authorizationToken) {
+        request = request.clone({
+            setHeaders: {
+                Authorization: `Bearer ${authorizationToken}`,
+            },
+        });
+    }
+    return next(request).pipe(
+        tap((event: HttpEvent<unknown>) => {
+            if (event instanceof HttpResponse) {
+                const newToken = event.headers.get('X-Auth-Token');
+                if (newToken) {
+                    localStorage.setItem('authorizationToken', newToken);
+                }
+            }
+        }),
+    );
+};

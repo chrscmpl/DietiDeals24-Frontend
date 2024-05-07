@@ -1,0 +1,10 @@
+<select
+    class="select-input"
+    [name]="name"
+    [value]="value"
+    [disabled]="disabled"
+    (input)="emitInput($event)"
+    (blur)="emitBlur()"
+    (focus)="emitFocus()"
+></select>
+<!-- [placeholder]="placeholder" -->

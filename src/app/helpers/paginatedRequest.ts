@@ -69,7 +69,7 @@ export class PaginatedRequest<Entity> {
             params: {
                 ...this.queryParameters,
                 page: this.currentPage,
-                pageSize: this.pageSize,
+                size: this.pageSize,
             },
         });
     }

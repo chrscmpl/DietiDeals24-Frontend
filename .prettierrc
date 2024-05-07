@@ -1,4 +1,5 @@
 {
+    "endOfLine": "auto",
     "overrides": [
         {
             "files": "*.html",

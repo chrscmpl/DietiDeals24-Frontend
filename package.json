@@ -3,10 +3,10 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve --host 0.0.0.0",
+        "start": "ng serve --host 0.0.0.0 --proxy-config src/proxy.conf.json",
         "build": "ng build --optimization",
         "zip": "zip -r dietideals24.zip dist/dieti-deals-24-frontend",
-        "watch": "ng serve --watch --configuration development --host 0.0.0.0",
+        "watch": "ng serve --watch --configuration development --host 0.0.0.0 --proxy-config src/proxy.conf.json",
         "test": "ng test",
         "lint": "ng lint"
     },
