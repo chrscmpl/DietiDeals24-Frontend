@@ -16,15 +16,16 @@ import {
     ErrorMessagesManager,
     errorMessage,
 } from '../../helpers/inputErrorMessagesManager';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { TextInputComponent } from './text-input/text-input.component';
+import { AsyncPipe } from '@angular/common';
 
 export interface dd24Input {
     name: string;
     placeholder: string;
     value: string;
     disabled: boolean;
-    error: boolean;
+    error$: Observable<boolean>;
 
     focusEvent: EventEmitter<void>;
     blurEvent: EventEmitter<void>;
@@ -36,7 +37,7 @@ export interface dd24Input {
     templateUrl: './input.component.html',
     styleUrl: './input.component.scss',
     standalone: true,
-    imports: [TextInputComponent],
+    imports: [AsyncPipe, TextInputComponent],
     schemas: [NO_ERRORS_SCHEMA],
 })
 export class InputComponent
@@ -55,16 +56,11 @@ export class InputComponent
     public value: any = '';
     public errorMessage: string = '';
     public aggressiveValidation: boolean = false;
-    private _shouldDisplayError: boolean = false;
 
-    public get shouldDisplayError(): boolean {
-        return this._shouldDisplayError;
-    }
+    private errorSubject = new ReplaySubject<boolean>(1);
 
-    public set shouldDisplayError(value: boolean) {
-        if (this.inputChild) this.inputChild.error = value;
-        this._shouldDisplayError = value;
-    }
+    public displayError$: Observable<boolean> =
+        this.errorSubject.asObservable();
 
     private formErrorSubscription?: Subscription;
 
@@ -89,10 +85,11 @@ export class InputComponent
                     this.errorMessages,
                 );
             }
-            this.shouldDisplayError =
+            this.errorSubject.next(
                 (this.ngControl.control?.invalid &&
                     this.aggressiveValidation) ??
-                false;
+                    false,
+            );
         });
         this.formErrorSubscription = this.formError$?.subscribe(
             (err: boolean) => {
@@ -101,7 +98,7 @@ export class InputComponent
                         this.ngControl,
                         this.errorMessages,
                     );
-                    this.shouldDisplayError = true;
+                    this.errorSubject.next(true);
                     this.aggressiveValidation = true;
                 }
             },
@@ -120,6 +117,7 @@ export class InputComponent
         this.inputChild.disabled = this.disabled;
         this.inputChild.placeholder = this.placeholder;
         this.inputChild.value = this.value;
+        this.inputChild.error$ = this.displayError$;
         this.inputChild.focusEvent.subscribe((event: any) => {
             this.handleFocus(event);
         });
@@ -137,6 +135,7 @@ export class InputComponent
 
     ngOnDestroy(): void {
         this.formErrorSubscription?.unsubscribe();
+        this.errorSubject.complete();
     }
 
     public onChange(_: any) {}
@@ -161,17 +160,20 @@ export class InputComponent
 
     public handleBlur() {
         this.onTouched();
-        this.shouldDisplayError =
+        this.errorSubject.next(
             (this.ngControl.control?.invalid &&
                 this.ngControl.control?.touched) ??
-            false;
-        this.aggressiveValidation = this.shouldDisplayError;
-        if (this.shouldDisplayError) {
-            this.errorMessage = ErrorMessagesManager.getErrorMessage(
-                this.ngControl,
-                this.errorMessages,
-            );
-        }
+                false,
+        );
+        this.displayError$.subscribe((shouldDisplayError: boolean) => {
+            this.aggressiveValidation = shouldDisplayError;
+            if (shouldDisplayError) {
+                this.errorMessage = ErrorMessagesManager.getErrorMessage(
+                    this.ngControl,
+                    this.errorMessages,
+                );
+            }
+        });
     }
 
     public handleFocus(event: any): void {

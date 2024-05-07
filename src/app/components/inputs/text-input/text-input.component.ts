@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { dd24Input } from '../input.component';
+import { AsyncPipe } from '@angular/common';
+import { Observable, of } from 'rxjs';
 
 @Component({
     selector: 'dd24-text-input',
     standalone: true,
-    imports: [],
+    imports: [AsyncPipe],
     templateUrl: './text-input.component.html',
     styleUrl: './text-input.component.scss',
 })
@@ -14,7 +16,7 @@ export class TextInputComponent implements dd24Input, OnInit {
     @Input() value: string = '';
     @Input() placeholder: string = '';
     @Input() type: 'text' | 'email' | 'password' = 'text';
-    @Input() error: boolean = false;
+    @Input() error$: Observable<boolean> = of(false);
 
     @Output() focusEvent: EventEmitter<void> = new EventEmitter();
     @Output() blurEvent: EventEmitter<void> = new EventEmitter();

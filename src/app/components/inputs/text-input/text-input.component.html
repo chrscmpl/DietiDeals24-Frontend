@@ -1,4 +1,4 @@
-<div class="text-input-container" [class.error]="error">
+<div class="text-input-container" [class.error]="error$ | async">
     <input
         #inputElement
         class="text-input"
