@@ -40,7 +40,6 @@
         .google-login-btn {
             ::ng-deep button {
                 @include flex(row, center, center, 1ch);
-                width: 100%;
             }
         }
     }
@@ -87,15 +86,6 @@
             .input {
                 width: 100%;
                 @include flex(column, flex-start, stretch);
-                ::ng-deep {
-                    input {
-                        width: 100%;
-                    }
-                    div {
-                        display: flex;
-                        width: 100%;
-                    }
-                }
             }
         }
 
