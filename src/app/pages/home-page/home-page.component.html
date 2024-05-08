@@ -20,9 +20,10 @@
                 }
             } @else {
                 @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
-                    <div
-                        class="trending-category-button trending-category-loading-button button-secondary"
-                    ></div>
+                    <p-button
+                        outlined="true"
+                        class="trending-category-button trending-category-loading-button"
+                    ></p-button>
                 }
             }
         </div>
@@ -33,14 +34,15 @@
                 Are you buying or selling? Take your first step.
             </p>
         </div>
-        <button
-            class="create-auction-button button-primary"
+        <p-button
+            class="create-auction-button"
             type="button"
             routerLink="/create-auction"
+            label="Create an auction"
+            icon="pi pi-arrow-circle-right"
+            iconPos="right"
         >
-            <span class="button-text">Create an auction</span>
-            <i class="bi bi-arrow-right-circle"></i>
-        </button>
+        </p-button>
     </section>
     <section class="your-page-banner">
         <div class="your-page-banner-img-container">
@@ -48,14 +50,15 @@
                 See how your auctions are currently doing.
             </p>
         </div>
-        <button
-            class="your-page-button button-primary"
+        <p-button
+            class="your-page-button"
             type="button"
             routerLink="/your-page"
+            label="View your page"
+            icon="pi pi-arrow-circle-right"
+            iconPos="right"
         >
-            <span class="button-text">View your page</span>
-            <i class="bi bi-arrow-right-circle"></i>
-        </button>
+        </p-button>
     </section>
     <section class="trending-auctions">
         <dd24-auction-list

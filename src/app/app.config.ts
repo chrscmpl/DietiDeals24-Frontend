@@ -10,11 +10,14 @@ import { IntervalPipe } from './pipes/interval.pipe';
 import { MoneyPipe } from './pipes/money.pipe';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authorizationInterceptor } from './interceptors/authorization.interceptor';
+import { importProvidersFrom } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
         provideHttpClient(withInterceptors([authorizationInterceptor])),
+        importProvidersFrom([BrowserAnimationsModule]),
         Location,
         LocalDatePipe,
         OneCharUpperPipe,

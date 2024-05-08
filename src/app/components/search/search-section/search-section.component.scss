@@ -21,9 +21,10 @@
             @include flex(row, start, center);
         }
     }
+
     .search-button {
-        font-size: var(--font-size-large);
-        padding: 0 1ch;
-        border-radius: 0;
+        ::ng-deep button {
+            border-radius: 0;
+        }
     }
 }

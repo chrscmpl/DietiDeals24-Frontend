@@ -5,11 +5,12 @@ import {
     OnDestroy,
     Output,
 } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'dd24-reload-button',
     standalone: true,
-    imports: [],
+    imports: [ButtonModule],
     templateUrl: './reload-button.component.html',
     styleUrl: './reload-button.component.scss',
 })

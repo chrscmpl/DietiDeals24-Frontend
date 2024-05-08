@@ -2,23 +2,25 @@
     <nav class="navbar">
         <section class="navbar-user-section">
             <button class="hamburger-btn btn">
-                <i class="bi bi-list"></i>
+                <i class="pi pi-bars"></i>
             </button>
             <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />
             <div class="spacer"></div>
             @if ((authenticationService.isLogged$ | async) === false) {
-                <button
-                    class="nav-auth-btn nav-login-btn button-tertiary"
+                <p-button
+                    class="nav-auth-btn"
+                    severity="secondary"
                     routerLink="login"
                 >
                     Login
-                </button>
-                <button
-                    class="nav-auth-btn nav-register-btn button-tertiary"
+                </p-button>
+                <p-button
+                    class="nav-auth-btn"
+                    severity="secondary"
                     routerLink="register"
                 >
                     Register
-                </button>
+                </p-button>
             } @else {
                 <span>logged</span>
             }
@@ -40,7 +42,7 @@
                     >DietiDeals24</a
                 >
                 @for (entry of routingUtils.currentRoutes; track $index) {
-                    <i class="bi bi-chevron-right"></i>
+                    <i class="pi pi-chevron-right"></i>
                     <a
                         class="navbar-path-entry custom-link"
                         [routerLink]="entry.url"

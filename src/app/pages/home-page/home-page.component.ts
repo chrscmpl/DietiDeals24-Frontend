@@ -6,6 +6,7 @@ import { AuctionCardComponent } from '../../components/auction-card/auction-card
 import { LoadingIndicator } from '../../helpers/loadingIndicator';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { AuctionsService } from '../../services/auctions.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'dd24-home-page',
@@ -15,6 +16,7 @@ import { AuctionsService } from '../../services/auctions.service';
         AsyncPipe,
         AuctionCardComponent,
         AuctionListComponent,
+        ButtonModule,
     ],
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.scss',
@@ -40,6 +42,10 @@ export class HomePageComponent implements OnInit {
         this.accessoryInformation.trendingCategories$.subscribe(() => {
             this.categoryButtonsLoadingIndicator.stop();
         });
-        this.accessoryInformation.refreshTrendingCategories();
+        this.accessoryInformation.refreshTrendingCategories({
+            error: (err) => {
+                console.error(err);
+            },
+        });
     }
 }

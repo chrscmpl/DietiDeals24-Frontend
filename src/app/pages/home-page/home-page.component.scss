@@ -35,10 +35,8 @@
             .trending-category-loading-button {
                 height: 3.5em;
                 width: 15ch;
-                &:hover {
+                ::ng-deep button:hover {
                     cursor: progress;
-                    background-color: transparent;
-                    transition: none;
                 }
             }
         }
@@ -57,8 +55,8 @@
             background: url("/assets/create-auction-banner.webp") center / cover;
             .create-auction-banner-text {
                 @include center;
-                width: 15ch;
-                padding: 2ch;
+                width: 12ch;
+                padding: 1ch;
                 color: white;
                 background: linear-gradient(
                     to right,
@@ -69,12 +67,16 @@
                 text-align: end;
                 user-select: none;
                 line-height: var(--line-height-large);
+                white-space: normal;
             }
         }
         .create-auction-button {
             @include flex(row, center, center, 0.5ch);
             border-radius: 0;
             white-space: nowrap;
+            ::ng-deep button {
+                border-radius: 0;
+            }
         }
     }
 
@@ -92,7 +94,7 @@
             background: url("/assets/your-page-banner.webp") center / cover;
             .your-page-banner-text {
                 @include center;
-                padding: 1ch;
+                padding: 0.5ch;
                 color: white;
                 background: radial-gradient(black 0%, transparent 70%);
                 text-align: end;
@@ -103,7 +105,14 @@
             @include flex(row, center, center, 0.5ch);
             border-radius: 0;
             white-space: nowrap;
-            padding: 1rem;
+            height: 3.5em;
+            ::ng-deep button {
+                border-radius: 0;
+                justify-content: center;
+                span {
+                    flex-grow: 0;
+                }
+            }
         }
     }
 

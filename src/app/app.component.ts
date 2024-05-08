@@ -12,6 +12,7 @@ import { AsyncPipe } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
     selector: 'dd24-root',
@@ -33,9 +34,15 @@ export class AppComponent implements OnInit {
     constructor(
         private router: Router,
         public windowService: WindowService,
+        private primengConfig: PrimeNGConfig,
     ) {}
 
     ngOnInit(): void {
+        this.configurePrimeNG();
+        this.configureLoadingAnimations();
+    }
+
+    private configureLoadingAnimations(): void {
         this.router.events.subscribe((ev) => {
             if (ev instanceof RouteConfigLoadStart) {
                 this.isLoadingRouteIndicator.start();
@@ -43,5 +50,9 @@ export class AppComponent implements OnInit {
                 this.isLoadingRouteIndicator.stop();
             }
         });
+    }
+
+    private configurePrimeNG(): void {
+        this.primengConfig.ripple = true;
     }
 }

@@ -7,13 +7,15 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { InputComponent } from '../../components/inputs/input.component';
 import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
 import { ReplaySubject, Subject } from 'rxjs';
 import { TextInputComponent } from '../../components/inputs/text-input/text-input.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -26,9 +28,11 @@ interface loginForm {
     imports: [
         AuthenticationPageComponent,
         ReactiveFormsModule,
-        InputComponent,
         TextInputComponent,
         RouterLink,
+        InputTextModule,
+        ButtonModule,
+        PasswordModule,
     ],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',

@@ -5,11 +5,18 @@ import { RouterLink } from '@angular/router';
 import { RoutingUtilsService } from '../../services/routing-utils.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'dd24-header',
     standalone: true,
-    imports: [SearchSectionComponent, RouterLink, TitleCasePipe, AsyncPipe],
+    imports: [
+        SearchSectionComponent,
+        RouterLink,
+        TitleCasePipe,
+        AsyncPipe,
+        ButtonModule,
+    ],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
 })

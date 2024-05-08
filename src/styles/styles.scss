@@ -1,3 +1,13 @@
+@layer reset {
+    @import "normalize-scss/sass/normalize";
+    @include normalize();
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+}
+
 :root {
     --background-color: #ffffff;
     --component-color: #ffffff;
@@ -57,21 +67,20 @@
     font-weight: var(--font-weight-regular);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     background-color: var(--background-color);
     line-height: var(--line-height-medium);
+    color: var(--text-color-1);
+}
+
+p-button button {
+    width: 100%;
+    height: 100%;
 }
 
 @import "./global-styles/danger";
 @import "./global-styles/error";
 @import "./global-styles/links";
 @import "./global-styles/icons";
-@import "./global-styles/buttons";
 @import "./global-styles/text";
 @import "./global-styles/placeholder";

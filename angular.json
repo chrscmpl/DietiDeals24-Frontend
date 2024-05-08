@@ -25,9 +25,10 @@
                         "inlineStyleLanguage": "scss",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": [
-                            "node_modules/normalize.css/normalize.css",
-                            "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
-                            "src/styles/styles.scss"
+                            "src/styles/styles.scss",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "src/assets/theme/light/theme.scss",
+                            "node_modules/primeicons/primeicons.css"
                         ],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src/styles/sass-include"]

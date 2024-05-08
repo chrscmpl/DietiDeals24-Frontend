@@ -21,8 +21,9 @@
         "@angular/platform-browser": "^17.0.0",
         "@angular/platform-browser-dynamic": "^17.0.0",
         "@angular/router": "^17.0.0",
-        "bootstrap-icons": "^1.11.3",
-        "normalize.css": "^8.0.1",
+        "normalize-scss": "^8.0.0",
+        "primeicons": "^7.0.0",
+        "primeng": "^17.16.0",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
         "zone.js": "~0.14.2"

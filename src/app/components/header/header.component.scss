@@ -22,19 +22,22 @@
 
         .navbar-user-section {
             font-size: var(--font-size-medium);
-            @include flex($align: stretch, $gap: 0.5em);
+            @include flex($align: center, $gap: 0.5em);
             @include padding-vertical($section-padding);
 
             .hamburger-btn {
                 color: var(--outline-color);
                 padding: 0;
                 aspect-ratio: 1/1;
-                font-size: calc(var(--font-size-large) * 1.5);
                 background-color: transparent;
                 border: none;
+                i {
+                    font-size: calc(var(--font-size-large) * 1.2);
+                }
             }
 
             .logo {
+                margin-left: 1em;
                 display: block;
                 height: 100%;
             }
@@ -44,10 +47,11 @@
             }
 
             .nav-auth-btn {
-                font-weight: var(--font-weight-bold);
-                border-radius: var(--border-radius-medium);
-                align-self: center;
-                @include padding-vertical(calc(var(--font-size-medium) / 1.5));
+                ::ng-deep button {
+                    padding: 0.5em 1.5em;
+                    height: fit-content;
+                    font-weight: var(--font-weight-bold);
+                }
             }
         }
 
@@ -71,9 +75,6 @@
             }
             .navbar-path {
                 @include flex($align: center);
-                @include mobile {
-                    display: none;
-                }
 
                 :first-child {
                     color: var(--text-color-2);

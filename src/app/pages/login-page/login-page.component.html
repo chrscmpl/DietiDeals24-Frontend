@@ -5,10 +5,14 @@
             you don't have an account?
         </a>
         <form class="google-login">
-            <button type="submit">
+            <p-button
+                class="google-login-btn"
+                type="submit"
+                severity="secondary"
+            >
                 <img src="assets/google.svg" alt="google-logo" />
                 CONTINUE WITH GOOGLE
-            </button>
+            </p-button>
         </form>
 
         <div class="separator">
@@ -22,7 +26,7 @@
             (ngSubmit)="dd24Login()"
         >
             <section class="inputs">
-                <dd24-input
+                <!-- <dd24-input
                     label="Email address"
                     name="email"
                     type="email"
@@ -67,13 +71,36 @@
                     ]"
                 >
                     <dd24-text-input></dd24-text-input>
-                </dd24-input>
+                </dd24-input> -->
+                <div class="input email-input">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        pInputText
+                        formControlName="email"
+                        name="email"
+                    />
+                </div>
+                <div class="input password-input">
+                    <label for="password">Password</label>
+                    <p-password
+                        type="password"
+                        formControlName="password"
+                        name="password"
+                        [feedback]="false"
+                        toggleMask="true"
+                    />
+                </div>
             </section>
             <a routerLink="/forgot-password"> forgot your password? </a>
             @if (error) {
                 <span class="error">{{ error }}</span>
             }
-            <button class="button-primary" type="submit">Login</button>
+            <p-button
+                label="Login"
+                type="submit"
+                class="login-submit"
+            ></p-button>
         </form>
     </div>
 </dd24-authentication-page>

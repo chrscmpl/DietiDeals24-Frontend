@@ -37,19 +37,10 @@
         margin: 1rem 0;
         width: 100%;
         @include padding-horizontal(3rem);
-        button {
-            @include flex(row, center, center, 1ch);
-            width: 100%;
-            padding: 0.2rem 2rem;
-            border: var(--border);
-            font-size: var(--font-size-small);
-            font-weight: var(--font-weight-bold);
-            background-color: #ffffff;
-            border-radius: var(--border-radius-medium);
-            transition: background-color 0.2s ease-in-out;
-
-            &:hover {
-                background-color: darken(#ffffff, 8%);
+        .google-login-btn {
+            ::ng-deep button {
+                @include flex(row, center, center, 1ch);
+                width: 100%;
             }
         }
     }
@@ -91,7 +82,21 @@
         width: 100%;
 
         .inputs {
-            @include flex(column, flex-start, stretch, 0.5rem);
+            @include flex(column, flex-start, stretch, 1em);
+
+            .input {
+                width: 100%;
+                @include flex(column, flex-start, stretch);
+                ::ng-deep {
+                    input {
+                        width: 100%;
+                    }
+                    div {
+                        display: flex;
+                        width: 100%;
+                    }
+                }
+            }
         }
 
         a,
@@ -99,6 +104,10 @@
             align-self: center;
             margin-bottom: 1rem;
             word-wrap: break-word;
+        }
+
+        .login-submit {
+            width: 100%;
         }
     }
 }

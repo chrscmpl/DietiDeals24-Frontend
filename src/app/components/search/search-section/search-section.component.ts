@@ -6,6 +6,7 @@ import {
     FormGroup,
     ReactiveFormsModule,
 } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -14,7 +15,7 @@ interface searchForm {
 @Component({
     selector: 'dd24-search-section',
     standalone: true,
-    imports: [ReactiveFormsModule, SearchBarComponent],
+    imports: [ReactiveFormsModule, SearchBarComponent, ButtonModule],
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
 })
