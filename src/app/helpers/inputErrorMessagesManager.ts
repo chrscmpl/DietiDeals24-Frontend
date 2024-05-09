@@ -1,4 +1,4 @@
-import { NgControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 type validation =
     | 'required'
@@ -15,17 +15,28 @@ export interface errorMessage {
     message: string;
 }
 
-class inputErrorMessagesManager {
+export class inputErrorMessagesManager {
     private defaultErrorString = 'Invalid input';
 
-    public getErrorMessage(
-        control: NgControl,
-        errorMessages: errorMessage[],
-    ): string {
-        const ControlErrors = control.errors;
+    private control: AbstractControl;
+    private errors: errorMessage[];
+
+    public constructor({
+        control,
+        errors,
+    }: {
+        control: AbstractControl;
+        errors: errorMessage[];
+    }) {
+        this.control = control;
+        this.errors = errors;
+    }
+
+    public getErrorMessage(): string {
+        const ControlErrors = this.control.errors;
         if (!ControlErrors) return '';
         const errorKeys = Object.keys(ControlErrors);
-        const error = errorMessages.find((e) => {
+        const error = this.errors.find((e) => {
             if (e.validation === 'all') return true;
             if (Array.isArray(e.validation)) {
                 return e.validation.some((v) => errorKeys.includes(v));
@@ -35,5 +46,3 @@ class inputErrorMessagesManager {
         return error?.message || this.defaultErrorString;
     }
 }
-
-export const ErrorMessagesManager = new inputErrorMessagesManager();

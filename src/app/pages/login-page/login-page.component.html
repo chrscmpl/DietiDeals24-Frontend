@@ -26,72 +26,59 @@
             (ngSubmit)="dd24Login()"
         >
             <section class="inputs">
-                <!-- <dd24-input
-                    label="Email address"
-                    name="email"
-                    type="email"
-                    placeholder="Your Email"
-                    class="form-field"
-                    formControlName="email"
-                    [formError$]="formError$"
-                    (focusEvent)="clearError()"
-                    [errorMessages]="[
-                        {
-                            validation: 'required',
-                            message: 'an email is required'
-                        },
-                        {
-                            validation: 'email',
-                            message: 'please enter a valid email'
-                        }
-                    ]"
-                >
-                    <dd24-text-input></dd24-text-input>
-                </dd24-input>
-
-                <dd24-input
-                    label="Password"
-                    name="password"
-                    type="password"
-                    placeholder="Your Password"
-                    class="form-field"
-                    formControlName="password"
-                    [formError$]="formError$"
-                    (focusEvent)="clearError()"
-                    [errorMessages]="[
-                        {
-                            validation: 'required',
-                            message: 'a password is required'
-                        },
-                        {
-                            validation: ['pattern', 'minlength', 'maxlength'],
-                            message:
-                                'A password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
-                        }
-                    ]"
-                >
-                    <dd24-text-input></dd24-text-input>
-                </dd24-input> -->
                 <div class="input email-input">
                     <label for="email">Email</label>
-                    <input
-                        class="p-fluid"
-                        type="email"
-                        pInputText
-                        formControlName="email"
-                        name="email"
-                    />
+                    <dd24-input
+                        controlName="email"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'an email is required'
+                            },
+                            {
+                                validation: 'email',
+                                message: 'please enter a valid email'
+                            }
+                        ]"
+                    >
+                        <input
+                            class="p-fluid"
+                            type="email"
+                            pInputText
+                            formControlName="email"
+                            name="email"
+                        />
+                    </dd24-input>
                 </div>
                 <div class="input password-input">
                     <label for="password">Password</label>
-                    <p-password
-                        class="p-fluid"
-                        type="password"
-                        formControlName="password"
-                        name="password"
-                        [feedback]="false"
-                        toggleMask="true"
-                    />
+                    <dd24-input
+                        controlName="password"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a password is required'
+                            },
+                            {
+                                validation: [
+                                    'pattern',
+                                    'minlength',
+                                    'maxlength'
+                                ],
+                                message:
+                                    'A password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
+                            }
+                        ]"
+                    >
+                        <p-password
+                            class="p-fluid"
+                            type="password"
+                            formControlName="password"
+                            name="password"
+                            [feedback]="false"
+                            toggleMask="true"
+                        />
+                    </dd24-input>
                 </div>
             </section>
             <a routerLink="/forgot-password"> forgot your password? </a>

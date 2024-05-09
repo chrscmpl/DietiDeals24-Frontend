@@ -7,8 +7,10 @@
     font-weight: var(--font-weight-regular);
     width: 100%;
 
-    label {
-        color: var(--text-color-1);
-        margin-bottom: 0.1em;
+    .error {
+        color: var(--error-color);
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-normal);
+        margin-top: 0.25rem;
     }
 }

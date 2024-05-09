@@ -11,14 +11,14 @@
 :root {
     --background-color: #ffffff;
     --component-color: #ffffff;
-    --text-color-1: #0c1929;
+    --text-color-1: var(--text-color);
     --text-color-2: #707080;
     --text-color-3: #495057;
-    --text-suggestion-color: #a0a0a0;
+    --text-suggestion-color: var(--gray-400);
     --text-accent-color: #efefef;
-    --basic-affordances-color: #939393;
+    --basic-affordances-color: var(--gray-400);
     --outline-color: var(--text-color-1);
-    --border-color: #aeb4ba;
+    --border-color: var(--gray-300);
     --border-color-transparent: rgba(174, 180, 186, 0.4);
     --accent-color-1: #2d7074;
     --accent-color-1-transparent: rgba(45, 112, 116, 0.4);

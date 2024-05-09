@@ -12,10 +12,10 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
 import { ReplaySubject, Subject } from 'rxjs';
-import { TextInputComponent } from '../../components/inputs/text-input/text-input.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import { InputComponent } from '../../components/input/input.component';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -28,8 +28,8 @@ interface loginForm {
     imports: [
         AuthenticationPageComponent,
         ReactiveFormsModule,
-        TextInputComponent,
         RouterLink,
+        InputComponent,
         InputTextModule,
         ButtonModule,
         PasswordModule,

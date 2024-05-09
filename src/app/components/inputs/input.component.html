@@ -1,9 +1,0 @@
-<div class="input-container">
-    <label [for]="name">{{ label }}</label>
-    <ng-content></ng-content>
-    @if (displayError$ | async) {
-        <span class="error error-message">
-            {{ errorMessage }}
-        </span>
-    }
-</div>
