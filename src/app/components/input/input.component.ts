@@ -60,7 +60,9 @@ export class InputComponent implements OnInit, AfterViewInit, OnDestroy {
         const child = this.getNativeInputElement();
         if (child) {
             this.blurListener = this.renderer.listen(child, 'blur', () => {
-                this.checkError();
+                setTimeout(() => {
+                    this.checkError(true);
+                }, 100);
             });
         }
     }
@@ -73,8 +75,8 @@ export class InputComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.elementRef.nativeElement.querySelector('input');
     }
 
-    private checkError(): void {
-        if (this.control?.invalid && this.control?.touched) {
+    private checkError(blurred: boolean = false): void {
+        if (this.control?.invalid && (this.control?.touched || blurred)) {
             this.error = this.errorsManager?.getErrorMessage() || '';
         } else {
             this.error = '';
