@@ -20,7 +20,7 @@
     outline: $focusOutline;
     outline-offset: $inputFocusOutlineOffset;
     box-shadow: $focusShadow;
-	border-color: $inputFocusBorderColor;
+    border-color: $inputFocusBorderColor;
 }
 
 @mixin focused-listitem() {
@@ -31,6 +31,7 @@
 
 @mixin invalid-input() {
     border-color: $inputErrorBorderColor;
+    outline: none !important;
 }
 
 @mixin menuitem-link {
