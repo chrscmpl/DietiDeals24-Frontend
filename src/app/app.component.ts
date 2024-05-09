@@ -13,6 +13,7 @@ import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
 import { PrimeNGConfig } from 'primeng/api';
+import { ThemeService } from './services/theme.service';
 
 @Component({
     selector: 'dd24-root',
@@ -35,11 +36,13 @@ export class AppComponent implements OnInit {
         private router: Router,
         public windowService: WindowService,
         private primengConfig: PrimeNGConfig,
+        private themeService: ThemeService,
     ) {}
 
     ngOnInit(): void {
         this.configurePrimeNG();
         this.configureLoadingAnimations();
+        this.themeService.setTheme('light');
     }
 
     private configureLoadingAnimations(): void {

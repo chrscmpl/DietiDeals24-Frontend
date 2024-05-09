@@ -25,10 +25,14 @@
                         "inlineStyleLanguage": "scss",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": [
-                            "src/styles/styles.scss",
                             "node_modules/primeng/resources/primeng.min.css",
-                            "src/assets/theme/light/theme.scss",
-                            "node_modules/primeicons/primeicons.css"
+                            "node_modules/primeicons/primeicons.css",
+                            "src/styles/styles.scss",
+                            {
+                                "input": "src/assets/theme/light/theme.scss",
+                                "bundleName": "theme-light",
+                                "inject": false
+                            }
                         ],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src/styles/sass-include"]
