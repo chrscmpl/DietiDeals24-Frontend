@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationPageComponent } from '../authentication-page/authentication-page.component';
 import {
     FormBuilder,
@@ -11,7 +11,6 @@ import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
 import { Location } from '@angular/common';
-import { ReplaySubject, Subject } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
@@ -37,11 +36,9 @@ interface loginForm {
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit {
     error: string = '';
     loginForm!: FormGroup<loginForm>;
-    formErrorSubject: Subject<boolean> = new ReplaySubject<boolean>(1);
-    formError$ = this.formErrorSubject.asObservable();
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -50,7 +47,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.formErrorSubject.next(false);
         this.loginForm = this.formBuilder.group<loginForm>({
             email: new FormControl(null, [
                 Validators.required,
@@ -64,16 +60,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
-        this.formErrorSubject.complete();
-    }
-
     dd24Login() {
         if (this.loginForm.invalid) {
-            this.formErrorSubject.next(true);
+            this.loginForm.markAllAsTouched();
             return;
         }
-        this.formErrorSubject.next(false);
         this.authenticationService.login(
             this.loginForm.value as UserCredentials,
             {

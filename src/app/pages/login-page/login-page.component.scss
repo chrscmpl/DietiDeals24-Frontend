@@ -57,7 +57,7 @@
 
         .separator-or {
             @include padding-horizontal(0.5ch);
-            color: var(--text-color-2);
+            color: var(--text-color-3);
             font-weight: var(--font-weight-bold);
             text-align: center;
             grid-row: 1;

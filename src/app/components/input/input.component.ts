@@ -4,8 +4,6 @@ import {
     OnInit,
     Input,
     NO_ERRORS_SCHEMA,
-    ElementRef,
-    Renderer2,
     OnDestroy,
     AfterViewInit,
 } from '@angular/core';
@@ -24,20 +22,15 @@ import { AsyncPipe } from '@angular/common';
     imports: [AsyncPipe],
     schemas: [NO_ERRORS_SCHEMA],
 })
-export class InputComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InputComponent implements OnInit {
     @Input() errorMessages: errorMessage[] = [];
     @Input({ required: true }) controlName!: string;
 
     private control?: AbstractControl | null;
     public error: string = '';
     private errorsManager?: inputErrorMessagesManager;
-    private blurListener: () => void = () => {};
 
-    constructor(
-        private controlContainer: ControlContainer,
-        private elementRef: ElementRef,
-        private renderer: Renderer2,
-    ) {}
+    constructor(private controlContainer: ControlContainer) {}
 
     ngOnInit() {
         this.control = this.controlContainer?.control?.get(this.controlName);
@@ -53,26 +46,34 @@ export class InputComponent implements OnInit, AfterViewInit, OnDestroy {
             errors: this.errorMessages,
         });
 
-        this.control.statusChanges.subscribe(() => this.checkError());
+        this.listenForChanges();
+        this.listenForTouched();
     }
 
-    ngAfterViewInit() {
-        const child = this.getNativeInputElement();
-        if (child) {
-            this.blurListener = this.renderer.listen(child, 'blur', () => {
-                setTimeout(() => {
-                    this.checkError(true);
-                }, 100);
-            });
-        }
+    private listenForChanges(): void {
+        this.control?.statusChanges.subscribe(() => this.onChanges());
     }
 
-    ngOnDestroy() {
-        this.blurListener();
+    private listenForTouched(): void {
+        if (!this.control) return;
+        (this.control as any)._markAsTouched = this.control.markAsTouched;
+        this.control.markAsTouched = (options) => {
+            (this.control as any)._markAsTouched(options);
+            this.onTouched();
+        };
     }
 
-    private getNativeInputElement(): HTMLInputElement | null {
-        return this.elementRef.nativeElement.querySelector('input');
+    private onChanges(): void {
+        this.checkError();
+    }
+
+    private onTouched(): void {
+        setTimeout(() => {
+            this.checkError(true);
+            if (this.control?.valid) {
+                this.control.markAsUntouched();
+            }
+        }, 100);
     }
 
     private checkError(blurred: boolean = false): void {

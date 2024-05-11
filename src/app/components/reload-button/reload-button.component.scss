@@ -4,12 +4,12 @@
 .reload-prompt {
     @include flex(column, start, center, 1rem);
     align-self: center;
-    color: var(--text-color-2);
+    color: var(--text-color-3);
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bold);
     .reload-prompt-button {
         @include center;
-        color: var(--text-color-2);
+        color: var(--text-color-3);
         --size: calc(2 * var(--font-size-large));
         --padding: 1rem;
         padding: 0;
@@ -23,7 +23,7 @@
             &.spin {
                 animation: spin 0.15s linear;
             }
-            color: var(--text-color-2);
+            color: var(--text-color-3);
         }
     }
 }

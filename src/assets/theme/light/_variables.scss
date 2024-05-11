@@ -11,6 +11,7 @@ $colors: (
     "purple": #a855f7,
     "red": #ff3d32,
     "primary": $primaryColor,
+    "secondary": $secondaryColor,
 );
 
 //reused color variables
@@ -62,6 +63,7 @@ $disabledOpacity: 0.6 !default;
 $maskBg: rgba(0, 0, 0, 0.4) !default;
 $loadingIconFontSize: 2rem !default;
 $errorColor: #f87171 !default;
+$dangerColor: #ef4444 !default;
 
 //scale
 $scaleSM: 0.875 !default;
@@ -139,7 +141,7 @@ $inputOverlayShadow:
 
 //password
 $passwordMeterBg: $shade200 !default;
-$passwordWeakBg: #ef4444 !default;
+$passwordWeakBg: $dangerColor !default;
 $passwordMediumBg: #f59e0b !default;
 $passwordStrongBg: #22c55e !default;
 
@@ -224,7 +226,7 @@ $helpButtonTextActiveColor: $helpButtonTextColor !default;
 $helpButtonActiveBorderColor: #7e22ce !default;
 $helpButtonFocusShadow: none !default;
 
-$dangerButtonBg: #ef4444 !default;
+$dangerButtonBg: $dangerColor !default;
 $dangerButtonTextColor: #ffffff !default;
 $dangerButtonBorder: 1px solid $dangerButtonBg !default;
 $dangerButtonHoverBg: #dc2626 !default;
@@ -308,7 +310,7 @@ $inplaceTextHoverColor: $shade800 !default;
 //rating
 $ratingIconFontSize: 1rem !default;
 $ratingCancelIconColor: #f87171 !default;
-$ratingCancelIconHoverColor: #ef4444 !default;
+$ratingCancelIconHoverColor: $dangerColor !default;
 $ratingStarIconOffColor: $shade500 !default;
 $ratingStarIconOnColor: $primaryColor !default;
 $ratingStarIconHoverColor: $primaryColor !default;
@@ -892,10 +894,16 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     font-variation-settings: normal;
     --font-family: "Inter var", sans-serif;
     --font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    --text-color: #{$shade700};
-    --text-color-secondary: #{$shade500};
+    --text-color: #{$shade950};
+    --text-color-secondary: #{$shade700};
+    --text-color-tertiary: #{$shade500};
+    --text-color-suggestion: #{$inputPlaceholderTextColor};
     --primary-color: #{$primaryColor};
     --primary-color-text: #{$primaryTextColor};
+    --secondary-color: #{$secondaryColor};
+    --secondary-color-text: #{$secondaryTextColor};
+    --error-color: #{$errorColor};
+    --danger-color: #{$dangerColor};
     --surface-0: #ffffff;
     --surface-50: #f8fafc;
     --surface-100: #f1f5f9;

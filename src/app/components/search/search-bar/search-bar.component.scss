@@ -21,12 +21,8 @@
         background-color: var(--component-color);
         border: var(--border);
         border-radius: var(--border-radius-medium);
-        color: var(--text-color-3);
+        color: var(--text-color-2);
         padding: 0.2rem 3ch;
-
-        &:focus {
-            outline: 2px solid var(--border-color-transparent);
-        }
     }
 
     &.alternate {

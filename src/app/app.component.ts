@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this.configurePrimeNG();
         this.configureLoadingAnimations();
-        this.themeService.setTheme('light');
+        this.themeService.initTheme();
     }
 
     private configureLoadingAnimations(): void {
