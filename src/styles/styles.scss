@@ -14,12 +14,13 @@
 
 :root {
     --background-color: var(--surface-ground);
-    --component-color: var(--surface-0);
+    --component-color: var(--surface-card);
     --text-color-1: var(--text-color);
     --text-color-2: var(--text-color-secondary);
     --text-color-3: var(--text-color-tertiary);
     --text-suggestion-color: var(--text-color-suggestion);
     --text-accent-color: var(--primary-color-text);
+    --text-accent-color-2: var(--secondary-color-text);
     --basic-affordances-color: var(--gray-400);
     --outline-color: var(--text-color-1);
     --border-color: var(--surface-border);
@@ -29,18 +30,19 @@
 
     --border: 1px solid var(--border-color);
 
-    --border-radius-small: 0.25rem;
-    --border-radius-medium: 0.5rem;
-    --border-radius-large: 1rem;
+    --border-radius-small: calc(var(--border-radius) * 0.75);
+    --border-radius-medium: var(--border-radius);
+    --border-radius-large: calc(var(--border-radius) * 2);
 
-    --font-size-small: 0.75rem;
-    --font-size-medium: 1rem;
-    --font-size-large: 1.6rem;
+    --font-size-small: calc(var(--font-size) * 0.75);
+    --font-size-medium: var(--font-size);
+    --font-size-large: calc(var(--font-size) * 1.6);
 
     --font-weight-light: 300;
-    --font-weight-regular: 400;
+    --font-weight-regular: 500;
     --font-weight-bold: 700;
 
+    --line-height-small: 1.25rem;
     --line-height-medium: 1.5rem;
     --line-height-large: 2rem;
 
@@ -48,12 +50,9 @@
 
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
-}
-
-body {
-    background-color: var(--background-color);
     line-height: var(--line-height-medium);
     color: var(--text-color-1);
+    background-color: var(--background-color);
 }
 
 @import "./global-styles/danger";

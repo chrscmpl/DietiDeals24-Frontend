@@ -32,6 +32,11 @@
                                 "input": "src/assets/theme/light/theme.scss",
                                 "bundleName": "theme-light",
                                 "inject": false
+                            },
+                            {
+                                "input": "src/assets/theme/dark/theme.scss",
+                                "bundleName": "theme-dark",
+                                "inject": false
                             }
                         ],
                         "stylePreprocessorOptions": {

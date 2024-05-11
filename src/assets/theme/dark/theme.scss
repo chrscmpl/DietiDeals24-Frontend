@@ -1,0 +1,43 @@
+$primaryColor: #23e496 !default;
+$primaryLightColor: #57f7b7 !default;
+$primaryLighterColor: #8af8cc !default;
+$primaryLightestColor: rgb(170, 247, 216, 0.5) !default;
+$primaryTextColor: #030712 !default;
+
+$highlightBg: rgba(34, 211, 238, 0.16) !default;
+$highlightTextColor: rgba(255, 255, 255, 0.87) !default;
+$highlightFocusBg: rgba($primaryColor, 0.24) !default;
+
+$secondaryColor: #152a44;
+$secondaryTextColor: #ffffff;
+
+$shade000: rgba(255, 255, 255, 0.7);
+$shade50: rgba(255, 255, 255, 0.6);
+$shade100: rgba(255, 255, 255, 0.5);
+$shade200: #646871;
+$shade300: #686c76;
+$shade400: #5d626c;
+$shade500: #484c54;
+$shade600: #353b43;
+$shade700: #2a303a;
+$shade800: #111825;
+$shade900: #0d111b;
+$shade950: #0a1522;
+
+$secondaryButtonBg: $shade900;
+$secondaryButtonTextColor: $shade000;
+$secondaryButtonBorder: 1px solid $shade100;
+$secondaryButtonHoverBg: rgba($shade100, 0.1);
+$secondaryButtonTextHoverColor: rgba($shade000, 1);
+$secondaryButtonHoverBorderColor: $shade100;
+$secondaryButtonActiveBg: rgba($shade100, 0.4);
+$secondaryButtonTextActiveColor: $shade000;
+$secondaryButtonActiveBorderColor: $shade100;
+$secondaryButtonFocusShadow: none;
+
+$borderRadius: 8px;
+
+@import "./variables";
+@import "../fonts/fonts";
+@import "../theme-base/components";
+@import "./extensions";

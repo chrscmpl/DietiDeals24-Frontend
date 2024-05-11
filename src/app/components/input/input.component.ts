@@ -73,7 +73,7 @@ export class InputComponent implements OnInit {
             if (this.control?.valid) {
                 this.control.markAsUntouched();
             }
-        }, 100);
+        }, 150);
     }
 
     private checkError(blurred: boolean = false): void {

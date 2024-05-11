@@ -39,7 +39,9 @@ $secondaryButtonTextActiveColor: $textColor;
 $secondaryButtonActiveBorderColor: #aeb4ba;
 $secondaryButtonFocusShadow: none;
 
+$borderRadius: 8px;
+
 @import "./_variables";
-@import "./_fonts";
+@import "../fonts/fonts";
 @import "../theme-base/_components";
 @import "./extensions/_extensions";

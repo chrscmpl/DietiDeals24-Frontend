@@ -16,8 +16,6 @@ type themeStatus = {
     isSystemPreference: boolean;
 };
 
-const multipleThemesEnabled = false;
-
 @Injectable({
     providedIn: 'root',
 })
@@ -95,7 +93,7 @@ export class ThemeService {
         this.renderer.setAttribute(
             this.themeLink,
             'href',
-            `./theme-${multipleThemesEnabled ? theme : 'light'}.css`,
+            `./theme-${theme}.css`,
         );
         if (!this.alreadyInitialized) {
             this.renderer.appendChild(document.head, this.themeLink);
