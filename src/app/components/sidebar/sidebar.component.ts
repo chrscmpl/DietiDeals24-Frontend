@@ -5,7 +5,7 @@ import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from '../logo/logo.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { mainPages } from '../../helpers/links';
-import { Observable, map, of } from 'rxjs';
+import { Observable, delay, map, of, startWith, switchMap } from 'rxjs';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { MenuItem } from 'primeng/api';
 
@@ -26,6 +26,12 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit() {
         this.items$ = this.accessoryInformation.trendingCategories$.pipe(
+            startWith([]),
+            switchMap((categories) => {
+                if (categories.length === 0)
+                    return of(categories).pipe(delay(1000));
+                return of(categories);
+            }),
             map((categories) => {
                 const items: MenuItem[] = mainPages.map((page) => {
                     return {
@@ -35,6 +41,7 @@ export class SidebarComponent implements OnInit {
                         command: () => this.hideSidebar(),
                     };
                 });
+                if (categories.length === 0) return items;
                 const categoriesItem: MenuItem = {
                     label: 'Trending Categories',
                     items: categories.map((category) => {
