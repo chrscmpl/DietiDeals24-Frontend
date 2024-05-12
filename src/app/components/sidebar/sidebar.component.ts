@@ -8,6 +8,7 @@ import { mainPages } from '../../helpers/links';
 import { Observable, delay, map, of, startWith, switchMap } from 'rxjs';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { MenuItem } from 'primeng/api';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
     selector: 'dd24-sidebar',
@@ -17,10 +18,38 @@ import { MenuItem } from 'primeng/api';
     styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent implements OnInit {
+    private mainPagesMenuItems: MenuItem[] = mainPages.map((page) => {
+        return {
+            label: page.name,
+            routerLink: page.url,
+            icon: page.icon,
+            command: () => this.hideSidebar(),
+        } as MenuItem;
+    });
+
     constructor(
         public windowService: WindowService,
         private accessoryInformation: AccessoryInformationService,
-    ) {}
+        private themeService: ThemeService,
+    ) {
+        this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
+            label: 'Theme',
+            items: [
+                {
+                    label: 'Light',
+                    command: () => this.themeService.setTheme('light'),
+                },
+                {
+                    label: 'Dark',
+                    command: () => this.themeService.setTheme('dark'),
+                },
+                {
+                    label: 'System',
+                    command: () => this.themeService.setTheme('system'),
+                },
+            ],
+        });
+    }
 
     public items$: Observable<MenuItem[]> = of([]);
 
@@ -33,14 +62,7 @@ export class SidebarComponent implements OnInit {
                 return of(categories);
             }),
             map((categories) => {
-                const items: MenuItem[] = mainPages.map((page) => {
-                    return {
-                        label: page.name,
-                        routerLink: page.url,
-                        icon: page.icon,
-                        command: () => this.hideSidebar(),
-                    };
-                });
+                const items: MenuItem[] = [...this.mainPagesMenuItems];
                 if (categories.length === 0) return items;
                 const categoriesItem: MenuItem = {
                     label: 'Trending Categories',
@@ -52,7 +74,7 @@ export class SidebarComponent implements OnInit {
                         };
                     }),
                 };
-                items.splice(items.length - 1, 0, categoriesItem);
+                items.splice(items.length - 2, 0, categoriesItem);
                 return items;
             }),
         );
