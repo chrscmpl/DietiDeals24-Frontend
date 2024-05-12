@@ -947,6 +947,8 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --link-color: #0000ff;
     --affordances-color: #{$shade400};
     --inputs-bg: #{$inputBg};
+    --color-side: #{$secondaryColor};
+    --border-color-side: #{$textColor};
     color-scheme: light;
 }
 

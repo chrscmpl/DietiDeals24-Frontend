@@ -26,7 +26,7 @@
         background-color: var(--side-color);
         position: relative;
         @include flex(column, center, center);
-        border-right: 2px solid var(--outline-color);
+        border-right: 2px solid var(--border-color-side);
 
         @include mobile {
             @include flex(row, space-between, center);

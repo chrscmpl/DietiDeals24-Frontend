@@ -3,6 +3,7 @@ import {
     RouteConfigLoadEnd,
     RouteConfigLoadStart,
     Router,
+    RouterLink,
     RouterOutlet,
 } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
@@ -14,6 +15,7 @@ import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
 import { PrimeNGConfig } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     selector: 'dd24-root',
@@ -25,6 +27,8 @@ import { ThemeService } from './services/theme.service';
         FooterComponent,
         MobileNavbarComponent,
         MobileHeaderComponent,
+        ButtonModule,
+        RouterLink,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],

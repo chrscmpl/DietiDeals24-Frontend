@@ -16,6 +16,13 @@
     </div>
     @if ((windowService.isMobile$ | async) === false) {
         <dd24-footer class="footer"></dd24-footer>
+        <p-button
+            class="create-auction-button"
+            icon="pi pi-plus"
+            [rounded]="true"
+            size="large"
+            routerLink="/create-auction"
+        />
     } @else {
         <dd24-mobile-navbar></dd24-mobile-navbar>
     }

@@ -78,7 +78,10 @@
                 @include flex($align: center);
                 ::ng-deep {
                     .p-breadcrumb {
+                        border: none;
+                        background: transparent;
                         padding: 0;
+
                         .p-menuitem-text {
                             color: var(--text-color-1);
                             line-height: normal;
