@@ -16,19 +16,23 @@ import { MobileHeaderComponent } from './components/mobile-header/mobile-header.
 import { PrimeNGConfig } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 
 @Component({
     selector: 'dd24-root',
     standalone: true,
     imports: [
         RouterOutlet,
+        RouterLink,
+        LoadingPlaceholderComponent,
         AsyncPipe,
         HeaderComponent,
         FooterComponent,
         MobileNavbarComponent,
         MobileHeaderComponent,
         ButtonModule,
-        RouterLink,
+        SidebarComponent,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],

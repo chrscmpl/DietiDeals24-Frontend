@@ -11,12 +11,6 @@
 
     .content {
         display: main;
-
-        .loading-placeholder {
-            width: 100%;
-            padding: 1rem 15%;
-            @include flex(column, start, stretch, 1rem);
-        }
     }
 
     .footer {

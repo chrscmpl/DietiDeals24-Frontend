@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { Observable, catchError, map, of } from 'rxjs';
+import { WindowService } from '../../services/window.service';
 
 @Component({
     selector: 'dd24-header',
@@ -29,6 +30,7 @@ export class HeaderComponent {
     constructor(
         public authenticationService: AuthenticationService,
         public routingUtils: RoutingUtilsService,
+        public windowService: WindowService,
     ) {}
 
     tabs: link[] = mainPages;

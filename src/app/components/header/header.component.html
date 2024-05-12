@@ -1,7 +1,10 @@
 <header class="header">
     <nav class="navbar">
         <section class="navbar-user-section">
-            <button class="hamburger-btn btn">
+            <button
+                class="hamburger-btn btn"
+                (click)="windowService.isSidebarVisible = true"
+            >
                 <i class="pi pi-bars"></i>
             </button>
             <img class="logo" src="assets/logo.svg" alt="DietiDeals 24 logo" />

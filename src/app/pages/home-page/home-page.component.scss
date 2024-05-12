@@ -27,10 +27,12 @@
             flex-wrap: nowrap;
             min-height: 3.5em;
             .trending-category-button {
-                @include flex(row, center, center);
                 flex: 0 1 15ch;
-                word-wrap: break-word;
-                padding: 0.3em;
+                ::ng-deep button {
+                    @include flex(row, center, center);
+                    word-wrap: break-word;
+                    padding: 0.3em;
+                }
             }
             .trending-category-loading-button {
                 height: 3.5em;

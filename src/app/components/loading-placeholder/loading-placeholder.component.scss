@@ -1,0 +1,16 @@
+@import "flex";
+
+.loading-placeholder {
+    width: 100%;
+    padding: 1rem 15%;
+    @include flex(column, center, stretch, 2rem);
+    .spinner {
+        align-self: center;
+        ::ng-deep {
+            .p-progress-spinner-circle {
+                animation: p-progress-spinner-dash 1.5s ease-in-out infinite;
+                stroke: var(--border-color);
+            }
+        }
+    }
+}

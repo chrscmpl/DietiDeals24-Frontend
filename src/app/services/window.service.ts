@@ -11,6 +11,8 @@ import {
     providedIn: 'root',
 })
 export class WindowService {
+    public isSidebarVisible = false;
+
     constructor() {}
 
     public isMobile$ = fromEvent(window, 'resize').pipe(
