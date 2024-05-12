@@ -945,6 +945,8 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --highlight-text-color: #{$highlightTextColor};
     --p-anchor-gutter: 2px;
     --link-color: #0000ff;
+    --affordances-color: #{$shade400};
+    --inputs-bg: #{$inputBg};
     color-scheme: light;
 }
 

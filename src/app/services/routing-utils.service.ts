@@ -1,14 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
+
+interface route {
+    name: string;
+    url: string;
+}
 
 @Injectable({
     providedIn: 'root',
 })
 export class RoutingUtilsService {
-    constructor(private router: Router) {}
+    public currentRoutesObservable = new ReplaySubject<route[]>(1);
 
-    get currentRoutes(): { name: string; url: string }[] {
-        const ret: { name: string; url: string }[] = [];
+    public currentRoutes$ = this.currentRoutesObservable.asObservable();
+
+    constructor(private router: Router) {
+        this.currentRoutesObservable.next(this.getCurrentRoutes());
+        this.router.events.subscribe((e) => {
+            if (e instanceof NavigationEnd)
+                this.currentRoutesObservable.next(this.getCurrentRoutes());
+        });
+    }
+
+    private getCurrentRoutes(): route[] {
+        const ret: route[] = [];
         const route = this.router.url.replace(/^\/+|\/+$/g, '');
         let i: number = 0;
         while (i != -1) {

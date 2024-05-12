@@ -1,0 +1,74 @@
+@import "flex";
+.search-section {
+    @include flex(row, start, stretch, 1ch);
+    width: 100%;
+    font-size: var(--font-size-large);
+
+    .search-inputs-container {
+        @include flex(row, start, stretch);
+        font-size: var(--font-size-medium);
+        border: 2px solid var(--outline-color);
+        flex-grow: 1;
+
+        > :not(:last-child) {
+            border-right: 2px solid var(--outline-color);
+        }
+
+        .search-bar {
+            ::ng-deep {
+                input {
+                    border: none;
+                    outline: none;
+                    padding-left: 0;
+                    box-shadow: none;
+                }
+                .p-inputgroup-addon {
+                    border: none;
+                    outline: none;
+                    padding: 0;
+                    color: var(--basic-affordances-color);
+                    background: var(--inputs-background);
+                }
+            }
+        }
+
+        .auction-type-selection {
+            ::ng-deep {
+                .p-dropdown {
+                    border: none;
+                    outline: none;
+                    box-shadow: none;
+                    min-width: 20ch;
+                    .p-dropdown-label {
+                        color: var(--text-color-1);
+                    }
+                    .p-dropdown-panel {
+                        position: absolute;
+                        top: 100%;
+                        min-width: 20ch;
+                        left: 0;
+                        border: none;
+                        outline: 2px solid var(--outline-color);
+                        border-radius: 0;
+                        .p-dropdown-items {
+                            padding: 0;
+                            .p-dropdown-item {
+                                border-radius: 0;
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                    svg {
+                        color: var(--outline-color);
+                    }
+                }
+            }
+        }
+    }
+
+    .search-button {
+        ::ng-deep button {
+            border-radius: 0;
+        }
+    }
+}

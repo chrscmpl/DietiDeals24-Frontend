@@ -37,7 +37,7 @@
                 }
             </section>
             <section class="navbar-path">
-                <span>You are here: </span>
+                <!-- <span>You are here: </span>
                 <a class="navbar-path-entry custom-link" routerLink=""
                     >DietiDeals24</a
                 >
@@ -48,7 +48,16 @@
                         [routerLink]="entry.url"
                         >{{ entry.name | titlecase }}</a
                     >
-                }
+                } -->
+                <p-breadcrumb
+                    class="max-w-full"
+                    [model]="(routes$ | async) ?? []"
+                    [home]="{
+                        icon: 'pi pi-home',
+                        label: 'DietiDeals24',
+                        routerLink: '/'
+                    }"
+                />
             </section>
         </section>
     </nav>

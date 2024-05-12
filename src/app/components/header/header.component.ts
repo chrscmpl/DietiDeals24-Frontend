@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import { SearchSectionComponent } from '../search/search-section/search-section.component';
+import { SearchSectionComponent } from '../search-section/search-section.component';
 import { RouterLink } from '@angular/router';
 import { RoutingUtilsService } from '../../services/routing-utils.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Component({
     selector: 'dd24-header',
@@ -16,6 +19,8 @@ import { ButtonModule } from 'primeng/button';
         TitleCasePipe,
         AsyncPipe,
         ButtonModule,
+        BreadcrumbModule,
+        TitleCasePipe,
     ],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',
@@ -27,4 +32,19 @@ export class HeaderComponent {
     ) {}
 
     tabs: link[] = mainPages;
+    titleCasePipe: TitleCasePipe = new TitleCasePipe();
+
+    public routes$: Observable<MenuItem[]> =
+        this.routingUtils.currentRoutes$.pipe(
+            map((routes) =>
+                routes.map((route) => ({
+                    label: this.titleCasePipe.transform(route.name),
+                    routerLink: route.url,
+                })),
+            ),
+            catchError((e) => {
+                console.error(e);
+                return of([]) as Observable<MenuItem[]>;
+            }),
+        );
 }

@@ -1,0 +1,33 @@
+<form
+    class="search-section"
+    [formGroup]="searchForm"
+    (ngSubmit)="handleSubmit()"
+>
+    <div class="search-inputs-container">
+        <p-inputGroup class="search-bar">
+            <p-inputGroupAddon>
+                <i class="pi pi-search"></i>
+            </p-inputGroupAddon>
+            <input
+                pInputText
+                placeholder="What are you looking for?"
+                formControlName="keywords"
+            />
+        </p-inputGroup>
+        <p-dropdown
+            class="auction-type-selection"
+            formControlName="type"
+            [options]="auctionTypeOptions"
+            optionLabel="name"
+            optionValue="value"
+        >
+        </p-dropdown>
+        <div class="category-selection">category</div>
+    </div>
+    <p-button
+        type="submit"
+        class="search-button"
+        icon="pi pi-search"
+        label="Search"
+    ></p-button>
+</form>

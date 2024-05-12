@@ -57,6 +57,7 @@
 
         .navbar-search-section {
             @include flex(column, center, stretch);
+            overflow: visible;
         }
 
         .navbar-tabs-section {
@@ -75,10 +76,29 @@
             }
             .navbar-path {
                 @include flex($align: center);
-
-                :first-child {
-                    color: var(--text-color-3);
-                    margin-right: 1ch;
+                ::ng-deep {
+                    .p-breadcrumb {
+                        padding: 0;
+                        .p-menuitem-text {
+                            color: var(--text-color-1);
+                            line-height: normal;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                            // &:last-child:hover {
+                            //     text-decoration: none;
+                            //     cursor: default;
+                            // }
+                        }
+                        .p-icon,
+                        .p-menuitem-icon {
+                            color: var(--text-color-1);
+                        }
+                        .p-menuitem-icon {
+                            margin-right: 1ch;
+                            margin-bottom: 2px;
+                        }
+                    }
                 }
             }
         }
