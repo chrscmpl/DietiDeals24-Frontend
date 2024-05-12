@@ -32,6 +32,7 @@ export class SidebarComponent implements OnInit {
                         label: page.name,
                         routerLink: page.url,
                         icon: page.icon,
+                        command: () => this.hideSidebar(),
                     };
                 });
                 const categoriesItem: MenuItem = {
@@ -40,6 +41,7 @@ export class SidebarComponent implements OnInit {
                         return {
                             label: category,
                             routerLink: ['/search', { category: category }],
+                            command: () => this.hideSidebar(),
                         };
                     }),
                 };
@@ -47,5 +49,9 @@ export class SidebarComponent implements OnInit {
                 return items;
             }),
         );
+    }
+
+    private hideSidebar(): void {
+        this.windowService.isSidebarVisible = false;
     }
 }
