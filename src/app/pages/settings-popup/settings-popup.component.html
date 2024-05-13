@@ -2,8 +2,8 @@
     header="Settings"
     [modal]="true"
     [(visible)]="display"
-    [style]="{ minWidth: '60%' }"
     draggable="false"
+    resizable="false"
     (onHide)="onClose()"
 >
     <p-tabMenu [model]="tabs" [activeItem]="activeItem"></p-tabMenu>
