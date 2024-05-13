@@ -8,7 +8,6 @@ import { mainPages } from '../../helpers/links';
 import { Observable, delay, map, of, startWith, switchMap } from 'rxjs';
 import { AccessoryInformationService } from '../../services/accessory-information.service';
 import { MenuItem } from 'primeng/api';
-import { ThemeService } from '../../services/theme.service';
 
 @Component({
     selector: 'dd24-sidebar',
@@ -30,22 +29,16 @@ export class SidebarComponent implements OnInit {
     constructor(
         public windowService: WindowService,
         private accessoryInformation: AccessoryInformationService,
-        private themeService: ThemeService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
-            label: 'Theme',
+            label: 'Options',
+            icon: 'pi pi-cog',
             items: [
                 {
-                    label: 'Light',
-                    command: () => this.themeService.setTheme('light'),
-                },
-                {
-                    label: 'Dark',
-                    command: () => this.themeService.setTheme('dark'),
-                },
-                {
-                    label: 'System',
-                    command: () => this.themeService.setTheme('system'),
+                    label: 'Theme',
+                    icon: 'pi pi-palette',
+                    routerLink: [{ outlets: { overlay: 'settings' } }],
+                    command: () => this.hideSidebar(),
                 },
             ],
         });
@@ -66,6 +59,7 @@ export class SidebarComponent implements OnInit {
                 if (categories.length === 0) return items;
                 const categoriesItem: MenuItem = {
                     label: 'Trending Categories',
+                    icon: 'pi pi-chart-line',
                     items: categories.map((category) => {
                         return {
                             label: category,

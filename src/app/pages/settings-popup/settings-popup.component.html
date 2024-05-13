@@ -1,0 +1,12 @@
+<p-dialog
+    header="Settings"
+    [modal]="true"
+    [(visible)]="display"
+    [style]="{ minWidth: '60%' }"
+    draggable="false"
+    (onHide)="onClose()"
+>
+    <p-tabMenu [model]="tabs" [activeItem]="activeItem"></p-tabMenu>
+    <!-- <router-outlet></router-outlet> -->
+    <dd24-theme-settings></dd24-theme-settings>
+</p-dialog>

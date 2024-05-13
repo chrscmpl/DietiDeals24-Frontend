@@ -5,7 +5,11 @@
         <dd24-mobile-header></dd24-mobile-header>
     }
     <div class="content">
-        <router-outlet></router-outlet>
+        <router-outlet
+            (activate)="onMainRouterOutletActivate()"
+            (deactivate)="onMainRouterOutletDeactivate()"
+        ></router-outlet>
+        <router-outlet name="overlay"></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
             <dd24-loading-placeholder></dd24-loading-placeholder>
         }

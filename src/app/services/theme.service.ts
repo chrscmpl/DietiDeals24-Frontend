@@ -9,7 +9,7 @@ import {
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 
-type theme = 'light' | 'dark';
+export type theme = 'light' | 'dark';
 
 type themeStatus = {
     theme: theme;

@@ -48,19 +48,22 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.isLoadingRouteIndicator.start();
         this.configurePrimeNG();
-        this.configureLoadingAnimations();
         this.themeService.initTheme();
+        this.router.events.subscribe((event) => {
+            console.log(event.toString());
+        });
     }
 
-    private configureLoadingAnimations(): void {
-        this.router.events.subscribe((ev) => {
-            if (ev instanceof RouteConfigLoadStart) {
-                this.isLoadingRouteIndicator.start();
-            } else if (ev instanceof RouteConfigLoadEnd) {
-                this.isLoadingRouteIndicator.stop();
-            }
-        });
+    public onMainRouterOutletActivate(): void {
+        console.log('onMainRouterOutletActivate');
+        this.isLoadingRouteIndicator.stop();
+    }
+
+    public onMainRouterOutletDeactivate(): void {
+        console.log('onMainRouterOutletDeactivate');
+        this.isLoadingRouteIndicator.start();
     }
 
     private configurePrimeNG(): void {

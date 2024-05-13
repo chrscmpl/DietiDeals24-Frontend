@@ -1,0 +1,9 @@
+@import "flex";
+
+.theme-selection {
+    @include flex(column, start, start, 1rem);
+    padding: 1rem;
+    .theme-entry {
+        @include flex(row, start, center, 1ch);
+    }
+}

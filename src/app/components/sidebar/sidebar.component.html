@@ -4,9 +4,6 @@
 >
     <div class="sidebar-content">
         <dd24-logo></dd24-logo>
-        <p-panelMenu
-            [model]="(items$ | async) ?? []"
-            styleClass="w-full md:w-20rem"
-        ></p-panelMenu>
+        <p-panelMenu [model]="(items$ | async) ?? []"></p-panelMenu>
     </div>
 </p-sidebar>

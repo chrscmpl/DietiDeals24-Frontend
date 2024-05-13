@@ -1,0 +1,10 @@
+::ng-deep {
+    .p-menuitem-text,
+    .p-menuitem-icon {
+        color: var(--text-color-3);
+    }
+    .p-menuitem-link {
+        border-radius: 0;
+        outline: none;
+    }
+}
