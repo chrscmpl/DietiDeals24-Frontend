@@ -18,5 +18,10 @@
                 ></p-tabMenu>
             }
         </ng-template>
+        <ng-template let-item pTemplate="item">
+            @if (!item.value || item.value[0] === selectedItems) {
+                <span class="item-label">{{ item.name }}</span>
+            }
+        </ng-template>
     </p-dropdown>
 </form>

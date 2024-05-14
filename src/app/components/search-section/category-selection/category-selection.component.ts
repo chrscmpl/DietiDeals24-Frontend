@@ -5,7 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 
 interface option {
     name: string;
@@ -20,7 +20,13 @@ interface group {
 @Component({
     selector: 'dd24-category-selection',
     standalone: true,
-    imports: [DropdownModule, ReactiveFormsModule, TabMenuModule, AsyncPipe],
+    imports: [
+        DropdownModule,
+        ReactiveFormsModule,
+        TabMenuModule,
+        AsyncPipe,
+        JsonPipe,
+    ],
     templateUrl: './category-selection.component.html',
     styleUrl: './category-selection.component.scss',
 })
@@ -42,37 +48,51 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
 
+    public selectedItems: 'p' | 's' = 'p';
+
     public tabs: MenuItem[] = [
         {
             label: 'Products',
-            command: () => this.refreshOptions('Products'),
+            command: () => (this.selectedItems = 'p'),
         },
         {
             label: 'Services',
-            command: () => this.refreshOptions('Services'),
+            command: () => (this.selectedItems = 's'),
         },
     ];
 
     public currentTab: MenuItem = this.tabs[0];
+
+    private removeFirstCharFromValueFlag = false;
 
     constructor(private categoriesService: CategoriesService) {}
 
     ngOnInit(): void {
         this.categoriesService.categories$.subscribe((categories) => {
             this.categoriesOptions.products = (
-                [{ name: 'All products', value: 'products' }] as option[]
-            ).concat(categories.products.map(this.stringToOption));
-            this.categoriesOptions.services = (
-                [{ name: 'All services', value: 'services' }] as option[]
-            ).concat(categories.services.map(this.stringToOption));
-            this.refreshOptions(
-                this.currentTab.label as 'Products' | 'Services',
+                [{ name: 'All products', value: 'pproducts' }] as option[]
+            ).concat(
+                categories.products.map((str) => this.stringToOption(str, 'p')),
             );
+            this.categoriesOptions.services = (
+                [{ name: 'All services', value: 'sservices' }] as option[]
+            ).concat(
+                categories.services.map((str) => this.stringToOption(str, 's')),
+            );
+            this.refreshOptions();
         });
         this.categoriesService.refreshCategories({
             error: (err) => {
                 console.error(err);
             },
+        });
+        this.form.get(this.controlName)?.valueChanges.subscribe((value) => {
+            if (this.removeFirstCharFromValueFlag) return;
+            if (value) {
+                this.removeFirstCharFromValueFlag = true;
+                this.form.get(this.controlName)?.setValue(value.substring(1));
+                this.removeFirstCharFromValueFlag = false;
+            }
         });
     }
 
@@ -85,21 +105,21 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
         items: [this.categoriesOptions.all],
     };
 
-    public refreshOptions(tab: 'Products' | 'Services'): void {
+    public refreshOptions(): void {
         this.currentOptionsSubject.next([
             this.allCategoriesGroup,
             {
-                groupName: tab,
-                items:
-                    tab === 'Products'
-                        ? this.categoriesOptions.products
-                        : this.categoriesOptions.services,
+                groupName: 'items',
+                items: [
+                    ...this.categoriesOptions.products,
+                    ...this.categoriesOptions.services,
+                ],
             },
         ]);
         this.form.get(this.controlName)?.setValue(null);
     }
 
-    private stringToOption(s: string): option {
-        return { name: s, value: s };
+    private stringToOption(str: string, macroCategory: 'p' | 's'): option {
+        return { name: str, value: `${macroCategory}${str}` };
     }
 }

@@ -22,5 +22,8 @@
         .p-dropdown-filter-container {
             margin-bottom: 10px;
         }
+        .p-dropdown-item:not(:has(.item-label)) {
+            padding: 0;
+        }
     }
 }
