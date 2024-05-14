@@ -19,7 +19,10 @@
             }
         </ng-template>
         <ng-template let-item pTemplate="item">
-            @if (!item.value || item.value[0] === selectedItems) {
+            @if (
+                item.macroCategory === selectedMacroCategory ||
+                item.macroCategory === MACROCATEGORIES.All
+            ) {
                 <span class="item-label">{{ item.name }}</span>
             }
         </ng-template>

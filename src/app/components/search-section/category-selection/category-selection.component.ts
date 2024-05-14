@@ -7,9 +7,16 @@ import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 
+enum MacroCategory {
+    Product,
+    Service,
+    All,
+}
+
 interface option {
     name: string;
     value: string | null;
+    macroCategory: MacroCategory;
 }
 
 interface group {
@@ -34,12 +41,18 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     @Input({ required: true }) form!: FormGroup;
     @Input({ required: true }) controlName!: string;
 
+    public MACROCATEGORIES = MacroCategory;
+
     public categoriesOptions: {
         all: option;
         products: option[];
         services: option[];
     } = {
-        all: { name: 'All categories', value: null },
+        all: {
+            name: 'All categories',
+            value: null,
+            macroCategory: MacroCategory.All,
+        },
         products: [],
         services: [],
     };
@@ -48,16 +61,16 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
 
-    public selectedItems: 'p' | 's' = 'p';
+    public selectedMacroCategory: MacroCategory = MacroCategory.Product;
 
     public tabs: MenuItem[] = [
         {
             label: 'Products',
-            command: () => (this.selectedItems = 'p'),
+            command: () => (this.selectedMacroCategory = MacroCategory.Product),
         },
         {
             label: 'Services',
-            command: () => (this.selectedItems = 's'),
+            command: () => (this.selectedMacroCategory = MacroCategory.Service),
         },
     ];
 
@@ -70,14 +83,30 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.categoriesService.categories$.subscribe((categories) => {
             this.categoriesOptions.products = (
-                [{ name: 'All products', value: 'pproducts' }] as option[]
+                [
+                    {
+                        name: 'All products',
+                        value: 'pproducts',
+                        macroCategory: MacroCategory.Product,
+                    },
+                ] as option[]
             ).concat(
-                categories.products.map((str) => this.stringToOption(str, 'p')),
+                categories.products.map((str) =>
+                    this.stringToOption(str, MacroCategory.Product),
+                ),
             );
             this.categoriesOptions.services = (
-                [{ name: 'All services', value: 'sservices' }] as option[]
+                [
+                    {
+                        name: 'All services',
+                        value: 'sservices',
+                        macroCategory: MacroCategory.Service,
+                    },
+                ] as option[]
             ).concat(
-                categories.services.map((str) => this.stringToOption(str, 's')),
+                categories.services.map((str) =>
+                    this.stringToOption(str, MacroCategory.Service),
+                ),
             );
             this.refreshOptions();
         });
@@ -85,14 +114,6 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
             error: (err) => {
                 console.error(err);
             },
-        });
-        this.form.get(this.controlName)?.valueChanges.subscribe((value) => {
-            if (this.removeFirstCharFromValueFlag) return;
-            if (value) {
-                this.removeFirstCharFromValueFlag = true;
-                this.form.get(this.controlName)?.setValue(value.substring(1));
-                this.removeFirstCharFromValueFlag = false;
-            }
         });
     }
 
@@ -119,7 +140,7 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
         this.form.get(this.controlName)?.setValue(null);
     }
 
-    private stringToOption(str: string, macroCategory: 'p' | 's'): option {
-        return { name: str, value: `${macroCategory}${str}` };
+    private stringToOption(str: string, macroCategory: MacroCategory): option {
+        return { name: str, value: str, macroCategory: macroCategory };
     }
 }
