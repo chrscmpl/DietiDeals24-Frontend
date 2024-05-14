@@ -25,5 +25,11 @@
         .p-dropdown-item:not(:has(.item-label)) {
             padding: 0;
         }
+        .p-dropdown-items:not(:has(.item-label))::after {
+            content: "No results found";
+            display: block;
+            padding: 10px;
+            color: var(--text-color-2);
+        }
     }
 }
