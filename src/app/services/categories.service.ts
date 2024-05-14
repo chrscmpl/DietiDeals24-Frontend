@@ -31,19 +31,17 @@ export class CategoriesService {
 
     private categoriesSubject = new ReplaySubject<Categories>(1);
 
-    public categories$: Observable<Categories> = this.categoriesSubject
-        .asObservable()
-        .pipe(
-            map((categories) => ({
-                products: categories.products.sort(),
-                services: categories.services.sort(),
-            })),
-        );
+    public categories$: Observable<Categories> =
+        this.categoriesSubject.asObservable();
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
             .get<Categories>('dd24-backend/info/categories')
             .pipe(
+                map((categories) => ({
+                    products: categories.products.sort(),
+                    services: categories.services.sort(),
+                })),
                 tap((value) => {
                     this.categoriesSubject.next(value);
                 }),
