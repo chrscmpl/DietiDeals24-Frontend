@@ -6,8 +6,11 @@
         .p-tabmenuitem {
             border-top: var(--border);
             border-bottom: var(--border);
+            flex: 1;
 
-            border-right: var(--border);
+            &:first-child {
+                border-right: var(--border);
+            }
 
             .p-menuitem-link {
                 border-radius: 0;
