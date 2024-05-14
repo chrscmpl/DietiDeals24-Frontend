@@ -6,6 +6,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
+import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 
 enum MacroCategory {
     Product,
@@ -73,7 +74,10 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     public currentTab: MenuItem = this.tabs[0];
 
-    constructor(private categoriesService: CategoriesService) {}
+    constructor(
+        private categoriesService: CategoriesService,
+        private namePipe: OneCharUpperPipe,
+    ) {}
 
     ngOnInit(): void {
         this.categoriesService.refreshCategories({
@@ -117,6 +121,10 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     }
 
     private stringToOption(str: string, macroCategory: MacroCategory): option {
-        return { name: str, value: str, macroCategory: macroCategory };
+        return {
+            name: this.namePipe.transform(str),
+            value: str,
+            macroCategory: macroCategory,
+        };
     }
 }
