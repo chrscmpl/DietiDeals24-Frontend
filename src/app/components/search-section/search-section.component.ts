@@ -12,11 +12,17 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { AuctionType } from '../../models/auction.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
+import { CategorySelectionComponent } from './category-selection/category-selection.component';
 
 interface searchForm {
     keywords: FormControl<string | null>;
     type: FormControl<AuctionType | null>;
     category: FormControl<string | null>;
+}
+
+interface option {
+    name: string;
+    value: string | null;
 }
 
 @Component({
@@ -30,6 +36,7 @@ interface searchForm {
         InputGroupAddonModule,
         DropdownModule,
         OneCharUpperPipe,
+        CategorySelectionComponent,
     ],
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
@@ -37,7 +44,7 @@ interface searchForm {
 export class SearchSectionComponent implements OnInit {
     public searchForm!: FormGroup<searchForm>;
 
-    public auctionTypeOptions: { name: string; value: string | null }[] = [
+    public auctionTypeOptions: option[] = [
         { name: 'All auctions', value: null },
     ];
 

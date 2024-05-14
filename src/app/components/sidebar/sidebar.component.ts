@@ -6,7 +6,7 @@ import { LogoComponent } from '../logo/logo.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { mainPages } from '../../helpers/links';
 import { Observable, delay, map, of, startWith, switchMap } from 'rxjs';
-import { AccessoryInformationService } from '../../services/accessory-information.service';
+import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
 
     constructor(
         public windowService: WindowService,
-        private accessoryInformation: AccessoryInformationService,
+        private accessoryInformation: CategoriesService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
             label: 'Options',
@@ -37,7 +37,9 @@ export class SidebarComponent implements OnInit {
                 {
                     label: 'Theme',
                     icon: 'pi pi-palette',
-                    routerLink: [{ outlets: { overlay: 'settings' } }],
+                    routerLink: [
+                        { outlets: { overlay: ['settings', 'theme'] } },
+                    ],
                     command: () => this.hideSidebar(),
                 },
             ],

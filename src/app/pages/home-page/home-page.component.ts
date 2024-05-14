@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccessoryInformationService } from '../../services/accessory-information.service';
+import { CategoriesService } from '../../services/categories.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuctionCardComponent } from '../../components/auction-card/auction-card.component';
@@ -33,7 +33,7 @@ export class HomePageComponent implements OnInit {
     });
 
     constructor(
-        public accessoryInformation: AccessoryInformationService,
+        public accessoryInformation: CategoriesService,
         public auctionsService: AuctionsService,
     ) {}
 

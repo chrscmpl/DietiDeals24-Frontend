@@ -1,0 +1,28 @@
+.category-selector {
+    ::ng-deep {
+        .p-menuitem-text {
+            color: var(--text-color-1);
+        }
+        .p-tabmenuitem {
+            border-top: var(--border);
+            border-bottom: var(--border);
+
+            &:first-child {
+                border-right: var(--border);
+            }
+
+            .p-menuitem-link {
+                border-radius: 0;
+            }
+        }
+        .p-dropdown-item-group {
+            padding: 0;
+        }
+        .p-dropdown-items {
+            padding: 0;
+        }
+        .p-dropdown-filter-container {
+            margin-bottom: 10px;
+        }
+    }
+}

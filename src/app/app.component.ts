@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-    RouteConfigLoadEnd,
-    RouteConfigLoadStart,
-    Router,
-    RouterLink,
-    RouterOutlet,
-} from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingIndicator } from './helpers/loadingIndicator';
@@ -41,7 +35,6 @@ export class AppComponent implements OnInit {
     public isLoadingRouteIndicator = new LoadingIndicator(100);
 
     constructor(
-        private router: Router,
         public windowService: WindowService,
         private primengConfig: PrimeNGConfig,
         private themeService: ThemeService,
@@ -51,18 +44,13 @@ export class AppComponent implements OnInit {
         this.isLoadingRouteIndicator.start();
         this.configurePrimeNG();
         this.themeService.initTheme();
-        this.router.events.subscribe((event) => {
-            console.log(event.toString());
-        });
     }
 
     public onMainRouterOutletActivate(): void {
-        console.log('onMainRouterOutletActivate');
         this.isLoadingRouteIndicator.stop();
     }
 
     public onMainRouterOutletDeactivate(): void {
-        console.log('onMainRouterOutletDeactivate');
         this.isLoadingRouteIndicator.start();
     }
 

@@ -1,0 +1,22 @@
+<form [formGroup]="form" class="category-selector">
+    <p-dropdown
+        [options]="(currentOptions$ | async) ?? [allCategoriesGroup]"
+        [formControlName]="controlName"
+        optionLabel="name"
+        optionValue="value"
+        [filter]="true"
+        [group]="true"
+        optionGroupLabel="groupName"
+        optionGroupChildren="items"
+        scrollHeight="20em"
+    >
+        <ng-template let-group pTemplate="group">
+            @if (group.groupName !== "All") {
+                <p-tabMenu
+                    [model]="tabs"
+                    [(activeItem)]="currentTab"
+                ></p-tabMenu>
+            }
+        </ng-template>
+    </p-dropdown>
+</form>

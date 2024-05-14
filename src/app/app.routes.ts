@@ -71,17 +71,17 @@ const popupRoutes: Routes = [
         title: 'Settings',
         outlet: 'overlay',
         component: SettingsPopupComponent,
-        //     children: [
-        //         {
-        //             path: '',
-        //             redirectTo: 'theme',
-        //             pathMatch: 'full',
-        //         },
-        //         {
-        //             path: 'theme',
-        //             component: ThemeSettingsComponent,
-        //         },
-        //     ],
+        children: [
+            {
+                path: '',
+                redirectTo: 'theme',
+                pathMatch: 'full',
+            },
+            {
+                path: 'theme',
+                component: ThemeSettingsComponent,
+            },
+        ],
     },
 ];
 
