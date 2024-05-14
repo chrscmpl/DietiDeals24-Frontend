@@ -32,7 +32,8 @@
             }
         }
 
-        .auction-type-selection {
+        .auction-type-selection,
+        .category-selection {
             ::ng-deep {
                 .p-dropdown {
                     border: none;
@@ -60,6 +61,17 @@
                     }
                     svg {
                         color: var(--outline-color);
+                    }
+                }
+            }
+        }
+
+        .category-selection {
+            ::ng-deep {
+                .p-dropdown {
+                    min-width: 30ch;
+                    .p-dropdown-panel {
+                        min-width: 30ch;
                     }
                 }
             }

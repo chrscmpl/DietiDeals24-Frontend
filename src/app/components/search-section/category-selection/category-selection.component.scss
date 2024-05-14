@@ -7,9 +7,7 @@
             border-top: var(--border);
             border-bottom: var(--border);
 
-            &:first-child {
-                border-right: var(--border);
-            }
+            border-right: var(--border);
 
             .p-menuitem-link {
                 border-radius: 0;
