@@ -43,25 +43,22 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     public MACROCATEGORIES = MacroCategory;
 
-    public categoriesOptions: {
-        all: option;
-        products: option[];
-        services: option[];
-    } = {
-        all: {
-            name: 'All categories',
-            value: null,
-            macroCategory: MacroCategory.All,
-        },
-        products: [],
-        services: [],
-    };
-
     private currentOptionsSubject = new ReplaySubject<group[]>(1);
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
 
     public selectedMacroCategory: MacroCategory = MacroCategory.Product;
+
+    public allCategoriesGroup: group = {
+        groupName: 'All',
+        items: [
+            {
+                name: 'All categories',
+                value: null,
+                macroCategory: MacroCategory.All,
+            },
+        ],
+    };
 
     public tabs: MenuItem[] = [
         {
@@ -76,68 +73,47 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     public currentTab: MenuItem = this.tabs[0];
 
-    private removeFirstCharFromValueFlag = false;
-
     constructor(private categoriesService: CategoriesService) {}
 
     ngOnInit(): void {
-        this.categoriesService.categories$.subscribe((categories) => {
-            this.categoriesOptions.products = (
-                [
-                    {
-                        name: 'All products',
-                        value: 'pproducts',
-                        macroCategory: MacroCategory.Product,
-                    },
-                ] as option[]
-            ).concat(
-                categories.products.map((str) =>
-                    this.stringToOption(str, MacroCategory.Product),
-                ),
-            );
-            this.categoriesOptions.services = (
-                [
-                    {
-                        name: 'All services',
-                        value: 'sservices',
-                        macroCategory: MacroCategory.Service,
-                    },
-                ] as option[]
-            ).concat(
-                categories.services.map((str) =>
-                    this.stringToOption(str, MacroCategory.Service),
-                ),
-            );
-            this.refreshOptions();
-        });
         this.categoriesService.refreshCategories({
             error: (err) => {
                 console.error(err);
             },
         });
+        this.categoriesService.categories$.subscribe((categories) => {
+            this.currentOptionsSubject.next([
+                this.allCategoriesGroup,
+                {
+                    groupName: 'items',
+                    items: [
+                        {
+                            name: 'All products',
+                            value: 'products',
+                            macroCategory: MacroCategory.Product,
+                        },
+
+                        ...categories.products.map((str) =>
+                            this.stringToOption(str, MacroCategory.Product),
+                        ),
+
+                        {
+                            name: 'All services',
+                            value: 'services',
+                            macroCategory: MacroCategory.Service,
+                        },
+
+                        ...categories.services.map((str) =>
+                            this.stringToOption(str, MacroCategory.Service),
+                        ),
+                    ],
+                },
+            ]);
+        });
     }
 
     ngOnDestroy(): void {
         this.currentOptionsSubject.complete();
-    }
-
-    public allCategoriesGroup: group = {
-        groupName: 'All',
-        items: [this.categoriesOptions.all],
-    };
-
-    public refreshOptions(): void {
-        this.currentOptionsSubject.next([
-            this.allCategoriesGroup,
-            {
-                groupName: 'items',
-                items: [
-                    ...this.categoriesOptions.products,
-                    ...this.categoriesOptions.services,
-                ],
-            },
-        ]);
-        this.form.get(this.controlName)?.setValue(null);
     }
 
     private stringToOption(str: string, macroCategory: MacroCategory): option {
