@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Observer, ReplaySubject, of, tap } from 'rxjs';
+import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 
 interface Categories {
     products: string[];
@@ -31,16 +31,18 @@ export class CategoriesService {
 
     private categoriesSubject = new ReplaySubject<Categories>(1);
 
-    public categories$: Observable<Categories> =
-        this.categoriesSubject.asObservable();
+    public categories$: Observable<Categories> = this.categoriesSubject
+        .asObservable()
+        .pipe(
+            map((categories) => ({
+                products: categories.products.sort(),
+                services: categories.services.sort(),
+            })),
+        );
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
             .get<Categories>('dd24-backend/info/categories')
-            // of({
-            //     products: ['Phones', 'Desktops', 'Apples'],
-            //     services: ['Tutoring', 'Cleaning', 'Apple Making'],
-            // })
             .pipe(
                 tap((value) => {
                     this.categoriesSubject.next(value);
