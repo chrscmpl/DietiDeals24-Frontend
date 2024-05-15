@@ -13,9 +13,9 @@ import { Subscription } from 'rxjs';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) request!: PaginatedRequest<Auction>;
+    @Input({ required: true }) request!: PaginatedRequest<Auction> | null;
 
-    private dataSubscription!: Subscription;
+    private dataSubscription!: Subscription | null;
     public auctions: Auction[] = [];
     public error: boolean = false;
 
@@ -23,35 +23,36 @@ export class AuctionListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscribeToData();
-        this.request.more();
+        this.request?.more();
     }
 
     ngOnDestroy(): void {
-        this.dataSubscription.unsubscribe();
+        this.dataSubscription?.unsubscribe();
     }
 
     scrolled(index: number): void {
         if (index === this.auctions.length - 1) {
-            this.request.more();
+            this.request?.more();
         }
     }
 
     reloadAfterError(): void {
-        this.request.refresh();
+        this.request?.refresh();
         this.subscribeToData();
-        this.request.more();
+        this.request?.more();
     }
 
     private subscribeToData(): void {
-        this.dataSubscription = this.request.data$.subscribe({
-            next: (auctions) => {
-                this.error = false;
-                this.auctions.push(...auctions);
-            },
-            error: (err) => {
-                this.error = true;
-                console.error(err);
-            },
-        });
+        this.dataSubscription =
+            this.request?.data$.subscribe({
+                next: (auctions) => {
+                    this.error = false;
+                    this.auctions.push(...auctions);
+                },
+                error: (err) => {
+                    this.error = true;
+                    console.error(err);
+                },
+            }) ?? null;
     }
 }

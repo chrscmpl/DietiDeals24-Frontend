@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { SearchResultsPageComponent } from './pages/search-results-page/search-results-page.component';
 import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
 import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
+import { auctionsRequestGuard } from './guards/auctions-request.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,7 +14,11 @@ export const routes: Routes = [
                 (m) => m.HomePageComponent,
             ),
     },
-    { path: 'auctions/:query', component: SearchResultsPageComponent },
+    {
+        path: 'auctions/:query',
+        component: SearchResultsPageComponent,
+        resolve: { query: auctionsRequestGuard },
+    },
     {
         path: 'your-page',
         title: 'Your Page',

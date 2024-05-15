@@ -1,4 +1,1 @@
-<!-- @if (request) {
-    <dd24-auction-list [request]="request"></dd24-auction-list>
-} -->
-{{ query }}
+<dd24-auction-list [request]="auctionsRequest$ | async"></dd24-auction-list>
