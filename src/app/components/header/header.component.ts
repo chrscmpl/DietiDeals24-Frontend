@@ -38,16 +38,18 @@ export class HeaderComponent {
 
     public routes$: Observable<MenuItem[]> =
         this.routingUtils.currentRoutes$.pipe(
-            map((routes) =>
-                routes.map((route) => {
+            map((routes) => {
+                const url: string[] = [];
+                return routes.map((route) => {
+                    url.push(route);
                     return {
                         label: this.titleCasePipe.transform(
-                            route.name.replace(/\(.*\)/, ''),
+                            route.replace(/-/g, ' '),
                         ),
-                        routerLink: route.url,
+                        routerLink: url,
                     };
-                }),
-            ),
+                });
+            }),
             catchError((e) => {
                 console.error(e);
                 return of([]) as Observable<MenuItem[]>;

@@ -3,9 +3,8 @@ import { SearchResultsPageComponent } from './pages/search-results-page/search-r
 import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
 import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
 
-const mainRoutes: Routes = [
+export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-
     {
         path: 'home',
         title: 'Home',
@@ -14,7 +13,7 @@ const mainRoutes: Routes = [
                 (m) => m.HomePageComponent,
             ),
     },
-    { path: 'search/:category', component: SearchResultsPageComponent },
+    { path: 'search/:query', component: SearchResultsPageComponent },
     {
         path: 'your-page',
         title: 'Your Page',
@@ -63,9 +62,6 @@ const mainRoutes: Routes = [
                 './pages/forgot-password-page/forgot-password-page.component'
             ).then((m) => m.ForgotPasswordPageComponent),
     },
-];
-
-const popupRoutes: Routes = [
     {
         path: 'settings',
         title: 'Settings',
@@ -83,11 +79,6 @@ const popupRoutes: Routes = [
             },
         ],
     },
-];
-
-export const routes = [
-    ...mainRoutes,
-    ...popupRoutes,
     {
         path: '**',
         loadComponent: () =>

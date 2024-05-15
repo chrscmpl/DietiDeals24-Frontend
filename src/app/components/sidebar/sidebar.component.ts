@@ -31,14 +31,18 @@ export class SidebarComponent implements OnInit {
         private accessoryInformation: CategoriesService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
-            label: 'Options',
+            label: 'Settings',
             icon: 'pi pi-cog',
             items: [
                 {
                     label: 'Theme',
                     icon: 'pi pi-palette',
                     routerLink: [
-                        { outlets: { overlay: ['settings', 'theme'] } },
+                        {
+                            outlets: {
+                                overlay: ['settings', 'theme'],
+                            },
+                        },
                     ],
                     command: () => this.hideSidebar(),
                 },

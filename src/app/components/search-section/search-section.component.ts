@@ -13,6 +13,7 @@ import { AuctionType } from '../../models/auction.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
+import { Router } from '@angular/router';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -51,6 +52,7 @@ export class SearchSectionComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private oneCharUpperPipe: OneCharUpperPipe,
+        private router: Router,
     ) {}
 
     public ngOnInit(): void {
@@ -71,6 +73,14 @@ export class SearchSectionComponent implements OnInit {
     }
 
     public handleSubmit(): void {
-        console.log(this.searchForm.value);
+        const query: string = Object.entries(this.searchForm.value).reduce(
+            (acc, [key, value]) => {
+                if (value)
+                    acc += `${acc.includes('=') ? '&' : ''}${key}=${value}`;
+                return acc;
+            },
+            '',
+        );
+        this.router.navigate(['/search', query]);
     }
 }
