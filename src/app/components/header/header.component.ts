@@ -11,6 +11,8 @@ import { MenuItem } from 'primeng/api';
 import { Observable, catchError, map, of } from 'rxjs';
 import { WindowService } from '../../services/window.service';
 
+const HIDDEN_QUERY_PARAMS = ['keywords'];
+
 @Component({
     selector: 'dd24-header',
     standalone: true,
@@ -40,19 +42,51 @@ export class HeaderComponent {
         this.routingUtils.currentRoutes$.pipe(
             map((routes) => {
                 const url: string[] = [];
-                return routes.map((route) => {
-                    url.push(route);
-                    return {
-                        label: this.titleCasePipe.transform(
-                            route.replace(/-/g, ' '),
-                        ),
-                        routerLink: url,
-                    };
-                });
+                let menuItems: MenuItem[] = this.routeArrayToMenuItems(
+                    routes,
+                    url,
+                );
+                if (menuItems[menuItems.length - 1]?.label?.includes('=')) {
+                    menuItems.pop();
+                    menuItems = menuItems.concat(
+                        this.getQueryParamsMenuItems(url),
+                    );
+                }
+                return menuItems;
             }),
             catchError((e) => {
                 console.error(e);
                 return of([]) as Observable<MenuItem[]>;
             }),
         );
+
+    private routeArrayToMenuItems(routes: string[], url: string[]): MenuItem[] {
+        return routes.map((route) => {
+            url.push(route);
+            return {
+                label: this.titleCasePipe.transform(route.replace(/-/g, ' ')),
+                routerLink: url,
+            };
+        });
+    }
+
+    private getQueryParamsMenuItems(url: string[]): MenuItem[] {
+        return (
+            url
+                .pop()
+                ?.split('&')
+                .filter(
+                    (str) =>
+                        !HIDDEN_QUERY_PARAMS.some((param) =>
+                            str.includes(param),
+                        ),
+                )
+                .map((str) => str.split('='))
+                .filter((arr) => arr.length === 2)
+                .map(([paramName, paramValue]) => ({
+                    label: this.titleCasePipe.transform(paramValue),
+                    routerLink: url.concat(`${paramName}=${paramValue}`),
+                })) ?? []
+        );
+    }
 }

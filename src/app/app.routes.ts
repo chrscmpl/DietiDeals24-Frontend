@@ -13,7 +13,7 @@ export const routes: Routes = [
                 (m) => m.HomePageComponent,
             ),
     },
-    { path: 'search/:query', component: SearchResultsPageComponent },
+    { path: 'auctions/:query', component: SearchResultsPageComponent },
     {
         path: 'your-page',
         title: 'Your Page',

@@ -81,6 +81,6 @@ export class SearchSectionComponent implements OnInit {
             },
             '',
         );
-        this.router.navigate(['/search', query]);
+        this.router.navigate(['/auctions', query]);
     }
 }
