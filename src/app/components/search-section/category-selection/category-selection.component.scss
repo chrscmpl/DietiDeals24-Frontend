@@ -7,6 +7,7 @@
             border-top: var(--border);
             border-bottom: var(--border);
             flex: 1;
+            display: flex;
 
             &:first-child {
                 border-right: var(--border);
@@ -14,6 +15,9 @@
 
             .p-menuitem-link {
                 border-radius: 0;
+                flex: 1;
+                display: flex;
+                justify-content: center;
             }
         }
         .p-dropdown-item-group {
