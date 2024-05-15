@@ -25,7 +25,7 @@ export interface PaginatedRequestParams<Entity> {
 export class PaginatedRequest<Entity> {
     private pageNumber: number;
     private pageSize: number;
-    private currentPage: number = 0;
+    private currentPage: number;
     private maximumResults: number;
     private queryParameters: any;
     private http: HttpClient;
