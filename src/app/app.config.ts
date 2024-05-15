@@ -12,6 +12,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authorizationInterceptor } from './interceptors/authorization.interceptor';
 import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuctionsRequestGuard } from './guards/auctions-request.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
         IntervalPipe,
         MoneyPipe,
         CurrencyPipe,
+        AuctionsRequestGuard,
     ],
 };
