@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search-section/search-section.component';
 import { RouterLink } from '@angular/router';
-import { RoutingUtilsService } from '../../services/routing-utils.service';
+import {
+    RoutingUtilsService,
+    queryParam,
+} from '../../services/routing-utils.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
@@ -39,19 +42,16 @@ export class HeaderComponent {
     titleCasePipe: TitleCasePipe = new TitleCasePipe();
 
     public routes$: Observable<MenuItem[]> =
-        this.routingUtils.currentRoutes$.pipe(
-            map((routes) => {
+        this.routingUtils.currentLocation$.pipe(
+            map((location) => {
                 const url: string[] = [];
-                let menuItems: MenuItem[] = this.routeArrayToMenuItems(
-                    routes,
+                let menuItems: MenuItem[] = this.PathToMenuItems(
+                    location.path,
                     url,
                 );
-                if (menuItems[menuItems.length - 1]?.label?.includes('=')) {
-                    menuItems.pop();
-                    menuItems = menuItems.concat(
-                        this.getQueryParamsMenuItems(url),
-                    );
-                }
+                menuItems = menuItems.concat(
+                    this.queryToMenuItems(location.query, url),
+                );
                 return menuItems;
             }),
             catchError((e) => {
@@ -60,33 +60,26 @@ export class HeaderComponent {
             }),
         );
 
-    private routeArrayToMenuItems(routes: string[], url: string[]): MenuItem[] {
-        return routes.map((route) => {
-            url.push(route);
+    private PathToMenuItems(path: string[], url: string[]): MenuItem[] {
+        return path.map((entry) => {
+            url.push(entry);
             return {
-                label: this.titleCasePipe.transform(route.replace(/-/g, ' ')),
+                label: this.titleCasePipe.transform(entry.replace(/-/g, ' ')),
                 routerLink: url,
             };
         });
     }
 
-    private getQueryParamsMenuItems(url: string[]): MenuItem[] {
-        return (
-            url
-                .pop()
-                ?.split('&')
-                .filter(
-                    (str) =>
-                        !HIDDEN_QUERY_PARAMS.some((param) =>
-                            str.includes(param),
-                        ),
-                )
-                .map((str) => str.split('='))
-                .filter((arr) => arr.length === 2)
-                .map(([paramName, paramValue]) => ({
-                    label: this.titleCasePipe.transform(paramValue),
-                    routerLink: url.concat(`${paramName}=${paramValue}`),
-                })) ?? []
-        );
+    private queryToMenuItems(query: queryParam[], url: string[]): MenuItem[] {
+        return query
+            .filter(
+                (queryParameter) =>
+                    !HIDDEN_QUERY_PARAMS.includes(queryParameter.name),
+            )
+            .map((queryParameter) => ({
+                label: this.titleCasePipe.transform(queryParameter.value),
+                routerLink: url,
+                queryParams: { [queryParameter.name]: queryParameter.value },
+            }));
     }
 }
