@@ -3,6 +3,7 @@ import { SearchResultsPageComponent } from './pages/search-results-page/search-r
 import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
 import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
 import { auctionsRequestGuard } from './guards/auctions-request.guard';
+import { EmptyComponent } from './components/empty/empty.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,9 +16,9 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'auctions/:query',
+        path: 'auctions',
         component: SearchResultsPageComponent,
-        resolve: { query: auctionsRequestGuard },
+        resolve: { request: auctionsRequestGuard },
     },
     {
         path: 'your-page',
@@ -83,6 +84,10 @@ export const routes: Routes = [
                 component: ThemeSettingsComponent,
             },
         ],
+    },
+    {
+        path: 'redirect',
+        component: EmptyComponent,
     },
     {
         path: '**',

@@ -24,7 +24,8 @@ export class SearchResultsPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.data.subscribe((data) => {
-            if (data['query']) this.auctionsRequestSubject.next(data['query']);
+            if (data['request'])
+                this.auctionsRequestSubject.next(data['request']);
         });
     }
 }

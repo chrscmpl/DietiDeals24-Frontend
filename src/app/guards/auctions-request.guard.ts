@@ -17,11 +17,8 @@ export class AuctionsRequestGuard
     constructor(private auctionsService: AuctionsService) {}
 
     public resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
-        const query = route.params['query'];
-        if (!query) return null;
-
         return this.auctionsService.getAuctionsRequest({
-            queryParameters: queryUtils.queryStringToObject(query),
+            queryParameters: route.queryParams,
             pageNumber: 1,
             pageSize: 10,
             eager: true,

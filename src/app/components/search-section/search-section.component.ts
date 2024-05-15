@@ -73,14 +73,12 @@ export class SearchSectionComponent implements OnInit {
     }
 
     public handleSubmit(): void {
-        const query: string = Object.entries(this.searchForm.value).reduce(
-            (acc, [key, value]) => {
-                if (value)
-                    acc += `${acc.includes('=') ? '&' : ''}${key}=${value}`;
-                return acc;
-            },
-            '',
-        );
-        this.router.navigate(['/auctions', query]);
+        this.router
+            .navigateByUrl('/redirect', { skipLocationChange: true })
+            .then(() => {
+                this.router.navigate(['/auctions'], {
+                    queryParams: this.searchForm.value,
+                });
+            });
     }
 }
