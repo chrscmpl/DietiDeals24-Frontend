@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search-section/search-section.component';
 import { RouterLink } from '@angular/router';
-import {
-    RoutingUtilsService,
-    queryParam,
-} from '../../services/routing-utils.service';
+import { RoutingUtilsService } from '../../services/routing-utils.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
@@ -70,16 +67,19 @@ export class HeaderComponent {
         });
     }
 
-    private queryToMenuItems(query: queryParam[], url: string[]): MenuItem[] {
-        return query
+    private queryToMenuItems(
+        query: { [key: string]: string },
+        url: string[],
+    ): MenuItem[] {
+        return Object.entries(query)
             .filter(
                 (queryParameter) =>
-                    !HIDDEN_QUERY_PARAMS.includes(queryParameter.name),
+                    !HIDDEN_QUERY_PARAMS.includes(queryParameter[0]),
             )
             .map((queryParameter) => ({
-                label: this.titleCasePipe.transform(queryParameter.value),
+                label: this.titleCasePipe.transform(queryParameter[1]),
                 routerLink: url,
-                queryParams: { [queryParameter.name]: queryParameter.value },
+                queryParams: { [queryParameter[0]]: queryParameter[1] },
             }));
     }
 }

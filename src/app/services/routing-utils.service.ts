@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
     Observable,
+    combineLatest,
     distinctUntilChanged,
     filter,
     map,
+    merge,
     shareReplay,
     startWith,
+    withLatestFrom,
 } from 'rxjs';
 
-export interface queryParam {
-    name: string;
-    value: string;
+interface query {
+    [key: string]: string;
 }
 
 @Injectable({
@@ -20,20 +22,24 @@ export interface queryParam {
 export class RoutingUtilsService {
     public currentLocation$: Observable<{
         path: string[];
-        query: queryParam[];
+        query: query;
     }>;
 
     public currentPath$: Observable<string[]>;
 
-    public currentQuery$: Observable<queryParam[]>;
+    public currentQuery$: Observable<query>;
 
-    constructor(private router: Router) {
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute,
+    ) {
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),
             startWith(null),
-            map(() => ({
+            withLatestFrom(this.route.queryParams),
+            map(([_, query]) => ({
                 path: this.getCurrentPath(),
-                query: this.getCurrentQueryParams(),
+                query: query,
             })),
             distinctUntilChanged(),
             shareReplay(1),
@@ -52,20 +58,5 @@ export class RoutingUtilsService {
             (segment) => segment.path,
         );
         return segments ?? [];
-    }
-
-    private getCurrentQueryParams(): queryParam[] {
-        const queryParams = this.router.url.split('?')[1]?.split('&') ?? [];
-        return queryParams
-            .map((paramString: string) => {
-                const paramArr: string[] = paramString.split('=');
-                if (paramArr.length != 2) return null;
-                const param: queryParam = {
-                    name: paramArr[0],
-                    value: paramArr[1],
-                };
-                return param;
-            })
-            .filter((param) => param !== null) as queryParam[];
     }
 }
