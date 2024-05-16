@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Auction } from '../../models/auction.model';
+import { AuctionSummary } from '../../models/auction.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { PaginatedRequest } from '../../helpers/paginatedRequest';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
@@ -13,10 +13,11 @@ import { Subscription } from 'rxjs';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) request!: PaginatedRequest<Auction> | null;
+    @Input({ required: true })
+    request!: PaginatedRequest<AuctionSummary> | null;
 
     private dataSubscription!: Subscription | null;
-    public auctions: Auction[] = [];
+    public auctions: AuctionSummary[] = [];
     public error: boolean = false;
 
     public constructor() {}

@@ -4,6 +4,8 @@ import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.co
 import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
 import { auctionsRequestGuard } from './guards/auctions-request.guard';
 import { EmptyComponent } from './components/empty/empty.component';
+import { hideUIGuard } from './guards/hide-ui.guard';
+import { showUIGuard } from './guards/show-ui.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,6 +49,8 @@ export const routes: Routes = [
     {
         path: 'login',
         title: 'Login',
+        canActivate: [hideUIGuard],
+        canDeactivate: [showUIGuard],
         loadComponent: () =>
             import('./pages/login-page/login-page.component').then(
                 (m) => m.LoginPageComponent,
@@ -55,6 +59,8 @@ export const routes: Routes = [
     {
         path: 'register',
         title: 'Sign Up',
+        canActivate: [hideUIGuard],
+        canDeactivate: [showUIGuard],
         loadComponent: () =>
             import(
                 './pages/registration-page/registration-page.component'

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatedRequest } from '../../helpers/paginatedRequest';
-import { Auction } from '../../models/auction.model';
+import { AuctionSummary } from '../../models/auction.model';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -17,7 +17,7 @@ export class SearchResultsPageComponent implements OnInit {
     constructor(private route: ActivatedRoute) {}
 
     private auctionsRequestSubject = new ReplaySubject<
-        PaginatedRequest<Auction>
+        PaginatedRequest<AuctionSummary>
     >(1);
 
     public auctionsRequest$ = this.auctionsRequestSubject.asObservable();

@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { Auction } from '../../models/auction.model';
+import { AuctionSummary } from '../../models/auction.model';
 import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
@@ -29,9 +29,9 @@ import { MoneyPipe } from '../../pipes/money.pipe';
     styleUrl: './auction-card.component.scss',
 })
 export class AuctionCardComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) auction!: Auction;
+    @Input({ required: true }) auction!: AuctionSummary;
     @Output() loaded = new EventEmitter<number>();
-    statuses = Auction.STATUSES;
+    statuses = AuctionSummary.STATUSES;
     timeLeft: number = 0;
     timerInterval?: ReturnType<typeof setInterval>;
 

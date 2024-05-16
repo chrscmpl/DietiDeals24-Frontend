@@ -14,7 +14,7 @@ enum auctionStatus {
     rejected,
 }
 
-interface AuctionInterface {
+interface AuctionSummaryInterface {
     id: string;
     title: string;
     conditions: string | null;
@@ -29,8 +29,8 @@ interface AuctionInterface {
     lastBidDescription: string;
 }
 
-export type AuctionDTO = Omit<
-    AuctionInterface,
+export type AuctionSummaryDTO = Omit<
+    AuctionSummaryInterface,
     | 'conditions'
     | 'lastBid'
     | 'lastBidDescription'
@@ -39,7 +39,7 @@ export type AuctionDTO = Omit<
     | 'timeLeft'
     | 'location'
 > &
-    Partial<Pick<AuctionInterface, 'pictureUrl' | 'conditions'>> &
+    Partial<Pick<AuctionSummaryInterface, 'pictureUrl' | 'conditions'>> &
     Location & { endTime: string };
 
 export type AuctionSearchParameters = Partial<{
@@ -48,7 +48,7 @@ export type AuctionSearchParameters = Partial<{
     category: string;
 }>;
 
-export abstract class Auction implements AuctionInterface {
+export abstract class AuctionSummary implements AuctionSummaryInterface {
     public static STATUSES = auctionStatus;
     public static TYPES = AuctionType;
     private _id: string;
@@ -61,7 +61,7 @@ export abstract class Auction implements AuctionInterface {
     private _pictureUrl: string | null;
     private _status: auctionStatus;
 
-    constructor(auction: Omit<AuctionDTO, 'auctionType'>) {
+    constructor(auction: Omit<AuctionSummaryDTO, 'auctionType'>) {
         this._id = auction.id;
         this._title = auction.title;
         this._conditions = auction.conditions ?? null;
@@ -126,10 +126,10 @@ export abstract class Auction implements AuctionInterface {
     public abstract get type(): AuctionType;
 }
 
-export class SilentAuction extends Auction {
+export class SilentAuctionSummary extends AuctionSummary {
     private _minimumBid: Money;
     constructor(
-        auction: Omit<AuctionDTO, 'auctionType'> & {
+        auction: Omit<AuctionSummaryDTO, 'auctionType'> & {
             minimumBid: Money;
         },
     ) {
@@ -154,12 +154,12 @@ export class SilentAuction extends Auction {
     }
 }
 
-export class ReverseAuction extends Auction {
+export class ReverseAuctionSummary extends AuctionSummary {
     private _maximumStartingBid: Money;
     private _lowestBid: Money;
 
     constructor(
-        auction: Omit<AuctionDTO, 'auctionType'> & {
+        auction: Omit<AuctionSummaryDTO, 'auctionType'> & {
             maximumStartingBid: Money;
             lowestBid: Money;
         },

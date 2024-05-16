@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auction, AuctionSearchParameters } from '../models/auction.model';
+import {
+    AuctionSummary,
+    AuctionSearchParameters,
+} from '../models/auction.model';
 import {
     PaginatedRequest,
     PaginatedRequestParams,
@@ -15,13 +18,13 @@ export class AuctionsService {
 
     public getAuctionsRequest(
         params: Omit<
-            PaginatedRequestParams<Auction>,
+            PaginatedRequestParams<AuctionSummary>,
             'http' | 'factory' | 'url' | 'queryParameters'
         > & {
             queryParameters: AuctionSearchParameters;
         },
-    ): PaginatedRequest<Auction> {
-        return new PaginatedRequest<Auction>(
+    ): PaginatedRequest<AuctionSummary> {
+        return new PaginatedRequest<AuctionSummary>(
             Object.assign(params, {
                 http: this.http,
                 url: 'dd24-backend/auctions',

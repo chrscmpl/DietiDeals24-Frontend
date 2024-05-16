@@ -1,8 +1,10 @@
 <div class="app">
-    @if ((windowService.isMobile$ | async) === false) {
-        <dd24-header class="header"></dd24-header>
-    } @else {
-        <dd24-mobile-header></dd24-mobile-header>
+    @if ((windowService.UIhidden$ | async) === false) {
+        @if ((windowService.isMobile$ | async) === false) {
+            <dd24-header class="header"></dd24-header>
+        } @else {
+            <dd24-mobile-header></dd24-mobile-header>
+        }
     }
     <div class="content">
         <router-outlet
@@ -14,17 +16,19 @@
             <dd24-loading-placeholder></dd24-loading-placeholder>
         }
     </div>
-    @if ((windowService.isMobile$ | async) === false) {
-        <dd24-footer class="footer"></dd24-footer>
-        <p-button
-            class="create-auction-button"
-            icon="pi pi-plus"
-            [rounded]="true"
-            size="large"
-            routerLink="/create-auction"
-        />
-    } @else {
-        <dd24-mobile-navbar></dd24-mobile-navbar>
+    @if ((windowService.UIhidden$ | async) === false) {
+        @if ((windowService.isMobile$ | async) === false) {
+            <dd24-footer class="footer"></dd24-footer>
+            <p-button
+                class="create-auction-button"
+                icon="pi pi-plus"
+                [rounded]="true"
+                size="large"
+                routerLink="/create-auction"
+            />
+        } @else {
+            <dd24-mobile-navbar></dd24-mobile-navbar>
+        }
+        <dd24-sidebar></dd24-sidebar>
     }
-    <dd24-sidebar></dd24-sidebar>
 </div>

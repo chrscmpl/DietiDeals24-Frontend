@@ -1,24 +1,24 @@
 import {
-    Auction,
-    AuctionDTO,
+    AuctionSummary,
+    AuctionSummaryDTO,
     AuctionType,
-    ReverseAuction,
-    SilentAuction,
+    ReverseAuctionSummary,
+    SilentAuctionSummary,
 } from '../models/auction.model';
 import { Money } from '../models/money.model';
 
 export const auctionBuilder = (() => {
-    const build = (auction: AuctionDTO): Auction => {
+    const build = (auction: AuctionSummaryDTO): AuctionSummary => {
         switch (auction.type) {
             case AuctionType.silent:
-                return new SilentAuction(
-                    auction as AuctionDTO & {
+                return new SilentAuctionSummary(
+                    auction as AuctionSummaryDTO & {
                         minimumBid: Money;
                     },
                 );
             case AuctionType.reverse:
-                return new ReverseAuction(
-                    auction as AuctionDTO & {
+                return new ReverseAuctionSummary(
+                    auction as AuctionSummaryDTO & {
                         maximumStartingBid: Money;
                         lowestBid: Money;
                     },
@@ -28,10 +28,10 @@ export const auctionBuilder = (() => {
         }
     };
     return {
-        buildSingle(auction: AuctionDTO): Auction {
+        buildSingle(auction: AuctionSummaryDTO): AuctionSummary {
             return build(auction);
         },
-        buildArray(auctions: AuctionDTO[]): Auction[] {
+        buildArray(auctions: AuctionSummaryDTO[]): AuctionSummary[] {
             return auctions.map((auction) => build(auction));
         },
     };

@@ -1,13 +1,10 @@
 @import "grid";
-@import "overlay";
 @import "flex";
 @import "mobile";
 
 .authentication-page {
     height: 100vh;
     background-color: var(--background-color);
-
-    @include overlay;
 
     @include grid(
         $template: "banner main" 1fr / 52% 48%,

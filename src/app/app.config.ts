@@ -13,6 +13,8 @@ import { authorizationInterceptor } from './interceptors/authorization.intercept
 import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuctionsRequestGuard } from './guards/auctions-request.guard';
+import { HideUIGuard } from './guards/hide-ui.guard';
+import { ShowUIGuard } from './guards/show-ui.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -27,5 +29,7 @@ export const appConfig: ApplicationConfig = {
         MoneyPipe,
         CurrencyPipe,
         AuctionsRequestGuard,
+        HideUIGuard,
+        ShowUIGuard,
     ],
 };
