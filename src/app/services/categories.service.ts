@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
+import { Observable, Observer, ReplaySubject, map, of, tap } from 'rxjs';
 
 interface Categories {
     products: string[];
@@ -35,8 +35,61 @@ export class CategoriesService {
         this.categoriesSubject.asObservable();
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
-        this.http
-            .get<Categories>('dd24-backend/info/categories')
+        // this.http
+        //     .get<Categories>('dd24-backend/info/categories')
+        of({
+            products: [
+                'phones',
+                'laptops',
+                'tablets',
+                'smartwatches',
+                'headphones',
+                'speakers',
+                'cameras',
+                'drones',
+                'gaming',
+                'accessories',
+                'home appliances',
+                'smart home',
+                'wearables',
+                'car accessories',
+                'office supplies',
+                'software',
+                'books',
+                'movies',
+                'music',
+                'games',
+                'toys',
+                'clothes',
+            ],
+            services: [
+                'video editing',
+                'photo editing',
+                'audio editing',
+                'graphic design',
+                'web design',
+                'web development',
+                'app development',
+                'game development',
+                '3d modeling',
+                'animation',
+                'writing',
+                'translation',
+                'transcription',
+                'proofreading',
+                'copywriting',
+                'content writing',
+                'blog writing',
+                'article writing',
+                'resume writing',
+                'cover letter writing',
+                'business writing',
+                'technical writing',
+                'creative writing',
+                'academic writing',
+                'research writing',
+            ],
+        } as Categories)
             .pipe(
                 map((categories) => ({
                     products: categories.products.sort(),

@@ -27,7 +27,7 @@
                         "styles": [
                             "node_modules/primeng/resources/primeng.min.css",
                             "node_modules/primeicons/primeicons.css",
-                            "src/styles/styles.scss",
+                            "src/styles.scss",
                             {
                                 "input": "src/assets/theme/light/theme.scss",
                                 "bundleName": "theme-light",
@@ -40,7 +40,7 @@
                             }
                         ],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["src/styles/sass-include"]
+                            "includePaths": ["src/sass-include"]
                         },
                         "scripts": []
                     },
@@ -95,7 +95,7 @@
                         "tsConfig": "tsconfig.spec.json",
                         "inlineStyleLanguage": "scss",
                         "assets": ["src/favicon.ico", "src/assets"],
-                        "styles": ["src/styles/styles.scss"],
+                        "styles": ["src/styles.scss"],
                         "scripts": []
                     }
                 },

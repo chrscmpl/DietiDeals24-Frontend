@@ -58,9 +58,43 @@
     background-color: var(--background-color);
 }
 
-@import "./global-styles/danger";
-@import "./global-styles/error";
-@import "./global-styles/links";
-@import "./global-styles/icons";
-@import "./global-styles/text";
-@import "./global-styles/placeholder";
+.danger {
+    color: var(--danger-color);
+}
+
+.error {
+    color: var(--error-color);
+}
+
+i {
+    line-height: 0;
+}
+
+.custom-link {
+    color: var(--text-color-1);
+    text-decoration: none;
+    font-style: normal;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.text-medium {
+    font-size: var(--font-size-medium);
+    line-height: var(--font-size-medium);
+}
+
+.text-large {
+    font-size: var(--font-size-large);
+    line-height: var(--font-size-large);
+}
+
+.text-regular {
+    font-weight: var(--font-weight-regular);
+}
+
+.text-bold {
+    font-weight: var(--font-weight-bold);
+}

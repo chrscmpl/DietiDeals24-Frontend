@@ -4,6 +4,16 @@
     @include flex(column, start, stretch, 1rem);
     width: 100%;
 
+    .card-placeholder {
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(
+            to right,
+            var(--border-color) 0%,
+            transparent 160%
+        );
+        height: var(--card-height);
+    }
+
     .no-results {
         margin: 2rem 0;
     }
