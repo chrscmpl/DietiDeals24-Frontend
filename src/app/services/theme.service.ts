@@ -5,7 +5,6 @@ import {
     Subject,
     distinctUntilChanged,
     map,
-    pipe,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 

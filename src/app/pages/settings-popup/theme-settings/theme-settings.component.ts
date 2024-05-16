@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ThemeService, theme } from '../../../services/theme.service';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'dd24-theme-settings',
@@ -18,13 +19,12 @@ export class ThemeSettingsComponent implements OnInit {
     ngOnInit(): void {
         this.themeControl = new FormControl<theme | 'system' | null>(null);
 
-        this.themeService.theme$.subscribe((theme) => {
+        this.themeService.theme$.pipe(take(1)).subscribe((theme) => {
             if (theme.isSystemPreference) this.themeControl.setValue('system');
             else this.themeControl.setValue(theme.theme);
-
-            this.themeControl.valueChanges.subscribe((value) => {
-                if (value) this.themeService.setTheme(value);
-            });
+        });
+        this.themeControl.valueChanges.subscribe((value) => {
+            if (value) this.themeService.setTheme(value);
         });
     }
 }

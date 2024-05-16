@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
     Observable,
-    combineLatest,
     distinctUntilChanged,
     filter,
     map,
-    merge,
     shareReplay,
     startWith,
     withLatestFrom,
