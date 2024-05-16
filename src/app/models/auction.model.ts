@@ -46,6 +46,7 @@ export type AuctionSearchParameters = Partial<{
     keywords: string;
     type: string;
     category: string;
+    macroCategory: string;
 }>;
 
 export abstract class AuctionSummary implements AuctionSummaryInterface {
