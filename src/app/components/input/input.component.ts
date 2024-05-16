@@ -69,8 +69,8 @@ export class InputComponent implements OnInit {
 
     private onTouched(): void {
         setTimeout(() => {
-            this.checkError(true);
-            if (this.control?.valid) {
+            this?.checkError(true);
+            if (this?.control?.valid) {
                 this.control.markAsUntouched();
             }
         }, 150);

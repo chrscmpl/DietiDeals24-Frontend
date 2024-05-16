@@ -38,8 +38,11 @@
 
             .logo {
                 margin-left: 1em;
-                display: block;
                 height: 100%;
+                width: fit-content;
+                ::ng-deep .logo {
+                    width: auto;
+                }
             }
 
             .spacer {

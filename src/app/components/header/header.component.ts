@@ -10,6 +10,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { Observable, catchError, map, of } from 'rxjs';
 import { WindowService } from '../../services/window.service';
+import { LogoComponent } from '../logo/logo.component';
 
 const HIDDEN_QUERY_PARAMS = ['keywords'];
 
@@ -24,6 +25,7 @@ const HIDDEN_QUERY_PARAMS = ['keywords'];
         ButtonModule,
         BreadcrumbModule,
         TitleCasePipe,
+        LogoComponent,
     ],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss',

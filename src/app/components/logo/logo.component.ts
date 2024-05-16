@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,4 +8,6 @@ import { RouterLink } from '@angular/router';
     templateUrl: './logo.component.html',
     styleUrl: './logo.component.scss',
 })
-export class LogoComponent {}
+export class LogoComponent {
+    @Output() public clickEvent: EventEmitter<void> = new EventEmitter<void>();
+}

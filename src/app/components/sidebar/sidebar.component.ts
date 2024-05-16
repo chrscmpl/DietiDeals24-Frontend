@@ -80,7 +80,7 @@ export class SidebarComponent implements OnInit {
         );
     }
 
-    private hideSidebar(): void {
+    public hideSidebar(): void {
         this.windowService.isSidebarVisible = false;
     }
 }
