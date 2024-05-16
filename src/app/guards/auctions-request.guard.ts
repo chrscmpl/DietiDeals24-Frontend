@@ -12,7 +12,7 @@ import { queryUtils } from '../helpers/queryUtils';
 
 @Injectable()
 export class AuctionsRequestGuard
-    implements Resolve<PaginatedRequest<Auction> | null>
+    implements Resolve<PaginatedRequest<Auction>>
 {
     constructor(private auctionsService: AuctionsService) {}
 
@@ -26,6 +26,7 @@ export class AuctionsRequestGuard
     }
 }
 
-export const auctionsRequestGuard: ResolveFn<
-    PaginatedRequest<Auction> | null
-> = (r, s) => inject(AuctionsRequestGuard).resolve(r, s);
+export const auctionsRequestGuard: ResolveFn<PaginatedRequest<Auction>> = (
+    r,
+    s,
+) => inject(AuctionsRequestGuard).resolve(r, s);
