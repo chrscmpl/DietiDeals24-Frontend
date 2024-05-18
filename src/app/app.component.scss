@@ -1,8 +1,7 @@
-@import "grid";
-@import "flex";
+@use "layouts";
 
 .app {
-    @include grid("header" auto "main" 1fr "footer" auto / 1fr);
+    @include layouts.grid("header" auto "main" 1fr "footer" auto / 1fr);
     width: 100vw;
     min-height: 100vh;
     .header {

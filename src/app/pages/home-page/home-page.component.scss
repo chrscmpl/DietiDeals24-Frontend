@@ -1,35 +1,33 @@
-@import "flex";
-@import "grid";
-@import "center";
-@import "mobile";
+@use "layouts";
+@use "viewports";
 
 .home-page {
-    @include flex(column, start, stretch, 1em);
+    @include layouts.flex(column, start, stretch, 1em);
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     min-height: 100%;
     width: 100%;
     padding: 1em 15%;
 
-    @include mobile {
+    @include viewports.mobile {
         padding: 1em 2%;
     }
 
     .trending-categories {
-        @include flex(column, start, stretch, 0.5em);
+        @include layouts.flex(column, start, stretch, 0.5em);
         > :first-child {
             font-size: var(--font-size-medium);
             font-weight: var(--font-weight-regular);
             align-self: start;
         }
         .trending-categories-buttons {
-            @include flex(row, space-between, stretch, 0.2ch);
+            @include layouts.flex(row, space-between, stretch, 0.2ch);
             flex-wrap: nowrap;
             min-height: 3.5em;
             .trending-category-button {
                 flex: 0 1 15ch;
                 ::ng-deep button {
-                    @include flex(row, center, center);
+                    @include layouts.flex(row, center, center);
                     word-wrap: break-word;
                     padding: 0.3em;
                 }
@@ -45,18 +43,18 @@
     }
 
     .create-auction-banner {
-        @include flex(row, stretch, stretch);
+        @include layouts.flex(row, stretch, stretch);
         overflow: hidden;
         border-radius: var(--border-radius-large);
         border: var(--border);
         height: var(--card-height);
         .create-auction-banner-img-container {
-            @include flex(row, end, stretch);
+            @include layouts.flex(row, end, stretch);
             flex-grow: 1;
             border-right: none;
             background: url("/assets/create-auction-banner.webp") center / cover;
             .create-auction-banner-text {
-                @include center;
+                @include layouts.center;
                 width: 12ch;
                 padding: 1ch;
                 color: white;
@@ -73,7 +71,7 @@
             }
         }
         .create-auction-button {
-            @include flex(row, center, center, 0.5ch);
+            @include layouts.flex(row, center, center, 0.5ch);
             border-radius: 0;
             white-space: nowrap;
             ::ng-deep button {
@@ -83,19 +81,19 @@
     }
 
     .your-page-banner {
-        @include flex(column, stretch, stretch);
+        @include layouts.flex(column, stretch, stretch);
         overflow: hidden;
         border-radius: var(--border-radius-large);
         border: var(--border);
 
         height: calc(var(--card-height) * 0.75);
         .your-page-banner-img-container {
-            @include flex(row, end, end);
+            @include layouts.flex(row, end, end);
             flex-grow: 1;
             border-bottom: none;
             background: url("/assets/your-page-banner.webp") center / cover;
             .your-page-banner-text {
-                @include center;
+                @include layouts.center;
                 padding: 0.5ch;
                 color: white;
                 background: radial-gradient(black 0%, transparent 70%);
@@ -104,7 +102,7 @@
             }
         }
         .your-page-button {
-            @include flex(row, center, center, 0.5ch);
+            @include layouts.flex(row, center, center, 0.5ch);
             border-radius: 0;
             white-space: nowrap;
             height: 3.5em;
@@ -119,6 +117,6 @@
     }
 
     .trending-auctions {
-        @include flex(column, start, stretch, 0.5em);
+        @include layouts.flex(column, start, stretch, 0.5em);
     }
 }

@@ -1,20 +1,23 @@
-@import "flex";
-@import "grid";
+@use "layouts";
 
 .page-footer {
-    @include flex(column, center, start, 1ch);
+    @include layouts.flex(column, center, start, 1ch);
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     padding: 0.2em 2em;
     border-top: var(--border);
     .footer-links {
-        @include grid(1fr / 1fr auto 1fr, $justify-content: center, $gap: 3ch);
+        @include layouts.grid(
+            1fr / 1fr auto 1fr,
+            $justify-content: center,
+            $gap: 3ch
+        );
         align-self: center;
         > .links-1-2 {
-            @include flex(row, end, center, 3ch);
+            @include layouts.flex(row, end, center, 3ch);
         }
         > .links-4-5 {
-            @include flex(row, start, center, 3ch);
+            @include layouts.flex(row, start, center, 3ch);
         }
         .footer-link {
             color: var(--text-color-3);

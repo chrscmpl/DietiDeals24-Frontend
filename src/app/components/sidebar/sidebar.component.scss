@@ -1,5 +1,5 @@
-@import "flex";
+@use "layouts";
 
 .sidebar-content {
-    @include flex(column, start, stretch, 2rem);
+    @include layouts.flex(column, start, stretch, 2rem);
 }

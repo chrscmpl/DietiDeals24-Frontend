@@ -1,11 +1,11 @@
-@import "flex";
+@use "layouts";
 .search-section {
-    @include flex(row, start, stretch, 1ch);
+    @include layouts.flex(row, start, stretch, 1ch);
     width: 100%;
     font-size: var(--font-size-large);
 
     .search-inputs-container {
-        @include flex(row, start, stretch);
+        @include layouts.flex(row, start, stretch);
         font-size: var(--font-size-medium);
         border: 2px solid var(--outline-color);
         flex-grow: 1;

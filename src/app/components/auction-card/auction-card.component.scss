@@ -1,9 +1,11 @@
-@import "flex";
-@import "grid";
-@import "mobile";
+@use "layouts";
+@use "viewports";
 
 .auction-card {
-    @include grid($template: "image details" 1fr / auto 1fr, $gap: 1rem);
+    @include layouts.grid(
+        $template: "image details" 1fr / auto 1fr,
+        $gap: 1rem
+    );
     height: var(--card-height);
     width: 100%;
     border: var(--border);
@@ -11,7 +13,7 @@
     overflow: hidden;
 
     #{&}-image-container {
-        @include flex(row, center, center);
+        @include layouts.flex(row, center, center);
         grid-area: image;
         height: var(--card-height);
         width: var(--card-height);
@@ -24,7 +26,7 @@
         }
 
         .auction-card-missing-image {
-            @include flex(row, center, center);
+            @include layouts.flex(row, center, center);
             height: 100%;
             width: 100%;
             font-size: 7rem;
@@ -33,7 +35,7 @@
     }
 
     #{&}-details-container {
-        @include flex(column, start, start, 0);
+        @include layouts.flex(column, start, start, 0);
         grid-area: details;
         color: var(--text-color-1);
 
@@ -62,7 +64,7 @@
         }
     }
 
-    @include mobile {
+    @include viewports.mobile {
         // --height: 1000px;
     }
 }

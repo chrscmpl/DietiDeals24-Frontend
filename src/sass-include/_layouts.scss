@@ -1,3 +1,11 @@
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: 0) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $gap;
+}
+
 @mixin grid(
     $template: ".",
     $gap: 0,
@@ -13,4 +21,11 @@
     align-items: $align-items;
     justify-content: $justify-content;
     align-content: $align-content;
+}
+
+@mixin center($direction: row) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
 }

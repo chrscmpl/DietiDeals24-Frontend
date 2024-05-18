@@ -1,8 +1,7 @@
-@import "flex";
-@import "grid";
+@use "layouts";
 
 .input-container {
-    @include flex(column, flex-start, stretch);
+    @include layouts.flex(column, flex-start, stretch);
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     width: 100%;

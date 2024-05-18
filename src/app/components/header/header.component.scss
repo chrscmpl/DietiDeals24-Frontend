@@ -1,15 +1,16 @@
-@import "flex";
-@import "grid";
-@import "padding-vertical";
-@import "padding-horizontal";
-@import "mobile";
+@use "layouts";
+@use "viewports";
+@use "box";
 .header {
     color: var(--text-color-1);
     background-color: var(--component-color);
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-medium);
     .navbar {
-        @include grid($template: 1fr 1fr auto / 1fr, $justify-content: stretch);
+        @include layouts.grid(
+            $template: 1fr 1fr auto / 1fr,
+            $justify-content: stretch
+        );
         width: 100%;
         height: calc(var(--font-size-medium) * 10);
         $section-padding: 0.5rem;
@@ -22,8 +23,8 @@
 
         .navbar-user-section {
             font-size: var(--font-size-medium);
-            @include flex($align: center, $gap: 0.5em);
-            @include padding-vertical($section-padding);
+            @include layouts.flex($align: center, $gap: 0.5em);
+            @include box.padding-vertical($section-padding);
 
             .hamburger-btn {
                 color: var(--outline-color);
@@ -59,15 +60,15 @@
         }
 
         .navbar-search-section {
-            @include flex(column, center, stretch);
+            @include layouts.flex(column, center, stretch);
             overflow: visible;
         }
 
         .navbar-tabs-section {
-            @include flex($justify: space-between);
+            @include layouts.flex($justify: space-between);
 
             .navbar-tabs {
-                @include flex($align: stretch);
+                @include layouts.flex($align: stretch);
                 .navbar-tab {
                     padding: 0.2em 0.4em;
                     font-weight: var(--font-weight-bold);
@@ -78,7 +79,7 @@
                 }
             }
             .navbar-path {
-                @include flex($align: center);
+                @include layouts.flex($align: center);
                 ::ng-deep {
                     .p-breadcrumb {
                         border: none;

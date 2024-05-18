@@ -1,9 +1,9 @@
-@import "mobile";
+@use "viewports";
 
 ::ng-deep {
     .p-dialog {
         min-width: 60%;
-        @include mobile {
+        @include viewports.mobile {
             width: 100vw;
             height: 100vh;
             border-radius: 0;

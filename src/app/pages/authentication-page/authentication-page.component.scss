@@ -1,12 +1,11 @@
-@import "grid";
-@import "flex";
-@import "mobile";
+@use "layouts";
+@use "viewports";
 
 .authentication-page {
     height: 100vh;
     background-color: var(--background-color);
 
-    @include grid(
+    @include layouts.grid(
         $template: "banner main" 1fr / 52% 48%,
         $align-content: stretch,
         $justify-content: stretch,
@@ -14,7 +13,7 @@
         $justify-items: stretch
     );
 
-    @include mobile {
+    @include viewports.mobile {
         grid-template: "banner" auto "main" 1fr / 1fr;
     }
 
@@ -22,11 +21,11 @@
         grid-area: banner;
         background-color: var(--side-color);
         position: relative;
-        @include flex(column, center, center);
+        @include layouts.flex(column, center, center);
         border-right: 2px solid var(--border-color-side);
 
-        @include mobile {
-            @include flex(row, space-between, center);
+        @include viewports.mobile {
+            @include layouts.flex(row, space-between, center);
             padding: 0.3rem;
             border-right: none;
         }
@@ -34,7 +33,7 @@
         .page-back-button {
             --size: 4rem;
 
-            @include flex(row, center, center);
+            @include layouts.flex(row, center, center);
             position: absolute;
             top: 0;
             left: 0;
@@ -50,7 +49,7 @@
                 font-size: var(--size);
             }
 
-            @include mobile {
+            @include viewports.mobile {
                 position: static;
                 --size: 2rem;
             }
@@ -63,13 +62,13 @@
 
     main {
         grid-area: main;
-        @include flex(column, center, center);
+        @include layouts.flex(column, center, center);
         .logo {
             display: block;
             width: 75%;
         }
-        @include mobile {
-            @include flex(column, center, center, 1ch);
+        @include viewports.mobile {
+            @include layouts.flex(column, center, center, 1ch);
         }
     }
 }

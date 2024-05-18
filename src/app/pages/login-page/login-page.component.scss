@@ -1,26 +1,24 @@
-@import "flex";
-@import "grid";
-@import "padding-horizontal";
-@import "padding-vertical";
-@import "mobile";
+@use "layouts";
+@use "viewports";
+@use "box";
 
 .form-card {
     border: var(--border);
     border-radius: var(--border-radius-large);
-    @include flex(column, flex-start, center, 0.2rem);
-    @include padding-vertical(1.2rem);
+    @include layouts.flex(column, flex-start, center, 0.2rem);
+    @include box.padding-vertical(1.2rem);
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-regular);
     width: 25ch;
 
-    @include mobile {
+    @include viewports.mobile {
         border: none;
         border-radius: 0;
         width: 100%;
     }
 
     > :not(.separator) {
-        @include padding-horizontal(1rem);
+        @include box.padding-horizontal(1rem);
     }
 
     h1 {
@@ -36,10 +34,10 @@
     .google-login {
         margin: 1rem 0;
         width: 100%;
-        @include padding-horizontal(3rem);
+        @include box.padding-horizontal(3rem);
         .google-login-btn {
             ::ng-deep button {
-                @include flex(row, center, center, 1ch);
+                @include layouts.flex(row, center, center, 1ch);
             }
         }
     }
@@ -47,7 +45,7 @@
     .separator {
         width: 100%;
         font-size: var(--font-size-medium);
-        @include grid(
+        @include layouts.grid(
             $template: "." 1fr / 1fr,
             $justify-content: center,
             $align-content: center,
@@ -56,7 +54,7 @@
         );
 
         .separator-or {
-            @include padding-horizontal(0.5ch);
+            @include box.padding-horizontal(0.5ch);
             color: var(--text-color-3);
             font-weight: var(--font-weight-bold);
             text-align: center;
@@ -75,17 +73,17 @@
     }
 
     .login-form {
-        @include flex(column, flex-start, stretch);
-        @include padding-horizontal(3rem);
+        @include layouts.flex(column, flex-start, stretch);
+        @include box.padding-horizontal(3rem);
         font-size: var(--font-size-medium);
         width: 100%;
 
         .inputs {
-            @include flex(column, flex-start, stretch, 1em);
+            @include layouts.flex(column, flex-start, stretch, 1em);
 
             .input {
                 width: 100%;
-                @include flex(column, flex-start, stretch);
+                @include layouts.flex(column, flex-start, stretch);
             }
         }
 
