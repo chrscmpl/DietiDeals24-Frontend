@@ -18,6 +18,7 @@ import {
     AuctionSearchParameters,
     AuctionType,
 } from '../../typeUtils/auction.utils';
+import { CategoriesService } from '../../services/categories.service';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -57,6 +58,7 @@ export class SearchSectionComponent implements OnInit {
         private formBuilder: FormBuilder,
         private oneCharUpperPipe: OneCharUpperPipe,
         private router: Router,
+        private categoriesService: CategoriesService,
     ) {}
 
     public ngOnInit(): void {
@@ -77,20 +79,23 @@ export class SearchSectionComponent implements OnInit {
     }
 
     public handleSubmit(): void {
-        let params: Nullable<AuctionSearchParameters> = this.searchForm.value;
-        if (params.category === 'products' || params.category === 'services') {
-            const { category, ...rest } = params;
-            params = {
-                ...rest,
-                macroCategory: category,
-            };
-        }
-        this.router
-            .navigateByUrl('/redirect', { skipLocationChange: true })
-            .then(() => {
-                this.router.navigate(['/auctions'], {
-                    queryParams: params,
+        this.categoriesService.macroCategories$.subscribe((macroCategories) => {
+            let params: Nullable<AuctionSearchParameters> =
+                this.searchForm.value;
+            if (params.category && macroCategories.includes(params.category)) {
+                const { category, ...rest } = params;
+                params = {
+                    ...rest,
+                    macroCategory: category,
+                };
+            }
+            this.router
+                .navigateByUrl('/redirect', { skipLocationChange: true })
+                .then(() => {
+                    this.router.navigate(['/auctions'], {
+                        queryParams: params,
+                    });
                 });
-            });
+        });
     }
 }

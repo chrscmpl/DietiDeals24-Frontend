@@ -8,16 +8,10 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 
-enum MacroCategory {
-    Product,
-    Service,
-    All,
-}
-
 interface option {
     name: string;
     value: string | null;
-    macroCategory: MacroCategory;
+    macroCategory: number;
 }
 
 interface group {
@@ -42,13 +36,11 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     @Input({ required: true }) form!: FormGroup;
     @Input({ required: true }) controlName!: string;
 
-    public MACROCATEGORIES = MacroCategory;
-
     private currentOptionsSubject = new ReplaySubject<group[]>(1);
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
 
-    public selectedMacroCategory: MacroCategory = MacroCategory.Product;
+    public selectedMacroCategory: number = 1;
 
     public allCategoriesGroup: group = {
         groupName: 'All',
@@ -56,27 +48,18 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
             {
                 name: 'All categories',
                 value: null,
-                macroCategory: MacroCategory.All,
+                macroCategory: 0,
             },
         ],
     };
 
-    public tabs: MenuItem[] = [
-        {
-            label: 'Products',
-            command: () => (this.selectedMacroCategory = MacroCategory.Product),
-        },
-        {
-            label: 'Services',
-            command: () => (this.selectedMacroCategory = MacroCategory.Service),
-        },
-    ];
+    public tabs: MenuItem[] = [];
 
-    public currentTab: MenuItem = this.tabs[0];
+    public currentTab?: MenuItem;
 
     constructor(
         private categoriesService: CategoriesService,
-        private namePipe: OneCharUpperPipe,
+        private oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
     ngOnInit(): void {
@@ -86,31 +69,33 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
             },
         });
         this.categoriesService.categories$.subscribe((categories) => {
+            let macroCategoryIndex = 0;
+            const tabs: MenuItem[] = [];
+            const options: option[] = [];
+            Object.keys(categories).forEach((key) => {
+                const index = ++macroCategoryIndex;
+                options.push(
+                    {
+                        name: `All ${key}`,
+                        value: key,
+                        macroCategory: index,
+                    },
+                    ...categories[key].map((str) =>
+                        this.stringToOption(str, index),
+                    ),
+                );
+                tabs.push({
+                    label: this.oneCharUpperPipe.transform(key),
+                    command: () => (this.selectedMacroCategory = index),
+                });
+            });
+            this.tabs = tabs;
+            this.currentTab = tabs[0];
             this.currentOptionsSubject.next([
                 this.allCategoriesGroup,
                 {
                     groupName: 'items',
-                    items: [
-                        {
-                            name: 'All products',
-                            value: 'products',
-                            macroCategory: MacroCategory.Product,
-                        },
-
-                        ...categories.products.map((str) =>
-                            this.stringToOption(str, MacroCategory.Product),
-                        ),
-
-                        {
-                            name: 'All services',
-                            value: 'services',
-                            macroCategory: MacroCategory.Service,
-                        },
-
-                        ...categories.services.map((str) =>
-                            this.stringToOption(str, MacroCategory.Service),
-                        ),
-                    ],
+                    items: options,
                 },
             ]);
         });
@@ -120,9 +105,9 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
         this.currentOptionsSubject.complete();
     }
 
-    private stringToOption(str: string, macroCategory: MacroCategory): option {
+    private stringToOption(str: string, macroCategory: number): option {
         return {
-            name: this.namePipe.transform(str),
+            name: this.oneCharUpperPipe.transform(str),
             value: str,
             macroCategory: macroCategory,
         };

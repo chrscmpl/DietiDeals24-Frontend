@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 
 interface Categories {
-    products: string[];
-    services: string[];
+    [key: string]: string[];
 }
 
 @Injectable({
@@ -34,14 +33,21 @@ export class CategoriesService {
     public categories$: Observable<Categories> =
         this.categoriesSubject.asObservable();
 
+    public macroCategories$: Observable<string[]> = this.categories$.pipe(
+        map((categories) => Object.keys(categories)),
+    );
+
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
             .get<Categories>('dd24-backend/categories')
             .pipe(
-                map((categories) => ({
-                    products: categories.products.sort(),
-                    services: categories.services.sort(),
-                })),
+                map((categories) => {
+                    const sorted: Categories = {};
+                    Object.keys(categories).forEach((key) => {
+                        sorted[key] = categories[key].sort();
+                    });
+                    return sorted;
+                }),
                 tap((value) => {
                     this.categoriesSubject.next(value);
                 }),

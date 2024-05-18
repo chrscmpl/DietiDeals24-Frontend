@@ -6,7 +6,7 @@
             flex: 1;
             display: flex;
 
-            &:first-child {
+            &:not(:last-child) {
                 border-right: var(--border);
             }
 
