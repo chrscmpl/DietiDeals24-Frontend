@@ -101,4 +101,12 @@ i {
 
 .p-dialog {
     border-radius: var(--border-radius-large);
+    .p-dialog-header {
+        border-top-left-radius: var(--border-radius-large);
+        border-top-right-radius: var(--border-radius-large);
+    }
+    .p-dialog-content {
+        border-bottom-left-radius: var(--border-radius-large);
+        border-bottom-right-radius: var(--border-radius-large);
+    }
 }
