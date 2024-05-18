@@ -1,7 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from '../../../services/categories.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DropdownFilterEvent, DropdownModule } from 'primeng/dropdown';
+import {
+    Dropdown,
+    DropdownFilterEvent,
+    DropdownModule,
+} from 'primeng/dropdown';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -39,11 +43,11 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     @Input({ required: true }) form!: FormGroup;
     @Input({ required: true }) controlName!: string;
 
+    @ViewChild('dropdown') dropdown!: Dropdown;
+
     private currentOptionsSubject = new ReplaySubject<group[]>(1);
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
-
-    public disabled: boolean = false;
 
     public showUI: boolean = true;
 
@@ -114,18 +118,11 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     public setValue(value: string | null): void {
         this.form.controls[this.controlName]?.setValue(value);
-        this.closeDropdown();
+        this.dropdown.hide();
     }
 
     public onFilter(event: DropdownFilterEvent): void {
         this.showUI = event.filter.length === 0;
-    }
-
-    private closeDropdown(): void {
-        this.form.get(this.controlName)?.disable();
-        setTimeout(() => {
-            this?.form.get(this.controlName)?.enable();
-        }, 10);
     }
 
     private stringToOption(str: string, macroCategory: number): option {

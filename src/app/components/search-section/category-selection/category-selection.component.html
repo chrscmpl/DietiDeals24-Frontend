@@ -1,5 +1,6 @@
 <form [formGroup]="form" class="category-selector">
     <p-dropdown
+        #dropdown
         [options]="(currentOptions$ | async) ?? []"
         [formControlName]="controlName"
         optionLabel="name"

@@ -10,7 +10,7 @@
             <i class="auction-card-missing-image pi pi-image"></i>
         }
     </div>
-    <div class="auction-card-details-container">
+    <div class="auction-card-title-container">
         <span class="auction-card-title">{{ auction.title }}</span>
         <span class="auction-card-secondary-line">
             from {{ auction.location.country }}, {{ auction.location.city }}
@@ -18,6 +18,8 @@
                 | {{ auction.conditions }}
             }
         </span>
+    </div>
+    <div class="auction-card-details-container">
         <dd24-auction-type-link
             class="auction-card-auction-type"
             [type]="auction.type"

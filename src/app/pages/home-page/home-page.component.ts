@@ -7,6 +7,7 @@ import { LoadingIndicator } from '../../helpers/loadingIndicator';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { AuctionsService } from '../../services/auctions.service';
 import { ButtonModule } from 'primeng/button';
+import { WindowService } from '../../services/window.service';
 
 @Component({
     selector: 'dd24-home-page',
@@ -35,6 +36,7 @@ export class HomePageComponent implements OnInit {
     constructor(
         public accessoryInformation: CategoriesService,
         public auctionsService: AuctionsService,
+        public windowService: WindowService,
     ) {}
 
     ngOnInit(): void {

@@ -28,38 +28,40 @@
             }
         </div>
     </section>
-    <section class="create-auction-banner">
-        <div class="create-auction-banner-img-container">
-            <p class="create-auction-banner-text text-regular text-large">
-                Are you buying or selling? Take your first step.
-            </p>
-        </div>
-        <p-button
-            class="create-auction-button"
-            type="button"
-            routerLink="/create-auction"
-            label="Create an auction"
-            icon="pi pi-arrow-circle-right"
-            iconPos="right"
-        >
-        </p-button>
-    </section>
-    <section class="your-page-banner">
-        <div class="your-page-banner-img-container">
-            <p class="your-page-banner-text text-regular text-large">
-                See how your auctions are currently doing.
-            </p>
-        </div>
-        <p-button
-            class="your-page-button"
-            type="button"
-            routerLink="/your-page"
-            label="View your page"
-            icon="pi pi-arrow-circle-right"
-            iconPos="right"
-        >
-        </p-button>
-    </section>
+    @if ((windowService.isMobile$ | async) === false) {
+        <section class="create-auction-banner">
+            <div class="create-auction-banner-img-container">
+                <p class="create-auction-banner-text text-regular text-large">
+                    Are you buying or selling? Take your first step.
+                </p>
+            </div>
+            <p-button
+                class="create-auction-button"
+                type="button"
+                routerLink="/create-auction"
+                label="Create an auction"
+                icon="pi pi-arrow-circle-right"
+                iconPos="right"
+            >
+            </p-button>
+        </section>
+        <section class="your-page-banner">
+            <div class="your-page-banner-img-container">
+                <p class="your-page-banner-text text-regular text-large">
+                    See how your auctions are currently doing.
+                </p>
+            </div>
+            <p-button
+                class="your-page-button"
+                type="button"
+                routerLink="/your-page"
+                label="View your page"
+                icon="pi pi-arrow-circle-right"
+                iconPos="right"
+            >
+            </p-button>
+        </section>
+    }
     <section class="trending-auctions">
         <dd24-auction-list
             [request]="trendingAuctionsRequest"
