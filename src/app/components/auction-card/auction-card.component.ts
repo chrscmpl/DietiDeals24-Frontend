@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -12,7 +12,6 @@ import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { IntervalPipe } from '../../pipes/interval.pipe';
-import { MoneyPipe } from '../../pipes/money.pipe';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -23,7 +22,7 @@ import { MoneyPipe } from '../../pipes/money.pipe';
         OneCharUpperPipe,
         LocalDatePipe,
         IntervalPipe,
-        MoneyPipe,
+        CurrencyPipe,
     ],
     templateUrl: './auction-card.component.html',
     styleUrl: './auction-card.component.scss',

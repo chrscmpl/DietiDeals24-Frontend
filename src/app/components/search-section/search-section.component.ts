@@ -9,15 +9,15 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import {
-    AuctionSearchParameters,
-    AuctionType,
-} from '../../models/auction.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
 import { Router } from '@angular/router';
-import { Nullable } from '../../helpers/nullable';
+import { Nullable } from '../../typeUtils/nullable';
+import {
+    AuctionSearchParameters,
+    AuctionType,
+} from '../../typeUtils/auction.utils';
 
 interface searchForm {
     keywords: FormControl<string | null>;

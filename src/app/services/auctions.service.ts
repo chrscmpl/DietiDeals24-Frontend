@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    AuctionSummary,
-    AuctionSearchParameters,
-} from '../models/auction.model';
+import { AuctionSummary } from '../models/auction.model';
 import {
     PaginatedRequest,
     PaginatedRequestParams,
 } from '../helpers/paginatedRequest';
 import { auctionBuilder } from '../helpers/auctionBuilder';
+import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 
 @Injectable({
     providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { AuctionType } from '../../models/auction.model';
 import { UpperCasePipe } from '@angular/common';
+import { AuctionType } from '../../typeUtils/auction.utils';
 
 @Component({
     selector: 'dd24-auction-type-link',

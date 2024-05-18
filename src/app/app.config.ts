@@ -7,7 +7,6 @@ import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { DatePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
-import { MoneyPipe } from './pipes/money.pipe';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authorizationInterceptor } from './interceptors/authorization.interceptor';
 import { importProvidersFrom } from '@angular/core';
@@ -26,7 +25,6 @@ export const appConfig: ApplicationConfig = {
         OneCharUpperPipe,
         DatePipe,
         IntervalPipe,
-        MoneyPipe,
         CurrencyPipe,
         AuctionsRequestGuard,
         HideUIGuard,

@@ -1,11 +1,4 @@
 <div class="app">
-    @if ((windowService.UIhidden$ | async) === false) {
-        @if ((windowService.isMobile$ | async) === false) {
-            <dd24-header class="header"></dd24-header>
-        } @else {
-            <dd24-mobile-header></dd24-mobile-header>
-        }
-    }
     <div class="content">
         <router-outlet
             (activate)="onMainRouterOutletActivate()"
@@ -18,6 +11,7 @@
     </div>
     @if ((windowService.UIhidden$ | async) === false) {
         @if ((windowService.isMobile$ | async) === false) {
+            <dd24-header class="header"></dd24-header>
             <dd24-footer class="footer"></dd24-footer>
             <p-button
                 class="create-auction-button"
@@ -27,7 +21,8 @@
                 routerLink="/create-auction"
             />
         } @else {
-            <dd24-mobile-navbar></dd24-mobile-navbar>
+            <dd24-mobile-header class="header"></dd24-mobile-header>
+            <dd24-mobile-navbar class="footer"></dd24-mobile-navbar>
         }
         <dd24-sidebar></dd24-sidebar>
     }

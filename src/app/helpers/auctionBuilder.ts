@@ -1,27 +1,25 @@
 import {
-    AuctionSummary,
     AuctionSummaryDTO,
-    AuctionType,
+    ReverseAuctionSummaryDTO,
+    SilentAuctionSummaryDTO,
+} from '../DTOs/auction.dto';
+import {
+    AuctionSummary,
     ReverseAuctionSummary,
     SilentAuctionSummary,
 } from '../models/auction.model';
-import { Money } from '../models/money.model';
+import { AuctionType } from '../typeUtils/auction.utils';
 
 export const auctionBuilder = (() => {
     const build = (auction: AuctionSummaryDTO): AuctionSummary => {
         switch (auction.type) {
             case AuctionType.silent:
                 return new SilentAuctionSummary(
-                    auction as AuctionSummaryDTO & {
-                        minimumBid: Money;
-                    },
+                    auction as SilentAuctionSummaryDTO,
                 );
             case AuctionType.reverse:
                 return new ReverseAuctionSummary(
-                    auction as AuctionSummaryDTO & {
-                        maximumStartingBid: Money;
-                        lowestBid: Money;
-                    },
+                    auction as ReverseAuctionSummaryDTO,
                 );
             default:
                 throw new Error('Invalid auction DTO');
