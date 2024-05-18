@@ -21,20 +21,30 @@
             align-self: start;
         }
         .trending-categories-buttons {
-            @include layouts.flex(row, space-between, stretch, 0.2ch);
-            flex-wrap: nowrap;
+            @include layouts.grid(
+                $template: 1fr / repeat(auto-fit, minmax(15ch, 1fr)),
+                $gap: 0.5em,
+                $justify-items: stretch,
+                $align-items: stretch,
+                $justify-content: center,
+                $align-content: center
+            );
             min-height: 3.5em;
             .trending-category-button {
-                flex: 0 1 15ch;
                 ::ng-deep button {
                     @include layouts.flex(row, center, center);
                     word-wrap: break-word;
                     padding: 0.3em;
                 }
+                @include viewports.mobile {
+                    width: 100%;
+                }
+            }
+            @include viewports.mobile {
+                @include layouts.grid($template: 1fr / 1fr 1fr, $gap: 0.5em);
             }
             .trending-category-loading-button {
                 height: 3.5em;
-                width: 15ch;
                 ::ng-deep button:hover {
                     cursor: progress;
                 }
