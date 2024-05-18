@@ -35,11 +35,14 @@
             content: "No results found";
             display: block;
             padding: 10px;
-            color: var(--text-color-2);
+            color: var(--text-color-3);
         }
         .macro-category-btn-container {
             @include layouts.flex(column, start, stretch, 0.75rem);
             padding: 0.75rem;
+        }
+        .p-dropdown-empty-message {
+            padding: 0;
         }
     }
 }

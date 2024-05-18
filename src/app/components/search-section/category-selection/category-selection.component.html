@@ -9,14 +9,17 @@
         optionGroupLabel="groupName"
         optionGroupChildren="items"
         scrollHeight="20em"
+        (onFilter)="onFilter($event)"
     >
         <ng-template let-group pTemplate="group">
-            @if (group.macroCategory === -1) {
+            @if (showUI && group.macroCategory === -1) {
                 <p-tabMenu
                     [model]="tabs"
                     [(activeItem)]="currentTab"
                 ></p-tabMenu>
-            } @else if (group.macroCategory === selectedMacroCategory) {
+            } @else if (
+                showUI && group.macroCategory === selectedMacroCategory
+            ) {
                 <div class="macro-category-btn-container">
                     <p-button
                         label="All categories"

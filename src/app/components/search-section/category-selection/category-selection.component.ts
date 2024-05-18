@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CategoriesService } from '../../../services/categories.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownFilterEvent, DropdownModule } from 'primeng/dropdown';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -44,6 +44,8 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
         this.currentOptionsSubject.asObservable();
 
     public disabled: boolean = false;
+
+    public showUI: boolean = true;
 
     public value: string | null = null;
 
@@ -113,6 +115,10 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     public setValue(value: string | null): void {
         this.form.controls[this.controlName]?.setValue(value);
         this.closeDropdown();
+    }
+
+    public onFilter(event: DropdownFilterEvent): void {
+        this.showUI = event.filter.length === 0;
     }
 
     private closeDropdown(): void {
