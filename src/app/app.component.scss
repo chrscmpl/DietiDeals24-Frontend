@@ -1,15 +1,24 @@
 @use "layouts";
+@use "viewports";
 
 .app {
     @include layouts.grid("header" auto "main" 1fr "footer" auto / 1fr);
     width: 100%;
     min-height: 100vh;
+
+    @include viewports.mobile {
+        height: 100vh;
+    }
+
     .header {
         grid-area: header;
     }
 
     .content {
         display: main;
+        @include viewports.mobile {
+            overflow: scroll;
+        }
     }
 
     .footer {
