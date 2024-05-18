@@ -27,8 +27,8 @@ export class HomePageComponent implements OnInit {
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
         queryParameters: {},
         pageNumber: 1,
-        pageSize: 5,
-        maximumResults: 15,
+        pageSize: 10,
+        maximumResults: 20,
         eager: true,
     });
 

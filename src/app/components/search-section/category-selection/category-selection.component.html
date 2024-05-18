@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="category-selector">
     <p-dropdown
-        [options]="(currentOptions$ | async) ?? [allCategoriesGroup]"
+        [options]="(currentOptions$ | async) ?? []"
         [formControlName]="controlName"
         optionLabel="name"
         optionValue="value"
@@ -11,11 +11,25 @@
         scrollHeight="20em"
     >
         <ng-template let-group pTemplate="group">
-            @if (group.groupName !== "All") {
+            @if (group.macroCategory === -1) {
                 <p-tabMenu
                     [model]="tabs"
                     [(activeItem)]="currentTab"
                 ></p-tabMenu>
+            } @else if (group.macroCategory === selectedMacroCategory) {
+                <div class="macro-category-btn-container">
+                    <p-button
+                        label="All categories"
+                        (onClick)="setValue(null)"
+                        [icon]="value === null ? 'pi pi-check' : ''"
+                    ></p-button>
+                    <p-button
+                        [label]="'All ' + group.groupName"
+                        (onClick)="setValue(group.groupName)"
+                        [icon]="value === group.groupName ? 'pi pi-check' : ''"
+                        class="p-fluid"
+                    ></p-button>
+                </div>
             }
         </ng-template>
         <ng-template let-item pTemplate="item">

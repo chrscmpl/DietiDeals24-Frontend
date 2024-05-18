@@ -7,6 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
+import { ButtonModule } from 'primeng/button';
 
 interface option {
     name: string;
@@ -17,6 +18,7 @@ interface option {
 interface group {
     groupName: string;
     items: option[];
+    macroCategory: number;
 }
 
 @Component({
@@ -28,6 +30,7 @@ interface group {
         TabMenuModule,
         AsyncPipe,
         JsonPipe,
+        ButtonModule,
     ],
     templateUrl: './category-selection.component.html',
     styleUrl: './category-selection.component.scss',
@@ -40,18 +43,11 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
 
-    public selectedMacroCategory: number = 1;
+    public disabled: boolean = false;
 
-    public allCategoriesGroup: group = {
-        groupName: 'All',
-        items: [
-            {
-                name: 'All categories',
-                value: null,
-                macroCategory: 0,
-            },
-        ],
-    };
+    public value: string | null = null;
+
+    public selectedMacroCategory: number = 1;
 
     public tabs: MenuItem[] = [];
 
@@ -69,21 +65,31 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
             },
         });
         this.categoriesService.categories$.subscribe((categories) => {
-            let macroCategoryIndex = 0;
+            let macroCategoryIndex = 1;
             const tabs: MenuItem[] = [];
-            const options: option[] = [];
+            const groups: group[] = [];
+            const hiddenOptions: group = {
+                groupName: 'Hidden',
+                items: [
+                    { name: 'All categories', value: null, macroCategory: -1 },
+                ],
+                macroCategory: -1,
+            };
+            groups.push(hiddenOptions);
             Object.keys(categories).forEach((key) => {
-                const index = ++macroCategoryIndex;
-                options.push(
-                    {
-                        name: `All ${key}`,
-                        value: key,
-                        macroCategory: index,
-                    },
-                    ...categories[key].map((str) =>
+                const index = macroCategoryIndex++;
+                groups.push({
+                    groupName: key,
+                    items: categories[key].map((str) =>
                         this.stringToOption(str, index),
                     ),
-                );
+                    macroCategory: index,
+                });
+                hiddenOptions.items.push({
+                    name: `All ${key}`,
+                    value: key,
+                    macroCategory: -1,
+                });
                 tabs.push({
                     label: this.oneCharUpperPipe.transform(key),
                     command: () => (this.selectedMacroCategory = index),
@@ -91,18 +97,29 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
             });
             this.tabs = tabs;
             this.currentTab = tabs[0];
-            this.currentOptionsSubject.next([
-                this.allCategoriesGroup,
-                {
-                    groupName: 'items',
-                    items: options,
-                },
-            ]);
+            this.currentOptionsSubject.next(groups);
         });
+        this.form.controls[this.controlName]?.valueChanges.subscribe(
+            (value) => {
+                this.value = value;
+            },
+        );
     }
 
     ngOnDestroy(): void {
         this.currentOptionsSubject.complete();
+    }
+
+    public setValue(value: string | null): void {
+        this.form.controls[this.controlName]?.setValue(value);
+        this.closeDropdown();
+    }
+
+    private closeDropdown(): void {
+        this.form.get(this.controlName)?.disable();
+        setTimeout(() => {
+            this?.form.get(this.controlName)?.enable();
+        }, 10);
     }
 
     private stringToOption(str: string, macroCategory: number): option {

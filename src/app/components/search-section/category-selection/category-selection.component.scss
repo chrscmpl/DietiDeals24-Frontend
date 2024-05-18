@@ -1,3 +1,5 @@
+@use "layouts";
+
 .category-selector {
     ::ng-deep {
         .p-tabmenuitem {
@@ -34,6 +36,10 @@
             display: block;
             padding: 10px;
             color: var(--text-color-2);
+        }
+        .macro-category-btn-container {
+            @include layouts.flex(column, start, stretch, 0.75rem);
+            padding: 0.75rem;
         }
     }
 }
