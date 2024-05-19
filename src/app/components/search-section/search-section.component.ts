@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -19,6 +19,7 @@ import {
     AuctionType,
 } from '../../typeUtils/auction.utils';
 import { CategoriesService } from '../../services/categories.service';
+import { Observable, ReplaySubject, Subscription, startWith, take } from 'rxjs';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -47,8 +48,15 @@ interface option {
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
 })
-export class SearchSectionComponent implements OnInit {
+export class SearchSectionComponent implements OnInit, OnDestroy {
     public searchForm!: FormGroup<searchForm>;
+
+    private macroCategoriesSubject = new ReplaySubject<string[]>(1);
+
+    private macroCategories$: Observable<string[]> =
+        this.macroCategoriesSubject.asObservable();
+
+    private subscriptions: Subscription[] = [];
 
     public auctionTypeOptions: option[] = [
         { name: 'All auctions', value: null },
@@ -76,10 +84,24 @@ export class SearchSectionComponent implements OnInit {
                 };
             }),
         );
+
+        this.macroCategoriesSubject.next([]);
+
+        this.subscriptions.push(
+            this.categoriesService.macroCategories$.subscribe(
+                (macroCategories) => {
+                    this.macroCategoriesSubject.next(macroCategories);
+                },
+            ),
+        );
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     public handleSubmit(): void {
-        this.categoriesService.macroCategories$.subscribe((macroCategories) => {
+        this.macroCategories$.subscribe((macroCategories) => {
             let params: Nullable<AuctionSearchParameters> =
                 this.searchForm.value;
             if (params.category && macroCategories.includes(params.category)) {
