@@ -1,0 +1,5 @@
+@use "templates";
+
+:host {
+    @include templates.main;
+}

@@ -1,95 +1,78 @@
-<dd24-authentication-page>
-    <div class="form-card">
-        <h1>Log into DietiDeals24</h1>
-        <a routerLink="/register" class="registration-link">
-            you don't have an account?
-        </a>
-        <form class="google-login">
-            <p-button
-                class="google-login-btn p-fluid"
-                type="submit"
-                severity="secondary"
-            >
-                <img src="assets/google.svg" alt="google-logo" />
-                CONTINUE WITH GOOGLE
-            </p-button>
-        </form>
-
-        <div class="separator">
-            <span class="separator-line"></span>
-            <span class="separator-or">or</span>
-        </div>
-
-        <form
-            class="login-form"
-            [formGroup]="loginForm"
-            (ngSubmit)="dd24Login()"
+<div class="form-card">
+    <h1>Log into DietiDeals24</h1>
+    <a routerLink="../register" class="registration-link">
+        you don't have an account?
+    </a>
+    <form class="google-login">
+        <p-button
+            class="google-login-btn p-fluid"
+            type="submit"
+            severity="secondary"
         >
-            <section class="inputs">
-                <div class="input email-input">
-                    <label for="email">Email</label>
-                    <dd24-input
-                        controlName="email"
-                        [errorMessages]="[
-                            {
-                                validation: 'required',
-                                message: 'an email is required'
-                            },
-                            {
-                                validation: 'email',
-                                message: 'please enter a valid email'
-                            }
-                        ]"
-                    >
-                        <input
-                            class="p-fluid"
-                            type="email"
-                            pInputText
-                            formControlName="email"
-                            name="email"
-                        />
-                    </dd24-input>
-                </div>
-                <div class="input password-input">
-                    <label for="password">Password</label>
-                    <dd24-input
-                        controlName="password"
-                        [errorMessages]="[
-                            {
-                                validation: 'required',
-                                message: 'a password is required'
-                            },
-                            {
-                                validation: [
-                                    'pattern',
-                                    'minlength',
-                                    'maxlength'
-                                ],
-                                message:
-                                    'A password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
-                            }
-                        ]"
-                    >
-                        <p-password
-                            class="p-fluid"
-                            type="password"
-                            formControlName="password"
-                            name="password"
-                            [feedback]="false"
-                            toggleMask="true"
-                        />
-                    </dd24-input>
-                </div>
-            </section>
-            <a routerLink="/forgot-password"> forgot your password? </a>
-            @if (error) {
-                <span class="error">{{ error }}</span>
-            }
-            <p-button
-                label="Login"
-                type="submit"
-                class="login-submit"
-            ></p-button>
-        </form>
-    </div>
-</dd24-authentication-page>
+            <img src="assets/google.svg" alt="google-logo" />
+            CONTINUE WITH GOOGLE
+        </p-button>
+    </form>
+
+    <p-divider class="divider" align="center">or</p-divider>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="dd24Login()">
+        <section class="inputs">
+            <div class="input email-input">
+                <label for="email">Email</label>
+                <dd24-input
+                    controlName="email"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'an email is required'
+                        },
+                        {
+                            validation: 'email',
+                            message: 'please enter a valid email'
+                        }
+                    ]"
+                >
+                    <input
+                        class="p-fluid"
+                        type="email"
+                        pInputText
+                        formControlName="email"
+                        name="email"
+                    />
+                </dd24-input>
+            </div>
+            <div class="input password-input">
+                <label for="password">Password</label>
+                <dd24-input
+                    controlName="password"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'a password is required'
+                        },
+                        {
+                            validation: ['pattern', 'minlength', 'maxlength'],
+                            message:
+                                'A password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
+                        }
+                    ]"
+                >
+                    <p-password
+                        class="p-fluid"
+                        type="password"
+                        formControlName="password"
+                        name="password"
+                        [feedback]="false"
+                        toggleMask="true"
+                    />
+                </dd24-input>
+            </div>
+        </section>
+        <a routerLink="../forgot-password"> forgot your password? </a>
+        @if (error) {
+            <span class="error">{{ error }}</span>
+        }
+        <p-button label="Login" type="submit" class="login-submit"></p-button>
+    </form>
+</div>

@@ -14,7 +14,14 @@
         height: var(--card-height);
     }
 
-    .no-results {
+    .empty-message {
+        @include layouts.flex(column, center, center, 1rem);
+        font-weight: var(--font-weight-bold);
+        color: var(--text-color-3);
+    }
+
+    .no-results,
+    .empty-message {
         margin: 2rem 0;
     }
 }

@@ -45,6 +45,12 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     @ViewChild('dropdown') dropdown!: Dropdown;
 
+    public defaultGroup: group = {
+        groupName: 'Default',
+        items: [{ name: 'All categories', value: null, macroCategory: 0 }],
+        macroCategory: 0,
+    };
+
     private currentOptionsSubject = new ReplaySubject<group[]>(1);
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();

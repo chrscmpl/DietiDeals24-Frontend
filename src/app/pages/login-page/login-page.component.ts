@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationPageComponent } from '../authentication-page/authentication-page.component';
 import {
     FormBuilder,
     FormControl,
@@ -15,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { InputComponent } from '../../components/input/input.component';
+import { DividerModule } from 'primeng/divider';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -25,13 +25,13 @@ interface loginForm {
     selector: 'dd24-login-page',
     standalone: true,
     imports: [
-        AuthenticationPageComponent,
         ReactiveFormsModule,
         RouterLink,
         InputComponent,
         InputTextModule,
         ButtonModule,
         PasswordModule,
+        DividerModule,
     ],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',

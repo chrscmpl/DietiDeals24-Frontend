@@ -110,3 +110,7 @@ i {
         border-bottom-right-radius: var(--border-radius-large);
     }
 }
+
+.p-divider::before {
+    border-color: var(--border-color);
+}

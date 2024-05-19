@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { SearchResultsPageComponent } from './pages/search-results-page/search-results-page.component';
-import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
-import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
 import { auctionsRequestGuard } from './guards/auctions-request.guard';
 import { EmptyComponent } from './components/empty/empty.component';
 import { hideUIGuard } from './guards/hide-ui.guard';
@@ -47,38 +45,56 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'login',
-        title: 'Login',
+        path: 'auth',
+        title: 'Authentication',
         canActivate: [hideUIGuard],
         canDeactivate: [showUIGuard],
-        loadComponent: () =>
-            import('./pages/login-page/login-page.component').then(
-                (m) => m.LoginPageComponent,
-            ),
-    },
-    {
-        path: 'register',
-        title: 'Sign Up',
-        canActivate: [hideUIGuard],
-        canDeactivate: [showUIGuard],
+
         loadComponent: () =>
             import(
-                './pages/registration-page/registration-page.component'
-            ).then((m) => m.RegistrationPageComponent),
-    },
-    {
-        path: 'forgot-password',
-        title: 'Forgot Password',
-        loadComponent: () =>
-            import(
-                './pages/forgot-password-page/forgot-password-page.component'
-            ).then((m) => m.ForgotPasswordPageComponent),
+                './pages/authentication-page/authentication-page.component'
+            ).then((m) => m.AuthenticationPageComponent),
+
+        children: [
+            {
+                path: '',
+                redirectTo: 'login',
+                pathMatch: 'full',
+            },
+            {
+                path: 'login',
+                title: 'Login',
+                loadComponent: () =>
+                    import('./pages/login-page/login-page.component').then(
+                        (m) => m.LoginPageComponent,
+                    ),
+            },
+            {
+                path: 'register',
+                title: 'Sign Up',
+                loadComponent: () =>
+                    import(
+                        './pages/registration-page/registration-page.component'
+                    ).then((m) => m.RegistrationPageComponent),
+            },
+            {
+                path: 'forgot-password',
+                title: 'Forgot Password',
+                loadComponent: () =>
+                    import(
+                        './pages/forgot-password-page/forgot-password-page.component'
+                    ).then((m) => m.ForgotPasswordPageComponent),
+            },
+        ],
     },
     {
         path: 'settings',
         title: 'Settings',
         outlet: 'overlay',
-        component: SettingsPopupComponent,
+        loadComponent: () =>
+            import('./pages/settings-popup/settings-popup.component').then(
+                (m) => m.SettingsPopupComponent,
+            ),
         children: [
             {
                 path: '',
@@ -87,7 +103,10 @@ export const routes: Routes = [
             },
             {
                 path: 'theme',
-                component: ThemeSettingsComponent,
+                loadComponent: () =>
+                    import(
+                        './pages/settings-popup/theme-settings/theme-settings.component'
+                    ).then((m) => m.ThemeSettingsComponent),
             },
         ],
     },

@@ -1,17 +1,13 @@
 @use "layouts";
 @use "viewports";
+@use "templates";
 
 .home-page {
-    @include layouts.flex(column, start, stretch, 1em);
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-regular);
-    min-height: 100%;
-    width: 100%;
-    padding: 1em 15%;
-
     @include viewports.mobile {
         padding: 1em 2%;
     }
+
+    @include templates.main;
 
     .trending-categories {
         @include layouts.flex(column, start, stretch, 0.5em);

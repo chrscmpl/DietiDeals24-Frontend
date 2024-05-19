@@ -17,7 +17,7 @@
         width: 100%;
     }
 
-    > :not(.separator) {
+    > :not(.divider) {
         @include box.padding-horizontal(1rem);
     }
 
@@ -42,33 +42,11 @@
         }
     }
 
-    .separator {
+    .divider {
         width: 100%;
-        font-size: var(--font-size-medium);
-        @include layouts.grid(
-            $template: "." 1fr / 1fr,
-            $justify-content: center,
-            $align-content: center,
-            $justify-items: center,
-            $align-items: center
-        );
-
-        .separator-or {
-            @include box.padding-horizontal(0.5ch);
-            color: var(--text-color-3);
+        ::ng-deep .p-divider-content {
             font-weight: var(--font-weight-bold);
-            text-align: center;
-            grid-row: 1;
-            grid-column: 1;
-            background-color: var(--component-color);
-        }
-
-        .separator-line {
-            grid-row: 1;
-            grid-column: 1;
-            border-top: var(--border);
-            justify-self: stretch;
-            height: 1px;
+            color: var(--text-color-3);
         }
     }
 

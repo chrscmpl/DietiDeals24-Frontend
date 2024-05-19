@@ -8,6 +8,12 @@
         } @placeholder {
             <div class="card-placeholder"></div>
         }
+    } @empty {
+        @if (!error) {
+            <div class="empty-message">
+                No auctions corresponding to the search criteria
+            </div>
+        }
     }
     @if (error) {
         <dd24-reload-button
