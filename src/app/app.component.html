@@ -9,8 +9,8 @@
             <dd24-loading-placeholder></dd24-loading-placeholder>
         }
     </div>
-    @if ((windowService.UIhidden$ | async) === false) {
-        @if ((windowService.isMobile$ | async) === false) {
+    @if ((windowService.isMobile$ | async) === false) {
+        @if ((windowService.UIhidden$ | async) === false) {
             @defer (when (windowService.isMobile$ | async) === false) {
                 <dd24-header class="header"></dd24-header>
                 <dd24-footer class="footer"></dd24-footer>
@@ -22,12 +22,12 @@
                     routerLink="/create-auction"
                 />
             }
-        } @else {
-            @defer (when windowService.isMobile$ | async) {
-                <dd24-mobile-header class="header"></dd24-mobile-header>
-                <dd24-mobile-navbar class="footer"></dd24-mobile-navbar>
-            }
         }
-        <dd24-sidebar></dd24-sidebar>
+    } @else {
+        @defer (when windowService.isMobile$ | async) {
+            <dd24-mobile-header class="header"></dd24-mobile-header>
+            <dd24-mobile-navbar class="footer"></dd24-mobile-navbar>
+        }
     }
+    <dd24-sidebar></dd24-sidebar>
 </div>

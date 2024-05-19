@@ -9,6 +9,10 @@
     min-height: 100%;
     width: 100%;
     padding: 1em 15%;
+
+    @include viewports.mobile {
+        padding: 1em 2%;
+    }
 }
 
 @mixin auth-form {
@@ -18,7 +22,6 @@
     padding: 1.2rem 0;
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-regular);
-    // width: clamp(25ch, 25ch, 100%);
     width: 25ch;
 
     @include viewports.mobile {

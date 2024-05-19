@@ -3,7 +3,8 @@
 
 .auction-card {
     @include layouts.grid(
-        $template: "image title" auto "image details" 1fr / auto 1fr
+        $template: "image title" auto "image type" auto "image details" 1fr /
+            auto 1fr
     );
     min-height: var(--card-height);
     width: 100%;
@@ -13,9 +14,10 @@
 
     @include viewports.mobile {
         @include layouts.grid(
-            $template: "image title" auto "details details" 1fr / auto 1fr
+            $template: "type type" auto "image title" auto "image details" 1fr /
+                auto 1fr
         );
-        row-gap: 1rem;
+        padding-bottom: 1rem;
     }
 
     #{&}-image-container {
@@ -30,7 +32,6 @@
             width: calc(var(--card-height) / 2);
             border-radius: var(--border-radius-medium);
             border: var(--border);
-            margin-top: 1rem;
             margin-left: 1rem;
         }
 
@@ -56,7 +57,7 @@
         grid-area: title;
 
         @include viewports.mobile {
-            padding-bottom: 0;
+            padding: 0 1rem;
             justify-content: center;
         }
 
@@ -71,12 +72,23 @@
         }
     }
 
+    #{&}-auction-type {
+        grid-area: type;
+        padding: 1rem;
+    }
+
     #{&}-details-container {
         @include layouts.flex(column, start, start, 0.1em);
         grid-area: details;
         color: var(--text-color-1);
         padding: 1rem;
         padding-top: 0;
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-regular);
+
+        @include viewports.mobile {
+            padding: 0 1rem;
+        }
 
         .auction-card-sum {
             font-size: var(--font-size-large);

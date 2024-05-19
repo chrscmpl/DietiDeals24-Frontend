@@ -1,1 +1,12 @@
-<p>mobile-header works!</p>
+<nav class="mobile-nav">
+    <button (click)="location.back()">
+        <i class="pi pi-arrow-left"></i>
+    </button>
+    <div class="spacer"></div>
+    @if ((windowService.UIhidden$ | async) === false) {
+        <dd24-logo class="logo"></dd24-logo>
+    }
+    <button (click)="windowService.isSidebarVisible = true">
+        <i class="pi pi-bars"></i>
+    </button>
+</nav>

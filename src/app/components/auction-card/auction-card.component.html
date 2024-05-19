@@ -19,12 +19,12 @@
             }
         </span>
     </div>
+    <dd24-auction-type-link
+        class="auction-card-auction-type"
+        [type]="auction.type"
+        >{{ auction.type }}</dd24-auction-type-link
+    >
     <div class="auction-card-details-container">
-        <dd24-auction-type-link
-            class="auction-card-auction-type"
-            [type]="auction.type"
-            >{{ auction.type }}</dd24-auction-type-link
-        >
         <span class="auction-card-sum">
             @if (auction.status === statuses.active) {
                 {{ auction.lastBidDescription | oneCharUpper }}:

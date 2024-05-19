@@ -3,10 +3,6 @@
 @use "templates";
 
 .home-page {
-    @include viewports.mobile {
-        padding: 1em 2%;
-    }
-
     @include templates.main;
 
     .trending-categories {

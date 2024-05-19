@@ -1,0 +1,22 @@
+@use "layouts";
+
+.mobile-nav {
+    @include layouts.flex(row, start, center, 1.5rem);
+    padding: 0.5rem 1rem;
+    background-color: var(--component-color);
+    border-bottom: var(--border);
+    width: 100%;
+
+    i {
+        font-size: 2rem;
+        color: var(--basic-affordances-color);
+    }
+
+    .logo {
+        height: 2.5rem;
+    }
+
+    .spacer {
+        flex: 1;
+    }
+}

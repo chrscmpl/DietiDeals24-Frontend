@@ -15,7 +15,8 @@
     );
 
     @include viewports.mobile {
-        grid-template: "banner" auto "main" 1fr / 1fr;
+        grid-template: "main" 1fr / 1fr;
+        height: 100%;
     }
 
     .banner {
@@ -26,9 +27,7 @@
         border-right: 2px solid var(--border-color-side);
 
         @include viewports.mobile {
-            @include layouts.flex(row, space-between, center);
-            padding: 0.3rem;
-            border-right: none;
+            display: none;
         }
 
         .page-back-button {
