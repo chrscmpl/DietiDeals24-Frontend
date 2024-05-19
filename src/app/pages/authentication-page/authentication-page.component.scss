@@ -4,6 +4,7 @@
 .authentication-page {
     height: 100vh;
     background-color: var(--background-color);
+    width: 100%;
 
     @include layouts.grid(
         $template: "banner main" 1fr / 52% 48%,
@@ -62,13 +63,14 @@
 
     main {
         grid-area: main;
-        @include layouts.flex(column, center, center);
+        @include layouts.flex(column, center, center, 1rem);
         .logo {
+            align-self: center;
             display: block;
             width: 75%;
         }
         @include viewports.mobile {
-            @include layouts.flex(column, center, center, 1ch);
+            align-items: stretch;
         }
     }
 }

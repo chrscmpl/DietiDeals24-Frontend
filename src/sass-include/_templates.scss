@@ -1,4 +1,6 @@
 @use "layouts";
+@use "viewports";
+@use "box";
 
 @mixin main {
     @include layouts.flex(column, start, stretch, 1em);
@@ -7,4 +9,25 @@
     min-height: 100%;
     width: 100%;
     padding: 1em 15%;
+}
+
+@mixin auth-form {
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    @include layouts.flex(column, flex-start, center, 0.2rem);
+    padding: 1.2rem 0;
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-regular);
+    // width: clamp(25ch, 25ch, 100%);
+    width: 25ch;
+
+    @include viewports.mobile {
+        border: none;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    > :not(.divider) {
+        @include box.padding-horizontal(2rem);
+    }
 }

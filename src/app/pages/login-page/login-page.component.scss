@@ -1,25 +1,10 @@
 @use "layouts";
 @use "viewports";
 @use "box";
+@use "templates";
 
 .form-card {
-    border: var(--border);
-    border-radius: var(--border-radius-large);
-    @include layouts.flex(column, flex-start, center, 0.2rem);
-    @include box.padding-vertical(1.2rem);
-    font-size: var(--font-size-large);
-    font-weight: var(--font-weight-regular);
-    width: 25ch;
-
-    @include viewports.mobile {
-        border: none;
-        border-radius: 0;
-        width: 100%;
-    }
-
-    > :not(.divider) {
-        @include box.padding-horizontal(1rem);
-    }
+    @include templates.auth-form;
 
     h1 {
         font-size: var(--font-size-large);
