@@ -127,3 +127,7 @@ i {
 .p-divider::before {
     border-color: var(--border-color);
 }
+
+.p-divider-content {
+    background-color: var(--component-color);
+}

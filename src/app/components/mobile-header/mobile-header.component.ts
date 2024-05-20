@@ -11,5 +11,8 @@ import { LogoComponent } from '../logo/logo.component';
     styleUrl: './mobile-header.component.scss',
 })
 export class MobileHeaderComponent {
-    constructor(public windowService: WindowService) {}
+    constructor(
+        public windowService: WindowService,
+        public location: Location,
+    ) {}
 }

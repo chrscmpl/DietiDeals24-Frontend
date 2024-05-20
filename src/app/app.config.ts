@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuctionsRequestGuard } from './guards/auctions-request.guard';
 import { HideUIGuard } from './guards/hide-ui.guard';
 import { ShowUIGuard } from './guards/show-ui.guard';
+import { AuthenticationGuard } from './guards/authentication.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -29,5 +30,6 @@ export const appConfig: ApplicationConfig = {
         AuctionsRequestGuard,
         HideUIGuard,
         ShowUIGuard,
+        AuthenticationGuard,
     ],
 };

@@ -70,6 +70,7 @@
         }
         @include viewports.mobile {
             align-items: stretch;
+            background-color: var(--component-color);
         }
     }
 }

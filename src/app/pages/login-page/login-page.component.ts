@@ -9,12 +9,12 @@ import {
 import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserCredentials } from '../../models/user.model';
-import { Location } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { InputComponent } from '../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
+import { RedirectionService } from '../../services/redirection.service';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -42,7 +42,7 @@ export class LoginPageComponent implements OnInit {
 
     constructor(
         private authenticationService: AuthenticationService,
-        private location: Location,
+        private redirect: RedirectionService,
         private formBuilder: FormBuilder,
     ) {}
 
@@ -69,7 +69,7 @@ export class LoginPageComponent implements OnInit {
             this.loginForm.value as UserCredentials,
             {
                 next: () => {
-                    this.location.back();
+                    this.redirect.exitRoute();
                 },
                 error: (err) => {
                     if (err.status === 401) {

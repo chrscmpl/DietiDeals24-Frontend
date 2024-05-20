@@ -13,14 +13,22 @@
                 <p-button
                     class="nav-auth-btn"
                     severity="secondary"
-                    routerLink="auth/login"
+                    (onClick)="
+                        redirectionService.navigateRedirectingBack(
+                            '/auth/login'
+                        )
+                    "
                 >
                     Login
                 </p-button>
                 <p-button
                     class="nav-auth-btn"
                     severity="secondary"
-                    routerLink="auth/register"
+                    (onClick)="
+                        redirectionService.navigateRedirectingBack(
+                            '/auth/register'
+                        )
+                    "
                 >
                     Register
                 </p-button>

@@ -4,6 +4,10 @@ import { auctionsRequestGuard } from './guards/auctions-request.guard';
 import { EmptyComponent } from './components/empty/empty.component';
 import { hideUIGuard } from './guards/hide-ui.guard';
 import { showUIGuard } from './guards/show-ui.guard';
+import {
+    authenticationGuard,
+    notAUthenticatedGuard,
+} from './guards/authentication.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +31,7 @@ export const routes: Routes = [
             import('./pages/your-page/your-page.component').then(
                 (m) => m.YourPageComponent,
             ),
+        canActivate: [authenticationGuard],
     },
     {
         path: 'create-auction',
@@ -35,6 +40,7 @@ export const routes: Routes = [
             import(
                 './pages/create-auction-page/create-auction-page.component'
             ).then((m) => m.CreateAuctionPageComponent),
+        canActivate: [authenticationGuard],
     },
     {
         path: 'help',
@@ -47,7 +53,7 @@ export const routes: Routes = [
     {
         path: 'auth',
         title: 'Authentication',
-        canActivate: [hideUIGuard],
+        canActivate: [notAUthenticatedGuard, hideUIGuard],
         canDeactivate: [showUIGuard],
 
         loadComponent: () =>

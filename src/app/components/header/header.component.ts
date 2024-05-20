@@ -11,6 +11,7 @@ import { MenuItem } from 'primeng/api';
 import { Observable, catchError, map, of } from 'rxjs';
 import { WindowService } from '../../services/window.service';
 import { LogoComponent } from '../logo/logo.component';
+import { RedirectionService } from '../../services/redirection.service';
 
 const HIDDEN_QUERY_PARAMS = ['keywords'];
 
@@ -35,6 +36,7 @@ export class HeaderComponent {
         public authenticationService: AuthenticationService,
         public routingUtils: RoutingUtilsService,
         public windowService: WindowService,
+        public redirectionService: RedirectionService,
     ) {}
 
     tabs: link[] = mainPages;

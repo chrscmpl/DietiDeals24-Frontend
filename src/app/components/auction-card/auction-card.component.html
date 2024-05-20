@@ -33,13 +33,17 @@
         </span>
 
         <span class="auction-card-time-left">
-            Time left:
+            @if ((windowService.isMobile$ | async) === false) {
+                Time left:
+            }
             <span
                 class="auction-card-time-left-amount"
                 [class.danger]="timeLeft > 0 && timeLeft < 86400"
                 >{{ timeLeft | interval: "minutes" }}</span
             >
-            (Until {{ auction.endTime | localDate }})</span
-        >
+            @if ((windowService.isMobile$ | async) === false) {
+                (Until {{ auction.endTime | localDate }})
+            }
+        </span>
     </div>
 </div>

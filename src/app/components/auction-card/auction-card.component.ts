@@ -1,4 +1,4 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CommonModule, CurrencyPipe } from '@angular/common';
 import {
     Component,
     EventEmitter,
@@ -12,6 +12,7 @@ import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { IntervalPipe } from '../../pipes/interval.pipe';
+import { WindowService } from '../../services/window.service';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -23,6 +24,7 @@ import { IntervalPipe } from '../../pipes/interval.pipe';
         LocalDatePipe,
         IntervalPipe,
         CurrencyPipe,
+        AsyncPipe,
     ],
     templateUrl: './auction-card.component.html',
     styleUrl: './auction-card.component.scss',
@@ -33,6 +35,8 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     statuses = AuctionSummary.STATUSES;
     timeLeft: number = 0;
     timerInterval?: ReturnType<typeof setInterval>;
+
+    constructor(public windowService: WindowService) {}
 
     ngOnInit(): void {
         this.timeLeft = this.auction.timeLeft;

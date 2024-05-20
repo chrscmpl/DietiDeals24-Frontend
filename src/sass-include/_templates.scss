@@ -23,6 +23,7 @@
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-regular);
     width: 25ch;
+    background-color: var(--component-color);
 
     @include viewports.mobile {
         border: none;

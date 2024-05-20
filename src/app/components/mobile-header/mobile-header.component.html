@@ -1,9 +1,13 @@
 <nav class="mobile-nav">
-    <button (click)="windowService.isSidebarVisible = true">
-        <i class="pi pi-bars"></i>
-    </button>
-    <div class="spacer"></div>
-    @if ((windowService.UIhidden$ | async) === false) {
+    @if (windowService.UIhidden$ | async) {
+        <button (click)="location.back()">
+            <i class="pi pi-arrow-left"></i>
+        </button>
+    } @else {
+        <button (click)="windowService.isSidebarVisible = true">
+            <i class="pi pi-bars"></i>
+        </button>
+        <div class="spacer"></div>
         <dd24-logo class="logo"></dd24-logo>
     }
 </nav>
