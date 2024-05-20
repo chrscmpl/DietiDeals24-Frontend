@@ -5,6 +5,9 @@
     draggable="false"
     resizable="false"
     (onHide)="onClose()"
+    [closeIcon]="
+        (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'
+    "
 >
     <p-tabMenu [model]="tabs" [activeItem]="activeItem"></p-tabMenu>
     <router-outlet></router-outlet>

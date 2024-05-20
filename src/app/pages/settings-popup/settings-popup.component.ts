@@ -4,6 +4,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ThemeSettingsComponent } from './theme-settings/theme-settings.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
+import { WindowService } from '../../services/window.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'dd24-settings-popup',
@@ -13,12 +15,16 @@ import { MenuItem } from 'primeng/api';
         RouterOutlet,
         TabMenuModule,
         ThemeSettingsComponent,
+        AsyncPipe,
     ],
     templateUrl: './settings-popup.component.html',
     styleUrl: './settings-popup.component.scss',
 })
 export class SettingsPopupComponent {
-    constructor(private router: Router) {}
+    constructor(
+        private router: Router,
+        public windowService: WindowService,
+    ) {}
 
     public display: boolean = true;
 

@@ -4,10 +4,11 @@
 .app {
     @include layouts.grid("header" auto "main" 1fr "footer" auto / 1fr);
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
+    padding-bottom: env(safe-area-inset-bottom);
 
     @include viewports.mobile {
-        height: 100vh;
+        height: 100svh;
     }
 
     .header {

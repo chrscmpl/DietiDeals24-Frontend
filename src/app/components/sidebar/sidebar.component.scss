@@ -7,6 +7,10 @@
 
 :host ::ng-deep {
     @include viewports.mobile {
+        .p-sidebar {
+            border: none;
+        }
+
         .p-sidebar-header {
             padding: 0.2rem 0.4rem;
         }
