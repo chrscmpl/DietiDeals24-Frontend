@@ -6,16 +6,6 @@
 .form-card {
     @include templates.auth-form;
 
-    h1 {
-        font-size: var(--font-size-large);
-        font-weight: var(--font-weight-bold);
-        margin: 0;
-    }
-
-    a {
-        font-size: var(--font-size-small);
-    }
-
     .google-login {
         margin: 1rem 0;
         width: 100%;

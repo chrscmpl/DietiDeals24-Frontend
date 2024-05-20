@@ -1,1 +1,38 @@
-<p>registration-page works!</p>
+<div class="form-card">
+    <h1>Sign up to DietiDeals24</h1>
+    <p-stepper class="stepper" [(activeStep)]="activeStep">
+        @for (item of [1, 2, 3]; track $index) {
+            <p-stepperPanel header="Your data">
+                <ng-template pTemplate="header" let-index="index">
+                    <div
+                        [class]="
+                            'step-header ' +
+                            (index < activeStep
+                                ? 'step-past'
+                                : index === activeStep
+                                  ? 'step-current'
+                                  : 'step-next')
+                        "
+                    >
+                        <p-button
+                            class="step-btn"
+                            (onClick)="
+                                activeStep =
+                                    index < activeStep ? index : activeStep
+                            "
+                        >
+                            @if (index < activeStep) {
+                                <i class="pi pi-check"></i>
+                            } @else if (index === activeStep) {
+                                <i class="pi pi-circle-fill"></i>
+                            }
+                        </p-button>
+                        <span class="step-title">Your data</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="content"> Hello </ng-template>
+            </p-stepperPanel>
+        }
+    </p-stepper>
+    <button (click)="nextStep()">Next</button>
+</div>

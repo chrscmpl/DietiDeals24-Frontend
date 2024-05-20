@@ -31,6 +31,16 @@
         width: 100%;
     }
 
+    h1 {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+    }
+
+    a {
+        font-size: var(--font-size-small);
+    }
+
     > :not(.divider) {
         @include box.padding-horizontal(2rem);
     }
