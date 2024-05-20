@@ -9,6 +9,7 @@
 
     @include viewports.mobile {
         height: 100svh;
+        overflow: hidden;
     }
 
     .header {

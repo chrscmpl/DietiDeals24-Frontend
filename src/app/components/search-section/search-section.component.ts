@@ -98,6 +98,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((s) => s.unsubscribe());
+        this.macroCategoriesSubject.complete();
     }
 
     public handleSubmit(): void {
