@@ -1,5 +1,26 @@
 @use "layouts";
+@use "viewports";
 
 .sidebar-content {
     @include layouts.flex(column, start, stretch, 2rem);
+}
+
+:host ::ng-deep {
+    @include viewports.mobile {
+        .p-sidebar-header {
+            padding: 0.2rem 0.4rem;
+        }
+
+        .p-sidebar-close {
+            margin: 0;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .p-sidebar-close-icon {
+            i {
+                font-size: 2rem;
+            }
+        }
+    }
 }
