@@ -20,19 +20,10 @@
         margin: 1rem 0;
         width: 100%;
         @include box.padding-horizontal(3rem);
-        .google-login-btn {
-            ::ng-deep button {
-                @include layouts.flex(row, center, center, 1ch);
-            }
-        }
     }
 
     .divider {
         width: 100%;
-        ::ng-deep .p-divider-content {
-            font-weight: var(--font-weight-bold);
-            color: var(--text-color-3);
-        }
     }
 
     .login-form {
@@ -60,5 +51,16 @@
         .login-submit {
             width: 100%;
         }
+    }
+}
+
+:host ::ng-deep {
+    .p-divider-content {
+        font-weight: var(--font-weight-bold);
+        color: var(--text-color-3);
+    }
+
+    .google-login-btn button {
+        @include layouts.flex(row, center, center, 1ch);
     }
 }

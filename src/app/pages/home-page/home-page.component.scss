@@ -23,11 +23,6 @@
             );
             min-height: 3.5em;
             .trending-category-button {
-                ::ng-deep button {
-                    @include layouts.flex(row, center, center);
-                    word-wrap: break-word;
-                    padding: 0.3em;
-                }
                 @include viewports.mobile {
                     width: 100%;
                 }
@@ -37,9 +32,6 @@
             }
             .trending-category-loading-button {
                 height: 3.5em;
-                ::ng-deep button:hover {
-                    cursor: progress;
-                }
             }
         }
     }
@@ -76,9 +68,6 @@
             @include layouts.flex(row, center, center, 0.5ch);
             border-radius: 0;
             white-space: nowrap;
-            ::ng-deep button {
-                border-radius: 0;
-            }
         }
     }
 
@@ -108,17 +97,39 @@
             border-radius: 0;
             white-space: nowrap;
             height: 3.5em;
-            ::ng-deep button {
-                border-radius: 0;
-                justify-content: center;
-                span {
-                    flex-grow: 0;
-                }
-            }
         }
     }
 
     .trending-auctions {
         @include layouts.flex(column, start, stretch, 0.5em);
+    }
+}
+
+:host ::ng-deep {
+    .create-auction-button .p-button {
+        height: 100%;
+        width: 100%;
+        border-radius: 0;
+        .pi {
+            font-size: var(--font-size-medium);
+        }
+    }
+
+    .trending-category-button button {
+        @include layouts.flex(row, center, center);
+        word-wrap: break-word;
+        padding: 0.3em;
+    }
+
+    .trending-category-loading-button button:hover {
+        cursor: progress;
+    }
+
+    .your-page-button button {
+        border-radius: 0;
+        justify-content: center;
+        span {
+            flex-grow: 0;
+        }
     }
 }

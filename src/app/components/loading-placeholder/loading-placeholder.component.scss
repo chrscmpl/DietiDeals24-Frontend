@@ -6,11 +6,12 @@
     @include layouts.flex(column, center, stretch, 2rem);
     .spinner {
         align-self: center;
-        ::ng-deep {
-            .p-progress-spinner-circle {
-                animation: p-progress-spinner-dash 1.5s ease-in-out infinite;
-                stroke: var(--border-color);
-            }
-        }
+    }
+}
+
+:host ::ng-deep {
+    .spinner .p-progress-spinner-circle {
+        width: 3rem;
+        height: 3rem;
     }
 }

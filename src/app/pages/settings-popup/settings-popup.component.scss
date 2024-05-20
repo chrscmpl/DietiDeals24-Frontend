@@ -1,54 +1,52 @@
 @use "viewports";
 
-:host {
-    ::ng-deep {
+:host ::ng-deep {
+    .p-dialog {
+        width: 60%;
+    }
+
+    .p-menuitem-link {
+        border-radius: 0;
+        outline: none;
+    }
+
+    @include viewports.mobile {
+        .p-dialog-mask {
+            justify-content: stretch;
+            align-items: start;
+        }
+
         .p-dialog {
-            width: 60%;
-        }
-
-        .p-menuitem-link {
+            width: 100%;
+            height: 100vh;
             border-radius: 0;
-            outline: none;
+            border: none;
+            max-height: 100vh;
         }
 
-        @include viewports.mobile {
-            .p-dialog-mask {
-                justify-content: stretch;
-                align-items: start;
-            }
+        .p-dialog-header-close {
+            padding: 1.5rem;
+        }
 
-            .p-dialog {
-                width: 100%;
-                height: 100vh;
-                border-radius: 0;
-                border: none;
-                max-height: 100vh;
-            }
+        .p-dialog-header-close-icon {
+            font-size: 2rem;
+        }
 
-            .p-dialog-header-close {
-                padding: 1.5rem;
-            }
+        .p-dialog-header {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0;
+        }
 
-            .p-dialog-header-close-icon {
-                font-size: 2rem;
-            }
+        .p-dialog-title {
+            margin-left: 2rem;
+        }
 
-            .p-dialog-header {
-                flex-direction: column-reverse;
-                align-items: flex-start;
-                gap: 0.5rem;
-                padding: 0.5rem;
-                border-radius: 0;
-            }
-
-            .p-dialog-title {
-                margin-left: 2rem;
-            }
-
-            .p-dialog-content {
-                overflow: scroll;
-                border-radius: 0;
-            }
+        .p-dialog-content {
+            overflow: scroll;
+            border-radius: 0;
         }
     }
 }

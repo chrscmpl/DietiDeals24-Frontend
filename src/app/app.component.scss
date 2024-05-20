@@ -31,12 +31,15 @@
         position: fixed;
         bottom: 1rem;
         right: 1rem;
-        ::ng-deep.p-button {
-            width: 4rem;
-            height: 4rem;
-            .p-button-icon {
-                font-size: 2rem;
-            }
+    }
+}
+
+:host ::ng-deep {
+    .create-auction-button .p-button {
+        width: 4rem;
+        height: 4rem;
+        .p-button-icon {
+            font-size: 2rem;
         }
     }
 }

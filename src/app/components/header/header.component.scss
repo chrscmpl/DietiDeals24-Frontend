@@ -41,21 +41,10 @@
                 margin-left: 1em;
                 height: 3rem;
                 width: fit-content;
-                ::ng-deep .logo {
-                    width: auto;
-                }
             }
 
             .spacer {
                 flex-grow: 1;
-            }
-
-            .nav-auth-btn {
-                ::ng-deep button {
-                    padding: 0.5em 1.5em;
-                    height: fit-content;
-                    font-weight: var(--font-weight-bold);
-                }
             }
         }
 
@@ -81,34 +70,45 @@
             }
             .navbar-path {
                 @include layouts.flex($align: center);
-                ::ng-deep {
-                    .p-breadcrumb {
-                        border: none;
-                        background: transparent;
-                        padding: 0;
-
-                        .p-menuitem-text {
-                            color: var(--text-color-1);
-                            line-height: normal;
-                            &:hover {
-                                text-decoration: underline;
-                            }
-                            // &:last-child:hover {
-                            //     text-decoration: none;
-                            //     cursor: default;
-                            // }
-                        }
-                        .p-icon,
-                        .p-menuitem-icon {
-                            color: var(--text-color-1);
-                        }
-                        .p-menuitem-icon {
-                            margin-right: 1ch;
-                            margin-bottom: 2px;
-                        }
-                    }
-                }
             }
+        }
+    }
+}
+
+:host ::ng-deep {
+    .logo .logo {
+        width: auto;
+    }
+
+    .nav-auth-btn button {
+        padding: 0.5em 1.5em;
+        height: fit-content;
+        font-weight: var(--font-weight-bold);
+    }
+
+    .p-breadcrumb {
+        border: none;
+        background: transparent;
+        padding: 0;
+
+        .p-menuitem-text {
+            color: var(--text-color-1);
+            line-height: normal;
+            &:hover {
+                text-decoration: underline;
+            }
+            // &:last-child:hover {
+            //     text-decoration: none;
+            //     cursor: default;
+            // }
+        }
+        .p-icon,
+        .p-menuitem-icon {
+            color: var(--text-color-1);
+        }
+        .p-menuitem-icon {
+            margin-right: 1ch;
+            margin-bottom: 2px;
         }
     }
 }

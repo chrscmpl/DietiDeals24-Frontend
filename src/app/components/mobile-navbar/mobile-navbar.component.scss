@@ -1,40 +1,38 @@
-:host {
-    ::ng-deep {
-        .p-dock {
-            position: static;
-            width: 100%;
-            overflow: visible;
-            border-top: var(--border);
-        }
-        .p-dock-list-container {
-            padding: 0;
-            overflow: visible;
-            border-radius: 0;
-            border: none;
-            background: transparent;
-        }
-        .p-dock-list {
-            margin: 0;
-            justify-content: space-around;
-            flex: 1;
-        }
-        .p-dock-item {
-            padding: 0;
-        }
-        .p-dock-link {
-            text-decoration: none;
-        }
+:host ::ng-deep {
+    .p-dock {
+        position: static;
+        width: 100%;
+        overflow: visible;
+        border-top: var(--border);
+    }
+    .p-dock-list-container {
+        padding: 0;
+        overflow: visible;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+    }
+    .p-dock-list {
+        margin: 0;
+        justify-content: space-around;
+        flex: 1;
+    }
+    .p-dock-item {
+        padding: 0;
+    }
+    .p-dock-link {
+        text-decoration: none;
+    }
+    .p-dock-action-icon {
+        font-size: 1.5rem;
+        color: var(--basic-affordances-color);
+    }
+    .p-dock-item:nth-child(3) {
+        background-color: var(--accent-color-1);
+        border-radius: 100rem;
+        transform: translateY(-25%) scale(1.2);
         .p-dock-action-icon {
-            font-size: 1.5rem;
-            color: var(--basic-affordances-color);
-        }
-        .p-dock-item:nth-child(3) {
-            background-color: var(--accent-color-1);
-            border-radius: 100rem;
-            transform: translateY(-25%) scale(1.2);
-            .p-dock-action-icon {
-                color: var(--text-accent-color);
-            }
+            color: var(--text-accent-color);
         }
     }
 }

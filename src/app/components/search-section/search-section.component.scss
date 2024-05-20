@@ -1,4 +1,5 @@
 @use "layouts";
+
 .search-section {
     @include layouts.flex(row, start, stretch, 1ch);
     width: 100%;
@@ -13,73 +14,69 @@
         > :not(:last-child) {
             border-right: 2px solid var(--outline-color);
         }
+    }
+}
 
-        .search-bar {
-            ::ng-deep {
-                input {
-                    border: none;
-                    outline: none;
-                    padding-left: 0;
-                    box-shadow: none;
-                }
-                .p-inputgroup-addon {
-                    border: none;
-                    outline: none;
+:host ::ng-deep {
+    .search-bar {
+        input {
+            border: none;
+            outline: none;
+            padding-left: 0;
+            box-shadow: none;
+        }
+        .p-inputgroup-addon {
+            border: none;
+            outline: none;
+            padding: 0;
+            color: var(--basic-affordances-color);
+            background: var(--inputs-background);
+        }
+    }
+
+    .auction-type-selection,
+    .category-selection {
+        .p-dropdown {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            min-width: 20ch;
+            .p-dropdown-label {
+                color: var(--text-color-1);
+            }
+            .p-dropdown-panel {
+                position: absolute;
+                top: 100%;
+                min-width: 20ch;
+                left: 0;
+                border: none;
+                outline: 2px solid var(--outline-color);
+                border-radius: 0;
+                .p-dropdown-items {
                     padding: 0;
-                    color: var(--basic-affordances-color);
-                    background: var(--inputs-background);
-                }
-            }
-        }
-
-        .auction-type-selection,
-        .category-selection {
-            ::ng-deep {
-                .p-dropdown {
-                    border: none;
-                    outline: none;
-                    box-shadow: none;
-                    min-width: 20ch;
-                    .p-dropdown-label {
-                        color: var(--text-color-1);
-                    }
-                    .p-dropdown-panel {
-                        position: absolute;
-                        top: 100%;
-                        min-width: 20ch;
-                        left: 0;
-                        border: none;
-                        outline: 2px solid var(--outline-color);
+                    .p-dropdown-item {
                         border-radius: 0;
-                        .p-dropdown-items {
-                            padding: 0;
-                            .p-dropdown-item {
-                                border-radius: 0;
-                                margin-bottom: 0;
-                            }
-                        }
-                    }
-                    svg {
-                        color: var(--outline-color);
+                        margin-bottom: 0;
                     }
                 }
             }
+            svg {
+                color: var(--outline-color);
+            }
         }
+    }
 
-        .category-selection {
-            ::ng-deep {
-                .p-dropdown {
-                    min-width: 30ch;
-                    .p-dropdown-panel {
-                        min-width: 30ch;
-                    }
-                }
+    .category-selection {
+        .p-dropdown {
+            min-width: 30ch;
+            .p-dropdown-panel {
+                min-width: 30ch;
             }
         }
     }
 
     .search-button {
-        ::ng-deep button {
+        button {
             border-radius: 0;
         }
     }
