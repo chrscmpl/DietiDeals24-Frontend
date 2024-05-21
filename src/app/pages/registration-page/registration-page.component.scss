@@ -46,6 +46,22 @@
             color: var(--accent-color-1);
             font-weight: var(--font-weight-bold);
         }
+
+        .arrow-btn-container {
+            width: 3.5rem;
+            i {
+                color: var(--basic-affordances-color);
+                font-size: 1.5rem;
+            }
+        }
+
+        .prev-arrow-btn {
+            margin-right: 2rem;
+        }
+
+        .next-arrow-btn {
+            margin-left: 2rem;
+        }
     }
 }
 

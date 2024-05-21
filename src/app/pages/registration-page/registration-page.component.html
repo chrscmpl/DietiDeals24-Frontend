@@ -4,6 +4,18 @@
         @for (item of [1, 2, 3]; track $index) {
             <p-stepperPanel header="Your data">
                 <ng-template pTemplate="header" let-index="index">
+                    @if (index === 0) {
+                        <div class="arrow-btn-container">
+                            @if (activeStep > 0) {
+                                <button
+                                    class="prev-arrow-btn"
+                                    (click)="prevStep()"
+                                >
+                                    <i class="pi pi-arrow-left"></i>
+                                </button>
+                            }
+                        </div>
+                    }
                     <div
                         [class]="
                             'step-header ' +
@@ -29,10 +41,24 @@
                         </p-button>
                         <span class="step-title">Your data</span>
                     </div>
+                    @if (index === 2) {
+                        <div class="arrow-btn-container">
+                            @if (activeStep < 2) {
+                                <button
+                                    class="next-arrow-btn"
+                                    (click)="nextStep()"
+                                >
+                                    <i class="pi pi-arrow-right"></i>
+                                </button>
+                            }
+                        </div>
+                    }
                 </ng-template>
                 <ng-template pTemplate="content"> Hello </ng-template>
             </p-stepperPanel>
         }
     </p-stepper>
-    <button (click)="nextStep()">Next</button>
+    @if (activeStep < 2) {
+        <button (click)="nextStep()">Next</button>
+    }
 </div>
