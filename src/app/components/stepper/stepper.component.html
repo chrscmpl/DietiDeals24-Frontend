@@ -1,0 +1,50 @@
+<p-stepper class="stepper" [(activeStep)]="activeStep">
+    @for (step of steps; track $index) {
+        <p-stepperPanel [header]="step.title">
+            <ng-template pTemplate="header" let-index="index">
+                @if (index === 0) {
+                    <div class="arrow-btn-container">
+                        @if (activeStep > 0) {
+                            <button class="prev-arrow-btn" (click)="prevStep()">
+                                <i class="pi pi-arrow-left"></i>
+                            </button>
+                        }
+                    </div>
+                }
+                <div
+                    [class]="
+                        'step-header ' +
+                        (index < activeStep
+                            ? 'step-past'
+                            : index === activeStep
+                              ? 'step-current'
+                              : 'step-next')
+                    "
+                >
+                    <p-button
+                        class="step-btn"
+                        (onClick)="
+                            activeStep = index < activeStep ? index : activeStep
+                        "
+                    >
+                        @if (index < activeStep) {
+                            <i class="pi pi-check"></i>
+                        } @else if (index === activeStep) {
+                            <i class="pi pi-circle-fill"></i>
+                        }
+                    </p-button>
+                    <span class="step-title">{{ step.title }}</span>
+                </div>
+                @if (index === steps.length - 1) {
+                    <div class="arrow-btn-container">
+                        @if (activeStep < steps.length - 1) {
+                            <button class="next-arrow-btn" (click)="nextStep()">
+                                <i class="pi pi-arrow-right"></i>
+                            </button>
+                        }
+                    </div>
+                }
+            </ng-template>
+        </p-stepperPanel>
+    }
+</p-stepper>

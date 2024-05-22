@@ -1,64 +1,8 @@
 <div class="form-card">
     <h1>Sign up to DietiDeals24</h1>
-    <p-stepper class="stepper" [(activeStep)]="activeStep">
-        @for (item of [1, 2, 3]; track $index) {
-            <p-stepperPanel header="Your data">
-                <ng-template pTemplate="header" let-index="index">
-                    @if (index === 0) {
-                        <div class="arrow-btn-container">
-                            @if (activeStep > 0) {
-                                <button
-                                    class="prev-arrow-btn"
-                                    (click)="prevStep()"
-                                >
-                                    <i class="pi pi-arrow-left"></i>
-                                </button>
-                            }
-                        </div>
-                    }
-                    <div
-                        [class]="
-                            'step-header ' +
-                            (index < activeStep
-                                ? 'step-past'
-                                : index === activeStep
-                                  ? 'step-current'
-                                  : 'step-next')
-                        "
-                    >
-                        <p-button
-                            class="step-btn"
-                            (onClick)="
-                                activeStep =
-                                    index < activeStep ? index : activeStep
-                            "
-                        >
-                            @if (index < activeStep) {
-                                <i class="pi pi-check"></i>
-                            } @else if (index === activeStep) {
-                                <i class="pi pi-circle-fill"></i>
-                            }
-                        </p-button>
-                        <span class="step-title">Your data</span>
-                    </div>
-                    @if (index === 2) {
-                        <div class="arrow-btn-container">
-                            @if (activeStep < 2) {
-                                <button
-                                    class="next-arrow-btn"
-                                    (click)="nextStep()"
-                                >
-                                    <i class="pi pi-arrow-right"></i>
-                                </button>
-                            }
-                        </div>
-                    }
-                </ng-template>
-                <ng-template pTemplate="content"> Hello </ng-template>
-            </p-stepperPanel>
-        }
-    </p-stepper>
-    @if (activeStep < 2) {
+
+    <dd24-stepper [steps]="steps"></dd24-stepper>
+    <!-- @if (activeStep < 2) {
         <button (click)="nextStep()">Next</button>
-    }
+    } -->
 </div>
