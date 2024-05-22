@@ -30,6 +30,9 @@
 }
 
 :host ::ng-deep {
+    .p-divider {
+        margin-bottom: 0;
+    }
     .p-divider-content {
         font-weight: var(--font-weight-bold);
         color: var(--text-color-3);
