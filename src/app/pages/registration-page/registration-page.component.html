@@ -72,12 +72,9 @@
                             formControlName="country"
                             name="country"
                             placeholder="The country you live in"
-                            emptyMessage="Couldn't load countries"
-                            [suggestions]="
-                                (locationsService.countries$ | async) ?? [
-                                    'No countries available'
-                                ]
-                            "
+                            emptyMessage="No countries found"
+                            [suggestions]="filteredCountries"
+                            (completeMethod)="completeCountries($event)"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>

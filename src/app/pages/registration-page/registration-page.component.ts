@@ -6,19 +6,24 @@ import {
 } from '../../components/stepper/stepper.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import {
+    AutoCompleteCompleteEvent,
+    AutoCompleteModule,
+} from 'primeng/autocomplete';
 import { InputComponent } from '../../components/input/input.component';
 import {
+    AbstractControl,
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { LocationsService } from '../../services/locations.service';
-import { AsyncPipe } from '@angular/common';
+import { Observable, map } from 'rxjs';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
@@ -53,7 +58,6 @@ interface registrationForm {
         CalendarModule,
         DividerModule,
         AutoCompleteModule,
-        AsyncPipe,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
@@ -61,6 +65,12 @@ interface registrationForm {
 export class RegistrationPageComponent implements OnInit {
     public registrationForm!: FormGroup<registrationForm>;
     public activeStep: number = 0;
+
+    private countries: string[] = [];
+    public filteredCountries: string[] = [];
+
+    private cities: string[] = [];
+    public filteredCities: string[] = [];
 
     public steps: Step[] = [
         {
@@ -81,12 +91,18 @@ export class RegistrationPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.locationsService.refreshCountries();
+        this.locationsService.countries$.subscribe((countries) => {
+            this.countries = countries;
+        });
         this.registrationForm = this.formBuilder.group<registrationForm>({
             anagraphics: this.formBuilder.group<anagraphicsForm>({
                 name: new FormControl(null, [Validators.required]),
                 surname: new FormControl(null, [Validators.required]),
                 birthday: new FormControl(null, [Validators.required]),
-                country: new FormControl(null, []),
+                country: new FormControl(null, {
+                    validators: this.validateCountry,
+                    updateOn: 'blur',
+                }),
                 city: new FormControl(null, []),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
@@ -108,5 +124,24 @@ export class RegistrationPageComponent implements OnInit {
     public next(): void {
         if (this.steps[this.activeStep]?.nextCallback?.() !== false)
             this.activeStep++;
+    }
+
+    public completeCountries(event: AutoCompleteCompleteEvent): void {
+        if (event.query.length < 2) {
+            if (this.filteredCountries.length > 2) this.filteredCountries = [];
+            return;
+        }
+        this.filteredCountries = this.countries.filter((country) =>
+            country.toLowerCase().includes(event.query.toLowerCase()),
+        );
+    }
+
+    private validateCountry(
+        control: AbstractControl<string>,
+    ): ValidationErrors {
+        if (!control.value || this.countries.includes(control.value)) {
+            return {};
+        }
+        return { noMatchingCountry: true };
     }
 }
