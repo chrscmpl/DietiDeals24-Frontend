@@ -6,6 +6,7 @@ import {
 } from '../../components/stepper/stepper.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputComponent } from '../../components/input/input.component';
 import {
     FormBuilder,
@@ -16,13 +17,15 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
+import { LocationsService } from '../../services/locations.service';
+import { AsyncPipe } from '@angular/common';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
     surname: FormControl<string | null>;
     birthday: FormControl<string | null>;
-    Country: FormControl<string | null>;
-    City: FormControl<string | null>;
+    country: FormControl<string | null>;
+    city: FormControl<string | null>;
 }
 
 interface credentialsForm {
@@ -49,6 +52,8 @@ interface registrationForm {
         RouterLink,
         CalendarModule,
         DividerModule,
+        AutoCompleteModule,
+        AsyncPipe,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
@@ -69,16 +74,20 @@ export class RegistrationPageComponent implements OnInit {
         },
     ];
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        public locationsService: LocationsService,
+    ) {}
 
     ngOnInit(): void {
+        this.locationsService.refreshCountries();
         this.registrationForm = this.formBuilder.group<registrationForm>({
             anagraphics: this.formBuilder.group<anagraphicsForm>({
                 name: new FormControl(null, [Validators.required]),
                 surname: new FormControl(null, [Validators.required]),
                 birthday: new FormControl(null, [Validators.required]),
-                Country: new FormControl(null, [Validators.required]),
-                City: new FormControl(null, [Validators.required]),
+                country: new FormControl(null, []),
+                city: new FormControl(null, []),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
                 email: new FormControl(null, [

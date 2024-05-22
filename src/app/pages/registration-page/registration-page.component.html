@@ -32,6 +32,7 @@
                             pInputText
                             formControlName="name"
                             name="name"
+                            placeholder="Your name"
                         />
                     </dd24-input>
                 </div>
@@ -45,6 +46,7 @@
                             pInputText
                             formControlName="surname"
                             name="surname"
+                            placeholder="Your surname"
                         />
                     </dd24-input>
                 </div>
@@ -57,7 +59,26 @@
                             name="birthday"
                             [showIcon]="true"
                             iconDisplay="input"
+                            placeholder="dd/mm/yyyy"
+                            dateFormat="dd/mm/yy"
                         />
+                    </dd24-input>
+                </div>
+                <div class="input">
+                    <label for="country">Country</label>
+                    <dd24-input controlName="country">
+                        <p-autoComplete
+                            class="p-fluid"
+                            formControlName="country"
+                            name="country"
+                            placeholder="The country you live in"
+                            emptyMessage="Couldn't load countries"
+                            [suggestions]="
+                                (locationsService.countries$ | async) ?? [
+                                    'No countries available'
+                                ]
+                            "
+                        ></p-autoComplete>
                     </dd24-input>
                 </div>
             </form>
