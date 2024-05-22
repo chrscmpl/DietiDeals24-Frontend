@@ -55,6 +55,10 @@
         }
     }
 
+    .arrow-btn:hover {
+        cursor: pointer;
+    }
+
     .prev-arrow-btn {
         margin-right: 2rem;
     }
@@ -95,5 +99,9 @@
 
     .p-stepper-nav {
         overflow: visible;
+    }
+
+    .p-stepper-panels {
+        padding: 0;
     }
 }

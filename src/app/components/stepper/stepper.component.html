@@ -1,11 +1,14 @@
-<p-stepper class="stepper" [(activeStep)]="activeStep">
+<p-stepper class="stepper" [(activeStep)]="activeIndex">
     @for (step of steps; track $index) {
         <p-stepperPanel [header]="step.title">
             <ng-template pTemplate="header" let-index="index">
                 @if (index === 0) {
                     <div class="arrow-btn-container">
-                        @if (activeStep > 0) {
-                            <button class="prev-arrow-btn" (click)="prevStep()">
+                        @if (activeIndex > 0) {
+                            <button
+                                class="arrow-btn prev-arrow-btn"
+                                (click)="prevStep()"
+                            >
                                 <i class="pi pi-arrow-left"></i>
                             </button>
                         }
@@ -14,9 +17,9 @@
                 <div
                     [class]="
                         'step-header ' +
-                        (index < activeStep
+                        (index < activeIndex
                             ? 'step-past'
-                            : index === activeStep
+                            : index === activeIndex
                               ? 'step-current'
                               : 'step-next')
                     "
@@ -24,12 +27,13 @@
                     <p-button
                         class="step-btn"
                         (onClick)="
-                            activeStep = index < activeStep ? index : activeStep
+                            activeIndex =
+                                index < activeIndex ? index : activeIndex
                         "
                     >
-                        @if (index < activeStep) {
+                        @if (index < activeIndex) {
                             <i class="pi pi-check"></i>
-                        } @else if (index === activeStep) {
+                        } @else if (index === activeIndex) {
                             <i class="pi pi-circle-fill"></i>
                         }
                     </p-button>
@@ -37,8 +41,11 @@
                 </div>
                 @if (index === steps.length - 1) {
                     <div class="arrow-btn-container">
-                        @if (activeStep < steps.length - 1) {
-                            <button class="next-arrow-btn" (click)="nextStep()">
+                        @if (activeIndex < steps.length - 1) {
+                            <button
+                                class="arrow-btn next-arrow-btn"
+                                (click)="nextStep()"
+                            >
                                 <i class="pi pi-arrow-right"></i>
                             </button>
                         }

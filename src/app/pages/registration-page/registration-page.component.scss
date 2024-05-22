@@ -1,10 +1,40 @@
 @use "templates";
 @use "layouts";
+@use "box";
 
 .form-card {
     @include templates.auth-form;
+    // @include layouts.flex(column, start, stretch);
 
-    .stepper {
+    .google-registration {
+        margin: 1rem 0;
         width: 100%;
+        @include box.padding-horizontal(3rem);
+    }
+
+    .divider {
+        width: 100%;
+    }
+
+    .registration-form {
+        @include layouts.flex(column, start, stretch);
+        @include box.padding-horizontal(3rem);
+        width: 100%;
+        gap: 1rem;
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-normal);
+        .inner-form {
+            @include layouts.flex(column, start, stretch, 1em);
+        }
+    }
+}
+
+:host ::ng-deep {
+    .p-divider-content {
+        font-weight: var(--font-weight-bold);
+        color: var(--text-color-3);
+    }
+    .google-registration-btn button {
+        @include layouts.flex(row, center, center, 1ch);
     }
 }

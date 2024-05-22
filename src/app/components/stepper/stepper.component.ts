@@ -1,6 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
+
+export interface Step {
+    title: string;
+    nextCallback?: () => boolean;
+    prevCallback?: () => boolean;
+}
 
 @Component({
     selector: 'dd24-stepper',
@@ -10,29 +16,40 @@ import { StepperModule } from 'primeng/stepper';
     styleUrl: './stepper.component.scss',
 })
 export class StepperComponent {
-    @Input({ required: true }) steps!: {
-        title: string;
-        nextCallback?: () => boolean;
-        prevCallback?: () => boolean;
-    }[];
+    @Input({ required: true }) steps!: Step[];
 
-    activeStep = 0;
+    private _activeIndex = 0;
+
+    @Output() activeStepChange: EventEmitter<number> =
+        new EventEmitter<number>();
+    @Input() set activeStep(value: number) {
+        if (value >= 0 && value < this.steps.length) this._activeIndex = value;
+    }
+
+    public set activeIndex(value: number) {
+        this._activeIndex = value;
+        this.activeStepChange.emit(value);
+    }
+
+    public get activeIndex(): number {
+        return this._activeIndex;
+    }
 
     public prevStep(): void {
         if (
-            this.activeStep > 0 &&
-            this.steps[this.activeStep].prevCallback?.() !== false
+            this.activeIndex > 0 &&
+            this.steps[this.activeIndex].prevCallback?.() !== false
         ) {
-            this.activeStep--;
+            this.activeIndex--;
         }
     }
 
     public nextStep(): void {
         if (
-            this.activeStep < this.steps.length - 1 &&
-            this.steps[this.activeStep].nextCallback?.() !== false
+            this.activeIndex < this.steps.length - 1 &&
+            this.steps[this.activeIndex].nextCallback?.() !== false
         ) {
-            this.activeStep++;
+            this.activeIndex++;
         }
     }
 }

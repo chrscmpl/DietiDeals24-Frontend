@@ -1,8 +1,73 @@
 <div class="form-card">
     <h1>Sign up to DietiDeals24</h1>
 
-    <dd24-stepper [steps]="steps"></dd24-stepper>
-    <!-- @if (activeStep < 2) {
-        <button (click)="nextStep()">Next</button>
-    } -->
+    <a routerLink="../login" class="login-link link">
+        already have an account?
+    </a>
+
+    <form class="google-registration">
+        <p-button
+            class="google-registration-btn p-fluid"
+            type="submit"
+            severity="secondary"
+        >
+            <img src="assets/google.svg" alt="google-logo" />
+            CONTINUE WITH GOOGLE
+        </p-button>
+    </form>
+
+    <p-divider class="divider" align="center">or</p-divider>
+
+    <dd24-stepper [steps]="steps" [(activeStep)]="activeStep"></dd24-stepper>
+
+    <form class="registration-form" [formGroup]="registrationForm">
+        @if (activeStep === 0) {
+            <form class="inner-form" formGroupName="anagraphics">
+                <div class="input">
+                    <label for="name">Name*</label>
+                    <dd24-input controlName="name">
+                        <input
+                            class="p-fluid"
+                            type="text"
+                            pInputText
+                            formControlName="name"
+                            name="name"
+                        />
+                    </dd24-input>
+                </div>
+
+                <div class="input">
+                    <label for="surname">Surname*</label>
+                    <dd24-input controlName="surname">
+                        <input
+                            class="p-fluid"
+                            type="text"
+                            pInputText
+                            formControlName="surname"
+                            name="surname"
+                        />
+                    </dd24-input>
+                </div>
+                <div class="input">
+                    <label for="birthday">Birthday*</label>
+                    <dd24-input controlName="birthday">
+                        <p-calendar
+                            class="p-fluid"
+                            formControlName="birthday"
+                            name="birthday"
+                            [showIcon]="true"
+                            iconDisplay="input"
+                        />
+                    </dd24-input>
+                </div>
+            </form>
+        }
+        @if (activeStep === 1) {
+            World
+        }
+        @if (activeStep === 2) {
+            !
+        }
+        <p-button class="next-btn" label="Next" (onClick)="next()"></p-button>
+    </form>
 </div>
