@@ -23,6 +23,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { LocationsService } from '../../services/locations.service';
+import { PasswordModule } from 'primeng/password';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
@@ -57,6 +58,7 @@ interface registrationForm {
         CalendarModule,
         DividerModule,
         AutoCompleteModule,
+        PasswordModule,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
@@ -70,9 +72,21 @@ export class RegistrationPageComponent implements OnInit {
     private cities: string[] = [];
     public filteredCities: string[] = [];
 
-    public onNextAnagraphics = (): boolean => {
+    public mediumPasswordRegex = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})';
+    public strongPasswordRegex =
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})';
+
+    private onNextAnagraphics = (): boolean => {
         if (!this.registrationForm.get('anagraphics')?.valid) {
             this.registrationForm.get('anagraphics')?.markAllAsTouched();
+            return false;
+        }
+        return true;
+    };
+
+    private onNextCredentials = (): boolean => {
+        if (!this.registrationForm.get('credentials')?.valid) {
+            this.registrationForm.get('credentials')?.markAllAsTouched();
             return false;
         }
         return true;
@@ -85,6 +99,7 @@ export class RegistrationPageComponent implements OnInit {
         },
         {
             title: 'Your credentials',
+            nextCallback: this.onNextCredentials,
         },
         {
             title: 'Privacy policy',
@@ -123,7 +138,13 @@ export class RegistrationPageComponent implements OnInit {
                     Validators.minLength(8),
                     Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/),
                 ]),
-                confirmPassword: new FormControl(null, [Validators.required]),
+                confirmPassword: new FormControl(null, {
+                    validators: [
+                        Validators.required,
+                        this.validateConfirmPassword.bind(this),
+                    ],
+                    updateOn: 'blur',
+                }),
             }),
         });
     }
@@ -199,5 +220,15 @@ export class RegistrationPageComponent implements OnInit {
             return { noCountrySelected: true };
         }
         return { noMatchingCity: true };
+    }
+
+    private validateConfirmPassword(
+        control: AbstractControl<string>,
+    ): ValidationErrors {
+        const passwordControl = this.registrationForm
+            ?.get('credentials')
+            ?.get('password');
+        if (control.value === passwordControl?.value) return {};
+        return { passwordsDoNotMatch: true };
     }
 }

@@ -27,6 +27,11 @@
             @include layouts.flex(column, start, stretch, 1em);
         }
     }
+
+    .inner-form {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
 }
 
 :host ::ng-deep {

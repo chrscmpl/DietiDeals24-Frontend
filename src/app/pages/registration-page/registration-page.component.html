@@ -147,7 +147,117 @@
             </form>
         }
         @if (activeStep === 1) {
-            World
+            <form class="inner-form" formGroupName="credentials">
+                <div class="input">
+                    <label for="email">Email*</label>
+                    <dd24-input
+                        controlName="email"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'an email is required'
+                            },
+
+                            {
+                                validation: 'email',
+                                message: 'Please enter a valid email'
+                            }
+                        ]"
+                    >
+                        <input
+                            class="p-fluid"
+                            type="email"
+                            pInputText
+                            formControlName="email"
+                            name="email"
+                            placeholder="Your email"
+                        />
+                    </dd24-input>
+                </div>
+
+                <div class="input">
+                    <label for="username">Username*</label>
+                    <dd24-input
+                        controlName="username"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'an username is required'
+                            }
+                        ]"
+                    >
+                        <input
+                            class="p-fluid"
+                            type="text"
+                            pInputText
+                            formControlName="username"
+                            name="username"
+                            placeholder="An unique username"
+                        />
+                    </dd24-input>
+                </div>
+
+                <div class="input">
+                    <label for="password">Password*</label>
+                    <dd24-input
+                        controlName="password"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a password is required'
+                            },
+                            {
+                                validation: [
+                                    'pattern',
+                                    'minlength',
+                                    'maxlength'
+                                ],
+                                message:
+                                    'a password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
+                            }
+                        ]"
+                    >
+                        <p-password
+                            class="p-fluid"
+                            type="password"
+                            formControlName="password"
+                            name="password"
+                            [feedback]="true"
+                            toggleMask="true"
+                            placeholder="A strong password"
+                            [strongRegex]="strongPasswordRegex"
+                            [mediumRegex]="mediumPasswordRegex"
+                        />
+                    </dd24-input>
+                </div>
+
+                <div class="input">
+                    <label for="confirm-password">Confirm password*</label>
+                    <dd24-input
+                        controlName="confirmPassword"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'you need to confirm your password'
+                            },
+                            {
+                                customValidation: 'passwordsDoNotMatch',
+                                message: 'passwords do not match'
+                            }
+                        ]"
+                    >
+                        <p-password
+                            class="p-fluid"
+                            type="password"
+                            formControlName="confirmPassword"
+                            name="confirm-password"
+                            [feedback]="false"
+                            toggleMask="true"
+                            placeholder="The same as above"
+                        />
+                    </dd24-input>
+                </div>
+            </form>
         }
         @if (activeStep === 2) {
             !
