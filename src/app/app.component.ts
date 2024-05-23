@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directive';
+import { SmartStickyDirective } from './directives/smart-sticky.directive';
 
 @Component({
     selector: 'dd24-root',
@@ -29,6 +30,7 @@ import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directi
         ButtonModule,
         SidebarComponent,
         StretchOnScrollDirective,
+        SmartStickyDirective,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],

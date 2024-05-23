@@ -13,7 +13,7 @@ export class StretchOnScrollDirective {
     private maxScaleReached: boolean = false;
 
     constructor(
-        private el: ElementRef,
+        private element: ElementRef,
         private renderer: Renderer2,
     ) {}
 
@@ -32,7 +32,11 @@ export class StretchOnScrollDirective {
         }
 
         if (this.offset === 0 && (scrolledToTop || scrolledToBottom)) {
-            this.renderer.setStyle(this.el.nativeElement, 'transition', 'none');
+            this.renderer.setStyle(
+                this.element.nativeElement,
+                'transition',
+                'none',
+            );
         }
 
         if (scrolledToTop && screenY > this.startingScreenY!) {
@@ -58,7 +62,7 @@ export class StretchOnScrollDirective {
     @HostListener('touchend')
     onTouchEnd(): void {
         this.renderer.setStyle(
-            this.el.nativeElement,
+            this.element.nativeElement,
             'transition',
             'transform 0.2s ease-in-out',
         );
@@ -74,7 +78,7 @@ export class StretchOnScrollDirective {
     private set isBottomTheOrigin(value: boolean) {
         this._isBottomTheOrigin = value;
         this.renderer.setStyle(
-            this.el.nativeElement,
+            this.element.nativeElement,
             'transform-origin',
             value ? 'bottom' : 'top',
         );
@@ -96,7 +100,7 @@ export class StretchOnScrollDirective {
         }
         this._scale = value;
         this.renderer.setStyle(
-            this.el.nativeElement,
+            this.element.nativeElement,
             'transform',
             value !== 1 ? `scaleY(${value})` : 'none',
         );
@@ -104,12 +108,13 @@ export class StretchOnScrollDirective {
 
     private isScrolledToBottom(): boolean {
         return (
-            this.el.nativeElement.scrollHeight ===
-            this.el.nativeElement.scrollTop + this.el.nativeElement.clientHeight
+            this.element.nativeElement.scrollHeight ===
+            this.element.nativeElement.scrollTop +
+                this.element.nativeElement.clientHeight
         );
     }
 
     private isScrolledToTop(): boolean {
-        return this.el.nativeElement.scrollTop === 0;
+        return this.element.nativeElement.scrollTop === 0;
     }
 }
