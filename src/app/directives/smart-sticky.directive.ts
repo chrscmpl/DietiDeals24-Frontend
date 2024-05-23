@@ -23,6 +23,8 @@ export class SmartStickyDirective implements AfterViewInit {
     private lastScrollPosition = 0;
     private stylesheet: HTMLStyleElement | null = null;
 
+    private topBound = 0;
+    private underTopBound = false;
     private offsetHide = -1;
     private offsetShow = -1;
 
@@ -70,6 +72,7 @@ export class SmartStickyDirective implements AfterViewInit {
         if (!this.element.nativeElement.style.transition) {
             this.transitionTime = 0.3;
         }
+        this.topBound = this.element.nativeElement.clientHeight / 2;
         window.addEventListener('scroll', this.onScroll.bind(this));
     }
 
@@ -87,6 +90,13 @@ export class SmartStickyDirective implements AfterViewInit {
         }
 
         this.updateScrollingDirection();
+
+        if (!this.underTopBound) {
+            if (this.scrollPosition > this.topBound) this.underTopBound = true;
+        } else if (this.scrollPosition < this.topBound) {
+            this.underTopBound = false;
+            this.shown = true;
+        }
 
         this.lastScrollPosition = this.scrollPosition;
     }
@@ -135,7 +145,7 @@ export class SmartStickyDirective implements AfterViewInit {
 
     private setOffsets(): void {
         if (this.offsetHide === -1) {
-            this.offsetHide = this.element.nativeElement.clientHeight * 0.75;
+            this.offsetHide = this.element.nativeElement.clientHeight;
         }
         if (this.offsetShow === -1) {
             this.offsetShow = this.element.nativeElement.clientHeight;
