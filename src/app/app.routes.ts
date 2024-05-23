@@ -8,16 +8,19 @@ import {
     authenticationGuard,
     notAUthenticatedGuard,
 } from './guards/authentication.guard';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { YourPageComponent } from './pages/your-page/your-page.component';
+import { CreateAuctionPageComponent } from './pages/create-auction-page/create-auction-page.component';
+import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
+import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
         title: 'Home',
-        loadComponent: () =>
-            import('./pages/home-page/home-page.component').then(
-                (m) => m.HomePageComponent,
-            ),
+        component: HomePageComponent,
     },
     {
         path: 'auctions',
@@ -27,80 +30,35 @@ export const routes: Routes = [
     {
         path: 'your-page',
         title: 'Your Page',
-        loadComponent: () =>
-            import('./pages/your-page/your-page.component').then(
-                (m) => m.YourPageComponent,
-            ),
+        component: YourPageComponent,
         canActivate: [authenticationGuard],
     },
     {
         path: 'create-auction',
         title: 'Create an Auction',
-        loadComponent: () =>
-            import(
-                './pages/create-auction-page/create-auction-page.component'
-            ).then((m) => m.CreateAuctionPageComponent),
+        component: CreateAuctionPageComponent,
         canActivate: [authenticationGuard],
     },
     {
         path: 'help',
         title: 'Frequently Asked Questions',
-        loadComponent: () =>
-            import('./pages/help-page/help-page.component').then(
-                (m) => m.HelpPageComponent,
-            ),
+        component: CreateAuctionPageComponent,
     },
     {
         path: 'auth',
         title: 'Authentication',
         canActivate: [notAUthenticatedGuard, hideUIGuard],
         canDeactivate: [showUIGuard],
-
-        loadComponent: () =>
-            import(
-                './pages/authentication-page/authentication-page.component'
-            ).then((m) => m.AuthenticationPageComponent),
-
-        children: [
-            {
-                path: '',
-                redirectTo: 'login',
-                pathMatch: 'full',
-            },
-            {
-                path: 'login',
-                title: 'Login',
-                loadComponent: () =>
-                    import('./pages/login-page/login-page.component').then(
-                        (m) => m.LoginPageComponent,
-                    ),
-            },
-            {
-                path: 'register',
-                title: 'Sign Up',
-                loadComponent: () =>
-                    import(
-                        './pages/registration-page/registration-page.component'
-                    ).then((m) => m.RegistrationPageComponent),
-            },
-            {
-                path: 'forgot-password',
-                title: 'Forgot Password',
-                loadComponent: () =>
-                    import(
-                        './pages/forgot-password-page/forgot-password-page.component'
-                    ).then((m) => m.ForgotPasswordPageComponent),
-            },
-        ],
+        loadChildren: () =>
+            import('./modules/auth-routing/auth-routing.module').then(
+                (m) => m.AuthRoutingModule,
+            ),
     },
     {
         path: 'settings',
         title: 'Settings',
         outlet: 'overlay',
-        loadComponent: () =>
-            import('./pages/settings-popup/settings-popup.component').then(
-                (m) => m.SettingsPopupComponent,
-            ),
+        component: SettingsPopupComponent,
         children: [
             {
                 path: '',
@@ -109,10 +67,7 @@ export const routes: Routes = [
             },
             {
                 path: 'theme',
-                loadComponent: () =>
-                    import(
-                        './pages/settings-popup/theme-settings/theme-settings.component'
-                    ).then((m) => m.ThemeSettingsComponent),
+                component: ThemeSettingsComponent,
             },
         ],
     },
@@ -122,9 +77,6 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        loadComponent: () =>
-            import('./pages/not-found-page/not-found-page.component').then(
-                (m) => m.NotFoundPageComponent,
-            ),
+        component: NotFoundPageComponent,
     },
 ];
