@@ -10,10 +10,11 @@ type validation =
     | 'maxlength'
     | 'all';
 
-export interface errorMessage {
-    validation: validation | validation[];
+export type errorMessage = {
+    validation?: validation | validation[];
+    customValidation?: string | string[];
     message: string;
-}
+};
 
 export class inputErrorMessagesManager {
     private defaultErrorString = 'Invalid input';
@@ -37,12 +38,17 @@ export class inputErrorMessagesManager {
         if (!ControlErrors) return '';
         const errorKeys = Object.keys(ControlErrors);
         const error = this.errors.find((e) => {
-            if (e.validation === 'all') return true;
-            if (Array.isArray(e.validation)) {
-                return e.validation.some((v) => errorKeys.includes(v));
+            const validation = this.getValidation(e);
+            if (validation === 'all') return true;
+            if (Array.isArray(validation)) {
+                return validation.some((v) => errorKeys.includes(v));
             }
-            return errorKeys.includes(e.validation);
+            return errorKeys.includes(validation);
         });
         return error?.message || this.defaultErrorString;
+    }
+
+    private getValidation(errorMessage: errorMessage): string | string[] {
+        return errorMessage.validation ?? errorMessage.customValidation ?? [];
     }
 }

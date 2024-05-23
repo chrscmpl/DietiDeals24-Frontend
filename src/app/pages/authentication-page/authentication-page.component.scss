@@ -1,5 +1,6 @@
 @use "layouts";
 @use "viewports";
+@use "box";
 
 .authentication-page {
     height: 100vh;
@@ -63,6 +64,7 @@
     main {
         grid-area: main;
         @include layouts.flex(column, start, center, 1rem);
+        @include box.padding-vertical(2rem);
         overflow: scroll;
         .logo {
             align-self: center;
@@ -73,7 +75,6 @@
             flex: 1;
         }
         @include viewports.mobile {
-            padding-top: 2rem;
             align-items: stretch;
             overflow: auto;
             background-color: var(--component-color);

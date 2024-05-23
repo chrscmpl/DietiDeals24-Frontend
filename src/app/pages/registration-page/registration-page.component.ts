@@ -70,9 +70,18 @@ export class RegistrationPageComponent implements OnInit {
     private cities: string[] = [];
     public filteredCities: string[] = [];
 
+    public onNextAnagraphics = (): boolean => {
+        if (!this.registrationForm.get('anagraphics')?.valid) {
+            this.registrationForm.get('anagraphics')?.markAllAsTouched();
+            return false;
+        }
+        return true;
+    };
+
     public steps: Step[] = [
         {
             title: 'Your data',
+            nextCallback: this.onNextAnagraphics,
         },
         {
             title: 'Your credentials',
@@ -177,6 +186,8 @@ export class RegistrationPageComponent implements OnInit {
         const countryControl = this.registrationForm
             ?.get('anagraphics')
             ?.get('country');
+        if (!countryControl?.valid && control.value)
+            return { noCountrySelected: true };
         if (countryControl?.valid && countryControl?.value) {
             if (this.cities.includes(control.value)) {
                 return {};
@@ -185,8 +196,8 @@ export class RegistrationPageComponent implements OnInit {
         }
         if (!countryControl?.value) {
             if (!control.value) return {};
-            return { noMatchingCountry: true };
+            return { noCountrySelected: true };
         }
-        return { noMatchingCountry: true };
+        return { noMatchingCity: true };
     }
 }

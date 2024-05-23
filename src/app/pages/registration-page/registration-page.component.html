@@ -25,7 +25,15 @@
             <form class="inner-form" formGroupName="anagraphics">
                 <div class="input">
                     <label for="name">Name*</label>
-                    <dd24-input controlName="name">
+                    <dd24-input
+                        controlName="name"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a name is required'
+                            }
+                        ]"
+                    >
                         <input
                             class="p-fluid"
                             type="text"
@@ -39,7 +47,15 @@
 
                 <div class="input">
                     <label for="surname">Surname*</label>
-                    <dd24-input controlName="surname">
+                    <dd24-input
+                        controlName="surname"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a surname is required'
+                            }
+                        ]"
+                    >
                         <input
                             class="p-fluid"
                             type="text"
@@ -52,7 +68,15 @@
                 </div>
                 <div class="input">
                     <label for="birthday">Birthday*</label>
-                    <dd24-input controlName="birthday">
+                    <dd24-input
+                        controlName="birthday"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a birthday is required'
+                            }
+                        ]"
+                    >
                         <p-calendar
                             class="p-fluid"
                             formControlName="birthday"
@@ -66,7 +90,16 @@
                 </div>
                 <div class="input">
                     <label for="country">Country</label>
-                    <dd24-input controlName="country">
+                    <dd24-input
+                        controlName="country"
+                        [errorMessages]="[
+                            {
+                                customValidation: 'noMatchingCountry',
+                                message:
+                                    'You must select a valid country or none at all'
+                            }
+                        ]"
+                    >
                         <p-autoComplete
                             class="p-fluid"
                             formControlName="country"
@@ -82,7 +115,21 @@
                 </div>
                 <div class="input">
                     <label for="country">City</label>
-                    <dd24-input controlName="city">
+                    <dd24-input
+                        controlName="city"
+                        [errorMessages]="[
+                            {
+                                customValidation: 'noMatchingCity',
+                                message:
+                                    'You must select a valid city or none at all'
+                            },
+                            {
+                                customValidation: 'noCountrySelected',
+                                message:
+                                    'You must select a country before selecting a city'
+                            }
+                        ]"
+                    >
                         <p-autoComplete
                             class="p-fluid"
                             formControlName="city"
