@@ -4,7 +4,10 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --host 0.0.0.0 --proxy-config src/proxy.conf.json",
-        "build": "ng build --optimization",
+        "build": "ng build --optimization --stats-json",
+        "preview": "serve -s dist/dieti-deals24-frontend/browser",
+        "preview:zip": "gzipper compress dist/dieti-deals24-frontend/browser dist/dieti-deals24-frontend/browser-gzipped && serve -s dist/dieti-deals24-frontend/browser-gzipped",
+        "stats": "webpack-bundle-analyzer dist/dieti-deals24-frontend/stats.json",
         "zip": "zip -r dietideals24.zip dist/dieti-deals-24-frontend",
         "watch-broadcast": "ng serve --watch --configuration development --host 0.0.0.0 --proxy-config src/proxy.conf.json",
         "watch": "ng serve --watch --configuration development --proxy-config src/proxy.conf.json",
@@ -52,6 +55,8 @@
         "karma-jasmine-html-reporter": "~2.1.0",
         "prettier": "^3.2.5",
         "prettier-eslint": "^16.3.0",
-        "typescript": "~5.2.2"
+        "typescript": "~5.2.2",
+        "gzipper": "^7.2.0",
+        "serve": "^14.2.3"
     }
 }
