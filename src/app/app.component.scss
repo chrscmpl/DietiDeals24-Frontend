@@ -5,7 +5,9 @@
     @include layouts.grid("header" auto "main" 1fr "footer" auto / 1fr);
     width: 100%;
     min-height: 100svh;
+    padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
+    background-color: var(--background-color);
 
     @include viewports.mobile {
         height: 100svh;
@@ -14,21 +16,28 @@
 
     .header {
         grid-area: header;
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
     }
 
     .content {
-        display: main;
+        grid-area: main;
+
         @include viewports.mobile {
-            overflow: scroll;
+            overflow-y: auto;
         }
     }
 
     .footer {
         grid-area: footer;
+        z-index: 1000;
     }
 
     .create-auction-button {
         position: fixed;
+        z-index: 1001;
         bottom: 1rem;
         right: 1rem;
     }

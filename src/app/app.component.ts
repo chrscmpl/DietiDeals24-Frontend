@@ -12,6 +12,7 @@ import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
+import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directive';
 
 @Component({
     selector: 'dd24-root',
@@ -27,6 +28,7 @@ import { LoadingPlaceholderComponent } from './components/loading-placeholder/lo
         MobileHeaderComponent,
         ButtonModule,
         SidebarComponent,
+        StretchOnScrollDirective,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
