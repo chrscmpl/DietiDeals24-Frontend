@@ -40,6 +40,10 @@
         bottom: 1rem;
         right: 1rem;
     }
+
+    .sidebar {
+        grid-area: header;
+    }
 }
 
 :host ::ng-deep {
