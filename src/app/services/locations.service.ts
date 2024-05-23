@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Observer, ReplaySubject, of, tap } from 'rxjs';
+import { Observable, Observer, ReplaySubject, map, of, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -8,10 +8,16 @@ import { Observable, Observer, ReplaySubject, of, tap } from 'rxjs';
 export class LocationsService {
     constructor(private http: HttpClient) {}
 
-    private countriesSubject = new ReplaySubject<string[]>(1);
+    private countriesSubject = new ReplaySubject<void>(1);
+    private _countries: string[] = [];
 
-    public countries$: Observable<string[]> =
-        this.countriesSubject.asObservable();
+    public get countries(): string[] {
+        return this._countries;
+    }
+
+    public countries$: Observable<string[]> = this.countriesSubject
+        .asObservable()
+        .pipe(map(() => this._countries));
 
     public refreshCountries(cb?: Partial<Observer<string[]>>): void {
         // this.http
@@ -19,7 +25,8 @@ export class LocationsService {
         of(['Italy', 'Germany', 'France', 'Spain', 'United Kingdom'])
             .pipe(
                 tap((value) => {
-                    this.countriesSubject.next(value);
+                    this._countries = value;
+                    this.countriesSubject.next();
                 }),
             )
             .subscribe(cb);

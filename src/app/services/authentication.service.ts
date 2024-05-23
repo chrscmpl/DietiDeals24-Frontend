@@ -15,22 +15,34 @@ import {
     providedIn: 'root',
 })
 export class AuthenticationService {
-    private loggedUserSubject: ReplaySubject<User> = new ReplaySubject<User>(1);
-    private isLoggedSubject: ReplaySubject<boolean> =
-        new ReplaySubject<boolean>(1);
+    private _isLogged = false;
+    private _loggedUser: User | null = null;
 
-    constructor(private http: HttpClient) {
-        this.isLoggedSubject.next(false);
+    public get isLogged(): boolean {
+        return this._isLogged;
     }
 
-    public isLogged$: Observable<boolean> = this.isLoggedSubject.asObservable();
+    public get loggedUser(): User | null {
+        return this._loggedUser;
+    }
+
+    private loggedUserSubject = new ReplaySubject<void>(1);
+    private isLoggedSubject = new ReplaySubject<void>(1);
+
+    constructor(private http: HttpClient) {
+        this.isLoggedSubject.next();
+    }
+
+    public isLogged$: Observable<boolean> = this.isLoggedSubject
+        .asObservable()
+        .pipe(map(() => this.isLogged));
 
     public loggedUser$: Observable<User> = this.loggedUserSubject
         .asObservable()
         .pipe(
             withLatestFrom(this.isLogged$),
-            filter(([_, isLogged]) => isLogged),
-            map(([user, _]) => user),
+            filter(() => this.isLogged),
+            map(() => this.loggedUser as User),
         );
 
     public login(
@@ -42,14 +54,18 @@ export class AuthenticationService {
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap((user) => {
-                    this.isLoggedSubject.next(true);
-                    this.loggedUserSubject.next(user);
+                    this._isLogged = true;
+                    this._loggedUser = user;
+                    this.isLoggedSubject.next();
+                    this.loggedUserSubject.next();
                 }),
             )
             .subscribe(cb);
     }
 
     public logout(): void {
-        this.isLoggedSubject.next(false);
+        this._isLogged = false;
+        this._loggedUser = null;
+        this.isLoggedSubject.next();
     }
 }

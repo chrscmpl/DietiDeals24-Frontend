@@ -48,15 +48,8 @@ interface option {
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
 })
-export class SearchSectionComponent implements OnInit, OnDestroy {
+export class SearchSectionComponent implements OnInit {
     public searchForm!: FormGroup<searchForm>;
-
-    private macroCategoriesSubject = new ReplaySubject<string[]>(1);
-
-    private macroCategories$: Observable<string[]> =
-        this.macroCategoriesSubject.asObservable();
-
-    private subscriptions: Subscription[] = [];
 
     public auctionTypeOptions: option[] = [
         { name: 'All auctions', value: null },
@@ -84,41 +77,26 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
                 };
             }),
         );
-
-        this.macroCategoriesSubject.next([]);
-
-        this.subscriptions.push(
-            this.categoriesService.macroCategories$.subscribe(
-                (macroCategories) => {
-                    this.macroCategoriesSubject.next(macroCategories);
-                },
-            ),
-        );
-    }
-
-    public ngOnDestroy(): void {
-        this.subscriptions.forEach((s) => s.unsubscribe());
-        this.macroCategoriesSubject.complete();
     }
 
     public handleSubmit(): void {
-        this.macroCategories$.subscribe((macroCategories) => {
-            let params: Nullable<AuctionSearchParameters> =
-                this.searchForm.value;
-            if (params.category && macroCategories.includes(params.category)) {
-                const { category, ...rest } = params;
-                params = {
-                    ...rest,
-                    macroCategory: category,
-                };
-            }
-            this.router
-                .navigateByUrl('/redirect', { skipLocationChange: true })
-                .then(() => {
-                    this.router.navigate(['/auctions'], {
-                        queryParams: params,
-                    });
+        let params: Nullable<AuctionSearchParameters> = this.searchForm.value;
+        if (
+            params.category &&
+            this.categoriesService.macroCategories.includes(params.category)
+        ) {
+            const { category, ...rest } = params;
+            params = {
+                ...rest,
+                macroCategory: category,
+            };
+        }
+        this.router
+            .navigateByUrl('/redirect', { skipLocationChange: true })
+            .then(() => {
+                this.router.navigate(['/auctions'], {
+                    queryParams: params,
                 });
-        });
+            });
     }
 }

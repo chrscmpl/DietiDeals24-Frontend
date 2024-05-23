@@ -23,7 +23,6 @@ import {
 import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { LocationsService } from '../../services/locations.service';
-import { Observable, map } from 'rxjs';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
@@ -66,10 +65,8 @@ export class RegistrationPageComponent implements OnInit {
     public registrationForm!: FormGroup<registrationForm>;
     public activeStep: number = 0;
 
-    private countries: string[] = [];
     public filteredCountries: string[] = [];
 
-    private cities: string[] = [];
     public filteredCities: string[] = [];
 
     public steps: Step[] = [
@@ -91,16 +88,13 @@ export class RegistrationPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.locationsService.refreshCountries();
-        this.locationsService.countries$.subscribe((countries) => {
-            this.countries = countries;
-        });
         this.registrationForm = this.formBuilder.group<registrationForm>({
             anagraphics: this.formBuilder.group<anagraphicsForm>({
                 name: new FormControl(null, [Validators.required]),
                 surname: new FormControl(null, [Validators.required]),
                 birthday: new FormControl(null, [Validators.required]),
                 country: new FormControl(null, {
-                    validators: this.validateCountry,
+                    validators: this.validateCountry.bind(this),
                     updateOn: 'blur',
                 }),
                 city: new FormControl(null, []),
@@ -131,15 +125,19 @@ export class RegistrationPageComponent implements OnInit {
             if (this.filteredCountries.length > 2) this.filteredCountries = [];
             return;
         }
-        this.filteredCountries = this.countries.filter((country) =>
-            country.toLowerCase().includes(event.query.toLowerCase()),
+        this.filteredCountries = this.locationsService.countries.filter(
+            (country) =>
+                country.toLowerCase().includes(event.query.toLowerCase()),
         );
     }
 
     private validateCountry(
         control: AbstractControl<string>,
     ): ValidationErrors {
-        if (!control.value || this.countries.includes(control.value)) {
+        if (
+            !control.value ||
+            this.locationsService.countries.includes(control.value)
+        ) {
             return {};
         }
         return { noMatchingCountry: true };
