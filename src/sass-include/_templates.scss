@@ -3,7 +3,7 @@
 @use "box";
 
 @mixin main {
-    @include layouts.flex(column, start, stretch, 1em);
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     min-height: 100%;
