@@ -6,7 +6,6 @@
         "start": "ng serve --host 0.0.0.0 --proxy-config src/proxy.conf.json",
         "build": "ng build --optimization --stats-json",
         "preview": "serve -s dist/dieti-deals24-frontend/browser",
-        "preview:zip": "gzipper compress dist/dieti-deals24-frontend/browser dist/dieti-deals24-frontend/browser-gzipped && serve -s dist/dieti-deals24-frontend/browser-gzipped",
         "stats": "webpack-bundle-analyzer dist/dieti-deals24-frontend/stats.json",
         "zip": "zip -r dietideals24.zip dist/dieti-deals-24-frontend",
         "watch-broadcast": "ng serve --watch --configuration development --host 0.0.0.0 --proxy-config src/proxy.conf.json",
