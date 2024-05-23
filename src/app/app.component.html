@@ -12,7 +12,11 @@
     @if ((windowService.isMobile$ | async) === false) {
         @if ((windowService.UIhidden$ | async) === false) {
             @defer (when (windowService.isMobile$ | async) === false) {
-                <dd24-header class="header" dd24SmartSticky></dd24-header>
+                <dd24-header
+                    class="header"
+                    dd24SmartSticky
+                    [transitionTime]="0.4"
+                ></dd24-header>
                 <dd24-footer class="footer"></dd24-footer>
                 <p-button
                     class="create-auction-button"

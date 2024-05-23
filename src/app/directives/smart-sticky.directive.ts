@@ -21,6 +21,7 @@ export class SmartStickyDirective implements AfterViewInit {
     private _shown = false;
     private scrollPosition = 0;
     private lastScrollPosition = 0;
+    private stylesheet: HTMLStyleElement | null = null;
 
     private offsetHide = -1;
     private offsetShow = -1;
@@ -43,6 +44,19 @@ export class SmartStickyDirective implements AfterViewInit {
         this.offsetHide = value;
     }
 
+    @Input() set transitionTime(value: number) {
+        if (value < 0) {
+            throw new Error(
+                'SmartStickyDirective: transitionTime must be greater than 0',
+            );
+        }
+        this.renderer.setStyle(
+            this.element.nativeElement,
+            'transition',
+            `transform ${value}s`,
+        );
+    }
+
     constructor(
         private element: ElementRef,
         private renderer: Renderer2,
@@ -50,9 +64,12 @@ export class SmartStickyDirective implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.setRules();
-        this.renderer.addClass(this.element.nativeElement, 'dd24-smart-sticky');
         this.shown = true;
         this.setOffsets();
+        this.renderer.addClass(this.element.nativeElement, `dd24-smart-sticky`);
+        if (!this.element.nativeElement.style.transition) {
+            this.transitionTime = 0.3;
+        }
         window.addEventListener('scroll', this.onScroll.bind(this));
     }
 
@@ -103,14 +120,17 @@ export class SmartStickyDirective implements AfterViewInit {
     }
 
     private setRules(): void {
-        const style = this.renderer.createElement('style');
+        if (this.stylesheet)
+            this.renderer.removeChild(document.head, this.stylesheet);
+
+        this.stylesheet = this.renderer.createElement('style');
 
         const text = this.renderer.createText(
-            '.dd24-smart-sticky{transform:translateY(-100%);position:sticky;transition:transform 0.3s;}.dd24-smart-sticky.shown{transform:translateY(0);}',
+            '.dd24-smart-sticky{transform:translateY(-100%);position:sticky;}.dd24-smart-sticky.shown{transform:translateY(0);}',
         );
 
-        this.renderer.appendChild(style, text);
-        this.renderer.appendChild(document.head, style);
+        this.renderer.appendChild(this.stylesheet, text);
+        this.renderer.appendChild(document.head, this.stylesheet);
     }
 
     private setOffsets(): void {
