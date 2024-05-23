@@ -75,6 +75,25 @@
                             emptyMessage="No countries found"
                             [suggestions]="filteredCountries"
                             (completeMethod)="completeCountries($event)"
+                            [virtualScroll]="true"
+                            [virtualScrollItemSize]="35"
+                        ></p-autoComplete>
+                    </dd24-input>
+                </div>
+                <div class="input">
+                    <label for="country">City</label>
+                    <dd24-input controlName="city">
+                        <p-autoComplete
+                            class="p-fluid"
+                            formControlName="city"
+                            name="city"
+                            placeholder="The city you live in"
+                            emptyMessage="No cities found"
+                            [suggestions]="filteredCities"
+                            (completeMethod)="completeCities($event)"
+                            [virtualScroll]="true"
+                            [virtualScrollItemSize]="35"
+                            (onFocus)="getCities()"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>

@@ -67,6 +67,7 @@ export class RegistrationPageComponent implements OnInit {
 
     public filteredCountries: string[] = [];
 
+    private cities: string[] = [];
     public filteredCities: string[] = [];
 
     public steps: Step[] = [
@@ -97,7 +98,10 @@ export class RegistrationPageComponent implements OnInit {
                     validators: this.validateCountry.bind(this),
                     updateOn: 'blur',
                 }),
-                city: new FormControl(null, []),
+                city: new FormControl(null, {
+                    validators: this.validateCity.bind(this),
+                    updateOn: 'blur',
+                }),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
                 email: new FormControl(null, [
@@ -120,6 +124,22 @@ export class RegistrationPageComponent implements OnInit {
             this.activeStep++;
     }
 
+    public getCities(): void {
+        const countryControl = this.registrationForm
+            .get('anagraphics')
+            ?.get('country');
+        if (countryControl?.valid && countryControl?.value) {
+            this.locationsService
+                .getCities(
+                    this.registrationForm.get('anagraphics')?.get('country')
+                        ?.value as string,
+                )
+                .subscribe((cities) => {
+                    this.cities = cities;
+                });
+        }
+    }
+
     public completeCountries(event: AutoCompleteCompleteEvent): void {
         if (event.query.length < 2) {
             if (this.filteredCountries.length > 2) this.filteredCountries = [];
@@ -131,6 +151,16 @@ export class RegistrationPageComponent implements OnInit {
         );
     }
 
+    public completeCities(event: AutoCompleteCompleteEvent): void {
+        if (event.query.length < 2) {
+            if (this.filteredCities.length > 2) this.filteredCities = [];
+            return;
+        }
+        this.filteredCities = this.cities.filter((city) =>
+            city.toLowerCase().includes(event.query.toLowerCase()),
+        );
+    }
+
     private validateCountry(
         control: AbstractControl<string>,
     ): ValidationErrors {
@@ -139,6 +169,23 @@ export class RegistrationPageComponent implements OnInit {
             this.locationsService.countries.includes(control.value)
         ) {
             return {};
+        }
+        return { noMatchingCountry: true };
+    }
+
+    private validateCity(control: AbstractControl<string>): ValidationErrors {
+        const countryControl = this.registrationForm
+            ?.get('anagraphics')
+            ?.get('country');
+        if (countryControl?.valid && countryControl?.value) {
+            if (this.cities.includes(control.value)) {
+                return {};
+            }
+            return { noMatchingCity: true };
+        }
+        if (!countryControl?.value) {
+            if (!control.value) return {};
+            return { noMatchingCountry: true };
         }
         return { noMatchingCountry: true };
     }

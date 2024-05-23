@@ -33,8 +33,9 @@ export class LocationsService {
     }
 
     public getCities(country: string): Observable<string[]> {
-        return this.http.get<string[]>(
-            `dd24-backend/info/countries/${country}/cities`,
-        );
+        // return this.http.get<string[]>(
+        //     `dd24-backend/info/countries/${country}/cities`,
+        // );
+        return of(['Rome', 'Milan', 'Naples', 'Turin', 'Palermo']);
     }
 }

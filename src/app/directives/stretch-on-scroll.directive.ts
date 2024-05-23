@@ -55,7 +55,7 @@ export class StretchOnScrollDirective {
         }
 
         if (this.offset) {
-            this.scale = 1 + this.offset / 100;
+            this.scale = 1 + this.offset / 1000;
         }
     }
 
