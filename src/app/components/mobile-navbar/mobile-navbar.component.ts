@@ -20,9 +20,9 @@ export class MobileNavbarComponent {
         {
             name: 'Create Auction',
             routerLink: 'create-auction',
-            icon: 'pi pi-plus',
+            icon: 'pi pi-plus-circle',
         },
         { name: 'Your Page', routerLink: 'your-page', icon: 'pi pi-user' },
-        { name: 'Help', routerLink: 'help', icon: 'pi pi-question-circle' },
+        { name: 'Notifications', icon: 'pi pi-bell' },
     ];
 }

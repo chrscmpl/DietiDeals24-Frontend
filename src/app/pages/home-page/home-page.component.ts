@@ -37,9 +37,9 @@ export class HomePageComponent implements OnInit {
     private static readonly hideTrendingCategoriesTimeout: number = 1000;
 
     constructor(
-        public categoriesService: CategoriesService,
-        public auctionsService: AuctionsService,
-        public windowService: WindowService,
+        public readonly categoriesService: CategoriesService,
+        public readonly auctionsService: AuctionsService,
+        public readonly windowService: WindowService,
     ) {}
 
     ngOnInit(): void {

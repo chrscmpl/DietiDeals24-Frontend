@@ -32,11 +32,12 @@
         color: var(--basic-affordances-color);
     }
     .p-dock-item:nth-child(3) {
-        background-color: var(--accent-color-1);
-        border-radius: 100rem;
-        transform: translateY(-25%) scale(1.2);
+        // background-color: var(--accent-color-1);
+        // border-radius: 100rem;
+        // transform: translateY(-25%) scale(1.2);
         .p-dock-action-icon {
-            color: var(--text-accent-color);
+            font-size: 2rem;
+            color: var(--accent-color-1);
         }
     }
 }

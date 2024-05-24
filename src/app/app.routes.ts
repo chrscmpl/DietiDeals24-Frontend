@@ -14,6 +14,7 @@ import { CreateAuctionPageComponent } from './pages/create-auction-page/create-a
 import { SettingsPopupComponent } from './pages/settings-popup/settings-popup.component';
 import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/theme-settings.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { HelpPageComponent } from './pages/help-page/help-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -42,7 +43,7 @@ export const routes: Routes = [
     {
         path: 'help',
         title: 'Frequently Asked Questions',
-        component: CreateAuctionPageComponent,
+        component: HelpPageComponent,
     },
     {
         path: 'auth',
