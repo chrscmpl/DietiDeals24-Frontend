@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPageComponent } from '../../pages/login-page/login-page.component';
-import { RegistrationPageComponent } from '../../pages/registration-page/registration-page.component';
-import { ForgotPasswordPageComponent } from '../../pages/forgot-password-page/forgot-password-page.component';
+import { LoginPageComponent } from '../../pages/authentication-page/login-page/login-page.component';
+import { RegistrationPageComponent } from '../../pages/authentication-page/registration-page/registration-page.component';
+import { ForgotPasswordPageComponent } from '../../pages/authentication-page/forgot-password-page/forgot-password-page.component';
 import { AuthenticationPageComponent } from '../../pages/authentication-page/authentication-page.component';
 
 const routes: Routes = [

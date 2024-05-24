@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ThemeSettingsComponent } from './theme-settings/theme-settings.component';

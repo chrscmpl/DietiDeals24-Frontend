@@ -3,14 +3,14 @@ import { ButtonModule } from 'primeng/button';
 import {
     Step,
     StepperComponent,
-} from '../../components/stepper/stepper.component';
+} from '../../../components/stepper/stepper.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import {
     AutoCompleteCompleteEvent,
     AutoCompleteModule,
 } from 'primeng/autocomplete';
-import { InputComponent } from '../../components/input/input.component';
+import { InputComponent } from '../../../components/input/input.component';
 import {
     AbstractControl,
     FormBuilder,
@@ -22,7 +22,7 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
-import { LocationsService } from '../../services/locations.service';
+import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 
 interface anagraphicsForm {

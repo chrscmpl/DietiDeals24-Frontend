@@ -7,14 +7,14 @@ import {
     Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
-import { UserCredentials } from '../../models/user.model';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { UserCredentials } from '../../../models/user.model';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
-import { InputComponent } from '../../components/input/input.component';
+import { InputComponent } from '../../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
-import { RedirectionService } from '../../services/redirection.service';
+import { RedirectionService } from '../../../services/redirection.service';
 
 interface loginForm {
     email: FormControl<string | null>;
