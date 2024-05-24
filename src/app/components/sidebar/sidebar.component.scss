@@ -26,5 +26,9 @@
                 font-size: 2rem;
             }
         }
+
+        .p-sidebar-content {
+            @include layouts.flex(column, center, stretch);
+        }
     }
 }
