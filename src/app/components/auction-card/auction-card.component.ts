@@ -36,7 +36,7 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
     timeLeft: number = 0;
     timerInterval?: ReturnType<typeof setInterval>;
 
-    constructor(public windowService: WindowService) {}
+    constructor(public readonly windowService: WindowService) {}
 
     ngOnInit(): void {
         this.timeLeft = this.auction.timeLeft;

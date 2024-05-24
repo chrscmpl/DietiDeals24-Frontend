@@ -107,8 +107,8 @@ export class RegistrationPageComponent implements OnInit {
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
-        public locationsService: LocationsService,
+        private readonly formBuilder: FormBuilder,
+        public readonly locationsService: LocationsService,
     ) {}
 
     ngOnInit(): void {

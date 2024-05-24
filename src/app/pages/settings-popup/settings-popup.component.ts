@@ -22,8 +22,8 @@ import { AsyncPipe } from '@angular/common';
 })
 export class SettingsPopupComponent {
     constructor(
-        private router: Router,
-        public windowService: WindowService,
+        private readonly router: Router,
+        public readonly windowService: WindowService,
     ) {}
 
     public display: boolean = true;

@@ -66,8 +66,8 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     public currentTab?: MenuItem;
 
     constructor(
-        private categoriesService: CategoriesService,
-        private oneCharUpperPipe: OneCharUpperPipe,
+        private readonly categoriesService: CategoriesService,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
     ngOnInit(): void {

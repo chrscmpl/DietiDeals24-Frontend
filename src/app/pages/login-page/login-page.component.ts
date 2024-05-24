@@ -41,9 +41,9 @@ export class LoginPageComponent implements OnInit {
     loginForm!: FormGroup<loginForm>;
 
     constructor(
-        private authenticationService: AuthenticationService,
-        private redirect: RedirectionService,
-        private formBuilder: FormBuilder,
+        private readonly authenticationService: AuthenticationService,
+        private readonly redirect: RedirectionService,
+        private readonly formBuilder: FormBuilder,
     ) {}
 
     ngOnInit(): void {

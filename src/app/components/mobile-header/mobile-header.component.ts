@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class MobileHeaderComponent {
     constructor(
-        public windowService: WindowService,
-        public location: Location,
+        public readonly windowService: WindowService,
+        public readonly location: Location,
     ) {}
 }

@@ -14,7 +14,7 @@ import { take } from 'rxjs';
 export class ThemeSettingsComponent implements OnInit {
     public themeControl!: FormControl<theme | 'system' | null>;
 
-    constructor(private themeService: ThemeService) {}
+    constructor(private readonly themeService: ThemeService) {}
 
     ngOnInit(): void {
         this.themeControl = new FormControl<theme | 'system' | null>(null);

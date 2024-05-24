@@ -14,7 +14,7 @@ import { AsyncPipe } from '@angular/common';
     styleUrl: './search-results-page.component.scss',
 })
 export class SearchResultsPageComponent implements OnInit {
-    constructor(private route: ActivatedRoute) {}
+    constructor(private readonly route: ActivatedRoute) {}
 
     private auctionsRequestSubject = new ReplaySubject<
         PaginatedRequest<AuctionSummary>

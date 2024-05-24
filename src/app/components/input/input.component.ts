@@ -30,7 +30,7 @@ export class InputComponent implements OnInit {
     public error: string = '';
     private errorsManager?: inputErrorMessagesManager;
 
-    constructor(private controlContainer: ControlContainer) {}
+    constructor(private readonly controlContainer: ControlContainer) {}
 
     ngOnInit() {
         this.control = this.controlContainer?.control?.get(this.controlName);

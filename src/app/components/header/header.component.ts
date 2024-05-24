@@ -33,10 +33,10 @@ const HIDDEN_QUERY_PARAMS = ['keywords'];
 })
 export class HeaderComponent {
     constructor(
-        public authenticationService: AuthenticationService,
-        public routingUtils: RoutingUtilsService,
-        public windowService: WindowService,
-        public redirectionService: RedirectionService,
+        public readonly authenticationService: AuthenticationService,
+        public readonly routingUtils: RoutingUtilsService,
+        public readonly windowService: WindowService,
+        public readonly redirectionService: RedirectionService,
     ) {}
 
     tabs: link[] = mainPages;

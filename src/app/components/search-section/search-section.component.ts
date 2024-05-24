@@ -56,10 +56,10 @@ export class SearchSectionComponent implements OnInit {
     ];
 
     constructor(
-        private formBuilder: FormBuilder,
-        private oneCharUpperPipe: OneCharUpperPipe,
-        private router: Router,
-        private categoriesService: CategoriesService,
+        private readonly formBuilder: FormBuilder,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
+        private readonly router: Router,
+        private readonly categoriesService: CategoriesService,
     ) {}
 
     public ngOnInit(): void {

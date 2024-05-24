@@ -27,8 +27,8 @@ export class SidebarComponent implements OnInit {
     });
 
     constructor(
-        public windowService: WindowService,
-        private accessoryInformation: CategoriesService,
+        public readonly windowService: WindowService,
+        private readonly accessoryInformation: CategoriesService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
             label: 'Settings',

@@ -12,8 +12,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AuthenticationPageComponent {
     constructor(
-        private location: Location,
-        public windowService: WindowService,
+        private readonly location: Location,
+        public readonly windowService: WindowService,
     ) {}
 
     goBack() {
