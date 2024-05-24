@@ -83,7 +83,7 @@ export class SearchSectionComponent implements OnInit {
         let params: Nullable<AuctionSearchParameters> = this.searchForm.value;
         if (
             params.category &&
-            this.categoriesService.macroCategories.includes(params.category)
+            this.categoriesService.macroCategories?.includes(params.category)
         ) {
             const { category, ...rest } = params;
             params = {

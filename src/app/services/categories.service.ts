@@ -12,18 +12,19 @@ interface Categories {
 export class CategoriesService {
     constructor(private http: HttpClient) {}
 
-    private _trendingCategories: string[] = [];
-    private _categories: Categories = {};
+    private _trendingCategories: string[] | null = null;
+    private _categories: Categories | null = null;
 
-    public get trendingCategories(): string[] {
+    public get trendingCategories(): string[] | null {
         return this._trendingCategories;
     }
 
-    public get categories(): Categories {
+    public get categories(): Categories | null {
         return this._categories;
     }
 
-    public get macroCategories(): string[] {
+    public get macroCategories(): string[] | null {
+        if (!this.categories) return null;
         return Object.keys(this.categories);
     }
 
@@ -32,16 +33,16 @@ export class CategoriesService {
 
     public categories$: Observable<Categories> = this.categoriesSubject
         .asObservable()
-        .pipe(map(() => this.categories));
+        .pipe(map(() => this.categories ?? {}));
 
     public macroCategories$: Observable<string[]> = this.categoriesSubject
         .asObservable()
-        .pipe(map(() => this.macroCategories));
+        .pipe(map(() => this.macroCategories ?? []));
 
     public trendingCategories$: Observable<string[]> =
         this.trendingCategoriesSubject
             .asObservable()
-            .pipe(map(() => this._trendingCategories));
+            .pipe(map(() => this._trendingCategories ?? []));
 
     public refreshTrendingCategories(cb?: Partial<Observer<string[]>>): void {
         this.http

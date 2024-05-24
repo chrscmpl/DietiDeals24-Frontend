@@ -175,10 +175,10 @@ export class RegistrationPageComponent implements OnInit {
             if (this.filteredCountries.length > 2) this.filteredCountries = [];
             return;
         }
-        this.filteredCountries = this.locationsService.countries.filter(
-            (country) =>
+        this.filteredCountries =
+            this.locationsService.countries?.filter((country) =>
                 country.toLowerCase().includes(event.query.toLowerCase()),
-        );
+            ) ?? [];
     }
 
     public completeCities(event: AutoCompleteCompleteEvent): void {
@@ -196,7 +196,7 @@ export class RegistrationPageComponent implements OnInit {
     ): ValidationErrors {
         if (
             !control.value ||
-            this.locationsService.countries.includes(control.value)
+            this.locationsService.countries?.includes(control.value)
         ) {
             return {};
         }

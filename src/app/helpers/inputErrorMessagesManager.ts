@@ -10,11 +10,19 @@ type validation =
     | 'maxlength'
     | 'all';
 
-export type errorMessage = {
-    validation?: validation | validation[];
-    customValidation?: string | string[];
+interface defaultValidationErrorMessage {
+    validation: validation | validation[];
     message: string;
-};
+}
+
+interface customValidationErrorMessage {
+    customValidation: string | string[];
+    message: string;
+}
+
+export type errorMessage =
+    | defaultValidationErrorMessage
+    | customValidationErrorMessage;
 
 export class inputErrorMessagesManager {
     private defaultErrorString = 'Invalid input';
@@ -49,6 +57,9 @@ export class inputErrorMessagesManager {
     }
 
     private getValidation(errorMessage: errorMessage): string | string[] {
-        return errorMessage.validation ?? errorMessage.customValidation ?? [];
+        if ('validation' in errorMessage) return errorMessage.validation;
+        if ('customValidation' in errorMessage)
+            return errorMessage.customValidation;
+        return '';
     }
 }

@@ -9,15 +9,15 @@ export class LocationsService {
     constructor(private http: HttpClient) {}
 
     private countriesSubject = new ReplaySubject<void>(1);
-    private _countries: string[] = [];
+    private _countries: string[] | null = null;
 
-    public get countries(): string[] {
+    public get countries(): string[] | null {
         return this._countries;
     }
 
     public countries$: Observable<string[]> = this.countriesSubject
         .asObservable()
-        .pipe(map(() => this._countries));
+        .pipe(map(() => this._countries ?? []));
 
     public refreshCountries(cb?: Partial<Observer<string[]>>): void {
         // this.http
