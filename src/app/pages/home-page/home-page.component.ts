@@ -33,21 +33,31 @@ export class HomePageComponent implements OnInit {
         eager: true,
     });
 
+    public hideTrendingCategories: boolean = false;
+    private static readonly hideTrendingCategoriesTimeout: number = 1000;
+
     constructor(
-        public accessoryInformation: CategoriesService,
+        public categoriesService: CategoriesService,
         public auctionsService: AuctionsService,
         public windowService: WindowService,
     ) {}
 
     ngOnInit(): void {
         this.categoryButtonsLoadingIndicator.start();
-        this.accessoryInformation.trendingCategories$.subscribe(() => {
+        this.categoriesService.trendingCategories$.subscribe(() => {
             this.categoryButtonsLoadingIndicator.stop();
+            this.hideTrendingCategories = false;
         });
-        this.accessoryInformation.refreshTrendingCategories({
+        this.categoriesService.refreshTrendingCategories({
             error: (err) => {
                 console.error(err);
             },
         });
+        setTimeout(() => {
+            if (this && !this.categoriesService.trendingCategories) {
+                this.categoryButtonsLoadingIndicator.stop();
+                this.hideTrendingCategories = true;
+            }
+        }, HomePageComponent.hideTrendingCategoriesTimeout);
     }
 }
