@@ -4,6 +4,7 @@ import {
     AfterViewInit,
     Renderer2,
     Input,
+    OnDestroy,
 } from '@angular/core';
 
 enum Directions {
@@ -15,7 +16,7 @@ enum Directions {
     selector: '[dd24SmartSticky]',
     standalone: true,
 })
-export class SmartStickyDirective implements AfterViewInit {
+export class SmartStickyDirective implements AfterViewInit, OnDestroy {
     private lastTurn = 0;
     private _scrollingDown: Directions = Directions.DOWN;
     private _sticky = false;
@@ -69,6 +70,14 @@ export class SmartStickyDirective implements AfterViewInit {
         window.addEventListener('scroll', this.onScroll.bind(this));
     }
 
+    ngOnDestroy(): void {
+        window.removeEventListener('scroll', this.onScroll.bind(this));
+        if (this.stylesheet)
+            this.renderer.removeChild(document.head, this.stylesheet);
+        if (this.animationStylesheet)
+            this.renderer.removeChild(document.head, this.animationStylesheet);
+    }
+
     private onScroll(): void {
         this.scrollPosition =
             window.scrollY || document.documentElement.scrollTop;
@@ -76,13 +85,6 @@ export class SmartStickyDirective implements AfterViewInit {
         const height = this.element.nativeElement.clientHeight;
 
         if (this.scrollPosition === 0) {
-            this.sticky = false;
-        } else if (
-            this.sticky &&
-            !this.shown &&
-            this.scrollPosition > height &&
-            this.scrollPosition < height + 10
-        ) {
             this.sticky = false;
         } else if (this.scrollPosition > height) {
             if (
@@ -179,7 +181,7 @@ export class SmartStickyDirective implements AfterViewInit {
                 animation: dd24-smart-sticky-slide-in ${this.transitionTime}s ease-in-out;
             }
             .dd24-smart-sticky.dd24ss-sticky.dd24ss-hidden{
-                animation: dd24-smart-sticky-slide-out ${this.transitionTime}s ease-in-out forwards;
+                animation: dd24-smart-sticky-slide-out ${this.transitionTime * 2}s ease-in-out forwards;
             }
             `,
         );
@@ -208,8 +210,11 @@ export class SmartStickyDirective implements AfterViewInit {
                 0% {
                     transform: translateY(0);
                 }
-                100% {
+                50%{
                     transform: translateY(-100%);
+                }
+                100% {
+                    position: static;
                 }
             }
             `,
