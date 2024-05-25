@@ -18,13 +18,14 @@ enum Directions {
 export class SmartStickyDirective implements AfterViewInit {
     private lastTurn = 0;
     private _scrollingDown: Directions = Directions.DOWN;
+    private _sticky = false;
     private _shown = false;
     private scrollPosition = 0;
     private lastScrollPosition = 0;
     private stylesheet: HTMLStyleElement | null = null;
+    private animationStylesheet: HTMLStyleElement | null = null;
+    private _transitionTime = 0.3;
 
-    private topBound = 0;
-    private underTopBound = false;
     private offsetHide = -1;
     private offsetShow = -1;
 
@@ -47,16 +48,12 @@ export class SmartStickyDirective implements AfterViewInit {
     }
 
     @Input() set transitionTime(value: number) {
-        if (value < 0) {
-            throw new Error(
-                'SmartStickyDirective: transitionTime must be greater than 0',
-            );
-        }
-        this.renderer.setStyle(
-            this.element.nativeElement,
-            'transition',
-            `transform ${value}s`,
-        );
+        this._transitionTime = value;
+        this.setRules();
+    }
+
+    public get transitionTime(): number {
+        return this._transitionTime;
     }
 
     constructor(
@@ -65,40 +62,70 @@ export class SmartStickyDirective implements AfterViewInit {
     ) {}
 
     ngAfterViewInit(): void {
-        this.setRules();
-        this.shown = true;
+        if (!this.stylesheet) this.setRules();
+        this.setAnimation();
         this.setOffsets();
         this.renderer.addClass(this.element.nativeElement, `dd24-smart-sticky`);
-        if (!this.element.nativeElement.style.transition) {
-            this.transitionTime = 0.3;
-        }
-        this.topBound = this.element.nativeElement.clientHeight / 2;
         window.addEventListener('scroll', this.onScroll.bind(this));
     }
 
     private onScroll(): void {
         this.scrollPosition =
             window.scrollY || document.documentElement.scrollTop;
-        if (this.shown) {
-            if (this.scrollPosition > this.lastTurn + this.offsetHide) {
+
+        const height = this.element.nativeElement.clientHeight;
+
+        if (this.scrollPosition === 0) {
+            this.sticky = false;
+        } else if (
+            this.sticky &&
+            !this.shown &&
+            this.scrollPosition > height &&
+            this.scrollPosition < height + 10
+        ) {
+            this.sticky = false;
+        } else if (this.scrollPosition > height) {
+            if (
+                this.shown &&
+                this.scrollPosition > this.lastTurn + this.offsetHide
+            ) {
                 this.shown = false;
-            }
-        } else {
-            if (this.scrollPosition < this.lastTurn - this.offsetShow) {
-                this.shown = true;
+            } else {
+                if (this.scrollPosition < this.lastTurn - this.offsetShow) {
+                    if (!this.sticky) this.sticky = true;
+                    this.shown = true;
+                }
             }
         }
 
         this.updateScrollingDirection();
 
-        if (!this.underTopBound) {
-            if (this.scrollPosition > this.topBound) this.underTopBound = true;
-        } else if (this.scrollPosition < this.topBound) {
-            this.underTopBound = false;
-            this.shown = true;
-        }
-
         this.lastScrollPosition = this.scrollPosition;
+    }
+
+    private get sticky(): boolean {
+        return this._sticky;
+    }
+
+    private set sticky(value: boolean) {
+        this._sticky = value;
+        if (value) {
+            this.renderer.addClass(this.element.nativeElement, 'dd24ss-sticky');
+        } else {
+            this._shown = false;
+            this.renderer.removeClass(
+                this.element.nativeElement,
+                'dd24ss-sticky',
+            );
+            this.renderer.removeClass(
+                this.element.nativeElement,
+                'dd24ss-shown',
+            );
+            this.renderer.removeClass(
+                this.element.nativeElement,
+                'dd24ss-hidden',
+            );
+        }
     }
 
     private get shown(): boolean {
@@ -108,9 +135,17 @@ export class SmartStickyDirective implements AfterViewInit {
     private set shown(value: boolean) {
         this._shown = value;
         if (value) {
-            this.renderer.addClass(this.element.nativeElement, 'shown');
+            this.renderer.addClass(this.element.nativeElement, 'dd24ss-shown');
+            this.renderer.removeClass(
+                this.element.nativeElement,
+                'dd24ss-hidden',
+            );
         } else {
-            this.renderer.removeClass(this.element.nativeElement, 'shown');
+            this.renderer.addClass(this.element.nativeElement, 'dd24ss-hidden');
+            this.renderer.removeClass(
+                this.element.nativeElement,
+                'dd24ss-shown',
+            );
         }
     }
 
@@ -136,11 +171,52 @@ export class SmartStickyDirective implements AfterViewInit {
         this.stylesheet = this.renderer.createElement('style');
 
         const text = this.renderer.createText(
-            '.dd24-smart-sticky{transform:translateY(-100%);position:sticky;}.dd24-smart-sticky.shown{transform:translateY(0);}',
+            `
+            .dd24-smart-sticky.dd24ss-sticky{
+                position:sticky;
+            }
+            .dd24-smart-sticky.dd24ss-sticky.dd24ss-shown{
+                animation: dd24-smart-sticky-slide-in ${this.transitionTime}s ease-in-out;
+            }
+            .dd24-smart-sticky.dd24ss-sticky.dd24ss-hidden{
+                animation: dd24-smart-sticky-slide-out ${this.transitionTime}s ease-in-out forwards;
+            }
+            `,
         );
 
         this.renderer.appendChild(this.stylesheet, text);
         this.renderer.appendChild(document.head, this.stylesheet);
+    }
+
+    private setAnimation(): void {
+        if (this.animationStylesheet)
+            this.renderer.removeChild(document.head, this.animationStylesheet);
+
+        this.animationStylesheet = this.renderer.createElement('style');
+
+        const text = this.renderer.createText(
+            `
+            @keyframes dd24-smart-sticky-slide-in {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+            @keyframes dd24-smart-sticky-slide-out {
+                0% {
+                    transform: translateY(0);
+                }
+                100% {
+                    transform: translateY(-100%);
+                }
+            }
+            `,
+        );
+
+        this.renderer.appendChild(this.animationStylesheet, text);
+        this.renderer.appendChild(document.head, this.animationStylesheet);
     }
 
     private setOffsets(): void {

@@ -17,7 +17,7 @@ export class MobileNavbarComponent {
         private readonly authenticationService: AuthenticationService,
     ) {}
 
-    public profilePicture$: Observable<string | null> =
+    public readonly profilePicture$: Observable<string | null> =
         this.authenticationService.loggedUser$.pipe(
             startWith(null),
             map((user) => user?.profilePictureUrl ?? null),

@@ -17,7 +17,7 @@ import { MenuItem } from 'primeng/api';
     styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent implements OnInit {
-    private mainPagesMenuItems: MenuItem[] = mainPages.map((page) => {
+    private readonly mainPagesMenuItems: MenuItem[] = mainPages.map((page) => {
         return {
             label: page.name,
             routerLink: page.url,
