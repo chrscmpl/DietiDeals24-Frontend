@@ -6,9 +6,9 @@
     ></a>
     <p-avatar
         class="avatar"
-        [icon]="profilePicture !== null ? '' : 'pi pi-user'"
-        [shape]="profilePicture !== null ? 'circle' : 'square'"
-        [image]="profilePicture ?? ''"
+        [icon]="(profilePicture$ | async) !== null ? '' : 'pi pi-user'"
+        [shape]="(profilePicture$ | async) !== null ? 'circle' : 'square'"
+        [image]="(profilePicture$ | async) ?? ''"
         routerLink="/your-page"
     />
     <a><i class="nav-link pi pi-bell"></i></a>
