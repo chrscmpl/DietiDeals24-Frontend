@@ -1,28 +1,18 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { DockModule } from 'primeng/dock';
+import { RouterLink } from '@angular/router';
+import { AvatarModule } from 'primeng/avatar';
+import { AuthenticationService } from '../../services/authentication.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'dd24-mobile-navbar',
     standalone: true,
-    imports: [DockModule],
+    imports: [AvatarModule, RouterLink, AsyncPipe],
     templateUrl: './mobile-navbar.component.html',
     styleUrl: './mobile-navbar.component.scss',
 })
 export class MobileNavbarComponent {
-    public items: MenuItem[] = [
-        { name: 'Home', routerLink: 'home', icon: 'pi pi-home' },
-        {
-            name: 'Search',
-            routerLink: 'auctions',
-            icon: 'pi pi-search',
-        },
-        {
-            name: 'Create Auction',
-            routerLink: 'create-auction',
-            icon: 'pi pi-plus-circle',
-        },
-        { name: 'Your Page', routerLink: 'your-page', icon: 'pi pi-user' },
-        { name: 'Notifications', icon: 'pi pi-bell' },
-    ];
+    public constructor(
+        public readonly authenticationService: AuthenticationService,
+    ) {}
 }

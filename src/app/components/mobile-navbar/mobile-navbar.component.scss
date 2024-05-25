@@ -1,43 +1,30 @@
-:host {
+@use "layouts";
+
+.mobile-navbar {
+    @include layouts.flex(row, space-between, center);
+    padding: 0.5rem 1rem;
+    width: 100%;
+    border-top: var(--border);
     background-color: var(--component-color);
+
+    .nav-link {
+        font-size: 2rem;
+        color: var(--basic-affordances-color);
+
+        &.create {
+            color: var(--accent-color-1);
+        }
+    }
 }
 
 :host ::ng-deep {
-    .p-dock {
-        position: static;
-        width: 100%;
-        overflow: visible;
-        border-top: var(--border);
-    }
-    .p-dock-list-container {
-        padding: 0;
-        overflow: visible;
-        border-radius: 0;
-        border: none;
+    .p-avatar {
         background: transparent;
-    }
-    .p-dock-list {
-        margin: 0;
-        justify-content: space-around;
-        flex: 1;
-    }
-    .p-dock-item {
-        padding: 0;
-    }
-    .p-dock-link {
-        text-decoration: none;
-    }
-    .p-dock-action-icon {
-        font-size: 1.5rem;
-        color: var(--basic-affordances-color);
-    }
-    .p-dock-item:nth-child(3) {
-        // background-color: var(--accent-color-1);
-        // border-radius: 100rem;
-        // transform: translateY(-25%) scale(1.2);
-        .p-dock-action-icon {
+        .p-avatar-icon {
+            color: var(--basic-affordances-color);
             font-size: 2rem;
-            color: var(--accent-color-1);
+            border-radius: 0;
+            overflow: visible;
         }
     }
 }

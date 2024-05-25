@@ -1,1 +1,20 @@
-<p-dock [model]="items" position="bottom" class="mobile-navbar"> </p-dock>
+<nav class="mobile-navbar">
+    <a routerLink="/home"><i class="nav-link pi pi-home"></i></a>
+    <a routerLink="/auctions"><i class="nav-link pi pi-search"></i></a>
+    <a routerLink="/create-auction"
+        ><i class="nav-link create pi pi-plus-circle"></i
+    ></a>
+    <p-avatar
+        class="avatar"
+        icon="pi pi-user"
+        [shape]="
+            (authenticationService.isLogged$ | async) === true
+                ? 'circle'
+                : 'square'
+        "
+        [image]="
+            (authenticationService.loggedUser$ | async)?.profilePictureUrl ?? ''
+        "
+    />
+    <a><i class="nav-link pi pi-bell"></i></a>
+</nav>
