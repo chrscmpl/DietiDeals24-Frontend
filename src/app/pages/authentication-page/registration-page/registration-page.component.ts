@@ -24,6 +24,8 @@ import { RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
@@ -40,9 +42,14 @@ interface credentialsForm {
     confirmPassword: FormControl<string | null>;
 }
 
+interface privacyPolicyForm {
+    accept: FormControl<boolean>;
+}
+
 interface registrationForm {
     anagraphics: FormGroup<anagraphicsForm>;
     credentials: FormGroup<credentialsForm>;
+    privacyPolicy: FormGroup<privacyPolicyForm>;
 }
 
 @Component({
@@ -59,6 +66,8 @@ interface registrationForm {
         DividerModule,
         AutoCompleteModule,
         PasswordModule,
+        DialogModule,
+        CheckboxModule,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
@@ -75,6 +84,8 @@ export class RegistrationPageComponent implements OnInit {
     public mediumPasswordRegex = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})';
     public strongPasswordRegex =
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})';
+
+    public privacyPolicyDialogVisible: boolean = false;
 
     private onNextAnagraphics = (): boolean => {
         if (!this.registrationForm.get('anagraphics')?.valid) {
@@ -146,12 +157,26 @@ export class RegistrationPageComponent implements OnInit {
                     updateOn: 'blur',
                 }),
             }),
+            privacyPolicy: this.formBuilder.group<privacyPolicyForm>({
+                accept: new FormControl(false, {
+                    nonNullable: true,
+                    validators: Validators.requiredTrue,
+                }),
+            }),
         });
     }
 
     public next(): void {
         if (this.steps[this.activeStep]?.nextCallback?.() !== false)
             this.activeStep++;
+    }
+
+    public onSubmit(): void {
+        if (this.activeStep !== 2) {
+            this.next();
+            return;
+        }
+        console.log(this.registrationForm.value);
     }
 
     public getCities(): void {
@@ -189,6 +214,14 @@ export class RegistrationPageComponent implements OnInit {
         this.filteredCities = this.cities.filter((city) =>
             city.toLowerCase().includes(event.query.toLowerCase()),
         );
+    }
+
+    public setDialogVisibility(e: Event): void {
+        if (
+            e instanceof MouseEvent ||
+            (e instanceof KeyboardEvent && e.key === 'Enter')
+        )
+            this.privacyPolicyDialogVisible = true;
     }
 
     private validateCountry(

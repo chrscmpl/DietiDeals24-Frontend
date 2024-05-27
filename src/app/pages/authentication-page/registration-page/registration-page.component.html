@@ -20,9 +20,13 @@
 
     <dd24-stepper [steps]="steps" [(activeStep)]="activeStep"></dd24-stepper>
 
-    <form class="registration-form" [formGroup]="registrationForm">
+    <form
+        class="registration-form"
+        [formGroup]="registrationForm"
+        (ngSubmit)="onSubmit()"
+    >
         @if (activeStep === 0) {
-            <form class="inner-form" formGroupName="anagraphics">
+            <ng-form class="inner-form" formGroupName="anagraphics">
                 <div class="input">
                     <label for="name">Name*</label>
                     <dd24-input
@@ -41,6 +45,7 @@
                             formControlName="name"
                             name="name"
                             placeholder="Your name"
+                            id="name"
                         />
                     </dd24-input>
                 </div>
@@ -63,6 +68,7 @@
                             formControlName="surname"
                             name="surname"
                             placeholder="Your surname"
+                            id="surname"
                         />
                     </dd24-input>
                 </div>
@@ -85,6 +91,7 @@
                             iconDisplay="input"
                             placeholder="dd/mm/yyyy"
                             dateFormat="dd/mm/yy"
+                            inputId="birthday"
                         />
                     </dd24-input>
                 </div>
@@ -110,11 +117,12 @@
                             (completeMethod)="completeCountries($event)"
                             [virtualScroll]="true"
                             [virtualScrollItemSize]="35"
+                            inputId="country"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>
                 <div class="input">
-                    <label for="country">City</label>
+                    <label for="city">City</label>
                     <dd24-input
                         controlName="city"
                         [errorMessages]="[
@@ -141,13 +149,14 @@
                             [virtualScroll]="true"
                             [virtualScrollItemSize]="35"
                             (onFocus)="getCities()"
+                            inputId="city"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>
-            </form>
+            </ng-form>
         }
         @if (activeStep === 1) {
-            <form class="inner-form" formGroupName="credentials">
+            <ng-form class="inner-form" formGroupName="credentials">
                 <div class="input">
                     <label for="email">Email*</label>
                     <dd24-input
@@ -171,6 +180,7 @@
                             formControlName="email"
                             name="email"
                             placeholder="Your email"
+                            id="email"
                         />
                     </dd24-input>
                 </div>
@@ -193,6 +203,7 @@
                             formControlName="username"
                             name="username"
                             placeholder="An unique username"
+                            id="username"
                         />
                     </dd24-input>
                 </div>
@@ -227,6 +238,7 @@
                             placeholder="A strong password"
                             [strongRegex]="strongPasswordRegex"
                             [mediumRegex]="mediumPasswordRegex"
+                            inputId="password"
                         />
                     </dd24-input>
                 </div>
@@ -254,14 +266,97 @@
                             [feedback]="false"
                             toggleMask="true"
                             placeholder="The same as above"
+                            inputId="confirm-password"
                         />
                     </dd24-input>
                 </div>
-            </form>
+            </ng-form>
         }
         @if (activeStep === 2) {
-            !
+            <ng-form class="inner-form" formGroupName="privacyPolicy">
+                <div
+                    class="privacy-policy-preview"
+                    (click)="setDialogVisibility($event)"
+                    (keypress)="setDialogVisibility($event)"
+                    tabindex="0"
+                >
+                    <div class="privacy-policy-preview-mask"></div>
+                    <div class="privacy-policy-preview-top">
+                        <span>Privacy Policy</span>
+                        <i class="pi pi-arrow-right"></i>
+                    </div>
+                    <span
+                        >DietiDeals24 values your privacy and is committed to
+                        safeguarding your personal information. When you visit
+                        the platform, we may collect certain non-personal
+                        information regarding the nature of the connected client
+                        application for analytical purposes. Any personal
+                        information you provide, is strictly voluntary and will
+                        only be used for the purposes for which it was provided.
+                        Moreover, the only information publicly shared on the
+                        platform DietiDeals24 are those found in the "Public
+                        Profile" section of your profile, including your
+                        username, location, bio, and links to external websites.
+                        Your contact information (email/phone number) are only
+                        shared when necessary to the user you conclude a deal
+                        with, and you will be prompted to choose which
+                        information to share every time this process is
+                        necessary. We do not sell, trade, or rent your personal
+                        information to third parties. However, we may disclose
+                        your information if required by law or to protect our
+                        rights and interests. By using our website, you consent
+                        to the terms outlined in this privacy policy. Please
+                        review this policy periodically for any updates or
+                        changes.</span
+                    >
+                </div>
+                <div class="privacy-policy-checkbox-container">
+                    <p-checkbox
+                        formControlName="accept"
+                        inputId="accept"
+                        binary="true"
+                        class="privacy-policy-checkbox"
+                    />
+                    <label for="accept"
+                        >I have read and accept the terms of the above privacy
+                        policy</label
+                    >
+                </div>
+            </ng-form>
         }
-        <p-button class="next-btn" label="Next" (onClick)="next()"></p-button>
+        <p-button
+            class="next-btn"
+            [label]="activeStep !== 2 ? 'Next' : 'Register'"
+            type="submit"
+        ></p-button>
     </form>
+    <p-dialog
+        class="privacy-policy-dialog custom-dialog"
+        header="Privacy Policy"
+        [resizable]="false"
+        [draggable]="false"
+        [modal]="true"
+        [(visible)]="privacyPolicyDialogVisible"
+    >
+        <span
+            >DietiDeals24 values your privacy and is committed to safeguarding
+            your personal information. When you visit the platform, we may
+            collect certain non-personal information regarding the nature of the
+            connected client application for analytical purposes. Any personal
+            information you provide, is strictly voluntary and will only be used
+            for the purposes for which it was provided. Moreover, the only
+            information publicly shared on the platform DietiDeals24 are those
+            found in the "Public Profile" section of your profile, including
+            your username, location, bio, and links to external websites. Your
+            contact information (email/phone number) are only shared when
+            necessary to the user you conclude a deal with, and you will be
+            prompted to choose which information to share every time this
+            process is necessary. We do not sell, trade, or rent your personal
+            information to third parties. However, we may disclose your
+            information if required by law or to protect our rights and
+            interests. By using our website, you consent to the terms outlined
+            in this privacy policy. Please review this policy periodically for
+            any updates or changes.</span
+        >
+    </p-dialog>
 </div>
