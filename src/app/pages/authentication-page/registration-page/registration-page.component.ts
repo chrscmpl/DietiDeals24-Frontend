@@ -26,6 +26,7 @@ import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConstantsService } from '../../../services/constants.service';
 
 interface anagraphicsForm {
     name: FormControl<string | null>;
@@ -85,6 +86,10 @@ export class RegistrationPageComponent implements OnInit {
     public strongPasswordRegex =
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})';
 
+    public minBirthdayDate: Date = new Date(1900, 0, 1);
+    public maxBirthdayDate: Date = new Date();
+    public defaultBirthdayDate: Date = new Date(2000, 0, 1);
+
     public privacyPolicyDialogVisible: boolean = false;
 
     private onNextAnagraphics = (): boolean => {
@@ -120,10 +125,16 @@ export class RegistrationPageComponent implements OnInit {
     constructor(
         private readonly formBuilder: FormBuilder,
         public readonly locationsService: LocationsService,
+        public readonly constants: ConstantsService,
     ) {}
 
     ngOnInit(): void {
+        this.maxBirthdayDate.setFullYear(
+            this.maxBirthdayDate.getFullYear() - 18,
+        );
+
         this.locationsService.refreshCountries();
+
         this.registrationForm = this.formBuilder.group<registrationForm>({
             anagraphics: this.formBuilder.group<anagraphicsForm>({
                 name: new FormControl(null, [Validators.required]),
