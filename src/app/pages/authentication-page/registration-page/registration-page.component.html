@@ -80,6 +80,14 @@
                             {
                                 validation: 'required',
                                 message: 'a birthday is required'
+                            },
+                            {
+                                validation: 'max',
+                                message: 'you must be at least 18 years old'
+                            },
+                            {
+                                validation: ['min', 'pattern'],
+                                message: 'this date is invalid'
                             }
                         ]"
                     >
@@ -239,8 +247,8 @@
                             [feedback]="true"
                             toggleMask="true"
                             placeholder="A strong password"
-                            [strongRegex]="strongPasswordRegex"
-                            [mediumRegex]="mediumPasswordRegex"
+                            [strongRegex]="constants.passwordStrongPattern"
+                            [mediumRegex]="constants.passwordMediumPattern"
                             inputId="password"
                         />
                     </dd24-input>

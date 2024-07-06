@@ -82,10 +82,6 @@ export class RegistrationPageComponent implements OnInit {
     private cities: string[] = [];
     public filteredCities: string[] = [];
 
-    public mediumPasswordRegex = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})';
-    public strongPasswordRegex =
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})';
-
     public minBirthdayDate: Date = new Date(1900, 0, 1);
     public maxBirthdayDate: Date = new Date();
     public defaultBirthdayDate: Date = new Date(2000, 0, 1);
@@ -139,7 +135,10 @@ export class RegistrationPageComponent implements OnInit {
             anagraphics: this.formBuilder.group<anagraphicsForm>({
                 name: new FormControl(null, [Validators.required]),
                 surname: new FormControl(null, [Validators.required]),
-                birthday: new FormControl(null, [Validators.required]),
+                birthday: new FormControl(null, [
+                    Validators.required,
+                    this.validateBirthday.bind(this),
+                ]),
                 country: new FormControl(null, {
                     validators: this.validateCountry.bind(this),
                     updateOn: 'blur',
@@ -158,7 +157,7 @@ export class RegistrationPageComponent implements OnInit {
                 password: new FormControl(null, [
                     Validators.required,
                     Validators.minLength(8),
-                    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/),
+                    Validators.pattern(this.constants.passwordPattern),
                 ]),
                 confirmPassword: new FormControl(null, {
                     validators: [
@@ -264,6 +263,19 @@ export class RegistrationPageComponent implements OnInit {
             return { noCountrySelected: true };
         }
         return { noMatchingCity: true };
+    }
+
+    private validateBirthday(
+        control: AbstractControl<string>,
+    ): ValidationErrors {
+        if (!control.value) return {};
+        const birthday = new Date(control.value);
+
+        if (isNaN(birthday.getTime())) return { pattern: true };
+        if (birthday < this.minBirthdayDate) return { min: true };
+        if (birthday > this.maxBirthdayDate) return { max: true };
+
+        return {};
     }
 
     private validateConfirmPassword(
