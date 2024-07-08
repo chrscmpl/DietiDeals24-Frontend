@@ -14,4 +14,8 @@
         width: 3rem;
         height: 3rem;
     }
+    .p-progress-spinner-circle {
+        animation: p-progress-spinner-dash 1.5s ease-in-out infinite;
+        stroke: var(--border-color);
+    }
 }

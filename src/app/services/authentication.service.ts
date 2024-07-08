@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserCredentials, User, UserDTO } from '../models/user.model';
+import { User } from '../models/user.model';
 import {
     Observable,
     Observer,
@@ -10,6 +10,12 @@ import {
     tap,
     withLatestFrom,
 } from 'rxjs';
+import {
+    UserCredentials,
+    UserDTO,
+    UserRegistrationDTO,
+    emailVerificationDTO,
+} from '../DTOs/user.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +23,8 @@ import {
 export class AuthenticationService {
     private _isLogged = false;
     private _loggedUser: User | null = null;
+
+    public emailToVerify: string | null = null;
 
     public get isLogged(): boolean {
         return this._isLogged;
@@ -63,7 +71,27 @@ export class AuthenticationService {
             .subscribe(cb);
     }
 
+    public register(
+        newUser: UserRegistrationDTO,
+        cb?: Partial<Observer<void>>,
+    ): void {
+        this.http
+            .post<void>('dd24-backend/register/init', newUser)
+            .subscribe(cb);
+    }
+
+    public verifyEmail(
+        data: emailVerificationDTO,
+        cb?: Partial<Observer<User>>,
+    ): void {
+        this.http
+            .post<UserDTO>('dd24-backend/register/confirm', data)
+            .pipe(map((dto: UserDTO) => new User(dto)))
+            .subscribe(cb);
+    }
+
     public logout(): void {
+        localStorage.removeItem('authorizationToken');
         this._isLogged = false;
         this._loggedUser = null;
         this.isLoggedSubject.next();

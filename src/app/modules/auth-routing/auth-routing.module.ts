@@ -5,6 +5,11 @@ import { LoginPageComponent } from '../../pages/authentication-page/login-page/l
 import { RegistrationPageComponent } from '../../pages/authentication-page/registration-page/registration-page.component';
 import { ForgotPasswordPageComponent } from '../../pages/authentication-page/forgot-password-page/forgot-password-page.component';
 import { AuthenticationPageComponent } from '../../pages/authentication-page/authentication-page.component';
+import { VerifyEmailPageComponent } from '../../pages/authentication-page/verify-email-page/verify-email-page.component';
+import {
+    emailVerificationActivateGuard,
+    emailVerificationDeactivateGuard,
+} from '../../guards/email-not-verified.guard';
 
 const routes: Routes = [
     {
@@ -30,6 +35,13 @@ const routes: Routes = [
                 path: 'forgot-password',
                 title: 'Forgot Password',
                 component: ForgotPasswordPageComponent,
+            },
+            {
+                path: 'verify-email',
+                title: 'Verify Email',
+                component: VerifyEmailPageComponent,
+                canActivate: [emailVerificationActivateGuard],
+                canDeactivate: [emailVerificationDeactivateGuard],
             },
         ],
     },

@@ -24,9 +24,11 @@
         class="registration-form"
         [formGroup]="registrationForm"
         (ngSubmit)="onSubmit()"
+        (keypress)="onKeyPressed($event)"
+        tabindex="0"
     >
         @if (activeStep === 0) {
-            <ng-form class="inner-form" formGroupName="anagraphics">
+            <ng-form class="inner-form" formGroupName="userData">
                 <div class="input">
                     <label for="name">Name*</label>
                     <dd24-input
@@ -311,6 +313,9 @@
                     >
                 </div>
             </ng-form>
+        }
+        @if (error) {
+            <span class="error">{{ error }}</span>
         }
         <p-button
             class="next-btn"

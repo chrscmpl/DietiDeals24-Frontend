@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withDebugTracing } from '@angular/router';
 
 import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
@@ -16,25 +16,29 @@ import { HideUIGuard } from './guards/hide-ui.guard';
 import { ShowUIGuard } from './guards/show-ui.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { provideServiceWorker } from '@angular/service-worker';
+import { EmailVerificationGuard } from './guards/email-not-verified.guard';
+import { MaskedEmailPipe } from './pipes/masked-email.pipe';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-    provideRouter(routes),
-    provideHttpClient(withInterceptors([authorizationInterceptor])),
-    importProvidersFrom([BrowserAnimationsModule]),
-    Location,
-    LocalDatePipe,
-    OneCharUpperPipe,
-    DatePipe,
-    IntervalPipe,
-    CurrencyPipe,
-    AuctionsRequestGuard,
-    HideUIGuard,
-    ShowUIGuard,
-    AuthenticationGuard,
-    provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })
-],
+        provideRouter(routes, withDebugTracing()),
+        provideHttpClient(withInterceptors([authorizationInterceptor])),
+        importProvidersFrom([BrowserAnimationsModule]),
+        Location,
+        LocalDatePipe,
+        OneCharUpperPipe,
+        DatePipe,
+        IntervalPipe,
+        CurrencyPipe,
+        MaskedEmailPipe,
+        AuctionsRequestGuard,
+        HideUIGuard,
+        ShowUIGuard,
+        AuthenticationGuard,
+        EmailVerificationGuard,
+        provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
+    ],
 };

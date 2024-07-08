@@ -16,11 +16,12 @@ import { AsyncPipe } from '@angular/common';
 export class SearchResultsPageComponent implements OnInit {
     constructor(private readonly route: ActivatedRoute) {}
 
-    private auctionsRequestSubject = new ReplaySubject<
+    private readonly auctionsRequestSubject = new ReplaySubject<
         PaginatedRequest<AuctionSummary>
     >(1);
 
-    public auctionsRequest$ = this.auctionsRequestSubject.asObservable();
+    public readonly auctionsRequest$ =
+        this.auctionsRequestSubject.asObservable();
 
     ngOnInit(): void {
         this.route.data.subscribe((data) => {

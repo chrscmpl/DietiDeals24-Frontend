@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -19,7 +19,6 @@ import {
     AuctionType,
 } from '../../typeUtils/auction.utils';
 import { CategoriesService } from '../../services/categories.service';
-import { Observable, ReplaySubject, Subscription, startWith, take } from 'rxjs';
 
 interface searchForm {
     keywords: FormControl<string | null>;

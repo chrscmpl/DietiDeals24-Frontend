@@ -20,15 +20,18 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConstantsService } from '../../../services/constants.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { UserRegistrationDTO } from '../../../DTOs/user.dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
-interface anagraphicsForm {
+interface userDataForm {
     name: FormControl<string | null>;
     surname: FormControl<string | null>;
     birthday: FormControl<string | null>;
@@ -48,7 +51,7 @@ interface privacyPolicyForm {
 }
 
 interface registrationForm {
-    anagraphics: FormGroup<anagraphicsForm>;
+    userData: FormGroup<userDataForm>;
     credentials: FormGroup<credentialsForm>;
     privacyPolicy: FormGroup<privacyPolicyForm>;
 }
@@ -76,6 +79,7 @@ interface registrationForm {
 export class RegistrationPageComponent implements OnInit {
     public registrationForm!: FormGroup<registrationForm>;
     public activeStep: number = 0;
+    public error: string = '';
 
     public filteredCountries: string[] = [];
 
@@ -88,9 +92,9 @@ export class RegistrationPageComponent implements OnInit {
 
     public privacyPolicyDialogVisible: boolean = false;
 
-    private onNextAnagraphics = (): boolean => {
-        if (!this.registrationForm.get('anagraphics')?.valid) {
-            this.registrationForm.get('anagraphics')?.markAllAsTouched();
+    private onNextuserData = (): boolean => {
+        if (!this.registrationForm.get('userData')?.valid) {
+            this.registrationForm.get('userData')?.markAllAsTouched();
             return false;
         }
         return true;
@@ -107,7 +111,7 @@ export class RegistrationPageComponent implements OnInit {
     public steps: Step[] = [
         {
             title: 'Your data',
-            nextCallback: this.onNextAnagraphics,
+            nextCallback: this.onNextuserData,
         },
         {
             title: 'Your credentials',
@@ -122,6 +126,8 @@ export class RegistrationPageComponent implements OnInit {
         private readonly formBuilder: FormBuilder,
         public readonly locationsService: LocationsService,
         public readonly constants: ConstantsService,
+        private readonly router: Router,
+        private readonly authentication: AuthenticationService,
     ) {}
 
     ngOnInit(): void {
@@ -132,7 +138,7 @@ export class RegistrationPageComponent implements OnInit {
         this.locationsService.refreshCountries();
 
         this.registrationForm = this.formBuilder.group<registrationForm>({
-            anagraphics: this.formBuilder.group<anagraphicsForm>({
+            userData: this.formBuilder.group<userDataForm>({
                 name: new FormControl(null, [Validators.required]),
                 surname: new FormControl(null, [Validators.required]),
                 birthday: new FormControl(null, [
@@ -186,17 +192,59 @@ export class RegistrationPageComponent implements OnInit {
             this.next();
             return;
         }
-        console.log(this.registrationForm.value);
+
+        this.onRegister();
+    }
+
+    private onRegister(): void {
+        if (!this.registrationForm.valid) {
+            this.onInvalidForm();
+            return;
+        }
+
+        this.error = '';
+
+        const newUser = {
+            ...this.registrationForm.value.userData,
+            ...this.registrationForm.value.credentials,
+        } as UserRegistrationDTO;
+
+        this.authentication.register(newUser, {
+            next: this.onRegisterSuccess.bind(this),
+            error: this.onRegisterError.bind(this),
+        });
+    }
+
+    private onInvalidForm(): void {
+        this.registrationForm.markAllAsTouched();
+        if (this.registrationForm.get('privacyPolicy')?.invalid)
+            this.error = 'You must accept the privacy policy to continue';
+    }
+
+    private onRegisterSuccess(): void {
+        this.authentication.emailToVerify =
+            this.registrationForm.get('credentials')?.get('email')?.value ??
+            null;
+        this.router.navigate(['../verify-email']);
+    }
+
+    private onRegisterError(error: HttpErrorResponse): void {
+        this.error = error.statusText;
+        console.log(error);
+    }
+
+    public onKeyPressed(event: KeyboardEvent): void {
+        if (event.key === 'Enter') this.onSubmit();
     }
 
     public getCities(): void {
         const countryControl = this.registrationForm
-            .get('anagraphics')
+            .get('userData')
             ?.get('country');
         if (countryControl?.valid && countryControl?.value) {
             this.locationsService
                 .getCities(
-                    this.registrationForm.get('anagraphics')?.get('country')
+                    this.registrationForm.get('userData')?.get('country')
                         ?.value as string,
                 )
                 .subscribe((cities) => {
@@ -248,7 +296,7 @@ export class RegistrationPageComponent implements OnInit {
 
     private validateCity(control: AbstractControl<string>): ValidationErrors {
         const countryControl = this.registrationForm
-            ?.get('anagraphics')
+            ?.get('userData')
             ?.get('country');
         if (!countryControl?.valid && control.value)
             return { noCountrySelected: true };

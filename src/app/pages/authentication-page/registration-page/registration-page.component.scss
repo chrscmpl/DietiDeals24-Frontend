@@ -34,6 +34,12 @@
         margin-bottom: 1rem;
     }
 
+    a,
+    .error {
+        align-self: center;
+        word-wrap: break-word;
+    }
+
     .privacy-policy-preview {
         @include layouts.flex(column, start, stretch);
         border-radius: var(--border-radius-medium);
