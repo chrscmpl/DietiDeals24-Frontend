@@ -21,7 +21,7 @@ import { MaskedEmailPipe } from './pipes/masked-email.pipe';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(routes, withDebugTracing()),
+        provideRouter(routes),
         provideHttpClient(withInterceptors([authorizationInterceptor])),
         importProvidersFrom([BrowserAnimationsModule]),
         Location,

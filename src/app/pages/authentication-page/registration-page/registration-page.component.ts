@@ -225,12 +225,20 @@ export class RegistrationPageComponent implements OnInit {
         this.authentication.emailToVerify =
             this.registrationForm.get('credentials')?.get('email')?.value ??
             null;
-        this.router.navigate(['../verify-email']);
+        this.router.navigate(['auth/verify-email']);
     }
 
     private onRegisterError(error: HttpErrorResponse): void {
-        this.error = error.statusText;
-        console.log(error);
+        if (error.status >= 500) {
+            this.error = 'Server error. Please try again later.';
+        } else if (error.status === 409) {
+            this.error = 'Email or username already in use.';
+        } else if (error.status >= 400) {
+            this.error = 'Invalid data.';
+        } else {
+            this.error = 'An error has occurred. Please try again later.';
+        }
+        console.error(error);
     }
 
     public onKeyPressed(event: KeyboardEvent): void {

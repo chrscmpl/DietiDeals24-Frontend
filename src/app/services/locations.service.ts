@@ -22,7 +22,7 @@ export class LocationsService {
     public refreshCountries(cb?: Partial<Observer<string[]>>): void {
         // this.http
         //     .get<string[]>('dd24-backend/info/countries')
-        of(['Italy', 'Germany', 'France', 'Spain', 'United Kingdom'])
+        of(['IT', 'FR', 'UK'])
             .pipe(
                 tap((value) => {
                     this._countries = value;

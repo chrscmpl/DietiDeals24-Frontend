@@ -14,6 +14,7 @@ import { InputComponent } from '../../../components/input/input.component';
 import { MaskedEmailPipe } from '../../../pipes/masked-email.pipe';
 import { emailVerificationDTO } from '../../../DTOs/user.dto';
 import { RedirectionService } from '../../../services/redirection.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -51,48 +52,58 @@ export class VerifyEmailPageComponent implements OnInit {
             return;
         }
         this.verificationForm = this.formBuilder.group<verificationForm>({
-            code: new FormControl(null, [
+            code: new FormControl('', [
                 Validators.required,
                 Validators.minLength(5),
                 Validators.maxLength(5),
             ]),
-            email: new FormControl(
-                { value: this.authentication.emailToVerify, disabled: true },
-                [Validators.required],
-            ),
+            email: new FormControl(this.authentication.emailToVerify, [
+                Validators.required,
+            ]),
         });
     }
 
-    toggleEmailVisibility() {
+    public toggleEmailVisibility(): void {
         this.showEmail = !this.showEmail;
     }
 
     public onSubmit(): void {
         if (this.verificationForm.invalid) {
-            this.onSubmitError();
+            this.onInvalidForm();
             return;
         }
+
         this.error = null;
+
         this.authentication.verifyEmail(
             this.verificationForm.value as emailVerificationDTO,
             {
-                next: () => {
-                    this.redirect.exitRoute();
-                },
-                error: () => {
-                    this.error = 'Invalid code';
-                },
+                next: this.onVerificationSuccess.bind(this),
+                error: this.onVerificationError.bind(this),
             },
         );
-    }
-
-    public onSubmitError(): void {
-        this.verificationForm.markAllAsTouched();
     }
 
     public onKeyPressed(event: KeyboardEvent): void {
         if (event.key === 'Enter') {
             this.onSubmit();
+        }
+    }
+
+    private onInvalidForm(): void {
+        this.verificationForm.markAllAsTouched();
+    }
+
+    private onVerificationSuccess(): void {
+        this.redirect.exitRoute();
+    }
+
+    private onVerificationError(err: HttpErrorResponse): void {
+        if (err.status >= 500) {
+            this.error =
+                'There was an error with the server. Please try again later.';
+        } else if (err.status >= 401) {
+            this.error = 'Invalid code';
         }
     }
 }
