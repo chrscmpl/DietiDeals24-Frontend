@@ -61,12 +61,7 @@ export class AuthenticationService {
             .post<UserDTO>('dd24-backend/login', credentials)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
-                tap((user) => {
-                    this._isLogged = true;
-                    this._loggedUser = user;
-                    this.isLoggedSubject.next();
-                    this.loggedUserSubject.next();
-                }),
+                tap(this.setLoggedUser.bind(this)),
             )
             .subscribe(cb);
     }
@@ -86,7 +81,10 @@ export class AuthenticationService {
     ): void {
         this.http
             .post<UserDTO>('dd24-backend/register/confirm', data)
-            .pipe(map((dto: UserDTO) => new User(dto)))
+            .pipe(
+                map((dto: UserDTO) => new User(dto)),
+                tap(this.setLoggedUser.bind(this)),
+            )
             .subscribe(cb);
     }
 
@@ -95,5 +93,12 @@ export class AuthenticationService {
         this._isLogged = false;
         this._loggedUser = null;
         this.isLoggedSubject.next();
+    }
+
+    private setLoggedUser(user: User): void {
+        this._isLogged = true;
+        this._loggedUser = user;
+        this.isLoggedSubject.next();
+        this.loggedUserSubject.next();
     }
 }
