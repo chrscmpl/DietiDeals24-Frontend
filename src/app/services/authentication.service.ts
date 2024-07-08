@@ -88,6 +88,23 @@ export class AuthenticationService {
             .subscribe(cb);
     }
 
+    public getUserData(cb?: Partial<Observer<User>>): void {
+        if (!cb) cb = {};
+        const error = cb.error ?? (() => {});
+        cb.error = (err) => {
+            error(err);
+            localStorage.removeItem('authorizationToken');
+        };
+
+        this.http
+            .get<UserDTO>('dd24-backend/profile/owner-view')
+            .pipe(
+                map((dto: UserDTO) => new User(dto)),
+                tap(this.setLoggedUser.bind(this)),
+            )
+            .subscribe(cb);
+    }
+
     public logout(): void {
         localStorage.removeItem('authorizationToken');
         this._isLogged = false;

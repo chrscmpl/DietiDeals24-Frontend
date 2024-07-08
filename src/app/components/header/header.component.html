@@ -33,7 +33,9 @@
                     Register
                 </p-button>
             } @else {
-                <span>logged</span>
+                <span>
+                    Hello {{ authenticationService.loggedUser?.username }}</span
+                >
             }
         </section>
         <section class="navbar-search-section">

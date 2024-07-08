@@ -14,6 +14,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directive';
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
     selector: 'dd24-root',
@@ -36,18 +37,22 @@ import { SmartStickyDirective } from './directives/smart-sticky.directive';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    public isLoadingRouteIndicator = new LoadingIndicator(100);
+    public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
 
     constructor(
-        public windowService: WindowService,
-        private primengConfig: PrimeNGConfig,
-        private themeService: ThemeService,
+        public readonly windowService: WindowService,
+        private readonly primengConfig: PrimeNGConfig,
+        private readonly themeService: ThemeService,
+        private readonly authentication: AuthenticationService,
     ) {}
 
     ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
         this.configurePrimeNG();
         this.themeService.initTheme();
+        if (localStorage.getItem('authorizationToken')) {
+            this.authentication.getUserData();
+        }
     }
 
     public onMainRouterOutletActivate(): void {
