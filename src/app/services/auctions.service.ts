@@ -7,12 +7,16 @@ import {
 } from '../helpers/paginatedRequest';
 import { auctionBuilder } from '../helpers/auctionBuilder';
 import { AuctionSearchParameters } from '../typeUtils/auction.utils';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuctionsService {
-    constructor(private http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly env: EnvironmentService,
+    ) {}
 
     public getAuctionsRequest(
         params: Omit<
@@ -25,7 +29,7 @@ export class AuctionsService {
         return new PaginatedRequest<AuctionSummary>(
             Object.assign(params, {
                 http: this.http,
-                url: 'dd24-backend/auctions',
+                url: `${this.env.server}/auctions/search`,
                 factory: auctionBuilder.buildArray,
             }),
         );

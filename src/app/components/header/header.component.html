@@ -33,9 +33,10 @@
                     Register
                 </p-button>
             } @else {
-                <span>
-                    Hello {{ authenticationService.loggedUser?.username }}</span
-                >
+                <dd24-user-menu class="user-menu"></dd24-user-menu>
+                <dd24-notifications-menu
+                    class="notifications-menu"
+                ></dd24-notifications-menu>
             }
         </section>
         <section class="navbar-search-section">
@@ -50,15 +51,7 @@
                 }
             </section>
             <section class="navbar-path">
-                <p-breadcrumb
-                    class="max-w-full"
-                    [model]="(routes$ | async) ?? []"
-                    [home]="{
-                        icon: 'pi pi-home',
-                        label: 'DietiDeals24',
-                        routerLink: '/'
-                    }"
-                />
+                <dd24-breadcrumb></dd24-breadcrumb>
             </section>
         </section>
     </nav>

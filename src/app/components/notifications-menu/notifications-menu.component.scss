@@ -1,0 +1,25 @@
+@use "layouts";
+
+.notifications-menu-wrapper {
+    @include layouts.flex(column, center, center);
+}
+
+.pi {
+    font-size: calc(var(--font-size-large) * 1.2);
+    color: var(--outline-color);
+}
+
+.notification-list {
+    @include layouts.flex(column, start, stretch);
+
+    max-height: 20rem;
+    overflow-y: auto;
+
+    &:not(.empty) {
+        padding-right: 1ch;
+    }
+}
+
+.notification-empty-message {
+    color: var(--text-color-3);
+}

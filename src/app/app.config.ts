@@ -1,10 +1,10 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withDebugTracing } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -28,6 +28,7 @@ export const appConfig: ApplicationConfig = {
         LocalDatePipe,
         OneCharUpperPipe,
         DatePipe,
+        TitleCasePipe,
         IntervalPipe,
         CurrencyPipe,
         MaskedEmailPipe,

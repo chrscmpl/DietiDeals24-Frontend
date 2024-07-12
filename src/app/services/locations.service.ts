@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, of, tap } from 'rxjs';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LocationsService {
-    constructor(private http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly env: EnvironmentService,
+    ) {}
 
     private countriesSubject = new ReplaySubject<void>(1);
     private _countries: string[] | null = null;
@@ -21,7 +25,7 @@ export class LocationsService {
 
     public refreshCountries(cb?: Partial<Observer<string[]>>): void {
         // this.http
-        //     .get<string[]>('dd24-backend/info/countries')
+        //     .get<string[]>(`${this.env.server}/info/countries`)
         of(['IT', 'FR', 'UK'])
             .pipe(
                 tap((value) => {
@@ -34,7 +38,7 @@ export class LocationsService {
 
     public getCities(country: string): Observable<string[]> {
         // return this.http.get<string[]>(
-        //     `dd24-backend/info/countries/${country}/cities`,
+        //     `${this.env.server}/info/countries/${country}/cities`,
         // );
         return of(['Rome', 'Milan', 'Naples', 'Turin', 'Palermo']);
     }

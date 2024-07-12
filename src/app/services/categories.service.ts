@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
+import { EnvironmentService } from './environment.service';
 
 interface Categories {
     [key: string]: string[];
@@ -10,7 +11,10 @@ interface Categories {
     providedIn: 'root',
 })
 export class CategoriesService {
-    constructor(private http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly env: EnvironmentService,
+    ) {}
 
     private _trendingCategories: string[] | null = null;
     private _categories: Categories | null = null;
@@ -46,7 +50,7 @@ export class CategoriesService {
 
     public refreshTrendingCategories(cb?: Partial<Observer<string[]>>): void {
         this.http
-            .get<string[]>('dd24-backend/info/trending-categories')
+            .get<string[]>(`${this.env.server}/info/trending-categories`)
             .pipe(
                 tap((value) => {
                     this._trendingCategories = value;
@@ -58,7 +62,7 @@ export class CategoriesService {
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
-            .get<Categories>('dd24-backend/categories')
+            .get<Categories>(`${this.env.server}/categories`)
             .pipe(
                 map((categories) => {
                     const sorted: Categories = {};

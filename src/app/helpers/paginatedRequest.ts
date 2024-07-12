@@ -108,4 +108,8 @@ export class PaginatedRequest<Entity> {
         this.currentPage = this.pageNumber;
         this.refresh();
     }
+
+    public complete(): void {
+        this.dataSubject.complete();
+    }
 }

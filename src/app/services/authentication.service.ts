@@ -16,6 +16,7 @@ import {
     UserRegistrationDTO,
     emailVerificationDTO,
 } from '../DTOs/user.dto';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
     providedIn: 'root',
@@ -34,18 +35,21 @@ export class AuthenticationService {
         return this._loggedUser;
     }
 
-    private loggedUserSubject = new ReplaySubject<void>(1);
-    private isLoggedSubject = new ReplaySubject<void>(1);
+    private readonly loggedUserSubject = new ReplaySubject<void>(1);
+    private readonly isLoggedSubject = new ReplaySubject<void>(1);
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private readonly http: HttpClient,
+        private readonly env: EnvironmentService,
+    ) {
         this.isLoggedSubject.next();
     }
 
-    public isLogged$: Observable<boolean> = this.isLoggedSubject
+    public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
         .asObservable()
         .pipe(map(() => this.isLogged));
 
-    public loggedUser$: Observable<User> = this.loggedUserSubject
+    public readonly loggedUser$: Observable<User> = this.loggedUserSubject
         .asObservable()
         .pipe(
             withLatestFrom(this.isLogged$),
@@ -58,7 +62,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<User>>,
     ): void {
         this.http
-            .post<UserDTO>('dd24-backend/login', credentials)
+            .post<UserDTO>(`${this.env.server}/login`, credentials)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),
@@ -71,7 +75,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<void>>,
     ): void {
         this.http
-            .post<void>('dd24-backend/register/init', newUser)
+            .post<void>(`${this.env.server}/register/init`, newUser)
             .subscribe(cb);
     }
 
@@ -80,7 +84,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<User>>,
     ): void {
         this.http
-            .post<UserDTO>('dd24-backend/register/confirm', data)
+            .post<UserDTO>(`${this.env.server}/register/confirm`, data)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),
@@ -97,7 +101,7 @@ export class AuthenticationService {
         };
 
         this.http
-            .get<UserDTO>('dd24-backend/profile/owner-view')
+            .get<UserDTO>(`${this.env.server}/profile/owner-view`)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),

@@ -1,0 +1,11 @@
+<div class="notification-wrapper">
+    <h6 class="notification-header" [routerLink]="notification.link">
+        {{ notification.heading }}
+    </h6>
+    <p class="notification-message" [routerLink]="notification.link">
+        {{ notification.message }}
+    </p>
+    <button class="notification-delete-btn" (click)="onDelete()">
+        <i class="pi pi-times"></i>
+    </button>
+</div>

@@ -9,7 +9,7 @@ import {
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { Observable, ReplaySubject } from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 import { ButtonModule } from 'primeng/button';
 
@@ -33,7 +33,6 @@ interface group {
         ReactiveFormsModule,
         TabMenuModule,
         AsyncPipe,
-        JsonPipe,
         ButtonModule,
     ],
     templateUrl: './category-selection.component.html',

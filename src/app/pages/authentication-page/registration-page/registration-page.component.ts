@@ -26,7 +26,7 @@ import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ConstantsService } from '../../../services/constants.service';
+import { EnvironmentService } from '../../../services/environment.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserRegistrationDTO } from '../../../DTOs/user.dto';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -125,7 +125,7 @@ export class RegistrationPageComponent implements OnInit {
     constructor(
         private readonly formBuilder: FormBuilder,
         public readonly locationsService: LocationsService,
-        public readonly constants: ConstantsService,
+        public readonly env: EnvironmentService,
         private readonly router: Router,
         private readonly authentication: AuthenticationService,
     ) {}
@@ -163,7 +163,7 @@ export class RegistrationPageComponent implements OnInit {
                 password: new FormControl(null, [
                     Validators.required,
                     Validators.minLength(8),
-                    Validators.pattern(this.constants.passwordPattern),
+                    Validators.pattern(this.env.passwordPattern),
                 ]),
                 confirmPassword: new FormControl(null, {
                     validators: [

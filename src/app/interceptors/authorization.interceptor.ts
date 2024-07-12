@@ -3,14 +3,15 @@ import {
     HttpInterceptorFn,
     HttpResponse,
 } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { tap } from 'rxjs';
-
-const BACKEND_HOSTNAME: string = 'dd24-backend';
+import { EnvironmentService } from '../services/environment.service';
 
 export const authorizationInterceptor: HttpInterceptorFn = (request, next) => {
-    if (!request.url.startsWith(BACKEND_HOSTNAME)) {
+    if (!request.url.startsWith(inject(EnvironmentService).server)) {
         return next(request);
     }
+
     const authorizationToken = localStorage.getItem('authorizationToken');
     if (authorizationToken) {
         request = request.clone({
@@ -19,10 +20,11 @@ export const authorizationInterceptor: HttpInterceptorFn = (request, next) => {
             },
         });
     }
+
     return next(request).pipe(
         tap((event: HttpEvent<unknown>) => {
             if (event instanceof HttpResponse) {
-                const newToken = event.headers.get('x-auth-token');
+                const newToken = event.headers.get('X-Auth-Token');
                 if (newToken) {
                     localStorage.setItem('authorizationToken', newToken);
                 }

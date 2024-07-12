@@ -1,0 +1,47 @@
+<div class="notifications-menu-wrapper">
+    <i
+        class="pi pi-inbox"
+        pBadge
+        [value]="
+            (authentication.loggedUser$ | async)?.unreadNotificationsCounter ??
+            0
+        "
+        (click)="toggle($event)"
+        (keypress)="onKeyPress($event)"
+        tabindex="0"
+    ></i>
+    <p-overlayPanel
+        #panel
+        class="notification-panel"
+        [style]="{ color: 'var(--text-color-1)' }"
+    >
+        <div
+            class="notification-list"
+            [class.empty]="!notificationsService.notifications.length"
+        >
+            @for (
+                notification of notificationsService.notifications;
+                track notification.id
+            ) {
+                <dd24-notification
+                    [notification]="notification"
+                ></dd24-notification>
+                @if (
+                    notification.id !==
+                    notificationsService.notifications[
+                        notificationsService.notifications.length - 1
+                    ].id
+                ) {
+                    <p-divider
+                        [style]="{
+                            'margin-top': '0.4rem',
+                            'margin-bottom': '0.4rem'
+                        }"
+                    ></p-divider>
+                }
+            } @empty {
+                <p class="notification-empty-message">No notifications</p>
+            }
+        </div>
+    </p-overlayPanel>
+</div>

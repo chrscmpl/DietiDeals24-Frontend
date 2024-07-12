@@ -1,0 +1,41 @@
+@use "layouts";
+
+.notification-wrapper {
+    @include layouts.grid(
+        "header delete" auto " message delete" 1fr / 1fr auto,
+        $justify-content: center,
+        $justify-items: start,
+        $align-items: center,
+        $align-content: center,
+        $gap: 0
+    );
+    column-gap: 1ch;
+    max-width: 20rem;
+    cursor: pointer;
+}
+
+.notification-header,
+.notification-message {
+    font-size: var(--font-size-medium);
+    color: var(--text-color-1);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    line-height: normal;
+}
+
+.notification-header {
+    font-weight: var(--font-weight-bold);
+    grid-area: header;
+}
+
+.notification-message {
+    grid-area: message;
+}
+
+.notification-delete-btn {
+    grid-area: delete;
+    color: var(--basic-affordances-color);
+    cursor: pointer;
+}
