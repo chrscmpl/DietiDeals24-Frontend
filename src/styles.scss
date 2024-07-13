@@ -180,3 +180,17 @@ i {
     justify-content: center;
     align-content: center;
 }
+
+.p-overlaypanel-no-padding .p-overlaypanel-content {
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.p-overlaypanel-no-padding::before,
+.p-overlaypanel-no-padding::after {
+    content: none;
+}
+
+.p-overlaypanel-no-padding {
+}

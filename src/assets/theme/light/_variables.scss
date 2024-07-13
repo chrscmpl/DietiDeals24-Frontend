@@ -902,7 +902,7 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --text-color-tertiary: #{$shade500};
     --text-color-suggestion: #{$inputPlaceholderTextColor};
     --primary-color: #{$primaryColor};
-    --primary-color-transparent: #{rgba($primaryColor, 0.2)};
+    --primary-color-transparent: #{rgba($primaryColor, 0.3)};
     --primary-color-text: #{$primaryTextColor};
     --secondary-color: #{$secondaryColor};
     --secondary-color-text: #{$secondaryTextColor};

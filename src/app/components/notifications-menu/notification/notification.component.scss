@@ -9,9 +9,14 @@
         $align-content: center,
         $gap: 0
     );
+    padding: 0.4rem 0.4rem;
     column-gap: 1ch;
     max-width: 20rem;
     cursor: pointer;
+
+    &.unread {
+        background-color: var(--accent-color-1-transparent);
+    }
 }
 
 .notification-header,
@@ -38,4 +43,8 @@
     grid-area: delete;
     color: var(--basic-affordances-color);
     cursor: pointer;
+
+    .unread & {
+        color: var(--accent-color-1);
+    }
 }

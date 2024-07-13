@@ -9,6 +9,7 @@ export interface DisplayableNotification {
     readonly heading: string;
     readonly message: string;
     readonly link: routerLinkType;
+    readonly read: boolean;
 }
 
 export enum NotificationType {

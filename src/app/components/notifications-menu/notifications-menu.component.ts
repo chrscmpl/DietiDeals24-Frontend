@@ -31,7 +31,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     ) {}
 
     public ngAfterViewInit(): void {
-        this.subscriptions.push(this.panel.onShow.subscribe(() => {}));
+        this.subscriptions.push(this.panel.onShow.subscribe(() => {})); // ??
     }
 
     public ngOnDestroy(): void {

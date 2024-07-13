@@ -14,7 +14,11 @@
         #panel
         class="notification-panel"
         [style]="{ color: 'var(--text-color-1)' }"
+        styleClass="p-overlaypanel-no-padding"
     >
+        <div class="notifications-header-wrapper">
+            <h3 class="notifications-header">Notifications</h3>
+        </div>
         <div
             class="notification-list"
             [class.empty]="!notificationsService.notifications.length"
@@ -24,21 +28,9 @@
                 track notification.id
             ) {
                 <dd24-notification
+                    class="notification-list-entry"
                     [notification]="notification"
                 ></dd24-notification>
-                @if (
-                    notification.id !==
-                    notificationsService.notifications[
-                        notificationsService.notifications.length - 1
-                    ].id
-                ) {
-                    <p-divider
-                        [style]="{
-                            'margin-top': '0.4rem',
-                            'margin-bottom': '0.4rem'
-                        }"
-                    ></p-divider>
-                }
             } @empty {
                 <p class="notification-empty-message">No notifications</p>
             }

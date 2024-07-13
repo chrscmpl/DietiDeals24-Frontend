@@ -32,9 +32,11 @@ export class NotificationsService {
         this.authentication.isLogged$.subscribe((logged) => {
             if (logged) {
                 this.request = this.getDisplayableNotificationsRequest({
-                    pageSize: 10,
+                    pageSize: 3,
                     pageNumber: 1,
+                    eager: false,
                 });
+                this.more();
             } else {
                 this.notifications.splice(0, this.notifications.length);
                 this.request?.complete();
@@ -54,10 +56,22 @@ export class NotificationsService {
         this.more();
     }
 
+    private TEMP_ID = 1; // remove
+
     public more(): void {
         if (this.request === null) return;
 
-        this.request.more();
+        // this.request.more();
+        console.log('more');
+        for (let i = 0; i < 3; i++) {
+            this.notifications.push({
+                id: `${this.TEMP_ID++}`,
+                heading: 'Test header!!!',
+                message: 'Test message!!!',
+                link: '',
+                read: this.TEMP_ID !== 2,
+            });
+        }
     }
 
     private getDisplayableNotificationsRequest(

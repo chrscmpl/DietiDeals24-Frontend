@@ -1,4 +1,4 @@
-<div class="notification-wrapper">
+<div class="notification-wrapper" [class.unread]="!notification.read">
     <h6 class="notification-header" [routerLink]="notification.link">
         {{ notification.heading }}
     </h6>

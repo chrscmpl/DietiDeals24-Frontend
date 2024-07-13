@@ -9,17 +9,36 @@
     color: var(--outline-color);
 }
 
+.notifications-header {
+    font-size: var(--font-size-medium);
+}
+
+.notifications-header-wrapper {
+    background-color: var(--accent-color-2);
+    color: var(--text-accent-color-2);
+    padding: 0 0.4rem;
+}
+
 .notification-list {
     @include layouts.flex(column, start, stretch);
 
+    min-width: 15rem;
     max-height: 20rem;
     overflow-y: auto;
-
-    &:not(.empty) {
-        padding-right: 1ch;
-    }
 }
 
 .notification-empty-message {
     color: var(--text-color-3);
+}
+
+.notification-list-entry:not(:last-child) {
+    ::ng-deep {
+        .notification-wrapper {
+            border-bottom: var(--border);
+
+            &.unread {
+                border-color: var(--accent-color-1);
+            }
+        }
+    }
 }

@@ -43,6 +43,15 @@ export class AuthenticationService {
         private readonly env: EnvironmentService,
     ) {
         this.isLoggedSubject.next();
+
+        this.setLoggedUser(
+            new User({
+                unreadNotificationsCounter: 10,
+                email: 'test@test.test',
+                profilePictureUrl: '',
+                username: 'test',
+            }),
+        );
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
