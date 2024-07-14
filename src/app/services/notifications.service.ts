@@ -27,7 +27,8 @@ export class NotificationsService {
     private _unreadNotificationsCount = 0;
     public readonly notifications: DisplayableNotification[] = [];
     private moreLoadedSubject: Subject<void> = new Subject<void>();
-    public moreLoaded$: Observable<void> = new Observable<void>();
+    public moreLoaded$: Observable<void> =
+        this.moreLoadedSubject.asObservable();
 
     constructor(
         private readonly http: HttpClient,
@@ -41,13 +42,21 @@ export class NotificationsService {
                     pageNumber: 1,
                     eager: false,
                 });
+
                 this._unreadNotificationsCount =
                     this.authentication.loggedUser
                         ?.unreadNotificationsCounter ?? 0;
-                this.request.data$.subscribe((notifications) => {
-                    this.notifications.push(...notifications);
-                    this.moreLoadedSubject.next();
+
+                this.request.data$.subscribe({
+                    next: (notifications) => {
+                        this.notifications.push(...notifications);
+                        this.moreLoadedSubject.next();
+                    },
+                    error: () => {
+                        this.moreLoadedSubject.next();
+                    },
                 });
+
                 this.more();
             } else {
                 this.notifications.splice(0, this.notifications.length);
