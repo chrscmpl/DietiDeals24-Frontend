@@ -11,6 +11,7 @@ import { NotificationDTO } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { AuthenticationService } from './authentication.service';
+import { Observable, Subject } from 'rxjs';
 
 type NotificationsPaginationParams = Omit<
     PaginatedRequestParams<DisplayableNotification>,
@@ -21,8 +22,12 @@ type NotificationsPaginationParams = Omit<
     providedIn: 'root',
 })
 export class NotificationsService {
+    private static readonly PAGE_SIZE = 9;
     private request: PaginatedRequest<DisplayableNotification> | null = null;
+    private _unreadNotificationsCount = 0;
     public readonly notifications: DisplayableNotification[] = [];
+    private moreLoadedSubject: Subject<void> = new Subject<void>();
+    public moreLoaded$: Observable<void> = new Observable<void>();
 
     constructor(
         private readonly http: HttpClient,
@@ -32,9 +37,16 @@ export class NotificationsService {
         this.authentication.isLogged$.subscribe((logged) => {
             if (logged) {
                 this.request = this.getDisplayableNotificationsRequest({
-                    pageSize: 3,
+                    pageSize: NotificationsService.PAGE_SIZE,
                     pageNumber: 1,
                     eager: false,
+                });
+                this._unreadNotificationsCount =
+                    this.authentication.loggedUser
+                        ?.unreadNotificationsCounter ?? 0;
+                this.request.data$.subscribe((notifications) => {
+                    this.notifications.push(...notifications);
+                    this.moreLoadedSubject.next();
                 });
                 this.more();
             } else {
@@ -56,22 +68,48 @@ export class NotificationsService {
         this.more();
     }
 
-    private TEMP_ID = 1; // remove
-
     public more(): void {
-        if (this.request === null) return;
+        if (this.request === null || this.request.isComplete) return;
 
-        // this.request.more();
-        console.log('more');
-        for (let i = 0; i < 3; i++) {
-            this.notifications.push({
-                id: `${this.TEMP_ID++}`,
-                heading: 'Test header!!!',
-                message: 'Test message!!!',
-                link: '',
-                read: this.TEMP_ID !== 2,
-            });
-        }
+        this.request.more();
+    }
+
+    public markAsRead(notification: DisplayableNotification): void {
+        if (notification.read) return;
+        notification.read = true;
+        this._unreadNotificationsCount--;
+        this.http.post(
+            `${this.env.server}/notifications/${notification.id}/read`,
+            {},
+        );
+    }
+
+    public markAllAsRead(): void {
+        this.notifications.forEach(
+            (notification) => (notification.read = true),
+        );
+        this._unreadNotificationsCount = 0;
+        this.http.post(`${this.env.server}/notifications/read`, {});
+    }
+
+    public deleteOne(notification: DisplayableNotification): void {
+        const index = this.notifications.findIndex(
+            (n) => n.id === notification.id,
+        );
+        if (index === -1) return;
+        if (!notification.read) this._unreadNotificationsCount--;
+        this.notifications.splice(index, 1);
+        this.http.delete(`${this.env.server}/notifications/${notification.id}`);
+    }
+
+    public deleteAll(): void {
+        this.notifications.splice(0, this.notifications.length);
+        this._unreadNotificationsCount = 0;
+        this.http.delete(`${this.env.server}/notifications`);
+    }
+
+    public get unreadNotificationsCount(): number {
+        return this._unreadNotificationsCount;
     }
 
     private getDisplayableNotificationsRequest(

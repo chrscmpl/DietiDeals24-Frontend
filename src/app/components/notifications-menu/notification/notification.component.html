@@ -1,8 +1,18 @@
 <div class="notification-wrapper" [class.unread]="!notification.read">
-    <h6 class="notification-header" [routerLink]="notification.link">
+    <h6
+        class="notification-header"
+        (click)="onRead()"
+        (keypress)="onKeyPress($event)"
+        tabindex="0"
+    >
         {{ notification.heading }}
     </h6>
-    <p class="notification-message" [routerLink]="notification.link">
+    <p
+        class="notification-message"
+        (click)="onRead()"
+        (keypress)="onKeyPress($event)"
+        tabindex="0"
+    >
         {{ notification.message }}
     </p>
     <button class="notification-delete-btn" (click)="onDelete()">

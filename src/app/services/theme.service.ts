@@ -108,7 +108,6 @@ export class ThemeService {
         this.preferredColorScheme = prefersDark.matches ? 'dark' : 'light';
 
         prefersDark.addEventListener('change', (mediaQueryListEvent) => {
-            console.log('change');
             const newTheme = mediaQueryListEvent.matches ? 'dark' : 'light';
             if (
                 this.preferredColorScheme !== newTheme &&

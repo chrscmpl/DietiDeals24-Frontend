@@ -2,10 +2,7 @@
     <i
         class="pi pi-inbox"
         pBadge
-        [value]="
-            (authentication.loggedUser$ | async)?.unreadNotificationsCounter ??
-            0
-        "
+        [value]="notificationsService.unreadNotificationsCount"
         (click)="toggle($event)"
         (keypress)="onKeyPress($event)"
         tabindex="0"
@@ -21,7 +18,10 @@
         </div>
         <div
             class="notification-list"
+            #notificationList
             [class.empty]="!notificationsService.notifications.length"
+            dd24ScrolledToBottomListener
+            (scrolledToBottom)="more()"
         >
             @for (
                 notification of notificationsService.notifications;
@@ -29,10 +29,20 @@
             ) {
                 <dd24-notification
                     class="notification-list-entry"
+                    [class.unread]="!notification.read"
                     [notification]="notification"
+                    (deleted)="deleteNotification(notification)"
+                    (read)="onRead(notification)"
                 ></dd24-notification>
             } @empty {
                 <p class="notification-empty-message">No notifications</p>
+            }
+            @if (loadingIndicator.isLoading$ | async) {
+                <p-progressSpinner
+                    class="loading-spinner"
+                    [style]="{ height: '2rem', width: '2rem' }"
+                    strokeWidth="4"
+                ></p-progressSpinner>
             }
         </div>
     </p-overlayPanel>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoriesService } from '../../services/categories.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -8,6 +8,7 @@ import { AuctionListComponent } from '../../components/auction-list/auction-list
 import { AuctionsService } from '../../services/auctions.service';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-home-page',
@@ -22,7 +23,7 @@ import { WindowService } from '../../services/window.service';
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.scss',
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(0);
     public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
@@ -35,6 +36,7 @@ export class HomePageComponent implements OnInit {
 
     public hideTrendingCategories: boolean = false;
     private static readonly hideTrendingCategoriesTimeout: number = 1000;
+    private readonly subscriptions: Subscription[] = [];
 
     constructor(
         public readonly categoriesService: CategoriesService,
@@ -44,10 +46,12 @@ export class HomePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.categoryButtonsLoadingIndicator.start();
-        this.categoriesService.trendingCategories$.subscribe(() => {
-            this.categoryButtonsLoadingIndicator.stop();
-            this.hideTrendingCategories = false;
-        });
+        this.subscriptions.push(
+            this.categoriesService.trendingCategories$.subscribe(() => {
+                this.categoryButtonsLoadingIndicator.stop();
+                this.hideTrendingCategories = false;
+            }),
+        );
         this.categoriesService.refreshTrendingCategories({
             error: (err) => {
                 console.error(err);
@@ -59,5 +63,9 @@ export class HomePageComponent implements OnInit {
                 this.hideTrendingCategories = true;
             }
         }, HomePageComponent.hideTrendingCategoriesTimeout);
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }

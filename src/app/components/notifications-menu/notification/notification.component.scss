@@ -23,9 +23,7 @@
 .notification-message {
     font-size: var(--font-size-medium);
     color: var(--text-color-1);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    word-break: break-word;
     max-width: 100%;
     line-height: normal;
 }

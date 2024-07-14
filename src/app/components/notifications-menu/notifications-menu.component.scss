@@ -29,16 +29,27 @@
 
 .notification-empty-message {
     color: var(--text-color-3);
+    padding: 0 0.4rem;
 }
 
-.notification-list-entry:not(:last-child) {
-    ::ng-deep {
-        .notification-wrapper {
-            border-bottom: var(--border);
-
-            &.unread {
-                border-color: var(--accent-color-1);
-            }
-        }
+.notification-list-entry + .notification-list-entry {
+    border-top: var(--border);
+    &.unread {
+        border-color: var(--accent-color-1);
     }
+}
+
+.notification-list-entry.unread + .notification-list-entry {
+    border-top: var(--border);
+    border-color: var(--accent-color-1);
+}
+
+.notifications-navigation {
+    @include layouts.flex(row, center, center);
+    padding: 0.2rem;
+    background-color: var(--accent-color-2);
+}
+
+.loading-spinner {
+    align-self: center;
 }

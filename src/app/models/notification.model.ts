@@ -9,7 +9,7 @@ export interface DisplayableNotification {
     readonly heading: string;
     readonly message: string;
     readonly link: routerLinkType;
-    readonly read: boolean;
+    read: boolean;
 }
 
 export enum NotificationType {
@@ -50,6 +50,10 @@ export class Notification implements DisplayableNotification {
 
     public get read(): boolean {
         return this._read;
+    }
+
+    public set read(value: boolean) {
+        this._read = value;
     }
 
     public get username(): string | null {

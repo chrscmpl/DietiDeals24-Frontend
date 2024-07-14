@@ -35,6 +35,7 @@ export class PaginatedRequest<Entity> {
         1,
     );
     private isEager: boolean = false;
+    private _isComplete: boolean = false;
 
     public data$: Observable<Entity[]>;
 
@@ -81,12 +82,16 @@ export class PaginatedRequest<Entity> {
     }
 
     public more(): void {
+        if (this.isComplete) return;
         if (this.isEager) {
             this.isEager = false;
             return;
         }
         this.newRequest()
             .pipe(
+                tap((res: Entity[]) => {
+                    if (!res.length) this.complete();
+                }),
                 catchError((err) => {
                     this.currentPage--;
                     this.dataSubject.error(err);
@@ -99,6 +104,7 @@ export class PaginatedRequest<Entity> {
     }
 
     public refresh(): void {
+        this._isComplete = false;
         this.dataSubject.complete();
         this.dataSubject = new ReplaySubject<Entity[]>(1);
         this.data$ = this.createDataObservable();
@@ -111,5 +117,10 @@ export class PaginatedRequest<Entity> {
 
     public complete(): void {
         this.dataSubject.complete();
+        this._isComplete = true;
+    }
+
+    public get isComplete(): boolean {
+        return this._isComplete;
     }
 }
