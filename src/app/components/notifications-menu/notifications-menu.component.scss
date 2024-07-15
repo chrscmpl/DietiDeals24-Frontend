@@ -19,12 +19,24 @@
     padding: 0 0.4rem;
 }
 
+.notifications-menu-nav {
+    @include layouts.flex(row, space-between, center);
+    flex-wrap: wrap;
+    padding: 0.4rem;
+}
+
 .notification-list {
     @include layouts.flex(column, start, stretch);
 
     min-width: 15rem;
+    min-height: 5rem;
     max-height: 20rem;
     overflow-y: auto;
+
+    &.empty {
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .notification-empty-message {

@@ -11,7 +11,7 @@ import { NotificationDTO } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { AuthenticationService } from './authentication.service';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, Observer, Subject } from 'rxjs';
 
 type NotificationsPaginationParams = Omit<
     PaginatedRequestParams<DisplayableNotification>,
@@ -24,11 +24,32 @@ type NotificationsPaginationParams = Omit<
 export class NotificationsService {
     private static readonly PAGE_SIZE = 9;
     private request: PaginatedRequest<DisplayableNotification> | null = null;
-    private _unreadNotificationsCount = 0;
+    private _unreadNotificationsCount: number = 0;
+
     public readonly notifications: DisplayableNotification[] = [];
+
+    private unreadNotificationsSubject: Subject<void> = new Subject<void>();
+    public unreadNotifications$: Observable<number> =
+        this.unreadNotificationsSubject
+            .asObservable()
+            .pipe(map(() => this._unreadNotificationsCount));
+
     private moreLoadedSubject: Subject<void> = new Subject<void>();
     public moreLoaded$: Observable<void> =
         this.moreLoadedSubject.asObservable();
+
+    private dataObserver: Observer<DisplayableNotification[]> = {
+        next: (notifications) => {
+            this.notifications.push(...notifications);
+            this.moreLoadedSubject.next();
+        },
+        error: () => {
+            this.moreLoadedSubject.next();
+        },
+        complete: () => {
+            this.moreLoadedSubject.next();
+        },
+    };
 
     constructor(
         private readonly http: HttpClient,
@@ -43,22 +64,11 @@ export class NotificationsService {
                     eager: false,
                 });
 
-                this._unreadNotificationsCount =
+                this.unreadNotificationsCount =
                     this.authentication.loggedUser
                         ?.unreadNotificationsCounter ?? 0;
 
-                this.request.data$.subscribe({
-                    next: (notifications) => {
-                        this.notifications.push(...notifications);
-                        this.moreLoadedSubject.next();
-                    },
-                    error: () => {
-                        this.moreLoadedSubject.next();
-                    },
-                    complete: () => {
-                        this.moreLoadedSubject.next();
-                    },
-                });
+                this.request.data$.subscribe(this.dataObserver);
 
                 this.more();
             } else {
@@ -74,9 +84,7 @@ export class NotificationsService {
         if (this.request === null) return;
 
         this.request?.reset();
-        this.request?.data$.subscribe((notifications) =>
-            this.notifications.push(...notifications),
-        );
+        this.request?.data$.subscribe(this.dataObserver);
         this.more();
     }
 
@@ -145,5 +153,10 @@ export class NotificationsService {
                 queryParameters: {},
             }),
         );
+    }
+
+    private set unreadNotificationsCount(value: number) {
+        this._unreadNotificationsCount = value;
+        this.unreadNotificationsSubject.next();
     }
 }

@@ -102,13 +102,6 @@ export class AuthenticationService {
     }
 
     public getUserData(cb?: Partial<Observer<User>>): void {
-        if (!cb) cb = {};
-        const error = cb.error ?? (() => {});
-        cb.error = (err) => {
-            error(err);
-            localStorage.removeItem('authorizationToken');
-        };
-
         this.http
             .get<UserDTO>(`${this.env.server}/profile/owner-view`)
             .pipe(

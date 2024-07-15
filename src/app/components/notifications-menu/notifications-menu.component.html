@@ -16,6 +16,26 @@
         <div class="notifications-header-wrapper">
             <h3 class="notifications-header">Notifications</h3>
         </div>
+        @if (notificationsService.notifications.length) {
+            <div class="notifications-menu-nav">
+                <p-button
+                    severity="secondary"
+                    class="notifications-menu-button"
+                    (click)="notificationsService.markAllAsRead()"
+                    [style]="{ padding: '0.2rem' }"
+                >
+                    Mark all as read
+                </p-button>
+                <p-button
+                    severity="secondary"
+                    class="notifications-menu-button"
+                    (click)="notificationsService.deleteAll()"
+                    [style]="{ padding: '0.2rem' }"
+                >
+                    Clear all
+                </p-button>
+            </div>
+        }
         <div
             class="notification-list"
             #notificationList
