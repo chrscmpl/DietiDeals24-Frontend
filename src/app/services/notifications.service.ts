@@ -55,6 +55,9 @@ export class NotificationsService {
                     error: () => {
                         this.moreLoadedSubject.next();
                     },
+                    complete: () => {
+                        this.moreLoadedSubject.next();
+                    },
                 });
 
                 this.more();
@@ -78,7 +81,10 @@ export class NotificationsService {
     }
 
     public more(): void {
-        if (this.request === null || this.request.isComplete) return;
+        if (this.request === null || this.request.isComplete) {
+            this.moreLoadedSubject.next();
+            return;
+        }
 
         this.request.more();
     }
@@ -119,6 +125,10 @@ export class NotificationsService {
 
     public get unreadNotificationsCount(): number {
         return this._unreadNotificationsCount;
+    }
+
+    public get isComplete(): boolean {
+        return this.request?.isComplete ?? true;
     }
 
     private getDisplayableNotificationsRequest(

@@ -67,6 +67,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     }
 
     public more(): void {
+        if (this.notificationsService.isComplete) return;
         this.loadingIndicator.start();
         this.notificationsService.more();
     }

@@ -4,7 +4,6 @@ import {
     Observable,
     ReplaySubject,
     catchError,
-    finalize,
     map,
     of,
     take,
@@ -57,8 +56,7 @@ export class PaginatedRequest<Entity> {
 
     private createDataObservable(): Observable<Entity[]> {
         return this.dataSubject
-            .asObservable()
-            .pipe(finalize(() => this.dataSubject.complete()));
+            .asObservable();
     }
 
     private wasMaximumResultsExceeded(): boolean {
@@ -95,6 +93,7 @@ export class PaginatedRequest<Entity> {
                 catchError((err) => {
                     this.currentPage--;
                     this.dataSubject.error(err);
+                    this._isComplete = true;
                     return of([]);
                 }),
                 take(1),
