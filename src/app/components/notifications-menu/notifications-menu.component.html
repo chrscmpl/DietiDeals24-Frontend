@@ -2,7 +2,7 @@
     <i
         class="pi pi-inbox"
         pBadge
-        [value]="notificationsService.unreadNotificationsCount"
+        [value]="(notificationsService.unreadNotificationsCount$ | async) ?? 0"
         (click)="toggle($event)"
         (keypress)="onKeyPress($event)"
         tabindex="0"
@@ -15,8 +15,16 @@
     >
         <div class="notifications-header-wrapper">
             <h3 class="notifications-header">Notifications</h3>
+            @if (notificationsService.notifications.length) {
+                <button
+                    (click)="toggleExtraButtons()"
+                    class="notifications-dots-btn"
+                >
+                    <i class="pi pi-ellipsis-v"></i>
+                </button>
+            }
         </div>
-        @if (notificationsService.notifications.length) {
+        @if (extraButtonsVisible) {
             <div class="notifications-menu-nav">
                 <p-button
                     severity="secondary"

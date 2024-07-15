@@ -43,6 +43,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(0);
     private minHeight =
         20 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    public extraButtonsVisible: boolean = false;
 
     public constructor(
         public readonly authentication: AuthenticationService,
@@ -94,6 +95,10 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         this.router.navigate([notification.link]);
         if (!notification.read)
             this.notificationsService.markAsRead(notification);
+    }
+
+    public toggleExtraButtons() {
+        this.extraButtonsVisible = !this.extraButtonsVisible;
     }
 
     private loadMoreIfTooShort(): void {

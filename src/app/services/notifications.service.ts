@@ -11,7 +11,7 @@ import { NotificationDTO } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { AuthenticationService } from './authentication.service';
-import { map, Observable, Observer, Subject } from 'rxjs';
+import { map, Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 
 type NotificationsPaginationParams = Omit<
     PaginatedRequestParams<DisplayableNotification>,
@@ -28,8 +28,9 @@ export class NotificationsService {
 
     public readonly notifications: DisplayableNotification[] = [];
 
-    private unreadNotificationsSubject: Subject<void> = new Subject<void>();
-    public unreadNotifications$: Observable<number> =
+    private unreadNotificationsSubject: ReplaySubject<void> =
+        new ReplaySubject<void>(1);
+    public unreadNotificationsCount$: Observable<number> =
         this.unreadNotificationsSubject
             .asObservable()
             .pipe(map(() => this._unreadNotificationsCount));

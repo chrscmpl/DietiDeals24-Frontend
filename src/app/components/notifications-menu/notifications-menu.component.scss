@@ -14,9 +14,19 @@
 }
 
 .notifications-header-wrapper {
+    @include layouts.flex(row, space-between, center);
     background-color: var(--accent-color-2);
     color: var(--text-accent-color-2);
-    padding: 0 0.4rem;
+    padding: 0.2rem 0.4rem;
+}
+
+.notifications-dots-btn {
+    cursor: pointer;
+
+    i {
+        color: var(--text-accent-color-2);
+        font-size: var(--font-size-small);
+    }
 }
 
 .notifications-menu-nav {
