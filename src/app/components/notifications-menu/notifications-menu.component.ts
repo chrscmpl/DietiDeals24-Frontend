@@ -13,7 +13,7 @@ import { DividerModule } from 'primeng/divider';
 import { NotificationsService } from '../../services/notifications.service';
 import { ButtonModule } from 'primeng/button';
 import { NotificationsListComponent } from './notifications-list/notifications-list.component';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -48,7 +48,6 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         public readonly authentication: AuthenticationService,
         public readonly notificationsService: NotificationsService,
         private readonly renderer: Renderer2,
-        private readonly router: Router,
     ) {}
 
     public ngAfterViewInit(): void {
@@ -95,9 +94,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     }
 
     private onHide() {
-        if (this.router.url !== '/notifications') {
-            this.notificationsService.lockRefresh(false);
-        }
+        this.notificationsService.lockRefresh(false);
         this.removeScrollListener();
     }
 

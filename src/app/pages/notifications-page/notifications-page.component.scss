@@ -9,8 +9,6 @@
         @include box.padding-horizontal(0);
     }
 
-    gap: 0;
-
     &.empty {
         justify-content: center;
         align-items: center;

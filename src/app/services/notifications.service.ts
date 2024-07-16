@@ -23,7 +23,7 @@ export class NotificationsService {
     private static readonly PAGE_SIZE = 9;
     private request: PaginatedRequest<DisplayableNotification> | null = null;
 
-    private _lockRefresh: boolean = false;
+    private _lockRefreshCounter: number = 0;
 
     private _notificationsCount: number = 0;
     private _unreadNotificationsCount: number = 0;
@@ -85,7 +85,7 @@ export class NotificationsService {
     }
 
     public refresh(): void {
-        if (this._lockRefresh) return;
+        if (this._lockRefreshCounter > 0) return;
         this.notifications.splice(0, this.notifications.length);
         if (this.request === null) return;
         this.request?.reset();
@@ -145,7 +145,8 @@ export class NotificationsService {
     }
 
     public lockRefresh(value: boolean): void {
-        this._lockRefresh = value;
+        if (value) this._lockRefreshCounter++;
+        else this._lockRefreshCounter--;
     }
 
     private getDisplayableNotificationsRequest(
