@@ -2,6 +2,7 @@
     class="notification-list"
     #notificationsList
     [class.empty]="!notificationsService.notifications.length"
+    [style]="listStyles"
 >
     @for (
         notification of notificationsService.notifications;

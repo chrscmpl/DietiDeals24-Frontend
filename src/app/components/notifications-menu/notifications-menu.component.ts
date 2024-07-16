@@ -86,12 +86,12 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         this.extraButtonsVisible = !this.extraButtonsVisible;
     }
 
-    private loadMoreIfTooShort(minHeight: number): void {
+    private loadMoreIfTooShort(): void {
         setTimeout(() => {
             const height =
                 this.notificationsListElement?.nativeElement.scrollHeight ??
                 Infinity;
-            if (height < minHeight) {
+            if (height < this.minHeight) {
                 this?.more();
             }
         }, 1000);

@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    Input,
     Output,
     ViewChild,
 } from '@angular/core';
@@ -26,6 +27,8 @@ export class NotificationsListComponent implements AfterViewInit {
     private subscriptions: Subscription[] = [];
 
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(0);
+
+    @Input() listStyles: { [key: string]: string } = {};
 
     @Output() public readonly read: EventEmitter<DisplayableNotification> =
         new EventEmitter<DisplayableNotification>();
