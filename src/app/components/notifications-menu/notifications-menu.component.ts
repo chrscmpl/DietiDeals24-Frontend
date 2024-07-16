@@ -60,7 +60,6 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
         this.removeScrollListener();
-        this.notificationsService.lockRefresh(false);
     }
 
     public toggle(event: Event): void {
