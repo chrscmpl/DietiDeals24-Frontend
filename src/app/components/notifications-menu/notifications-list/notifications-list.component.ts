@@ -71,4 +71,15 @@ export class NotificationsListComponent implements AfterViewInit {
         if (!notification.read)
             this.notificationsService.markAsRead(notification);
     }
+
+    public onNotificationLoaded(notification: DisplayableNotification) {
+        if (
+            notification ===
+            this.notificationsService.notifications[
+                this.notificationsService.notifications.length - 1
+            ]
+        ) {
+            this.more();
+        }
+    }
 }

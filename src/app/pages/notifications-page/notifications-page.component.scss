@@ -1,0 +1,14 @@
+@use "templates";
+@use "viewports";
+
+.notifications-page {
+    @include templates.main;
+    @include viewports.mobile {
+        padding: 0;
+    }
+
+    &.empty {
+        justify-content: center;
+        align-items: center;
+    }
+}

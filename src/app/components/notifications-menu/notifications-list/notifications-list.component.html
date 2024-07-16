@@ -8,13 +8,18 @@
         notification of notificationsService.notifications;
         track notification.id
     ) {
-        <dd24-notification
-            class="notification-list-entry"
-            [class.unread]="!notification.read"
-            [notification]="notification"
-            (deleted)="deleteNotification(notification)"
-            (read)="onRead(notification)"
-        ></dd24-notification>
+        @defer (on viewport) {
+            <dd24-notification
+                class="notification-list-entry"
+                [class.unread]="!notification.read"
+                [notification]="notification"
+                (deleted)="deleteNotification(notification)"
+                (read)="onRead(notification)"
+                (loaded)="onNotificationLoaded(notification)"
+            ></dd24-notification>
+        } @placeholder {
+            <div class="notification-placeholder"></div>
+        }
     } @empty {
         <p class="notification-empty-message">No notifications</p>
     }

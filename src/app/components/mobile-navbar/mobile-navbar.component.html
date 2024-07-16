@@ -8,8 +8,22 @@
         class="avatar"
         [icon]="(profilePicture$ | async) !== null ? '' : 'pi pi-user'"
         [shape]="(profilePicture$ | async) !== null ? 'circle' : 'square'"
-        [image]="(profilePicture$ | async) ?? ''"
+        [image]="(profilePicture$ | async) ?? undefined"
         routerLink="/your-page"
     />
-    <a><i class="nav-link pi pi-bell"></i></a>
+    @if (authenticationService.isLogged$ | async) {
+        <a
+            ><i
+                class="nav-link pi pi-inbox"
+                pBadge
+                [value]="
+                    (notificationsService.unreadNotificationsCount$ | async) ??
+                    0
+                "
+                routerLink="/notifications"
+            ></i
+        ></a>
+    } @else {
+        <a><i class="nav-link pi pi-inbox" routerLink="/notifications"></i></a>
+    }
 </nav>

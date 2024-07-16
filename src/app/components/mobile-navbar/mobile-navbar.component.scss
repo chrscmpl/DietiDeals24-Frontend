@@ -10,6 +10,7 @@
     .nav-link {
         font-size: 2rem;
         color: var(--basic-affordances-color);
+        cursor: pointer;
 
         &.create {
             color: var(--accent-color-1);

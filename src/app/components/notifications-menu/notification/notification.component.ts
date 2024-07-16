@@ -15,13 +15,18 @@ import { RouterLink } from '@angular/router';
     templateUrl: './notification.component.html',
     styleUrl: './notification.component.scss',
 })
-export class NotificationComponent {
+export class NotificationComponent implements AfterViewInit {
     @Input({ required: true })
     public notification!: DisplayableNotification;
     @Output() public readonly deleted = new EventEmitter<void>();
     @Output() public readonly read = new EventEmitter<void>();
+    @Output() public readonly loaded = new EventEmitter<void>();
 
     public constructor() {}
+
+    public ngAfterViewInit(): void {
+        this.loaded.emit();
+    }
 
     public onDelete(): void {
         this.deleted.emit();
