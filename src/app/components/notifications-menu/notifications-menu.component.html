@@ -9,7 +9,7 @@
     ></i>
     <p-overlayPanel
         #panel
-        class="notification-panel"
+        class="notifications-panel"
         [style]="{ color: 'var(--text-color-1)' }"
         styleClass="p-overlaypanel-no-padding"
     >
@@ -31,7 +31,7 @@
                     severity="secondary"
                     class="notifications-menu-button"
                     (onClick)="notificationsService.markAllAsRead()"
-                    [style]="{ padding: '0.2rem' }"
+                    [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
                 >
                 </p-button>
                 <p-button
@@ -39,7 +39,7 @@
                     severity="secondary"
                     class="notifications-menu-button"
                     (onClick)="notificationsService.deleteAll()"
-                    [style]="{ padding: '0.2rem' }"
+                    [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
                 >
                 </p-button>
             </div>
@@ -54,14 +54,15 @@
         @if (notificationsService.notifications.length) {
             <div class="notifications-menu-bottom">
                 <p-button
-                    label="View all"
+                    label="Open the notifications page"
                     severity="secondary"
                     class="notifications-menu-button"
                     [style]="{
                         padding: '0.2rem',
                         border: 'none',
                         'border-top': 'var(--border)',
-                        'border-radius': 0
+                        'border-radius': 0,
+                        'max-width': '20rem'
                     }"
                     (onClick)="hide()"
                     routerLink="/notifications"

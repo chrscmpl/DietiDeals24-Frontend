@@ -4,10 +4,13 @@
     @include layouts.flex(column, center, center);
 }
 
-.notifications-list {
-    display: block;
+.notifications-panel > * {
     min-width: 15rem;
     max-width: 20rem;
+}
+
+.notifications-list {
+    display: block;
     min-height: 5rem;
     max-height: 20rem;
     overflow-y: auto;
@@ -48,8 +51,4 @@
     @include layouts.flex(row, center, center);
     padding: 0.2rem;
     background-color: var(--accent-color-2);
-}
-
-.notifications-menu-bottom {
-    // @include layouts.center;
 }
