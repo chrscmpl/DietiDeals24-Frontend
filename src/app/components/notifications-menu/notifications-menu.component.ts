@@ -36,6 +36,10 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
+    private static readonly SCROLL_THRESHOLD: number = 100;
+
+    private windowScrollTopWhenShown: number = 0;
+
     private removeScrollListener: () => void = () => {};
 
     public extraButtonsVisible: boolean = false;
@@ -77,15 +81,31 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     }
 
     private onShow() {
+        this.windowScrollTopWhenShown = this.getWindowScrollTop();
+
         this.removeScrollListener();
         this.removeScrollListener = this.renderer.listen(
             'window',
             'scroll',
-            this.hide.bind(this),
+            this.onWindowScroll.bind(this),
         );
     }
 
     private onHide() {
         this.removeScrollListener();
+    }
+
+    private onWindowScroll() {
+        if (
+            Math.abs(
+                this.getWindowScrollTop() - this.windowScrollTopWhenShown,
+            ) > NotificationsMenuComponent.SCROLL_THRESHOLD
+        ) {
+            this.hide();
+        }
+    }
+
+    private getWindowScrollTop(): number {
+        return this.renderer.selectRootElement('html', true).scrollTop;
     }
 }
