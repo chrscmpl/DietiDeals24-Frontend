@@ -10,7 +10,7 @@ export class FindCurrencyPipe implements PipeTransform {
 
     transform(value: string): string {
         return value.replace(
-            /CURRENCY{([^}-]+)-([^}]+)}/g,
+            /CURRENCY{([^}|]+)\|([^}]+)}/g,
             (_, amount, currency) =>
                 this.currencyPipe.transform(amount, currency) ??
                 `${amount}${currency}`,

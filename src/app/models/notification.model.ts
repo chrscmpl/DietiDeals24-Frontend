@@ -109,7 +109,7 @@ class NewBidNotification extends Notification {
     }
 
     public override get message(): string {
-        return `${this.username} has placed a CURRENCY{${this.bid?.amount}-${this.bid?.currency}} bid on your auction`;
+        return `${this.username} has placed a CURRENCY{${this.bid?.amount}|${this.bid?.currency}} bid on your auction`;
     }
 
     public override get link(): routerLinkType {
@@ -127,7 +127,7 @@ class OutBidNotification extends Notification {
     }
 
     public override get message(): string {
-        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} has been outbid`;
+        return `Your bid of CURRENCY{${this.bid?.amount}|${this.bid?.currency}} has been outbid`;
     }
 
     public override get link(): routerLinkType {
@@ -145,7 +145,7 @@ class WinningBidNotification extends Notification {
     }
 
     public override get message(): string {
-        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} won`;
+        return `Your bid of CURRENCY{${this.bid?.amount}|${this.bid?.currency}} won`;
     }
 
     public override get link(): routerLinkType {
@@ -163,7 +163,7 @@ class BidRejectedNotification extends Notification {
     }
 
     public override get message(): string {
-        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} has been rejected`;
+        return `Your bid of CURRENCY{${this.bid?.amount}|${this.bid?.currency}} has been rejected`;
     }
 
     public override get link(): routerLinkType {
