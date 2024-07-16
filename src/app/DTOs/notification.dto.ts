@@ -2,6 +2,12 @@ import { NotificationType } from '../models/notification.model';
 import { AuctionSummaryDTO } from './auction.dto';
 import { BidDTO } from './bid.dto';
 
+export interface NotificationResponse {
+    notifications: NotificationDTO[];
+    notificationsCount: number;
+    unreadNotificationsCount: number;
+}
+
 export interface NotificationDTO {
     id: string;
     notificationType: NotificationType;

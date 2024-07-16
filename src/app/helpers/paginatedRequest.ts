@@ -13,7 +13,7 @@ import {
 export interface PaginatedRequestParams<Entity> {
     http: HttpClient;
     url: string;
-    factory: (input: any[]) => Entity[];
+    factory: (input: any) => Entity[];
     queryParameters: any;
     pageNumber: number;
     pageSize: number;
@@ -29,7 +29,7 @@ export class PaginatedRequest<Entity> {
     private queryParameters: any;
     private http: HttpClient;
     private url: string;
-    private factory: (input: any[]) => Entity[];
+    private factory: (input: any) => Entity[];
     private dataSubject: ReplaySubject<Entity[]> = new ReplaySubject<Entity[]>(
         1,
     );
@@ -55,8 +55,7 @@ export class PaginatedRequest<Entity> {
     }
 
     private createDataObservable(): Observable<Entity[]> {
-        return this.dataSubject
-            .asObservable();
+        return this.dataSubject.asObservable();
     }
 
     private wasMaximumResultsExceeded(): boolean {

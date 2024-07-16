@@ -13,7 +13,7 @@
         (keypress)="onKeyPress($event)"
         tabindex="0"
     >
-        {{ notification.message }}
+        {{ notification.message | findCurrency }}
     </p>
     <button class="notification-delete-btn" (click)="onDelete()">
         <i class="pi pi-times"></i>

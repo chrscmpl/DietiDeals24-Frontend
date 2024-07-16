@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-    DisplayableNotification,
-    Notification,
-} from '../models/notification.model';
+import { DisplayableNotification } from '../models/notification.model';
 import {
     PaginatedRequest,
     PaginatedRequestParams,
 } from '../helpers/paginatedRequest';
-import { NotificationDTO } from '../DTOs/notification.dto';
+import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { AuthenticationService } from './authentication.service';
 import { map, Observable, Observer, ReplaySubject, Subject } from 'rxjs';
+import { notificationsBuilder } from '../helpers/notificationBuilder';
 
 type NotificationsPaginationParams = Omit<
     PaginatedRequestParams<DisplayableNotification>,
@@ -24,6 +22,8 @@ type NotificationsPaginationParams = Omit<
 export class NotificationsService {
     private static readonly PAGE_SIZE = 9;
     private request: PaginatedRequest<DisplayableNotification> | null = null;
+
+    private _notificationsCount: number = 0;
     private _unreadNotificationsCount: number = 0;
 
     public readonly notifications: DisplayableNotification[] = [];
@@ -89,6 +89,8 @@ export class NotificationsService {
         this.more();
     }
 
+    private temp: number = 0; // REMOVE
+
     public more(): void {
         if (this.request === null || this.request.isComplete) {
             this.loadingEndedSubject.next();
@@ -147,13 +149,23 @@ export class NotificationsService {
             Object.assign(params, {
                 http: this.http,
                 url: `${this.env.server}/notifications`,
-                factory: (dtos: NotificationDTO[]) =>
-                    dtos.map(
-                        (n) => new Notification(n),
-                    ) as DisplayableNotification[],
+                factory: (res: NotificationResponse) => {
+                    this.notificationsCount = res.notificationsCount;
+                    this.unreadNotificationsCount =
+                        res.unreadNotificationsCount;
+                    return notificationsBuilder.buildArray(res.notifications);
+                },
                 queryParameters: {},
             }),
         );
+    }
+
+    private get notificationsCount(): number {
+        return this._notificationsCount;
+    }
+
+    private set notificationsCount(value: number) {
+        this._notificationsCount = value;
     }
 
     private set unreadNotificationsCount(value: number) {

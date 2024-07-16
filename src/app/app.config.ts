@@ -18,6 +18,7 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { provideServiceWorker } from '@angular/service-worker';
 import { EmailVerificationGuard } from './guards/email-not-verified.guard';
 import { MaskedEmailPipe } from './pipes/masked-email.pipe';
+import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
         IntervalPipe,
         CurrencyPipe,
         MaskedEmailPipe,
+        FindCurrencyPipe,
         AuctionsRequestGuard,
         HideUIGuard,
         ShowUIGuard,

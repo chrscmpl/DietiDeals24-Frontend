@@ -8,7 +8,7 @@ export interface DisplayableNotification {
     readonly id: string;
     readonly heading: string;
     readonly message: string;
-    readonly link: routerLinkType;
+    readonly link?: routerLinkType;
     read: boolean;
 }
 
@@ -81,7 +81,7 @@ export class Notification implements DisplayableNotification {
     }
 }
 
-export class AuctionOverNotification extends Notification {
+class AuctionOverNotification extends Notification {
     public constructor(dto: NotificationDTO) {
         super(dto);
     }
@@ -99,7 +99,7 @@ export class AuctionOverNotification extends Notification {
     }
 }
 
-export class NewBidNotification extends Notification {
+class NewBidNotification extends Notification {
     public constructor(dto: NotificationDTO) {
         super(dto);
     }
@@ -109,10 +109,73 @@ export class NewBidNotification extends Notification {
     }
 
     public override get message(): string {
-        return `${this.username} has placed a ${this.bid?.amount} ${this.bid?.currency} bid on your auction`;
+        return `${this.username} has placed a CURRENCY{${this.bid?.amount}-${this.bid?.currency}} bid on your auction`;
     }
 
     public override get link(): routerLinkType {
         return ['/auction', this.auction?.id];
     }
 }
+
+class OutBidNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'Outbid';
+    }
+
+    public override get message(): string {
+        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} has been outbid`;
+    }
+
+    public override get link(): routerLinkType {
+        return ['/auction', this.auction?.id];
+    }
+}
+
+class WinningBidNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'Winning bid';
+    }
+
+    public override get message(): string {
+        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} won`;
+    }
+
+    public override get link(): routerLinkType {
+        return ['/auction', this.auction?.id];
+    }
+}
+
+class BidRejectedNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'Bid rejected';
+    }
+
+    public override get message(): string {
+        return `Your bid of CURRENCY{${this.bid?.amount}-${this.bid?.currency}} has been rejected`;
+    }
+
+    public override get link(): routerLinkType {
+        return ['/auction', this.auction?.id];
+    }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const NotificationConstructors = new Map<NotificationType, any>([
+    [NotificationType.AUCTION_OVER, AuctionOverNotification],
+    [NotificationType.NEW_BID, NewBidNotification],
+    [NotificationType.OUT_BID, OutBidNotification],
+    [NotificationType.WINNING_BID, WinningBidNotification],
+    [NotificationType.BID_REJECTED, BidRejectedNotification],
+]);

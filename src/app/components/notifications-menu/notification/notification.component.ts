@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { DisplayableNotification } from '../../../models/notification.model';
 import { RouterLink } from '@angular/router';
+import { FindCurrencyPipe } from '../../../pipes/find-currency.pipe';
 
 @Component({
     selector: 'dd24-notification',
     standalone: true,
-    imports: [RouterLink],
+    imports: [RouterLink, FindCurrencyPipe],
     templateUrl: './notification.component.html',
     styleUrl: './notification.component.scss',
 })
