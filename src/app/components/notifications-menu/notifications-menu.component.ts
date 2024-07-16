@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     OnDestroy,
+    Renderer2,
     ViewChild,
 } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -10,15 +11,11 @@ import { AsyncPipe } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { Subscription } from 'rxjs';
-import { NotificationComponent } from './notification/notification.component';
 import { DividerModule } from 'primeng/divider';
 import { NotificationsService } from '../../services/notifications.service';
 import { ButtonModule } from 'primeng/button';
 import { ScrolledToBottomListenerDirective } from '../../directives/scrolled-to-bottom-listener.directive';
-import { DisplayableNotification } from '../../models/notification.model';
-import { Router } from '@angular/router';
-import { LoadingIndicator } from '../../helpers/loadingIndicator';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { NotificationsListComponent } from './notifications-list/notifications-list.component';
 
 @Component({
     selector: 'dd24-notifications-menu',
@@ -27,50 +24,44 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         BadgeModule,
         AsyncPipe,
         OverlayPanelModule,
-        NotificationComponent,
         DividerModule,
         ButtonModule,
         ScrolledToBottomListenerDirective,
-        ProgressSpinnerModule,
+        NotificationsListComponent,
     ],
     templateUrl: './notifications-menu.component.html',
     styleUrl: './notifications-menu.component.scss',
 })
 export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     private subscriptions: Subscription[] = [];
+
     @ViewChild('panel') private panel!: OverlayPanel;
-    @ViewChild('notificationList') private notificationsList!: ElementRef;
-    public loadingIndicator: LoadingIndicator = new LoadingIndicator(0);
-    private minHeight =
+
+    @ViewChild('notificationsList')
+    private notificationsList!: NotificationsListComponent;
+
+    @ViewChild('notificationsList', { read: ElementRef })
+    notificationsListElement!: ElementRef;
+
+    public minHeight =
         20 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
     public extraButtonsVisible: boolean = false;
 
     public constructor(
         public readonly authentication: AuthenticationService,
         public readonly notificationsService: NotificationsService,
-        private readonly router: Router,
+        public readonly renderer: Renderer2,
     ) {}
 
     public ngAfterViewInit(): void {
         this.subscriptions.push(
             this.panel.onShow.subscribe(this.loadMoreIfTooShort.bind(this)),
         );
-
-        this.subscriptions.push(
-            this.notificationsService.moreLoaded$.subscribe(() => {
-                this.loadingIndicator.stop();
-            }),
-        );
     }
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
-    }
-
-    public more(): void {
-        if (this.notificationsService.isComplete) return;
-        this.loadingIndicator.start();
-        this.notificationsService.more();
     }
 
     public toggle(event: Event): void {
@@ -83,29 +74,24 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    public deleteNotification(notification: DisplayableNotification): void {
-        this.notificationsService.deleteOne(notification);
-        if (!this.notificationsService.notifications.length) {
-            this.panel.hide();
-        }
+    public more() {
+        this.notificationsList.more();
     }
 
-    public onRead(notification: DisplayableNotification): void {
+    public hide(): void {
         this.panel.hide();
-        this.router.navigate([notification.link]);
-        if (!notification.read)
-            this.notificationsService.markAsRead(notification);
     }
 
     public toggleExtraButtons() {
         this.extraButtonsVisible = !this.extraButtonsVisible;
     }
 
-    private loadMoreIfTooShort(): void {
+    private loadMoreIfTooShort(minHeight: number): void {
         setTimeout(() => {
             const height =
-                this.notificationsList?.nativeElement.scrollHeight ?? Infinity;
-            if (height < this?.minHeight) {
+                this.notificationsListElement?.nativeElement.scrollHeight ??
+                Infinity;
+            if (height < minHeight) {
                 this?.more();
             }
         }, 1000);

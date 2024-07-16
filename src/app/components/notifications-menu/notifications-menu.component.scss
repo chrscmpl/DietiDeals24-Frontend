@@ -4,6 +4,14 @@
     @include layouts.flex(column, center, center);
 }
 
+.notifications-list {
+    display: block;
+    min-width: 15rem;
+    min-height: 5rem;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
 .pi {
     font-size: calc(var(--font-size-large) * 1.2);
     color: var(--outline-color);
@@ -35,43 +43,8 @@
     padding: 0.4rem;
 }
 
-.notification-list {
-    @include layouts.flex(column, start, stretch);
-
-    min-width: 15rem;
-    min-height: 5rem;
-    max-height: 20rem;
-    overflow-y: auto;
-
-    &.empty {
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.notification-empty-message {
-    color: var(--text-color-3);
-    padding: 0 0.4rem;
-}
-
-.notification-list-entry + .notification-list-entry {
-    border-top: var(--border);
-    &.unread {
-        border-color: var(--accent-color-1);
-    }
-}
-
-.notification-list-entry.unread + .notification-list-entry {
-    border-top: var(--border);
-    border-color: var(--accent-color-1);
-}
-
 .notifications-navigation {
     @include layouts.flex(row, center, center);
     padding: 0.2rem;
     background-color: var(--accent-color-2);
-}
-
-.loading-spinner {
-    align-self: center;
 }
