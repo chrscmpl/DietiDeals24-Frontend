@@ -23,6 +23,8 @@ export class NotificationsService {
     private static readonly PAGE_SIZE = 9;
     private request: PaginatedRequest<DisplayableNotification> | null = null;
 
+    private _lockRefresh: boolean = false;
+
     private _notificationsCount: number = 0;
     private _unreadNotificationsCount: number = 0;
 
@@ -83,15 +85,13 @@ export class NotificationsService {
     }
 
     public refresh(): void {
+        if (this._lockRefresh) return;
         this.notifications.splice(0, this.notifications.length);
         if (this.request === null) return;
-
         this.request?.reset();
         this.request?.data$.subscribe(this.dataObserver);
         this.more();
     }
-
-    private temp: number = 0; // REMOVE
 
     public more(): void {
         if (this.request === null || this.request.isComplete) {
@@ -99,20 +99,7 @@ export class NotificationsService {
             return;
         }
 
-        // this.request.more();
-        this.loadingEndedSubject.next();
-        console.log('more');
-        if (this.temp > 2) return;
-        this.temp++;
-        let id = 0;
-        for (let i = 0; i < 10; i++)
-            this.notifications.push({
-                heading: 'Heading',
-                message: 'Message',
-                read: id % 2 === 0,
-                id: `${id++}`,
-                link: '/',
-            });
+        this.request.more();
     }
 
     public markAsRead(notification: DisplayableNotification): void {
@@ -155,6 +142,10 @@ export class NotificationsService {
 
     public get isComplete(): boolean {
         return this.request?.isComplete ?? true;
+    }
+
+    public lockRefresh(value: boolean): void {
+        this._lockRefresh = value;
     }
 
     private getDisplayableNotificationsRequest(

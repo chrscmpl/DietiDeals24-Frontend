@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Observable, map, startWith, tap } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { NotificationsService } from '../../services/notifications.service';
@@ -24,6 +24,5 @@ export class MobileNavbarComponent {
         this.authenticationService.loggedUser$.pipe(
             startWith(null),
             map((user) => user?.profilePictureUrl ?? null),
-            tap((profilePictureUrl) => console.log(profilePictureUrl)),
         );
 }

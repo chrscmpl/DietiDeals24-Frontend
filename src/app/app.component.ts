@@ -15,6 +15,7 @@ import { LoadingPlaceholderComponent } from './components/loading-placeholder/lo
 import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directive';
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
+import { NotificationsService } from './services/notifications.service';
 
 @Component({
     selector: 'dd24-root',
@@ -37,6 +38,7 @@ import { AuthenticationService } from './services/authentication.service';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+    private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
 
     constructor(
@@ -44,6 +46,7 @@ export class AppComponent implements OnInit {
         private readonly primengConfig: PrimeNGConfig,
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
+        private readonly notificationsService: NotificationsService,
     ) {}
 
     ngOnInit(): void {
@@ -53,6 +56,9 @@ export class AppComponent implements OnInit {
         if (localStorage.getItem('authorizationToken')) {
             this.authentication.getUserData();
         }
+        setInterval(() => {
+            this.notificationsService.refresh();
+        }, AppComponent.NOTIFICATION_REFRESH_INTERVAL);
     }
 
     public onMainRouterOutletActivate(): void {
