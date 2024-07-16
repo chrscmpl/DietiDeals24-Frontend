@@ -43,6 +43,8 @@ export class NotificationsService {
         next: (notifications) => {
             this.notifications.push(...notifications);
             this.loadingEndedSubject.next();
+            if (this.notifications.length >= this.notificationsCount)
+                this.request?.complete();
         },
         error: () => {
             this.loadingEndedSubject.next();
@@ -97,7 +99,20 @@ export class NotificationsService {
             return;
         }
 
-        this.request.more();
+        // this.request.more();
+        this.loadingEndedSubject.next();
+        console.log('more');
+        if (this.temp > 2) return;
+        this.temp++;
+        let id = 0;
+        for (let i = 0; i < 10; i++)
+            this.notifications.push({
+                heading: 'Heading',
+                message: 'Message',
+                read: id % 2 === 0,
+                id: `${id++}`,
+                link: '/',
+            });
     }
 
     public markAsRead(notification: DisplayableNotification): void {
