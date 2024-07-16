@@ -21,7 +21,7 @@
             <div class="notification-placeholder"></div>
         }
     } @empty {
-        <p class="notification-empty-message">No notifications</p>
+        <p class="notification-empty-message">No new notifications</p>
     }
     @if (loadingIndicator.isLoading$ | async) {
         <p-progressSpinner

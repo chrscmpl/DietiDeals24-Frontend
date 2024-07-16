@@ -80,3 +80,39 @@ export class Notification implements DisplayableNotification {
         return null;
     }
 }
+
+export class AuctionOverNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'An auction ended';
+    }
+
+    public override get message(): string {
+        return 'Your auction awaits a conclusion';
+    }
+
+    public override get link(): routerLinkType {
+        return ['/auction/conclusion', this.auction?.id];
+    }
+}
+
+export class NewBidNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'A new bid';
+    }
+
+    public override get message(): string {
+        return `${this.username} has placed a ${this.bid?.amount} ${this.bid?.currency} bid on your auction`;
+    }
+
+    public override get link(): routerLinkType {
+        return ['/auction', this.auction?.id];
+    }
+}

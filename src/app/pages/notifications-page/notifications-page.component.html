@@ -2,5 +2,26 @@
     class="notifications-page"
     [class.empty]="!notificationsService.notifications.length"
 >
+    <div class="notifications-page-top">
+        <h1 class="notifications-page-header">Notifications</h1>
+        @if (notificationsService.notifications.length) {
+            <div class="notifications-page-buttons">
+                <p-button
+                    label="Mark all as read"
+                    severity="secondary"
+                    class="notifications-menu-button"
+                    (click)="notificationsService.markAllAsRead()"
+                >
+                </p-button>
+                <p-button
+                    label="Clear all"
+                    severity="secondary"
+                    class="notifications-menu-button"
+                    (click)="notificationsService.deleteAll()"
+                >
+                </p-button>
+            </div>
+        }
+    </div>
     <dd24-notifications-list></dd24-notifications-list>
 </main>

@@ -27,20 +27,20 @@
         @if (extraButtonsVisible) {
             <div class="notifications-menu-nav">
                 <p-button
+                    label="Mark all as read"
                     severity="secondary"
                     class="notifications-menu-button"
-                    (click)="notificationsService.markAllAsRead()"
+                    (onClick)="notificationsService.markAllAsRead()"
                     [style]="{ padding: '0.2rem' }"
                 >
-                    Mark all as read
                 </p-button>
                 <p-button
+                    label="Clear all"
                     severity="secondary"
                     class="notifications-menu-button"
-                    (click)="notificationsService.deleteAll()"
+                    (onClick)="notificationsService.deleteAll()"
                     [style]="{ padding: '0.2rem' }"
                 >
-                    Clear all
                 </p-button>
             </div>
         }
@@ -51,5 +51,22 @@
             (empty)="hide()"
             [listStyles]="{ minHeight: '5rem' }"
         ></dd24-notifications-list>
+        @if (notificationsService.notifications.length) {
+            <div class="notifications-menu-bottom">
+                <p-button
+                    label="View all"
+                    severity="secondary"
+                    class="notifications-menu-button"
+                    [style]="{
+                        padding: '0.2rem',
+                        border: 'none',
+                        'border-top': 'var(--border)',
+                        'border-radius': 0
+                    }"
+                    (onClick)="hide()"
+                    routerLink="/notifications"
+                ></p-button>
+            </div>
+        }
     </p-overlayPanel>
 </div>
