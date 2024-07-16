@@ -4,7 +4,7 @@
     @include layouts.flex(column, center, center);
 }
 
-.notifications-panel > * {
+.panel-content {
     min-width: 15rem;
     max-width: 20rem;
 }
@@ -12,7 +12,7 @@
 .notifications-list {
     display: block;
     min-height: 5rem;
-    max-height: 20rem;
+    max-height: 21rem;
     overflow-y: auto;
 }
 

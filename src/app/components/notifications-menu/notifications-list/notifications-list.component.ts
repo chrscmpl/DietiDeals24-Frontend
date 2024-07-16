@@ -1,11 +1,9 @@
 import {
     AfterViewInit,
     Component,
-    ElementRef,
     EventEmitter,
     Input,
     Output,
-    ViewChild,
 } from '@angular/core';
 import { NotificationsService } from '../../../services/notifications.service';
 import { LoadingIndicator } from '../../../helpers/loadingIndicator';
@@ -36,9 +34,6 @@ export class NotificationsListComponent implements AfterViewInit {
     @Output() public readonly empty: EventEmitter<void> =
         new EventEmitter<void>();
 
-    @ViewChild('notificationsList')
-    private notificationsList!: ElementRef;
-
     constructor(
         public readonly notificationsService: NotificationsService,
         private readonly router: Router,
@@ -46,9 +41,9 @@ export class NotificationsListComponent implements AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.subscriptions.push(
-            this.notificationsService.moreLoaded$.subscribe(() => {
-                this.loadingIndicator.stop();
-            }),
+            this.notificationsService.loadingEnded$.subscribe(
+                this.loadingIndicator.stop.bind(this.loadingIndicator),
+            ),
         );
     }
 

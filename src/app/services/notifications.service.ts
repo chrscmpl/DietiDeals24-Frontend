@@ -35,20 +35,20 @@ export class NotificationsService {
             .asObservable()
             .pipe(map(() => this._unreadNotificationsCount));
 
-    private moreLoadedSubject: Subject<void> = new Subject<void>();
-    public moreLoaded$: Observable<void> =
-        this.moreLoadedSubject.asObservable();
+    private loadingEndedSubject: Subject<void> = new Subject<void>();
+    public loadingEnded$: Observable<void> =
+        this.loadingEndedSubject.asObservable();
 
     private dataObserver: Observer<DisplayableNotification[]> = {
         next: (notifications) => {
             this.notifications.push(...notifications);
-            this.moreLoadedSubject.next();
+            this.loadingEndedSubject.next();
         },
         error: () => {
-            this.moreLoadedSubject.next();
+            this.loadingEndedSubject.next();
         },
         complete: () => {
-            this.moreLoadedSubject.next();
+            this.loadingEndedSubject.next();
         },
     };
 
@@ -91,7 +91,7 @@ export class NotificationsService {
 
     public more(): void {
         if (this.request === null || this.request.isComplete) {
-            this.moreLoadedSubject.next();
+            this.loadingEndedSubject.next();
             return;
         }
 
@@ -101,7 +101,7 @@ export class NotificationsService {
     public markAsRead(notification: DisplayableNotification): void {
         if (notification.read) return;
         notification.read = true;
-        this._unreadNotificationsCount--;
+        this.unreadNotificationsCount--;
         this.http.post(
             `${this.env.server}/notifications/${notification.id}/read`,
             {},
@@ -112,7 +112,7 @@ export class NotificationsService {
         this.notifications.forEach(
             (notification) => (notification.read = true),
         );
-        this._unreadNotificationsCount = 0;
+        this.unreadNotificationsCount = 0;
         this.http.post(`${this.env.server}/notifications/read`, {});
     }
 
@@ -121,14 +121,14 @@ export class NotificationsService {
             (n) => n.id === notification.id,
         );
         if (index === -1) return;
-        if (!notification.read) this._unreadNotificationsCount--;
+        if (!notification.read) this.unreadNotificationsCount--;
         this.notifications.splice(index, 1);
         this.http.delete(`${this.env.server}/notifications/${notification.id}`);
     }
 
     public deleteAll(): void {
         this.notifications.splice(0, this.notifications.length);
-        this._unreadNotificationsCount = 0;
+        this.unreadNotificationsCount = 0;
         this.http.delete(`${this.env.server}/notifications`);
     }
 

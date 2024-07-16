@@ -1,7 +1,6 @@
 import {
     AfterViewInit,
     Component,
-    ElementRef,
     OnDestroy,
     Renderer2,
     ViewChild,
@@ -35,13 +34,8 @@ import { Subscription } from 'rxjs';
 export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     @ViewChild('panel') private panel!: OverlayPanel;
 
-    @ViewChild('notificationsList')
-    private notificationsList!: NotificationsListComponent;
-
-    @ViewChild('notificationsList', { read: ElementRef })
-    notificationsListElement!: ElementRef;
-
     private subscriptions: Subscription[] = [];
+
     private removeScrollListener: () => void = () => {};
 
     public extraButtonsVisible: boolean = false;
@@ -72,10 +66,6 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         if (event.key === 'Enter') {
             this.panel.toggle(event);
         }
-    }
-
-    public more() {
-        this.notificationsList.more();
     }
 
     public hide(): void {

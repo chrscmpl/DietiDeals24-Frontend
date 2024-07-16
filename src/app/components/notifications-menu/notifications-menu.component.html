@@ -13,61 +13,62 @@
         [style]="{ color: 'var(--text-color-1)' }"
         styleClass="p-overlaypanel-no-padding"
     >
-        <div class="notifications-header-wrapper">
-            <h3 class="notifications-header">Notifications</h3>
+        <div class="panel-content">
+            <div class="notifications-header-wrapper">
+                <h3 class="notifications-header">Notifications</h3>
+                @if (notificationsService.notifications.length) {
+                    <button
+                        (click)="toggleExtraButtons()"
+                        class="notifications-dots-btn"
+                    >
+                        <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                }
+            </div>
+            @if (extraButtonsVisible) {
+                <div class="notifications-menu-nav">
+                    <p-button
+                        label="Mark all as read"
+                        severity="secondary"
+                        class="notifications-menu-button"
+                        (onClick)="notificationsService.markAllAsRead()"
+                        [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
+                    >
+                    </p-button>
+                    <p-button
+                        label="Clear all"
+                        severity="secondary"
+                        class="notifications-menu-button"
+                        (onClick)="notificationsService.deleteAll()"
+                        [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
+                    >
+                    </p-button>
+                </div>
+            }
+            <dd24-notifications-list
+                class="notifications-list"
+                (read)="hide()"
+                (empty)="hide()"
+                [listStyles]="{ minHeight: '5rem' }"
+            ></dd24-notifications-list>
             @if (notificationsService.notifications.length) {
-                <button
-                    (click)="toggleExtraButtons()"
-                    class="notifications-dots-btn"
-                >
-                    <i class="pi pi-ellipsis-v"></i>
-                </button>
+                <div class="notifications-menu-bottom">
+                    <p-button
+                        label="View all"
+                        severity="secondary"
+                        class="notifications-menu-button"
+                        [style]="{
+                            padding: '0.2rem',
+                            border: 'none',
+                            'border-top': 'var(--border)',
+                            'border-radius': 0,
+                            'max-width': '20rem'
+                        }"
+                        (onClick)="hide()"
+                        routerLink="/notifications"
+                    ></p-button>
+                </div>
             }
         </div>
-        @if (extraButtonsVisible) {
-            <div class="notifications-menu-nav">
-                <p-button
-                    label="Mark all as read"
-                    severity="secondary"
-                    class="notifications-menu-button"
-                    (onClick)="notificationsService.markAllAsRead()"
-                    [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
-                >
-                </p-button>
-                <p-button
-                    label="Clear all"
-                    severity="secondary"
-                    class="notifications-menu-button"
-                    (onClick)="notificationsService.deleteAll()"
-                    [style]="{ padding: '0.2rem', 'max-width': '20rem' }"
-                >
-                </p-button>
-            </div>
-        }
-        <dd24-notifications-list
-            #notificationsList
-            class="notifications-list"
-            (read)="hide()"
-            (empty)="hide()"
-            [listStyles]="{ minHeight: '5rem' }"
-        ></dd24-notifications-list>
-        @if (notificationsService.notifications.length) {
-            <div class="notifications-menu-bottom">
-                <p-button
-                    label="Open the notifications page"
-                    severity="secondary"
-                    class="notifications-menu-button"
-                    [style]="{
-                        padding: '0.2rem',
-                        border: 'none',
-                        'border-top': 'var(--border)',
-                        'border-radius': 0,
-                        'max-width': '20rem'
-                    }"
-                    (onClick)="hide()"
-                    routerLink="/notifications"
-                ></p-button>
-            </div>
-        }
     </p-overlayPanel>
 </div>
