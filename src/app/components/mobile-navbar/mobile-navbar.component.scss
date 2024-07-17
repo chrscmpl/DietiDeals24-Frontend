@@ -7,13 +7,29 @@
     border-top: var(--border);
     background-color: var(--component-color);
 
-    .nav-link {
-        font-size: 2rem;
-        color: var(--basic-affordances-color);
-        cursor: pointer;
+    .nav-entry {
+        border-radius: 5000px;
+        aspect-ratio: 1/1;
+        @include layouts.center;
+        text-decoration: none;
+        padding: 0.4rem;
 
-        &.create {
-            color: var(--accent-color-1);
+        .nav-link-icon {
+            font-size: 2rem;
+            color: var(--basic-affordances-color);
+            cursor: pointer;
+
+            &.create {
+                color: var(--accent-color-1);
+            }
+        }
+
+        &.nav-entry-active {
+            background-color: var(--border-color-transparent);
+
+            .nav-link-icon:not(.create) {
+                color: var(--text-color-2);
+            }
         }
     }
 }
@@ -26,6 +42,12 @@
             font-size: 2rem;
             border-radius: 0;
             overflow: visible;
+        }
+    }
+    .nav-entry-active {
+        background-color: var(--border-color-transparent);
+        .p-avatar-icon {
+            color: var(--text-color-2);
         }
     }
 }

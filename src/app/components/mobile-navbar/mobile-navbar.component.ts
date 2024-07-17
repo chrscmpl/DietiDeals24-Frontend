@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Observable, map, startWith } from 'rxjs';
@@ -10,7 +10,13 @@ import { NotificationsService } from '../../services/notifications.service';
 @Component({
     selector: 'dd24-mobile-navbar',
     standalone: true,
-    imports: [AvatarModule, RouterLink, AsyncPipe, BadgeModule],
+    imports: [
+        AvatarModule,
+        RouterLink,
+        AsyncPipe,
+        BadgeModule,
+        RouterLinkActive,
+    ],
     templateUrl: './mobile-navbar.component.html',
     styleUrl: './mobile-navbar.component.scss',
 })

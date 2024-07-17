@@ -1,29 +1,47 @@
 <nav class="mobile-navbar">
-    <a routerLink="/home"><i class="nav-link pi pi-home"></i></a>
-    <a routerLink="/auctions"><i class="nav-link pi pi-search"></i></a>
-    <a routerLink="/create-auction"
-        ><i class="nav-link create pi pi-plus-circle"></i
+    <a class="nav-entry" routerLink="/home" routerLinkActive="nav-entry-active"
+        ><i class="nav-link-icon pi pi-home"></i
+    ></a>
+    <a
+        class="nav-entry"
+        routerLink="/auctions"
+        routerLinkActive="nav-entry-active"
+        ><i class="nav-link-icon pi pi-search"></i
+    ></a>
+    <a
+        class="nav-entry"
+        routerLink="/create-auction"
+        routerLinkActive="nav-entry-active"
+        ><i class="nav-link-icon create pi pi-plus-circle"></i
     ></a>
     <p-avatar
-        class="avatar"
+        class="avatar nav-entry"
         [icon]="(profilePicture$ | async) !== null ? '' : 'pi pi-user'"
         [shape]="(profilePicture$ | async) !== null ? 'circle' : 'square'"
         [image]="(profilePicture$ | async) ?? undefined"
         routerLink="/your-page"
+        routerLinkActive="nav-entry-active"
     />
     @if (authenticationService.isLogged$ | async) {
         <a
+            class="nav-entry"
+            routerLink="/notifications"
+            routerLinkActive="nav-entry-active"
             ><i
-                class="nav-link pi pi-inbox"
+                class="nav-link-icon pi pi-inbox"
                 pBadge
                 [value]="
                     (notificationsService.unreadNotificationsCount$ | async) ??
                     0
                 "
-                routerLink="/notifications"
             ></i
         ></a>
     } @else {
-        <a><i class="nav-link pi pi-inbox" routerLink="/notifications"></i></a>
+        <a
+            class="nav-entry"
+            routerLink="/notifications"
+            routerLinkActive="nav-entry-active"
+            ><i class="nav-link-icon pi pi-inbox"></i
+        ></a>
     }
 </nav>
