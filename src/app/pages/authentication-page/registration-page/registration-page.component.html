@@ -110,16 +110,7 @@
                 </div>
                 <div class="input">
                     <label for="country">Country</label>
-                    <dd24-input
-                        controlName="country"
-                        [errorMessages]="[
-                            {
-                                customValidation: 'noMatchingCountry',
-                                message:
-                                    'You must select a valid country or none at all'
-                            }
-                        ]"
-                    >
+                    <dd24-input controlName="country">
                         <p-autoComplete
                             class="p-fluid"
                             formControlName="country"
@@ -127,11 +118,15 @@
                             placeholder="The country you live in"
                             emptyMessage="No countries found"
                             [suggestions]="filteredCountries"
+                            optionLabel="name"
+                            optionValue="code"
+                            [forceSelection]="true"
+                            [minLength]="2"
                             (completeMethod)="completeCountries($event)"
-                            [virtualScroll]="true"
-                            [virtualScrollItemSize]="35"
                             inputId="country"
-                        ></p-autoComplete>
+                            (onBlur)="clearCity()"
+                        >
+                        </p-autoComplete>
                     </dd24-input>
                 </div>
                 <div class="input">
@@ -139,11 +134,6 @@
                     <dd24-input
                         controlName="city"
                         [errorMessages]="[
-                            {
-                                customValidation: 'noMatchingCity',
-                                message:
-                                    'You must select a valid city or none at all'
-                            },
                             {
                                 customValidation: 'noCountrySelected',
                                 message:
@@ -158,9 +148,8 @@
                             placeholder="The city you live in"
                             emptyMessage="No cities found"
                             [suggestions]="filteredCities"
+                            [forceSelection]="true"
                             (completeMethod)="completeCities($event)"
-                            [virtualScroll]="true"
-                            [virtualScrollItemSize]="35"
                             (onFocus)="getCities()"
                             inputId="city"
                         ></p-autoComplete>

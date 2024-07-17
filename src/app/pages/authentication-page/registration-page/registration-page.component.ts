@@ -30,6 +30,7 @@ import { EnvironmentService } from '../../../services/environment.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserRegistrationDTO } from '../../../DTOs/user.dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Country } from '../../../models/location.model';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -81,7 +82,7 @@ export class RegistrationPageComponent implements OnInit {
     public activeStep: number = 0;
     public error: string = '';
 
-    public filteredCountries: string[] = [];
+    public filteredCountries: Country[] = [];
 
     private cities: string[] = [];
     public filteredCities: string[] = [];
@@ -146,7 +147,6 @@ export class RegistrationPageComponent implements OnInit {
                     this.validateBirthday.bind(this),
                 ]),
                 country: new FormControl(null, {
-                    validators: this.validateCountry.bind(this),
                     updateOn: 'blur',
                 }),
                 city: new FormControl(null, {
@@ -207,9 +207,11 @@ export class RegistrationPageComponent implements OnInit {
         const newUser = {
             ...this.registrationForm.value.userData,
             ...this.registrationForm.value.credentials,
-        } as UserRegistrationDTO;
+        };
 
-        this.authentication.register(newUser, {
+        delete newUser.confirmPassword;
+
+        this.authentication.register(newUser as UserRegistrationDTO, {
             next: this.onRegisterSuccess.bind(this),
             error: this.onRegisterError.bind(this),
         });
@@ -262,13 +264,9 @@ export class RegistrationPageComponent implements OnInit {
     }
 
     public completeCountries(event: AutoCompleteCompleteEvent): void {
-        if (event.query.length < 2) {
-            if (this.filteredCountries.length > 2) this.filteredCountries = [];
-            return;
-        }
         this.filteredCountries =
             this.locationsService.countries?.filter((country) =>
-                country.toLowerCase().includes(event.query.toLowerCase()),
+                country.name.toLowerCase().includes(event.query.toLowerCase()),
             ) ?? [];
     }
 
@@ -282,6 +280,10 @@ export class RegistrationPageComponent implements OnInit {
         );
     }
 
+    public clearCity(): void {
+        this.registrationForm.get('userData')?.get('city')?.setValue(null);
+    }
+
     public setDialogVisibility(e: Event): void {
         if (
             e instanceof MouseEvent ||
@@ -290,35 +292,15 @@ export class RegistrationPageComponent implements OnInit {
             this.privacyPolicyDialogVisible = true;
     }
 
-    private validateCountry(
-        control: AbstractControl<string>,
-    ): ValidationErrors {
-        if (
-            !control.value ||
-            this.locationsService.countries?.includes(control.value)
-        ) {
-            return {};
-        }
-        return { noMatchingCountry: true };
-    }
-
     private validateCity(control: AbstractControl<string>): ValidationErrors {
         const countryControl = this.registrationForm
             ?.get('userData')
             ?.get('country');
-        if (!countryControl?.valid && control.value)
-            return { noCountrySelected: true };
-        if (countryControl?.valid && countryControl?.value) {
-            if (this.cities.includes(control.value)) {
-                return {};
-            }
-            return { noMatchingCity: true };
-        }
         if (!countryControl?.value) {
             if (!control.value) return {};
             return { noCountrySelected: true };
         }
-        return { noMatchingCity: true };
+        return {};
     }
 
     private validateBirthday(
