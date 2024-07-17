@@ -16,7 +16,6 @@ import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directi
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
-import { CategoriesService } from './services/categories.service';
 
 @Component({
     selector: 'dd24-root',
@@ -48,14 +47,18 @@ export class AppComponent implements OnInit {
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
         private readonly notificationsService: NotificationsService,
-        private readonly categoriesService: CategoriesService,
     ) {}
 
     ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
-        this.fetchInitializationData();
         this.configurePrimeNG();
         this.themeService.initTheme();
+        if (localStorage.getItem('authorizationToken')) {
+            this.authentication.getUserData();
+        }
+        setInterval(() => {
+            this.notificationsService.refresh();
+        }, AppComponent.NOTIFICATION_REFRESH_INTERVAL);
     }
 
     public onMainRouterOutletActivate(): void {
@@ -68,15 +71,5 @@ export class AppComponent implements OnInit {
 
     private configurePrimeNG(): void {
         this.primengConfig.ripple = true;
-    }
-
-    private fetchInitializationData(): void {
-        if (localStorage.getItem('authorizationToken')) {
-            this.authentication.getUserData();
-        }
-        this.categoriesService.refreshCategories();
-        setInterval(() => {
-            this.notificationsService.refresh();
-        }, AppComponent.NOTIFICATION_REFRESH_INTERVAL);
     }
 }

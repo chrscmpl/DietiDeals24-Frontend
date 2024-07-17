@@ -14,7 +14,9 @@ export class CategoriesService {
     constructor(
         private readonly http: HttpClient,
         private readonly env: EnvironmentService,
-    ) {}
+    ) {
+        this.refreshCategories();
+    }
 
     private _trendingCategories: string[] | null = null;
     private _categories: Categories | null = null;
