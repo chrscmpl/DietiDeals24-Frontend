@@ -1,7 +1,7 @@
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { RoutingUtilsService } from '../../services/routing-utils.service';
+import { NavigationService } from '../../services/navigation.service';
 import { MenuItem } from 'primeng/api';
 import { catchError, map, Observable, of } from 'rxjs';
 
@@ -17,7 +17,7 @@ const HIDDEN_QUERY_PARAMS = ['keywords'];
 export class BreadcrumbComponent {
     constructor(
         public readonly titleCasePipe: TitleCasePipe,
-        public readonly routingUtils: RoutingUtilsService,
+        public readonly routingUtils: NavigationService,
     ) {}
 
     public routes$: Observable<MenuItem[]> =

@@ -17,7 +17,7 @@ interface query {
 @Injectable({
     providedIn: 'root',
 })
-export class RoutingUtilsService {
+export class NavigationService {
     public currentLocation$: Observable<{
         path: string[];
         query: query;
@@ -26,6 +26,10 @@ export class RoutingUtilsService {
     public currentPath$: Observable<string[]>;
 
     public currentQuery$: Observable<query>;
+
+    public navigationEnd$ = this.router.events.pipe(
+        filter((event) => event instanceof NavigationEnd),
+    );
 
     constructor(
         private router: Router,

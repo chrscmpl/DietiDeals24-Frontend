@@ -7,7 +7,12 @@
         <button (click)="windowService.isSidebarVisible = true">
             <i class="pi pi-bars"></i>
         </button>
-        <div class="spacer"></div>
+        @if ((title$ | async) !== "Home") {
+            <h1 class="title" [class.long]="longTitle">{{ title$ | async }}</h1>
+        } @else {
+            <dd24-logo class="logo"></dd24-logo>
+            <div class="spacer"></div>
+        }
         <button routerLink="/help">
             <i class="pi pi-question-circle"></i>
         </button>

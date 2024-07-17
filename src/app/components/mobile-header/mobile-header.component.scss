@@ -6,14 +6,26 @@
     background-color: var(--component-color);
     border-bottom: var(--border);
     width: 100%;
+    max-width: 100%;
 
     i {
         font-size: 2rem;
         color: var(--basic-affordances-color);
     }
 
+    .title {
+        font-size: var(--font-size-large);
+        flex: 1;
+
+        &.long {
+            font-size: var(--font-size-medium);
+        }
+    }
+
     .logo {
-        height: 2.5rem;
+        height: 2rem;
+        width: fit-content;
+        display: block;
     }
 
     .spacer {
