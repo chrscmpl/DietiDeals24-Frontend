@@ -1,9 +1,0 @@
-{
-    "/dd24-backend": {
-        "target": "http://localhost:8080",
-        "secure": false,
-        "pathRewrite": {
-            "^/dd24-backend": ""
-        }
-    }
-}

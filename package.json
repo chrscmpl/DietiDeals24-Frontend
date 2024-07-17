@@ -3,14 +3,14 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve --host 0.0.0.0 --proxy-config src/proxy.conf.json",
+        "start": "ng serve --host 0.0.0.0",
         "build": "ng build --optimization --stats-json",
         "preview": "serve -s dist/dieti-deals24-frontend/browser",
         "preview-ssl": "serve -s dist/dieti-deals24-frontend/browser -l 443 --ssl-cert server.cert --ssl-key server.key",
         "stats": "webpack-bundle-analyzer dist/dieti-deals24-frontend/stats.json",
         "zip": "zip -r dietideals24.zip dist/dieti-deals-24-frontend",
-        "watch-broadcast": "ng serve --watch --configuration development --host 0.0.0.0 --proxy-config src/proxy.conf.json",
-        "watch": "ng serve --watch --configuration development --proxy-config src/proxy.conf.json",
+        "watch-broadcast": "ng serve --watch --configuration development --host 0.0.0.0",
+        "watch": "ng serve --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint"
     },
