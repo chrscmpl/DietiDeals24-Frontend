@@ -72,10 +72,12 @@ export class AuthenticationService {
 
     public register(
         newUser: UserRegistrationDTO,
-        cb?: Partial<Observer<void>>,
+        cb?: Partial<Observer<string>>,
     ): void {
         this.http
-            .post<void>(`${this.env.server}/register/init`, newUser)
+            .post(`${this.env.server}/register/init`, newUser, {
+                responseType: 'text',
+            })
             .subscribe(cb);
     }
 
