@@ -70,11 +70,6 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.categoriesService.refreshCategories({
-            error: (err) => {
-                console.error(err);
-            },
-        });
         this.categoriesService.categories$.subscribe((categories) => {
             let macroCategoryIndex = 1;
             const tabs: MenuItem[] = [];
