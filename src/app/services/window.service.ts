@@ -4,7 +4,6 @@ import {
     distinctUntilChanged,
     fromEvent,
     map,
-    sampleTime,
     shareReplay,
     startWith,
 } from 'rxjs';
@@ -28,7 +27,6 @@ export class WindowService {
     }
 
     public isMobile$ = fromEvent(window, 'resize', { passive: true }).pipe(
-        sampleTime(100),
         startWith(this.getIsMobile()),
         map(() => this.getIsMobile()),
         distinctUntilChanged(),
