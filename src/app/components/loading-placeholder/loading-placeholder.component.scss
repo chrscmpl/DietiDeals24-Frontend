@@ -2,7 +2,6 @@
 
 .loading-placeholder {
     width: 100%;
-    padding: 1rem 15%;
     @include layouts.flex(column, center, stretch, 2rem);
     .spinner {
         align-self: center;
