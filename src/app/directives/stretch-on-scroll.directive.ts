@@ -5,7 +5,7 @@ import {
     OnInit,
     Renderer2,
 } from '@angular/core';
-import { fromEvent, Observable, sampleTime, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subscription, throttleTime } from 'rxjs';
 
 @Directive({
     selector: '[dd24StretchOnScroll]',
@@ -23,7 +23,7 @@ export class StretchOnScrollDirective implements OnInit, OnDestroy {
         this.element.nativeElement,
         'touchmove',
         { passive: true },
-    ).pipe(sampleTime(100));
+    ).pipe(throttleTime(100));
 
     private touchend$: Observable<TouchEvent> = fromEvent<TouchEvent>(
         this.element.nativeElement,

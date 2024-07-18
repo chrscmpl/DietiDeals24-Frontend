@@ -6,7 +6,7 @@ import {
     Input,
     OnDestroy,
 } from '@angular/core';
-import { fromEvent, Observable, sampleTime, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subscription, throttleTime } from 'rxjs';
 
 enum Directions {
     UP = 0,
@@ -33,7 +33,7 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
 
     private scroll$: Observable<Event> = fromEvent(window, 'scroll', {
         passive: true,
-    }).pipe(sampleTime(100));
+    }).pipe(throttleTime(100));
 
     private readonly subscriptions: Subscription[] = [];
 
