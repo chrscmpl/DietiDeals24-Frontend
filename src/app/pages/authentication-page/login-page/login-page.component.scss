@@ -1,11 +1,8 @@
 @use "layouts";
 @use "viewports";
 @use "box";
-@use "templates";
 
 .form-card {
-    @include templates.auth-form;
-
     .google-login {
         margin: 1rem 0;
         width: 100%;

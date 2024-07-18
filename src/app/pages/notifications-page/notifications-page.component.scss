@@ -1,10 +1,8 @@
-@use "templates";
 @use "viewports";
 @use "layouts";
 @use "box";
 
 .notifications-page {
-    @include templates.main;
     @include viewports.mobile {
         @include box.padding-horizontal(0);
     }

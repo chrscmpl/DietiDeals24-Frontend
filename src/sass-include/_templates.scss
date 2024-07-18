@@ -2,7 +2,7 @@
 @use "viewports";
 @use "box";
 
-@mixin main {
+.dd24-main-page {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
@@ -15,7 +15,7 @@
     }
 }
 
-@mixin auth-form {
+.dd24-auth-form {
     border: var(--border);
     border-radius: var(--border-radius-large);
     @include layouts.flex(column, flex-start, center, 0.2rem);

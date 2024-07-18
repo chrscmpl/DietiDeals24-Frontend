@@ -1,9 +1,7 @@
-@use "templates";
 @use "layouts";
 @use "box";
 
 .form-card {
-    @include templates.auth-form;
     color: var(--text-color-1);
 
     .verification-form {

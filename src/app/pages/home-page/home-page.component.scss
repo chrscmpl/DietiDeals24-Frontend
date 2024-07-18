@@ -1,10 +1,7 @@
 @use "layouts";
 @use "viewports";
-@use "templates";
 
 .home-page {
-    @include templates.main;
-
     .trending-categories {
         @include layouts.flex(column, start, stretch, 0.5em);
         > :first-child {

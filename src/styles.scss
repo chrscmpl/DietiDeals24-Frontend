@@ -1,5 +1,6 @@
 @use "viewports";
 @use "layouts";
+@use "box";
 
 @layer reset {
     @import "normalize-scss/sass/normalize";
@@ -68,6 +69,50 @@
         --font-size-medium: var(--mobile-font-size);
         --font-size-large: calc(1.6 * var(--mobile-font-size));
         --card-height: 10rem;
+    }
+}
+
+.dd24-main-page {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    min-height: 100%;
+    width: 100%;
+    padding: var(--page-items-gap) 15%;
+
+    @include viewports.mobile {
+        padding: 1em 2%;
+    }
+}
+
+.dd24-auth-form {
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    @include layouts.flex(column, flex-start, center, 0.2rem);
+    padding: 1.2rem 0;
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-regular);
+    width: 25ch;
+    background-color: var(--component-color);
+
+    @include viewports.mobile {
+        border: none;
+        border-radius: 0;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+    }
+
+    a {
+        font-size: var(--font-size-small);
+    }
+
+    > :not(.divider) {
+        @include box.padding-horizontal(2rem);
     }
 }
 

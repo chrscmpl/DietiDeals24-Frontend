@@ -1,10 +1,8 @@
-@use "templates";
 @use "layouts";
 @use "box";
 @use "viewports";
 
 .form-card {
-    @include templates.auth-form;
     color: var(--text-color-1);
 
     .google-registration {
