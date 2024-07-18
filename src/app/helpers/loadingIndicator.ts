@@ -2,17 +2,17 @@ import { BehaviorSubject, Observable, of, delay, switchMap } from 'rxjs';
 
 export class LoadingIndicator {
     private _isLoading$ = new BehaviorSubject<boolean>(false);
-    private _timeout: number;
+    private _startDelay: number;
 
     public isLoading$: Observable<boolean> = this._isLoading$.pipe(
         switchMap((loading) => {
-            if (loading) return of(true).pipe(delay(this._timeout));
+            if (loading) return of(true).pipe(delay(this._startDelay));
             return of(false);
         }),
     );
 
-    public constructor(timeout: number = 100) {
-        this._timeout = timeout;
+    public constructor(startDelay: number = 100) {
+        this._startDelay = startDelay;
     }
 
     public start() {
@@ -23,11 +23,11 @@ export class LoadingIndicator {
         this._isLoading$.next(false);
     }
 
-    public get timeout(): number {
-        return this._timeout;
+    public get startDelay(): number {
+        return this._startDelay;
     }
 
-    public set timeout(value: number) {
-        this._timeout = value;
+    public set startDelay(value: number) {
+        this._startDelay = value;
     }
 }

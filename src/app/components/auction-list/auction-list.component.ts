@@ -24,6 +24,10 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     @Input({ required: true })
     request!: PaginatedRequest<AuctionSummary> | null;
 
+    @Input() set loadingStartDelay(delay: number) {
+        this.loadingIndicator.startDelay = delay;
+    }
+
     private dataSubscription!: Subscription | null;
     public auctions: AuctionSummary[] = [];
     public error: boolean = false;
@@ -85,8 +89,8 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     private stopLoading(): void {
         this.loadingIndicator.stop();
         this.showEmpty = true;
-        if (this.loadingIndicator.timeout > 0) {
-            this.loadingIndicator.timeout = 0;
+        if (this.loadingIndicator.startDelay > 0) {
+            this.loadingIndicator.startDelay = 0;
         }
     }
 }

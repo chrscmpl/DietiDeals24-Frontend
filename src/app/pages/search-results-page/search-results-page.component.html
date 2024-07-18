@@ -1,3 +1,6 @@
 <main class="dd24-main-page">
-    <dd24-auction-list [request]="auctionsRequest$ | async"></dd24-auction-list>
+    <dd24-auction-list
+        [request]="auctionsRequest$ | async"
+        [loadingStartDelay]="100"
+    ></dd24-auction-list>
 </main>
