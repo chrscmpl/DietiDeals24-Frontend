@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
-import { EnvironmentService } from './environment.service';
+import { environment } from '../../environments/environment';
 
 interface Categories {
     [key: string]: string[];
@@ -11,10 +11,7 @@ interface Categories {
     providedIn: 'root',
 })
 export class CategoriesService {
-    constructor(
-        private readonly http: HttpClient,
-        private readonly env: EnvironmentService,
-    ) {
+    constructor(private readonly http: HttpClient) {
         this.refreshCategories();
     }
 
@@ -52,7 +49,9 @@ export class CategoriesService {
 
     public refreshTrendingCategories(cb?: Partial<Observer<string[]>>): void {
         this.http
-            .get<string[]>(`${this.env.server}/info/trending-categories`)
+            .get<string[]>(
+                `${environment.backendHost}/info/trending-categories`,
+            )
             .pipe(
                 tap((value) => {
                     this._trendingCategories = value;
@@ -64,7 +63,7 @@ export class CategoriesService {
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
-            .get<Categories>(`${this.env.server}/categories`)
+            .get<Categories>(`${environment.backendHost}/categories`)
             .pipe(
                 map((categories) => {
                     const sorted: Categories = {};

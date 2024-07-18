@@ -14,8 +14,8 @@ import { PasswordModule } from 'primeng/password';
 import { InputComponent } from '../../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
 import { RedirectionService } from '../../../services/redirection.service';
-import { EnvironmentService } from '../../../services/environment.service';
 import { UserCredentials } from '../../../DTOs/user.dto';
+import { environment } from '../../../../environments/environment';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -45,7 +45,6 @@ export class LoginPageComponent implements OnInit {
         private readonly authenticationService: AuthenticationService,
         private readonly redirect: RedirectionService,
         private readonly formBuilder: FormBuilder,
-        private readonly env: EnvironmentService,
     ) {}
 
     ngOnInit(): void {
@@ -57,7 +56,7 @@ export class LoginPageComponent implements OnInit {
             password: new FormControl(null, [
                 Validators.required,
                 Validators.minLength(8),
-                Validators.pattern(this.env.passwordPattern),
+                Validators.pattern(environment.passwordPattern),
             ]),
         });
     }

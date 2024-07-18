@@ -7,16 +7,13 @@ import {
 } from '../helpers/paginatedRequest';
 import { auctionBuilder } from '../helpers/auctionBuilder';
 import { AuctionSearchParameters } from '../typeUtils/auction.utils';
-import { EnvironmentService } from './environment.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuctionsService {
-    constructor(
-        private readonly http: HttpClient,
-        private readonly env: EnvironmentService,
-    ) {}
+    constructor(private readonly http: HttpClient) {}
 
     public getAuctionsRequest(
         params: Omit<
@@ -29,7 +26,7 @@ export class AuctionsService {
         return new PaginatedRequest<AuctionSummary>(
             Object.assign(params, {
                 http: this.http,
-                url: `${this.env.server}/auctions/search`,
+                url: `${environment.backendHost}/auctions/search`,
                 factory: auctionBuilder.buildArray,
             }),
         );

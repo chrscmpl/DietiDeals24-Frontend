@@ -26,11 +26,11 @@ import { LocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
-import { EnvironmentService } from '../../../services/environment.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserRegistrationDTO } from '../../../DTOs/user.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Country } from '../../../models/location.model';
+import { environment } from '../../../../environments/environment';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -93,6 +93,10 @@ export class RegistrationPageComponent implements OnInit {
 
     public privacyPolicyDialogVisible: boolean = false;
 
+    public get environment(): typeof environment {
+        return environment;
+    }
+
     private onNextuserData = (): boolean => {
         if (!this.registrationForm.get('userData')?.valid) {
             this.registrationForm.get('userData')?.markAllAsTouched();
@@ -126,7 +130,6 @@ export class RegistrationPageComponent implements OnInit {
     constructor(
         private readonly formBuilder: FormBuilder,
         public readonly locationsService: LocationsService,
-        public readonly env: EnvironmentService,
         private readonly router: Router,
         private readonly authentication: AuthenticationService,
     ) {}
@@ -163,7 +166,7 @@ export class RegistrationPageComponent implements OnInit {
                 password: new FormControl(null, [
                     Validators.required,
                     Validators.minLength(8),
-                    Validators.pattern(this.env.passwordPattern),
+                    Validators.pattern(environment.passwordPattern),
                 ]),
                 confirmPassword: new FormControl(null, {
                     validators: [

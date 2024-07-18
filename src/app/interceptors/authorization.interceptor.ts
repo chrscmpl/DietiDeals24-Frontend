@@ -3,12 +3,11 @@ import {
     HttpInterceptorFn,
     HttpResponse,
 } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { tap } from 'rxjs';
-import { EnvironmentService } from '../services/environment.service';
+import { environment } from '../../environments/environment';
 
 export const authorizationInterceptor: HttpInterceptorFn = (request, next) => {
-    if (!request.url.startsWith(inject(EnvironmentService).server)) {
+    if (!request.url.startsWith(environment.backendHost)) {
         return next(request);
     }
 

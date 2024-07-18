@@ -16,7 +16,7 @@ import {
     UserRegistrationDTO,
     emailVerificationDTO,
 } from '../DTOs/user.dto';
-import { EnvironmentService } from './environment.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -38,10 +38,7 @@ export class AuthenticationService {
     private readonly loggedUserSubject = new ReplaySubject<void>(1);
     private readonly isLoggedSubject = new ReplaySubject<void>(1);
 
-    constructor(
-        private readonly http: HttpClient,
-        private readonly env: EnvironmentService,
-    ) {
+    constructor(private readonly http: HttpClient) {
         this.isLoggedSubject.next();
     }
 
@@ -62,7 +59,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<User>>,
     ): void {
         this.http
-            .post<UserDTO>(`${this.env.server}/login`, credentials)
+            .post<UserDTO>(`${environment.backendHost}/login`, credentials)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),
@@ -75,7 +72,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<string>>,
     ): void {
         this.http
-            .post(`${this.env.server}/register/init`, newUser, {
+            .post(`${environment.backendHost}/register/init`, newUser, {
                 responseType: 'text',
             })
             .subscribe(cb);
@@ -86,7 +83,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<User>>,
     ): void {
         this.http
-            .post<UserDTO>(`${this.env.server}/register/confirm`, data)
+            .post<UserDTO>(`${environment.backendHost}/register/confirm`, data)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),
@@ -96,7 +93,7 @@ export class AuthenticationService {
 
     public getUserData(cb?: Partial<Observer<User>>): void {
         this.http
-            .get<UserDTO>(`${this.env.server}/profile/owner-view`)
+            .get<UserDTO>(`${environment.backendHost}/profile/owner-view`)
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),

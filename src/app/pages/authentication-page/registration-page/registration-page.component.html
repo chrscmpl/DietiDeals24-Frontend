@@ -238,8 +238,8 @@
                             [feedback]="true"
                             toggleMask="true"
                             placeholder="A strong password"
-                            [strongRegex]="env.passwordStrongPattern"
-                            [mediumRegex]="env.passwordMediumPattern"
+                            [strongRegex]="environment.passwordStrongPattern"
+                            [mediumRegex]="environment.passwordMediumPattern"
                             inputId="password"
                         />
                     </dd24-input>
@@ -287,7 +287,7 @@
                         <span>Privacy Policy</span>
                         <i class="pi pi-arrow-right"></i>
                     </div>
-                    <span>{{ env.privacyPolicy }}</span>
+                    <span>{{ environment.privacyPolicy }}</span>
                 </div>
                 <div class="privacy-policy-checkbox-container">
                     <p-checkbox
@@ -320,6 +320,6 @@
         [modal]="true"
         [(visible)]="privacyPolicyDialogVisible"
     >
-        <span>{{ env.privacyPolicy }}</span>
+        <span>{{ environment.privacyPolicy }}</span>
     </p-dialog>
 </div>

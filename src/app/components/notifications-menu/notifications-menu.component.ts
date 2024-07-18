@@ -36,7 +36,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
-    private static readonly SCROLL_THRESHOLD: number = 100;
+    private static readonly SCROLL_THRESHOLD: number = 30;
 
     private windowScrollTopWhenShown: number = 0;
 

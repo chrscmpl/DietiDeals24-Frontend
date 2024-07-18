@@ -6,10 +6,11 @@ import {
 } from '../helpers/paginatedRequest';
 import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
-import { EnvironmentService } from './environment.service';
+
 import { AuthenticationService } from './authentication.service';
 import { map, Observable, Observer, ReplaySubject, Subject } from 'rxjs';
 import { notificationsBuilder } from '../helpers/notificationBuilder';
+import { environment } from '../../environments/environment';
 
 type NotificationsPaginationParams = Omit<
     PaginatedRequestParams<DisplayableNotification>,
@@ -58,7 +59,7 @@ export class NotificationsService {
 
     constructor(
         private readonly http: HttpClient,
-        private readonly env: EnvironmentService,
+
         private readonly authentication: AuthenticationService,
     ) {
         this.authentication.isLogged$.subscribe((logged) => {
@@ -107,7 +108,7 @@ export class NotificationsService {
         notification.read = true;
         this.unreadNotificationsCount--;
         this.http.post(
-            `${this.env.server}/notifications/${notification.id}/read`,
+            `${environment.backendHost}/notifications/${notification.id}/read`,
             {},
         );
     }
@@ -117,7 +118,7 @@ export class NotificationsService {
             (notification) => (notification.read = true),
         );
         this.unreadNotificationsCount = 0;
-        this.http.post(`${this.env.server}/notifications/read`, {});
+        this.http.post(`${environment.backendHost}/notifications/read`, {});
     }
 
     public deleteOne(notification: DisplayableNotification): void {
@@ -127,13 +128,15 @@ export class NotificationsService {
         if (index === -1) return;
         if (!notification.read) this.unreadNotificationsCount--;
         this.notifications.splice(index, 1);
-        this.http.delete(`${this.env.server}/notifications/${notification.id}`);
+        this.http.delete(
+            `${environment.backendHost}/notifications/${notification.id}`,
+        );
     }
 
     public deleteAll(): void {
         this.notifications.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
-        this.http.delete(`${this.env.server}/notifications`);
+        this.http.delete(`${environment.backendHost}/notifications`);
     }
 
     public get unreadNotificationsCount(): number {
@@ -155,7 +158,7 @@ export class NotificationsService {
         return new PaginatedRequest<DisplayableNotification>(
             Object.assign(params, {
                 http: this.http,
-                url: `${this.env.server}/notifications`,
+                url: `${environment.backendHost}/notifications`,
                 factory: (res: NotificationResponse) => {
                     this.notificationsCount = res.notificationsCount;
                     this.unreadNotificationsCount =
