@@ -1,10 +1,17 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import {
+    Directive,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    Renderer2,
+} from '@angular/core';
+import { fromEvent, Observable, sampleTime, Subscription } from 'rxjs';
 
 @Directive({
     selector: '[dd24StretchOnScroll]',
     standalone: true,
 })
-export class StretchOnScrollDirective {
+export class StretchOnScrollDirective implements OnInit, OnDestroy {
     private offset: number = 0;
     private maxScale: number = 1.01;
     private startingScreenY: number | null = null;
@@ -12,12 +19,40 @@ export class StretchOnScrollDirective {
     private _scale: number = 1;
     private maxScaleReached: boolean = false;
 
+    private touchmove$: Observable<TouchEvent> = fromEvent<TouchEvent>(
+        this.element.nativeElement,
+        'touchmove',
+        { passive: true },
+    ).pipe(sampleTime(100));
+
+    private touchend$: Observable<TouchEvent> = fromEvent<TouchEvent>(
+        this.element.nativeElement,
+        'touchend',
+        { passive: true },
+    );
+
+    private readonly subscriptions: Subscription[] = [];
+
     constructor(
         private element: ElementRef,
         private renderer: Renderer2,
     ) {}
 
-    @HostListener('touchmove', ['$event'])
+    ngOnInit(): void {
+        this.subscriptions.push(
+            ...[
+                this.touchmove$.subscribe(this.onTouchMove.bind(this)),
+                this.touchend$.subscribe(this.onTouchEnd.bind(this)),
+            ],
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
+    }
+
     onTouchMove(event: TouchEvent): void {
         const scrolledToTop = this.isScrolledToTop();
         const scrolledToBottom = this.isScrolledToBottom();
@@ -59,7 +94,6 @@ export class StretchOnScrollDirective {
         }
     }
 
-    @HostListener('touchend')
     onTouchEnd(): void {
         this.renderer.setStyle(
             this.element.nativeElement,

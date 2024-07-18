@@ -35,7 +35,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     });
 
     public hideTrendingCategories: boolean = false;
-    private static readonly hideTrendingCategoriesTimeout: number = 1000;
+    private static readonly hideTrendingCategoriesTimeout: number = 2000;
     private readonly subscriptions: Subscription[] = [];
 
     constructor(

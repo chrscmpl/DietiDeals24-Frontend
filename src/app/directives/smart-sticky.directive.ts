@@ -6,6 +6,7 @@ import {
     Input,
     OnDestroy,
 } from '@angular/core';
+import { fromEvent, Observable, sampleTime, Subscription } from 'rxjs';
 
 enum Directions {
     UP = 0,
@@ -29,6 +30,12 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
 
     private offsetHide = -1;
     private offsetShow = -1;
+
+    private scroll$: Observable<Event> = fromEvent(window, 'scroll', {
+        passive: true,
+    }).pipe(sampleTime(100));
+
+    private readonly subscriptions: Subscription[] = [];
 
     @Input() set showOffset(value: number) {
         if (value < 0) {
@@ -67,11 +74,13 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
         this.setAnimation();
         this.setOffsets();
         this.renderer.addClass(this.element.nativeElement, `dd24-smart-sticky`);
-        window.addEventListener('scroll', this.onScroll.bind(this));
+        this.subscriptions.push(
+            this.scroll$.subscribe(this.onScroll.bind(this)),
+        );
     }
 
     ngOnDestroy(): void {
-        window.removeEventListener('scroll', this.onScroll.bind(this));
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
         if (this.stylesheet)
             this.renderer.removeChild(document.head, this.stylesheet);
         if (this.animationStylesheet)
