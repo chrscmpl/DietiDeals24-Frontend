@@ -11,13 +11,23 @@ export class LoadingIndicator {
         }),
     );
 
-    constructor(timeout: number = 100) {
+    public constructor(timeout: number = 100) {
         this._timeout = timeout;
     }
-    start() {
+
+    public start() {
         this._isLoading$.next(true);
     }
-    stop() {
+
+    public stop() {
         this._isLoading$.next(false);
+    }
+
+    public get timeout(): number {
+        return this._timeout;
+    }
+
+    public set timeout(value: number) {
+        this._timeout = value;
     }
 }

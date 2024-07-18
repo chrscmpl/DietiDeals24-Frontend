@@ -85,5 +85,8 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     private stopLoading(): void {
         this.loadingIndicator.stop();
         this.showEmpty = true;
+        if (this.loadingIndicator.timeout > 0) {
+            this.loadingIndicator.timeout = 0;
+        }
     }
 }
