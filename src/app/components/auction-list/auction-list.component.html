@@ -1,6 +1,8 @@
 <div class="auction-list">
     @if (loadingIndicator.isLoading$ | async) {
-        <dd24-loading-placeholder></dd24-loading-placeholder>
+        <dd24-loading-placeholder
+            [style]="{ padding: '1rem 0' }"
+        ></dd24-loading-placeholder>
     } @else if (error) {
         <dd24-reload-button
             class="no-results"
