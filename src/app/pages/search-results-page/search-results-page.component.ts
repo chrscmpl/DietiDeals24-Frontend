@@ -19,7 +19,7 @@ export class SearchResultsPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.queryParams.subscribe((params) => {
-            this.auctionsService.create('/auctions', {
+            this.auctionsService.set('/auctions', {
                 queryParameters: params,
                 pageNumber: 1,
                 pageSize: 10,

@@ -12,7 +12,7 @@ export class AuctionsRequestGuard implements Resolve<void> {
     constructor(private auctionsService: AuctionsService) {}
 
     public resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
-        this.auctionsService.create('/auctions', {
+        this.auctionsService.set('/auctions', {
             queryParameters: route.queryParams,
             pageNumber: 1,
             pageSize: 10,

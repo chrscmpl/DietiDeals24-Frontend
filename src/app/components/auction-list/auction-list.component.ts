@@ -27,7 +27,6 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.loadingIndicator.startDelay = delay;
     }
 
-    private newRequestSubscription!: Subscription;
     private subscriptions: Subscription[] = [];
     public auctions: ReadonlyArray<AuctionSummary> = [];
     public error: boolean = false;
@@ -37,16 +36,33 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public constructor(private readonly auctionsService: AuctionsService) {}
 
     public ngOnInit(): void {
-        this.initRequest();
-        this.newRequestSubscription = this.auctionsService
-            .newRequest$(this.requestKey)
-            .subscribe(this.initRequest.bind(this));
+        this.startLoading();
+        this.auctions = this.auctionsService.elements(this.requestKey);
+
+        this.subscriptions.push(
+            this.auctionsService.subscribe(this.requestKey, {
+                next: () => {
+                    this.error = false;
+                    console.log('next');
+                    this.stopLoading();
+                },
+                error: () => {
+                    this.error = true;
+                    console.log('error');
+                    this.stopLoading();
+                },
+                complete: () => {
+                    console.log('complete');
+                    this.stopLoading();
+                },
+            }),
+        );
+
         this.more();
     }
 
     public ngOnDestroy(): void {
-        this.unsubscribeFromRequest();
-        this.newRequestSubscription.unsubscribe();
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     public scrolled(index: number): void {
@@ -56,39 +72,13 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public more(): void {
-        this.startLoading();
         this.auctionsService.more(this.requestKey);
     }
 
     public reloadAfterError(): void {
+        this.startLoading();
         this.auctionsService.refresh(this.requestKey);
-        this.subscribeToRequest();
         this.more();
-    }
-
-    private initRequest(): void {
-        this.auctions = this.auctionsService.elements(this.requestKey);
-        this.unsubscribeFromRequest();
-        this.subscribeToRequest();
-    }
-
-    private subscribeToRequest(): void {
-        this.subscriptions.push(
-            ...[
-                this.auctionsService.loadingEnded$(this.requestKey).subscribe({
-                    next: () => this.stopLoading(),
-                    complete: () => this.stopLoading(),
-                }),
-                this.auctionsService.data$(this.requestKey).subscribe({
-                    next: () => (this.error = false),
-                    error: () => (this.error = true),
-                }),
-            ],
-        );
-    }
-
-    private unsubscribeFromRequest(): void {
-        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 
     private startLoading(): void {

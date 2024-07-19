@@ -6,9 +6,8 @@ import { auctionBuilder } from '../helpers/auctionBuilder';
 import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
-import { filter, Observable, Subject } from 'rxjs';
+import { Observer, Subscription } from 'rxjs';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RequestKey = string;
 
 export type auctionsPaginationParams = Omit<
@@ -27,34 +26,29 @@ export class AuctionsService {
         PaginatedRequestManager<AuctionSummary>
     >();
 
-    private newRequestSubject = new Subject<RequestKey>();
-    private _newRequest$ = this.newRequestSubject.asObservable();
-
     public constructor(private readonly http: HttpClient) {}
 
-    public newRequest$(key: RequestKey): Observable<RequestKey> {
-        return this._newRequest$.pipe(filter((k) => k === key));
-    }
-
-    public create(key: RequestKey, params: auctionsPaginationParams): void {
+    public set(key: RequestKey, params: auctionsPaginationParams): void {
         const request = this.requestsMap.get(key);
         if (request) {
-            request.complete();
-            this.newRequestSubject.next(key);
+            request.reset(this.completeParams(params));
+        } else {
+            this.requestsMap.set(
+                key,
+                this.createAuctionsRequestManager(params),
+            );
         }
-        this.requestsMap.set(key, this.createAuctionsRequestManager(params));
+    }
+
+    public subscribe(
+        key: RequestKey,
+        observer: Partial<Observer<AuctionSummary[]>>,
+    ): Subscription {
+        return this.getRequest(key).subscribe(observer);
     }
 
     public elements(key: RequestKey): ReadonlyArray<AuctionSummary> {
         return this.getRequest(key).elements;
-    }
-
-    public data$(key: RequestKey): Observable<AuctionSummary[]> {
-        return this.getRequest(key).data$;
-    }
-
-    public loadingEnded$(key: RequestKey): Observable<void> {
-        return this.getRequest(key).loadingEnded$;
     }
 
     public more(key: RequestKey): void {
@@ -80,12 +74,16 @@ export class AuctionsService {
     private createAuctionsRequestManager(
         params: auctionsPaginationParams,
     ): PaginatedRequestManager<AuctionSummary> {
-        return new PaginatedRequestManager(
-            Object.assign(params, {
-                http: this.http,
-                url: `${environment.backendHost}/auctions/search`,
-                factory: auctionBuilder.buildArray,
-            }),
-        );
+        return new PaginatedRequestManager(this.completeParams(params));
+    }
+
+    private completeParams(
+        params: auctionsPaginationParams,
+    ): PaginatedRequestParams<AuctionSummary> {
+        return Object.assign(params, {
+            http: this.http,
+            url: `${environment.backendHost}/auctions/search`,
+            factory: auctionBuilder.buildArray,
+        });
     }
 }

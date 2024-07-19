@@ -1,58 +1,75 @@
-import { Observable, Observer, Subject } from 'rxjs';
+import { Observer, ReplaySubject, Subscription } from 'rxjs';
 import { PaginatedRequest, PaginatedRequestParams } from './paginatedRequest';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export class PaginatedRequestManager<Entity> {
-    private readonly _request: PaginatedRequest<Entity>;
+    private request: PaginatedRequest<Entity>;
     private readonly _elements: Entity[] = [];
-    private readonly _loadingEndedSubject: Subject<void> = new Subject<void>();
-    private readonly _loadingEnded$: Observable<void> =
-        this._loadingEndedSubject.asObservable();
+
+    private readonly nextSubject = new ReplaySubject<Entity[]>(1);
+    private readonly errorSubject = new ReplaySubject<HttpErrorResponse>(1);
+    private readonly completeSubject = new ReplaySubject<void>(1);
+
+    private readonly next$ = this.nextSubject.asObservable();
+    private readonly error$ = this.errorSubject.asObservable();
+    private readonly complete$ = this.completeSubject.asObservable();
 
     private readonly dataObserver: Observer<Entity[]> = {
         next: (data) => {
             this._elements.push(...data);
-            this._loadingEndedSubject.next();
+            this.nextSubject.next(data);
         },
-        error: () => {
-            this._loadingEndedSubject.next();
+        error: (err) => {
+            this.errorSubject.next(err);
         },
         complete: () => {
-            this._loadingEndedSubject.next();
+            this.completeSubject.next();
         },
     };
 
     public constructor(paginationParams: PaginatedRequestParams<Entity>) {
-        this._request = new PaginatedRequest<Entity>(paginationParams);
-        this._request.data$.subscribe(this.dataObserver);
-    }
-
-    public get data$(): Observable<Entity[]> {
-        return this._request.data$;
+        this.request = new PaginatedRequest<Entity>(paginationParams);
+        this.request.data$.subscribe(this.dataObserver);
     }
 
     public get elements(): ReadonlyArray<Entity> {
         return this._elements;
     }
 
-    public get loadingEnded$(): Observable<void> {
-        return this._loadingEnded$;
-    }
-
     public more(): void {
-        this._request.more();
+        this.request.more();
     }
 
     public refresh(): void {
-        this._request.refresh();
+        this.request.refresh();
     }
 
-    public reset(): void {
+    public subscribe(observer: Partial<Observer<Entity[]>>): Subscription {
+        const subscription = new Subscription();
+        if (observer.next)
+            subscription.add(this.next$.subscribe(observer.next));
+        if (observer.error)
+            subscription.add(this.error$.subscribe(observer.error));
+        if (observer.complete)
+            subscription.add(this.complete$.subscribe(observer.complete));
+        return subscription;
+    }
+
+    public reset(paginationParams?: PaginatedRequestParams<Entity>): void {
         this._elements.length = 0;
-        this._request.reset();
+        if (!paginationParams) {
+            this.request.reset();
+            return;
+        }
+        this.request.complete();
+        this.request = new PaginatedRequest<Entity>(paginationParams);
+        this.request.data$.subscribe(this.dataObserver);
     }
 
     public complete(): void {
-        this._loadingEndedSubject.complete();
-        this._request.complete();
+        this.request.complete();
+        this.nextSubject.complete();
+        this.errorSubject.complete();
+        this.completeSubject.complete();
     }
 }

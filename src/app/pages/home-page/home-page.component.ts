@@ -38,7 +38,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.auctionsService.create('/home', {
+        this.auctionsService.set('/home', {
             queryParameters: {},
             pageNumber: 1,
             pageSize: 10,
