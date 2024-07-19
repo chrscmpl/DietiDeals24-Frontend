@@ -4,19 +4,15 @@ import {
     ResolveFn,
     RouterStateSnapshot,
 } from '@angular/router';
-import { PaginatedRequest } from '../helpers/paginatedRequest';
-import { AuctionSummary } from '../models/auction.model';
 import { Injectable, inject } from '@angular/core';
 import { AuctionsService } from '../services/auctions.service';
 
 @Injectable()
-export class AuctionsRequestGuard
-    implements Resolve<PaginatedRequest<AuctionSummary>>
-{
+export class AuctionsRequestGuard implements Resolve<void> {
     constructor(private auctionsService: AuctionsService) {}
 
     public resolve(route: ActivatedRouteSnapshot, _: RouterStateSnapshot) {
-        return this.auctionsService.getAuctionsRequest({
+        this.auctionsService.create('/auctions', {
             queryParameters: route.queryParams,
             pageNumber: 1,
             pageSize: 10,
@@ -25,6 +21,5 @@ export class AuctionsRequestGuard
     }
 }
 
-export const auctionsRequestGuard: ResolveFn<
-    PaginatedRequest<AuctionSummary>
-> = (r, s) => inject(AuctionsRequestGuard).resolve(r, s);
+export const auctionsRequestGuard: ResolveFn<void> = (r, s) =>
+    inject(AuctionsRequestGuard).resolve(r, s);

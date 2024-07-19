@@ -90,12 +90,9 @@ export class SearchSectionComponent implements OnInit {
                 macroCategory: category,
             };
         }
-        this.router
-            .navigateByUrl('/redirect', { skipLocationChange: true })
-            .then(() => {
-                this.router.navigate(['/auctions'], {
-                    queryParams: params,
-                });
-            });
+
+        this.router.navigate(['/auctions'], {
+            queryParams: params,
+        });
     }
 }

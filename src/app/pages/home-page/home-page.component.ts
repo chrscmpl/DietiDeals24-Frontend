@@ -26,13 +26,6 @@ import { Subscription } from 'rxjs';
 export class HomePageComponent implements OnInit, OnDestroy {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(0);
-    public trendingAuctionsRequest = this.auctionsService.getAuctionsRequest({
-        queryParameters: {},
-        pageNumber: 1,
-        pageSize: 10,
-        maximumResults: 20,
-        eager: true,
-    });
 
     public hideTrendingCategories: boolean = false;
     private static readonly hideTrendingCategoriesTimeout: number = 2000;
@@ -45,6 +38,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.auctionsService.create('/home', {
+            queryParameters: {},
+            pageNumber: 1,
+            pageSize: 10,
+            maximumResults: 20,
+            eager: true,
+        });
+
         this.categoryButtonsLoadingIndicator.start();
         this.subscriptions.push(
             this.categoriesService.trendingCategories$.subscribe(() => {

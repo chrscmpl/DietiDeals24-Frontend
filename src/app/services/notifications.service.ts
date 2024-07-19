@@ -59,7 +59,6 @@ export class NotificationsService {
 
     constructor(
         private readonly http: HttpClient,
-
         private readonly authentication: AuthenticationService,
     ) {
         this.authentication.isLogged$.subscribe((logged) => {
