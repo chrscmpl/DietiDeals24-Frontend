@@ -1,6 +1,7 @@
 import { Observer, ReplaySubject, Subscription } from 'rxjs';
 import { PaginatedRequest, PaginatedRequestParams } from './paginatedRequest';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UninterruptedResettableObserver } from './uninterruptedResettableObserver';
 
 export class PaginatedRequestManager<Entity> {
     private request: PaginatedRequest<Entity>;
@@ -9,10 +10,12 @@ export class PaginatedRequestManager<Entity> {
     private readonly nextSubject = new ReplaySubject<Entity[]>(1);
     private readonly errorSubject = new ReplaySubject<HttpErrorResponse>(1);
     private readonly completeSubject = new ReplaySubject<void>(1);
+    private readonly resetSubject = new ReplaySubject<void>(1);
 
     private readonly next$ = this.nextSubject.asObservable();
     private readonly error$ = this.errorSubject.asObservable();
     private readonly complete$ = this.completeSubject.asObservable();
+    private readonly reset$ = this.resetSubject.asObservable();
 
     private readonly dataObserver: Observer<Entity[]> = {
         next: (data) => {
@@ -46,7 +49,7 @@ export class PaginatedRequestManager<Entity> {
     }
 
     public subscribeUninterrupted(
-        observer: Partial<Observer<Entity[]>>,
+        observer: Partial<UninterruptedResettableObserver<Entity[]>>,
     ): Subscription {
         const subscription = new Subscription();
         if (observer.next)
@@ -55,6 +58,8 @@ export class PaginatedRequestManager<Entity> {
             subscription.add(this.error$.subscribe(observer.error));
         if (observer.complete)
             subscription.add(this.complete$.subscribe(observer.complete));
+        if (observer.reset)
+            subscription.add(this.reset$.subscribe(observer.reset));
         return subscription;
     }
 
@@ -62,9 +67,11 @@ export class PaginatedRequestManager<Entity> {
         this._elements.length = 0;
         if (!paginationParams) {
             this.request.reset();
+            this.resetSubject.next();
             return;
         }
         this.request.complete();
+        this.resetSubject.next();
         this.request = new PaginatedRequest<Entity>(paginationParams);
         this.request.data$.subscribe(this.dataObserver);
     }
@@ -74,5 +81,6 @@ export class PaginatedRequestManager<Entity> {
         this.nextSubject.complete();
         this.errorSubject.complete();
         this.completeSubject.complete();
+        this.resetSubject.complete();
     }
 }

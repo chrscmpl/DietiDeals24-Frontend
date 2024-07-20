@@ -52,6 +52,11 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                 complete: () => {
                     this.stopLoading();
                 },
+                reset: () => {
+                    this.error = false;
+                    this.showEmpty = false;
+                    this.startLoading();
+                },
             }),
         );
 

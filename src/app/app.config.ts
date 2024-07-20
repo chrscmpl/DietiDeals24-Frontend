@@ -11,7 +11,6 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authorizationInterceptor } from './interceptors/authorization.interceptor';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuctionsRequestGuard } from './guards/auctions-request.guard';
 import { HideUIGuard } from './guards/hide-ui.guard';
 import { ShowUIGuard } from './guards/show-ui.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
@@ -34,7 +33,6 @@ export const appConfig: ApplicationConfig = {
         CurrencyPipe,
         MaskedEmailPipe,
         FindCurrencyPipe,
-        AuctionsRequestGuard,
         HideUIGuard,
         ShowUIGuard,
         AuthenticationGuard,

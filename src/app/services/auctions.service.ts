@@ -7,6 +7,7 @@ import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
 import { Observer, Subscription } from 'rxjs';
+import { UninterruptedResettableObserver } from '../helpers/uninterruptedResettableObserver';
 
 export type RequestKey = string;
 
@@ -42,7 +43,7 @@ export class AuctionsService {
 
     public subscribeUninterrupted(
         key: RequestKey,
-        observer: Partial<Observer<AuctionSummary[]>>,
+        observer: Partial<UninterruptedResettableObserver<AuctionSummary[]>>,
     ): Subscription {
         return this.getRequest(key).subscribeUninterrupted(observer);
     }
