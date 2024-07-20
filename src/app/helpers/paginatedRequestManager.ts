@@ -42,9 +42,12 @@ export class PaginatedRequestManager<Entity> {
 
     public refresh(): void {
         this.request.refresh();
+        this.request.data$.subscribe(this.dataObserver);
     }
 
-    public subscribe(observer: Partial<Observer<Entity[]>>): Subscription {
+    public subscribeUninterrupted(
+        observer: Partial<Observer<Entity[]>>,
+    ): Subscription {
         const subscription = new Subscription();
         if (observer.next)
             subscription.add(this.next$.subscribe(observer.next));

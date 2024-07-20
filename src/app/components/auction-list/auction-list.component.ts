@@ -40,25 +40,22 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.auctions = this.auctionsService.elements(this.requestKey);
 
         this.subscriptions.push(
-            this.auctionsService.subscribe(this.requestKey, {
+            this.auctionsService.subscribeUninterrupted(this.requestKey, {
                 next: () => {
                     this.error = false;
-                    console.log('next');
                     this.stopLoading();
                 },
                 error: () => {
                     this.error = true;
-                    console.log('error');
                     this.stopLoading();
                 },
                 complete: () => {
-                    console.log('complete');
                     this.stopLoading();
                 },
             }),
         );
 
-        this.more();
+        if (!this.auctions.length) this.more();
     }
 
     public ngOnDestroy(): void {
@@ -76,6 +73,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public reloadAfterError(): void {
+        this.error = false;
         this.startLoading();
         this.auctionsService.refresh(this.requestKey);
         this.more();

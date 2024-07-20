@@ -10,10 +10,12 @@ import {
     tap,
 } from 'rxjs';
 
+type Factory<Entity> = (input: any) => Entity[];
+
 export interface PaginatedRequestParams<Entity> {
     http: HttpClient;
     url: string;
-    factory: (input: any) => Entity[];
+    factory?: Factory<Entity>;
     queryParameters: any;
     pageNumber: number;
     pageSize: number;
@@ -22,17 +24,18 @@ export interface PaginatedRequestParams<Entity> {
 }
 
 export class PaginatedRequest<Entity> {
-    private pageNumber: number;
-    private pageSize: number;
-    private currentPage: number;
-    private maximumResults: number;
-    private queryParameters: any;
-    private http: HttpClient;
-    private url: string;
-    private factory: (input: any) => Entity[];
+    private readonly pageNumber: number;
+    private readonly pageSize: number;
+    private readonly maximumResults: number;
+    private readonly queryParameters: any;
+    private readonly http: HttpClient;
+    private readonly url: string;
+    private readonly factory?: Factory<Entity>;
+
     private dataSubject: ReplaySubject<Entity[]> = new ReplaySubject<Entity[]>(
         1,
     );
+    private currentPage: number;
     private isEager: boolean = false;
     private _isComplete: boolean = false;
 
@@ -73,9 +76,13 @@ export class PaginatedRequest<Entity> {
     }
 
     private newRequest(): Observable<Entity[]> {
-        return this.wasMaximumResultsExceeded()
-            ? of([])
-            : this.makeHttpRequest().pipe(map((data) => this.factory(data)));
+        if (this.wasMaximumResultsExceeded()) return of([]);
+        if (this.factory) {
+            return this.makeHttpRequest().pipe(
+                map((data) => (this.factory as Factory<Entity>)(data)),
+            );
+        }
+        return this.makeHttpRequest();
     }
 
     public more(): void {

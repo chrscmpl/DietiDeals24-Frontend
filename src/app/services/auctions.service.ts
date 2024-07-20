@@ -40,11 +40,11 @@ export class AuctionsService {
         }
     }
 
-    public subscribe(
+    public subscribeUninterrupted(
         key: RequestKey,
         observer: Partial<Observer<AuctionSummary[]>>,
     ): Subscription {
-        return this.getRequest(key).subscribe(observer);
+        return this.getRequest(key).subscribeUninterrupted(observer);
     }
 
     public elements(key: RequestKey): ReadonlyArray<AuctionSummary> {
