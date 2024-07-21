@@ -1,35 +1,28 @@
 import { Injectable } from '@angular/core';
 import { DisplayableNotification } from '../models/notification.model';
-import {
-    PaginatedRequest,
-    PaginatedRequestParams,
-} from '../helpers/paginatedRequest';
 import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
-
 import { AuthenticationService } from './authentication.service';
-import { map, Observable, Observer, ReplaySubject, Subject } from 'rxjs';
+import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
 import { notificationsBuilder } from '../helpers/notificationBuilder';
 import { environment } from '../../environments/environment';
-
-type NotificationsPaginationParams = Omit<
-    PaginatedRequestParams<DisplayableNotification>,
-    'http' | 'factory' | 'url' | 'queryParameters'
->;
+import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NotificationsService {
     private static readonly PAGE_SIZE = 9;
-    private request: PaginatedRequest<DisplayableNotification> | null = null;
+    private request: PaginatedRequestManager<DisplayableNotification>;
 
     private _lockRefreshCounter: number = 0;
 
     private _notificationsCount: number = 0;
     private _unreadNotificationsCount: number = 0;
 
-    public readonly notifications: DisplayableNotification[] = [];
+    public get notifications(): ReadonlyArray<DisplayableNotification> {
+        return this.request.elements;
+    }
 
     private unreadNotificationsSubject: ReplaySubject<void> =
         new ReplaySubject<void>(1);
@@ -42,59 +35,53 @@ export class NotificationsService {
     public loadingEnded$: Observable<void> =
         this.loadingEndedSubject.asObservable();
 
-    private dataObserver: Observer<DisplayableNotification[]> = {
-        next: (notifications) => {
-            this.notifications.push(...notifications);
-            this.loadingEndedSubject.next();
-            if (this.notifications.length >= this.notificationsCount)
-                this.request?.complete();
-        },
-        error: () => {
-            this.loadingEndedSubject.next();
-        },
-        complete: () => {
-            this.loadingEndedSubject.next();
-        },
-    };
-
     constructor(
         private readonly http: HttpClient,
         private readonly authentication: AuthenticationService,
     ) {
-        this.authentication.isLogged$.subscribe((logged) => {
-            if (logged) {
-                this.request = this.getDisplayableNotificationsRequest({
-                    pageSize: NotificationsService.PAGE_SIZE,
-                    pageNumber: 1,
-                    eager: false,
-                });
+        this.request = new PaginatedRequestManager({
+            http: this.http,
+            url: `${environment.backendHost}/notifications`,
+            factory: (res: NotificationResponse): DisplayableNotification[] => {
+                this.notificationsCount = res.notificationsCount;
+                this.unreadNotificationsCount = res.unreadNotificationsCount;
+                return notificationsBuilder.buildArray(res.notifications);
+            },
+            queryParameters: {},
+            pageNumber: 1,
+            pageSize: NotificationsService.PAGE_SIZE,
+            eager: false,
+        });
 
+        const endLoading = this.loadingEndedSubject.next.bind(
+            this.loadingEndedSubject,
+        );
+
+        this.request.subscribeUninterrupted({
+            next: endLoading,
+            error: endLoading,
+            complete: endLoading,
+            reset: endLoading,
+        });
+
+        this.authentication.isLogged$
+            .pipe(filter((isLogged) => isLogged))
+            .subscribe(() => {
                 this.unreadNotificationsCount =
                     this.authentication.loggedUser
                         ?.unreadNotificationsCounter ?? 0;
-
-                this.request.data$.subscribe(this.dataObserver);
-
-                this.more();
-            } else {
-                this.notifications.splice(0, this.notifications.length);
-                this.request?.complete();
-                this.request = null;
-            }
-        });
+                this.refresh();
+            });
     }
 
     public refresh(): void {
         if (this._lockRefreshCounter > 0) return;
-        this.notifications.splice(0, this.notifications.length);
-        if (this.request === null) return;
-        this.request?.reset();
-        this.request?.data$.subscribe(this.dataObserver);
+        this.request.reset();
         this.more();
     }
 
     public more(): void {
-        if (this.request === null || this.request.isComplete) {
+        if (this.request.isComplete) {
             this.loadingEndedSubject.next();
             return;
         }
@@ -126,14 +113,14 @@ export class NotificationsService {
         );
         if (index === -1) return;
         if (!notification.read) this.unreadNotificationsCount--;
-        this.notifications.splice(index, 1);
+        this.request.editableElements.splice(index, 1);
         this.http.delete(
             `${environment.backendHost}/notifications/${notification.id}`,
         );
     }
 
     public deleteAll(): void {
-        this.notifications.splice(0, this.notifications.length);
+        this.request.editableElements.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
         this.http.delete(`${environment.backendHost}/notifications`);
     }
@@ -149,24 +136,6 @@ export class NotificationsService {
     public lockRefresh(value: boolean): void {
         if (value) this._lockRefreshCounter++;
         else this._lockRefreshCounter--;
-    }
-
-    private getDisplayableNotificationsRequest(
-        params: NotificationsPaginationParams,
-    ): PaginatedRequest<DisplayableNotification> {
-        return new PaginatedRequest<DisplayableNotification>(
-            Object.assign(params, {
-                http: this.http,
-                url: `${environment.backendHost}/notifications`,
-                factory: (res: NotificationResponse) => {
-                    this.notificationsCount = res.notificationsCount;
-                    this.unreadNotificationsCount =
-                        res.unreadNotificationsCount;
-                    return notificationsBuilder.buildArray(res.notifications);
-                },
-                queryParameters: {},
-            }),
-        );
     }
 
     private get notificationsCount(): number {

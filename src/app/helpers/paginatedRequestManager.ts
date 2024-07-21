@@ -40,6 +40,10 @@ export class PaginatedRequestManager<Entity> {
         return this._elements;
     }
 
+    public get editableElements(): Entity[] {
+        return this._elements;
+    }
+
     public more(): void {
         this.request.more();
     }
@@ -77,7 +81,11 @@ export class PaginatedRequestManager<Entity> {
         this.subscribeToData();
     }
 
-    public complete(): void {
+    public get isComplete() {
+        return this.request.isComplete;
+    }
+
+    public clear(): void {
         this.request.complete();
         this.nextSubject.complete();
         this.errorSubject.complete();
