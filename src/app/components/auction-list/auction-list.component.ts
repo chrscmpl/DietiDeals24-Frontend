@@ -21,21 +21,61 @@ import { AuctionsService, RequestKey } from '../../services/auctions.service';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) requestKey!: RequestKey;
+    @Input({ required: true }) public set requestKey(value: RequestKey) {
+        this._requestKey = value;
+        if (this.initialized) {
+            this.cancelSubscriptions();
+            this.init();
+        }
+    }
 
     @Input() set loadingStartDelay(delay: number) {
         this.loadingIndicator.startDelay = delay;
     }
 
-    private subscriptions: Subscription[] = [];
+    private _requestKey!: RequestKey;
+    private readonly subscriptions: Subscription[] = [];
     public auctions: ReadonlyArray<AuctionSummary> = [];
     public error: boolean = false;
     public showEmpty: boolean = false;
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(1000);
+    private initialized: boolean = false;
+
+    public get requestKey(): RequestKey {
+        return this._requestKey;
+    }
 
     public constructor(private readonly auctionsService: AuctionsService) {}
 
     public ngOnInit(): void {
+        this.init();
+        this.initialized = true;
+    }
+
+    public ngOnDestroy(): void {
+        this.cancelSubscriptions();
+    }
+
+    public scrolled(index: number): void {
+        if (index === this.auctions.length - 1) {
+            this.more();
+        }
+    }
+
+    public more(): void {
+        this.auctionsService.more(this.requestKey);
+    }
+
+    public reloadAfterError(): void {
+        this.error = false;
+        this.startLoading();
+        this.auctionsService.refresh(this.requestKey);
+        this.more();
+    }
+
+    private init(): void {
+        this.error = false;
+        this.showEmpty = false;
         this.startLoading();
         this.auctions = this.auctionsService.elements(this.requestKey);
 
@@ -63,27 +103,6 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         if (!this.auctions.length) this.more();
     }
 
-    public ngOnDestroy(): void {
-        this.subscriptions.forEach((s) => s.unsubscribe());
-    }
-
-    public scrolled(index: number): void {
-        if (index === this.auctions.length - 1) {
-            this.more();
-        }
-    }
-
-    public more(): void {
-        this.auctionsService.more(this.requestKey);
-    }
-
-    public reloadAfterError(): void {
-        this.error = false;
-        this.startLoading();
-        this.auctionsService.refresh(this.requestKey);
-        this.more();
-    }
-
     private startLoading(): void {
         this.loadingIndicator.start();
         this.showEmpty = false;
@@ -95,5 +114,10 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         if (this.loadingIndicator.startDelay > 0) {
             this.loadingIndicator.startDelay = 0;
         }
+    }
+
+    private cancelSubscriptions(): void {
+        this.subscriptions.forEach((s) => s.unsubscribe());
+        this.subscriptions.length = 0;
     }
 }
