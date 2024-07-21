@@ -15,7 +15,7 @@ import { ButtonModule } from 'primeng/button';
     styleUrl: './reload-button.component.scss',
 })
 export class ReloadButtonComponent implements OnDestroy {
-    @Input() message: string = "Could'nt load data. Click to try again";
+    @Input() message: string = "Couldn't load data. Click to try again";
     @Output() reload = new EventEmitter<void>();
     private unSpinTimeout?: ReturnType<typeof setTimeout>;
     public spin: boolean = false;

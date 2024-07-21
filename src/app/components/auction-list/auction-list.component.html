@@ -1,26 +1,18 @@
 <div class="auction-list">
-    @if (error) {
-        <dd24-reload-button
-            class="no-results"
-            message="Couldn't find any auctions"
-            (reload)="reloadAfterError()"
-        ></dd24-reload-button>
-    } @else {
-        @for (auction of auctions; track auction.id) {
-            @defer (on viewport) {
-                <dd24-auction-card
-                    [auction]="auction"
-                    (loaded)="scrolled($index)"
-                ></dd24-auction-card>
-            } @placeholder {
-                <div class="card-placeholder"></div>
-            }
-        } @empty {
-            @if (showEmpty) {
-                <div class="empty-message">
-                    No auctions corresponding to the search criteria
-                </div>
-            }
+    @for (auction of auctions; track auction.id) {
+        @defer (on viewport) {
+            <dd24-auction-card
+                [auction]="auction"
+                (loaded)="scrolled($index)"
+            ></dd24-auction-card>
+        } @placeholder {
+            <div class="card-placeholder"></div>
+        }
+    } @empty {
+        @if (showEmpty) {
+            <div class="empty-message">
+                No auctions corresponding to the search criteria
+            </div>
         }
     }
 
@@ -28,5 +20,15 @@
         <dd24-loading-placeholder
             [style]="{ padding: '1rem 0' }"
         ></dd24-loading-placeholder>
+    } @else if (error) {
+        <dd24-reload-button
+            class="no-results"
+            [message]="
+                auctions.length
+                    ? 'Couldn\'t find any more auctions'
+                    : 'Couldn\'t find any auction'
+            "
+            (reload)="reloadAfterError()"
+        ></dd24-reload-button>
     }
 </div>

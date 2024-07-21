@@ -7,10 +7,3 @@
         align-self: center;
     }
 }
-
-:host ::ng-deep {
-    .spinner .p-progress-spinner-circle {
-        width: 3rem;
-        height: 3rem;
-    }
-}
