@@ -45,8 +45,12 @@
             @include layouts.flex(row, center, center);
             height: 100%;
             width: 100%;
-            font-size: 7rem;
+            font-size: 8rem;
             color: var(--border-color);
+
+            @include viewports.mobile {
+                font-size: 3rem;
+            }
         }
     }
 

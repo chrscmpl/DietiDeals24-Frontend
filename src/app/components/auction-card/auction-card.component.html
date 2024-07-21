@@ -1,10 +1,11 @@
 <div class="auction-card">
     <div class="auction-card-image-container">
-        @if (auction.pictureUrl) {
+        @if (auction.pictureUrl && !showImagePlaceholder) {
             <img
                 class="auction-card-image"
                 [src]="auction.pictureUrl"
                 alt="Auction image"
+                (error)="onImageError()"
             />
         } @else {
             <i class="auction-card-missing-image pi pi-image"></i>

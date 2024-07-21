@@ -32,9 +32,10 @@ import { WindowService } from '../../services/window.service';
 export class AuctionCardComponent implements OnInit, OnDestroy {
     @Input({ required: true }) auction!: AuctionSummary;
     @Output() loaded = new EventEmitter<number>();
-    statuses = AuctionSummary.STATUSES;
-    timeLeft: number = 0;
-    timerInterval?: ReturnType<typeof setInterval>;
+    public statuses = AuctionSummary.STATUSES;
+    public timeLeft: number = 0;
+    private timerInterval?: ReturnType<typeof setInterval>;
+    public showImagePlaceholder: boolean = false;
 
     constructor(public readonly windowService: WindowService) {}
 
@@ -53,5 +54,9 @@ export class AuctionCardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         clearInterval(this.timerInterval);
+    }
+
+    public onImageError(): void {
+        this.showImagePlaceholder = true;
     }
 }
