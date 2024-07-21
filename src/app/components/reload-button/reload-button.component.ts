@@ -23,9 +23,11 @@ export class ReloadButtonComponent implements OnDestroy {
     emitReload(): void {
         this.spin = true;
         this.unSpinTimeout = setTimeout(() => {
-            this.spin = false;
+            if (this) {
+                this.spin = false;
+                this.reload.emit();
+            }
         }, 150);
-        this.reload.emit();
     }
 
     ngOnDestroy(): void {
