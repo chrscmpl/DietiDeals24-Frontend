@@ -22,6 +22,8 @@ export class UserMenuComponent {
 
     public _isOpen: boolean = false;
 
+    public showImagePlaceholder: boolean = false;
+
     items: MenuItem[] = [
         {
             label: 'Your Page',
@@ -71,5 +73,9 @@ export class UserMenuComponent {
     private logout(): void {
         this.authentication.logout();
         this.router.navigate(['/']);
+    }
+
+    public onImageError(): void {
+        this.showImagePlaceholder = true;
     }
 }

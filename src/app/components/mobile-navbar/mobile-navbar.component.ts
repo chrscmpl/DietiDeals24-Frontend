@@ -21,6 +21,8 @@ import { NotificationsService } from '../../services/notifications.service';
     styleUrl: './mobile-navbar.component.scss',
 })
 export class MobileNavbarComponent {
+    public showImagePlaceholder: boolean = false;
+
     public constructor(
         public readonly authenticationService: AuthenticationService,
         public readonly notificationsService: NotificationsService,
@@ -31,4 +33,8 @@ export class MobileNavbarComponent {
             startWith(null),
             map((user) => user?.profilePictureUrl ?? null),
         );
+
+    public onImageError(): void {
+        this.showImagePlaceholder = true;
+    }
 }

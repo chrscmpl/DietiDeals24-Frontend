@@ -16,9 +16,22 @@
     ></a>
     <p-avatar
         class="avatar nav-entry"
-        [icon]="(profilePicture$ | async) !== null ? '' : 'pi pi-user'"
-        [shape]="(profilePicture$ | async) !== null ? 'circle' : 'square'"
-        [image]="(profilePicture$ | async) ?? undefined"
+        [icon]="
+            (profilePicture$ | async) !== null && !showImagePlaceholder
+                ? ''
+                : 'pi pi-user'
+        "
+        [shape]="
+            (profilePicture$ | async) !== null && !showImagePlaceholder
+                ? 'circle'
+                : 'square'
+        "
+        [image]="
+            showImagePlaceholder
+                ? undefined
+                : (profilePicture$ | async) ?? undefined
+        "
+        (onImageError)="onImageError()"
         routerLink="/your-page"
         routerLinkActive="nav-entry-active"
     />

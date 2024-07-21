@@ -24,8 +24,8 @@
                 <p-avatar
                     class="user-menu-top-avatar"
                     [icon]="
-                        !!(authentication.loggedUser$ | async)
-                            ?.profilePictureUrl
+                        (authentication.loggedUser$ | async)
+                            ?.profilePictureUrl && !showImagePlaceholder
                             ? ''
                             : 'pi pi-user'
                     "
@@ -33,6 +33,7 @@
                         (authentication.loggedUser$ | async)
                             ?.profilePictureUrl ?? ''
                     "
+                    (onImageError)="onImageError()"
                     shape="circle"
                     [style]="{ border: '2px solid var(--outline-color)' }"
                 />
