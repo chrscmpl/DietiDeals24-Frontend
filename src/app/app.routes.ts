@@ -25,6 +25,7 @@ export const routes: Routes = [
     },
     {
         path: 'auctions',
+        title: 'Auctions',
         component: SearchResultsPageComponent,
     },
     {

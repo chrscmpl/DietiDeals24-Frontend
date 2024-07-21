@@ -3,6 +3,9 @@
         class="pi pi-inbox"
         pBadge
         [value]="(notificationsService.unreadNotificationsCount$ | async) ?? 0"
+        [badgeDisabled]="
+            (notificationsService.unreadNotificationsCount$ | async) === 0
+        "
         (click)="toggle($event)"
         (keypress)="onKeyPress($event)"
         tabindex="0"

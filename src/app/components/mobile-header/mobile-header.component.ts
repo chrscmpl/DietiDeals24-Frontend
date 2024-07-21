@@ -22,7 +22,7 @@ export class MobileHeaderComponent {
             startWith(null),
             delay(50),
             map(() => this.titleService.getTitle()),
-            tap((title) => (this.longTitle = title.length > 13)),
+            tap((title) => (this.longTitle = title.length > 18)),
             shareReplay(1),
         );
 

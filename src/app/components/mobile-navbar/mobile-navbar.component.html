@@ -34,6 +34,10 @@
                     (notificationsService.unreadNotificationsCount$ | async) ??
                     0
                 "
+                [badgeDisabled]="
+                    (notificationsService.unreadNotificationsCount$ | async) ===
+                    0
+                "
             ></i
         ></a>
     } @else {
