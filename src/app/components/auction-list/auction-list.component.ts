@@ -81,9 +81,14 @@ export class AuctionListComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.auctionsService.subscribeUninterrupted(this.requestKey, {
-                next: () => {
+                next: (auctions: AuctionSummary[]) => {
                     this.error = false;
                     this.stopLoading();
+                    auctions.forEach((a) => {
+                        if (!a.pictureUrl) return;
+                        const img = new Image();
+                        img.src = a.pictureUrl;
+                    });
                 },
                 error: () => {
                     this.error = true;
