@@ -41,6 +41,14 @@ export class AuctionsService {
         }
     }
 
+    public setIfAbsent(
+        key: RequestKey,
+        params: auctionsPaginationParams,
+    ): void {
+        if (this.requestsMap.get(key)) return;
+        this.requestsMap.set(key, this.createAuctionsRequestManager(params));
+    }
+
     public subscribeUninterrupted(
         key: RequestKey,
         observer: Partial<UninterruptedResettableObserver<AuctionSummary[]>>,
@@ -62,6 +70,11 @@ export class AuctionsService {
 
     public reset(key: RequestKey): void {
         this.getRequest(key).reset();
+    }
+
+    public remove(key: RequestKey): void {
+        this.getRequest(key).clear();
+        this.requestsMap.delete(key);
     }
 
     private getRequest(

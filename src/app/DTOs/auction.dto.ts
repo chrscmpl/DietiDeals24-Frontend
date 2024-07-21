@@ -2,6 +2,7 @@ import { AuctionType, auctionStatus } from '../typeUtils/auction.utils';
 
 export interface AuctionSummaryDTO {
     id: string;
+    username: string;
     type: AuctionType;
     status: auctionStatus;
     title: string;

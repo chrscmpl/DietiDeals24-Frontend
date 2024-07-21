@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
         private readonly primengConfig: PrimeNGConfig,
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
-        private readonly notificationsService: NotificationsService,
+        private readonly notifications: NotificationsService,
     ) {}
 
     ngOnInit(): void {
@@ -56,9 +56,7 @@ export class AppComponent implements OnInit {
         if (localStorage.getItem('authorizationToken')) {
             this.authentication.getUserData();
         }
-        setInterval(() => {
-            this.notificationsService.refresh();
-        }, AppComponent.NOTIFICATION_REFRESH_INTERVAL);
+        this.configureNotifications();
     }
 
     public onMainRouterOutletActivate(): void {
@@ -71,5 +69,19 @@ export class AppComponent implements OnInit {
 
     private configurePrimeNG(): void {
         this.primengConfig.ripple = true;
+    }
+
+    private configureNotifications(): void {
+        let interval: ReturnType<typeof setInterval> | null = null;
+        this.authentication.isLogged$.subscribe((isLogged) => {
+            if (isLogged) {
+                interval = setInterval(
+                    this.notifications.refresh.bind(this.notifications),
+                    AppComponent.NOTIFICATION_REFRESH_INTERVAL,
+                );
+            } else if (interval) {
+                clearInterval(interval);
+            }
+        });
     }
 }

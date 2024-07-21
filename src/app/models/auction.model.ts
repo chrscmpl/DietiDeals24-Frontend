@@ -11,6 +11,7 @@ export abstract class AuctionSummary {
     public static STATUSES = auctionStatus;
     public static TYPES = AuctionType;
     private _id: string;
+    private _username: string;
     private _title: string;
     private _description?: string;
     private _user?: UserSummary;
@@ -23,6 +24,7 @@ export abstract class AuctionSummary {
 
     constructor(auction: Omit<AuctionSummaryDTO, 'auctionType'>) {
         this._id = auction.id;
+        this._username = auction.username;
         this._title = auction.title;
         this._conditions = auction.conditions ?? null;
         this._location = { country: auction.country, city: auction.city };
@@ -34,6 +36,10 @@ export abstract class AuctionSummary {
 
     public get id(): string {
         return this._id;
+    }
+
+    public get username(): string {
+        return this._username;
     }
 
     public get title(): string {
