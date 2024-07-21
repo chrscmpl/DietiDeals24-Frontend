@@ -109,6 +109,7 @@ export class PaginatedRequest<Entity> {
     }
 
     public refresh(): void {
+        this.isEager = false;
         this._isComplete = false;
         this.dataSubject.complete();
         this.dataSubject = new ReplaySubject<Entity[]>(1);

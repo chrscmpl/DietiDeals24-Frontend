@@ -17,6 +17,7 @@ export class PaginatedRequestManager<Entity> {
     private readonly complete$ = this.completeSubject.asObservable();
     private readonly reset$ = this.resetSubject.asObservable();
 
+    private dataSubscription?: Subscription;
     private readonly dataObserver: Observer<Entity[]> = {
         next: (data) => {
             this._elements.push(...data);
@@ -32,7 +33,7 @@ export class PaginatedRequestManager<Entity> {
 
     public constructor(paginationParams: PaginatedRequestParams<Entity>) {
         this.request = new PaginatedRequest<Entity>(paginationParams);
-        this.request.data$.subscribe(this.dataObserver);
+        this.subscribeToData();
     }
 
     public get elements(): ReadonlyArray<Entity> {
@@ -45,7 +46,7 @@ export class PaginatedRequestManager<Entity> {
 
     public refresh(): void {
         this.request.refresh();
-        this.request.data$.subscribe(this.dataObserver);
+        this.subscribeToData();
     }
 
     public subscribeUninterrupted(
@@ -64,16 +65,16 @@ export class PaginatedRequestManager<Entity> {
     }
 
     public reset(paginationParams?: PaginatedRequestParams<Entity>): void {
+        this.unsubscribeFromData();
+        this.resetSubject.next();
         this._elements.length = 0;
         if (!paginationParams) {
             this.request.reset();
-            this.resetSubject.next();
             return;
         }
         this.request.complete();
-        this.resetSubject.next();
         this.request = new PaginatedRequest<Entity>(paginationParams);
-        this.request.data$.subscribe(this.dataObserver);
+        this.subscribeToData();
     }
 
     public complete(): void {
@@ -82,5 +83,13 @@ export class PaginatedRequestManager<Entity> {
         this.errorSubject.complete();
         this.completeSubject.complete();
         this.resetSubject.complete();
+    }
+
+    private subscribeToData(): void {
+        this.dataSubscription = this.request.data$.subscribe(this.dataObserver);
+    }
+
+    private unsubscribeFromData(): void {
+        this.dataSubscription?.unsubscribe();
     }
 }
