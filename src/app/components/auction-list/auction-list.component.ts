@@ -21,8 +21,9 @@ import { AuctionsService, RequestKey } from '../../services/auctions.service';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) public set requestKey(value: RequestKey) {
+    @Input({ required: true }) public set requestKey(value: RequestKey | null) {
         this._requestKey = value;
+        if (value === null) return;
         if (this.initialized) {
             this.cancelSubscriptions();
             this.init();
@@ -33,7 +34,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.loadingIndicator.startDelay = delay;
     }
 
-    private _requestKey!: RequestKey;
+    private _requestKey!: RequestKey | null;
     private readonly subscriptions: Subscription[] = [];
     public auctions: ReadonlyArray<AuctionSummary> = [];
     public error: boolean = false;
@@ -41,7 +42,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(1000);
     private initialized: boolean = false;
 
-    public get requestKey(): RequestKey {
+    public get requestKey(): RequestKey | null {
         return this._requestKey;
     }
 
@@ -63,10 +64,12 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public more(): void {
+        if (this.requestKey === null) return;
         this.auctionsService.more(this.requestKey);
     }
 
     public reloadAfterError(): void {
+        if (this.requestKey === null) return;
         this.error = false;
         this.startLoading();
         this.auctionsService.refresh(this.requestKey);
@@ -74,6 +77,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     private init(): void {
+        if (this.requestKey === null) return;
         this.error = false;
         this.showEmpty = false;
         this.startLoading();

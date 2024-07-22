@@ -9,6 +9,6 @@
     <dd24-auction-list
         class="auction-list"
         [loadingStartDelay]="100"
-        requestKey="/auctions"
+        [requestKey]="requestKey$ | async"
     ></dd24-auction-list>
 </main>

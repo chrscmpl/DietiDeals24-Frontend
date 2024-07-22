@@ -21,7 +21,7 @@ import { cloneTruthy } from '../helpers/cloneTruthy';
     providedIn: 'root',
 })
 export class SearchServiceService {
-    public readonly updatedSearchParameters$: Observable<
+    public readonly validatedSearchParameters$: Observable<
         Readonly<AuctionSearchParameters>
     >;
 
@@ -32,8 +32,10 @@ export class SearchServiceService {
         private readonly route: ActivatedRoute,
         private readonly location: Location,
     ) {
-        this.updatedSearchParameters$ = this.route.queryParams.pipe(
-            withLatestFrom(this.categoriesService.categories$),
+        this.validatedSearchParameters$ = this.route.queryParams.pipe(
+            withLatestFrom(
+                this.categoriesService.categories$.pipe(startWith({})),
+            ),
             filter(() => this.location.path().startsWith('/auctions')),
             map(([params, categories]) => {
                 const validatedParams = this.getValidatedParams(
@@ -42,6 +44,11 @@ export class SearchServiceService {
                 );
 
                 this.lastSearchParameters = cloneTruthy(validatedParams);
+
+                this.location.replaceState(
+                    this.location.path().split('?')[0],
+                    new URLSearchParams(this.lastSearchParameters).toString(),
+                );
 
                 return this.lastSearchParameters;
             }),

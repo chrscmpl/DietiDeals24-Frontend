@@ -82,17 +82,21 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.searchService.updatedSearchParameters$.subscribe((params) => {
-                this.searchForm
-                    .get('keywords')
-                    ?.setValue(params.keywords ?? null);
-                this.searchForm
-                    .get('type')
-                    ?.setValue((params.type as AuctionType) ?? null);
-                this.searchForm
-                    .get('category')
-                    ?.setValue(params.category ?? params.macroCategory ?? null);
-            }),
+            this.searchService.validatedSearchParameters$.subscribe(
+                (params) => {
+                    this.searchForm
+                        .get('keywords')
+                        ?.setValue(params.keywords ?? null);
+                    this.searchForm
+                        .get('type')
+                        ?.setValue((params.type as AuctionType) ?? null);
+                    this.searchForm
+                        .get('category')
+                        ?.setValue(
+                            params.category ?? params.macroCategory ?? null,
+                        );
+                },
+            ),
         );
     }
 
