@@ -12,8 +12,8 @@ import {
     filter,
     map,
     ReplaySubject,
+    Subscription,
     tap,
-    withLatestFrom,
 } from 'rxjs';
 
 @Component({
@@ -25,7 +25,7 @@ import {
 })
 export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
     private static readonly REQUEST_KEY = '/auctions';
-
+    private readonly subscriptions: Subscription[] = [];
     private readonly requestKeySubject = new ReplaySubject<void>(1);
 
     public readonly requestKey$ = this.requestKeySubject.asObservable().pipe(
@@ -43,34 +43,37 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
         let initialized = false;
         let newParams = false;
 
-        combineLatest([
-            this.searchService.validatedSearchParameters$.pipe(
-                tap(() => (newParams = true)),
-            ),
-            this.windowService.isMobile$,
-        ])
-            .pipe(
-                debounceTime(100),
-                filter((args) => (initialized || !args[1]) && newParams),
-                map((params) => params[0]),
-                tap(() => (newParams = false)),
-            )
-            .subscribe((params) => {
-                this.auctionsService.set(
-                    AuctionsSearchPageComponent.REQUEST_KEY,
-                    {
-                        queryParameters: params,
-                        pageNumber: 1,
-                        pageSize: 10,
-                        eager: true,
-                    },
-                );
-                this.requestKeySubject.next();
-                initialized = true;
-            });
+        this.subscriptions.push(
+            combineLatest([
+                this.searchService.validatedSearchParameters$.pipe(
+                    tap(() => (newParams = true)),
+                ),
+                this.windowService.isMobile$,
+            ])
+                .pipe(
+                    debounceTime(100),
+                    filter((args) => (initialized || !args[1]) && newParams),
+                    map((params) => params[0]),
+                    tap(() => (newParams = false)),
+                )
+                .subscribe((params) => {
+                    this.auctionsService.set(
+                        AuctionsSearchPageComponent.REQUEST_KEY,
+                        {
+                            queryParameters: params,
+                            pageNumber: 1,
+                            pageSize: 10,
+                            eager: true,
+                        },
+                    );
+                    this.requestKeySubject.next();
+                    initialized = true;
+                }),
+        );
     }
 
     ngOnDestroy(): void {
         this.requestKeySubject.complete();
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }
