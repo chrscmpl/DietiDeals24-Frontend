@@ -83,7 +83,6 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.searchService.updatedSearchParameters$.subscribe((params) => {
-                console.log(params);
                 this.searchForm
                     .get('keywords')
                     ?.setValue(params.keywords ?? null);
