@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -19,6 +19,8 @@ import {
     AuctionType,
 } from '../../typeUtils/auction.utils';
 import { CategoriesService } from '../../services/categories.service';
+import { Subscription } from 'rxjs';
+import { SearchServiceService } from '../../services/search-service.service';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -47,7 +49,8 @@ interface option {
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
 })
-export class SearchSectionComponent implements OnInit {
+export class SearchSectionComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription[] = [];
     public searchForm!: FormGroup<searchForm>;
 
     public auctionTypeOptions: option[] = [
@@ -59,6 +62,7 @@ export class SearchSectionComponent implements OnInit {
         private readonly oneCharUpperPipe: OneCharUpperPipe,
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
+        private readonly searchService: SearchServiceService,
     ) {}
 
     public ngOnInit(): void {
@@ -76,6 +80,25 @@ export class SearchSectionComponent implements OnInit {
                 };
             }),
         );
+
+        this.subscriptions.push(
+            this.searchService.updatedSearchParameters$.subscribe((params) => {
+                console.log(params);
+                this.searchForm
+                    .get('keywords')
+                    ?.setValue(params.keywords ?? null);
+                this.searchForm
+                    .get('type')
+                    ?.setValue((params.type as AuctionType) ?? null);
+                this.searchForm
+                    .get('category')
+                    ?.setValue(params.category ?? params.macroCategory ?? null);
+            }),
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
     public handleSubmit(): void {

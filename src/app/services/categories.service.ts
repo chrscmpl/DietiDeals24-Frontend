@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-interface Categories {
+export interface Categories {
     [key: string]: string[];
 }
 
