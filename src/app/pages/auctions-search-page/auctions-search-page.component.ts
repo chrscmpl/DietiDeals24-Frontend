@@ -5,7 +5,16 @@ import { AuctionsService } from '../../services/auctions.service';
 import { WindowService } from '../../services/window.service';
 import { SideSearchSectionComponent } from '../../components/side-search-section/side-search-section.component';
 import { SearchServiceService } from '../../services/search-service.service';
-import { debounceTime, distinctUntilChanged, map, ReplaySubject } from 'rxjs';
+import {
+    combineLatest,
+    debounceTime,
+    distinctUntilChanged,
+    filter,
+    map,
+    ReplaySubject,
+    tap,
+    withLatestFrom,
+} from 'rxjs';
 
 @Component({
     selector: 'dd24-auctions-search-page',
@@ -19,6 +28,9 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
 
     private readonly requestKeySubject = new ReplaySubject<void>(1);
 
+    private initialized: boolean = false;
+    private newParams: boolean = false;
+
     public readonly requestKey$ = this.requestKeySubject.asObservable().pipe(
         map(() => AuctionsSearchPageComponent.REQUEST_KEY),
         distinctUntilChanged(),
@@ -31,8 +43,20 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.searchService.validatedSearchParameters$
-            .pipe(debounceTime(100))
+        combineLatest([
+            this.searchService.validatedSearchParameters$.pipe(
+                tap(() => (this.newParams = true)),
+            ),
+            this.windowService.isMobile$,
+        ])
+            .pipe(
+                debounceTime(100),
+                filter(
+                    (args) => (this.initialized || !args[1]) && this.newParams,
+                ),
+                map((params) => params[0]),
+                tap(() => (this.newParams = false)),
+            )
             .subscribe((params) => {
                 this.auctionsService.set(
                     AuctionsSearchPageComponent.REQUEST_KEY,
@@ -44,6 +68,7 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
                     },
                 );
                 this.requestKeySubject.next();
+                this.initialized = true;
             });
     }
 
