@@ -1,0 +1,23 @@
+@use "viewports";
+@use "layouts";
+@use "box";
+
+.auctions-search-page {
+    @include layouts.grid("side-search auctions ." 1fr/ 15% 1fr 15%);
+    @include viewports.mobile {
+        @include layouts.grid("mobile-search" auto "auctions" 1fr / 1fr);
+        @include box.padding-horizontal(2%);
+    }
+}
+
+.side-search {
+    grid-area: side-search;
+}
+
+.auction-list {
+    grid-area: auctions;
+}
+
+.mobile-search {
+    grid-area: mobile-search;
+}

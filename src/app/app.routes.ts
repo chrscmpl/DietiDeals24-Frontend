@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { SearchResultsPageComponent } from './pages/search-results-page/search-results-page.component';
+import { AuctionsSearchPageComponent } from './pages/auctions-search-page/auctions-search-page.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { hideUIGuard } from './guards/hide-ui.guard';
 import { showUIGuard } from './guards/show-ui.guard';
@@ -26,7 +26,7 @@ export const routes: Routes = [
     {
         path: 'auctions',
         title: 'Auctions',
-        component: SearchResultsPageComponent,
+        component: AuctionsSearchPageComponent,
     },
     {
         path: 'your-page',

@@ -85,6 +85,15 @@
     }
 }
 
+.dd24-main-page-alt {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    min-height: 100%;
+    width: 100%;
+    padding-top: var(--page-items-gap);
+    padding-bottom: var(--page-items-gap);
+}
+
 .dd24-auth-form {
     border: var(--border);
     border-radius: var(--border-radius-large);

@@ -41,7 +41,7 @@ export class NotificationsService {
     ) {
         this.request = new PaginatedRequestManager({
             http: this.http,
-            url: `${environment.backendHost}/notifications`,
+            url: `${environment.backendHost}/notifications/all`,
             factory: (res: NotificationResponse): DisplayableNotification[] => {
                 this.notificationsCount = res.notificationsCount;
                 this.unreadNotificationsCount = res.unreadNotificationsCount;

@@ -9,7 +9,7 @@
             <div class="card-placeholder"></div>
         }
     } @empty {
-        @if (showEmpty) {
+        @if (showEmpty && !error) {
             <div class="empty-message">
                 No auctions corresponding to the search criteria
             </div>

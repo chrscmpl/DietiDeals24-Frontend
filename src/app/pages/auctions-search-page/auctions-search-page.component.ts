@@ -3,18 +3,21 @@ import { ActivatedRoute } from '@angular/router';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { AsyncPipe } from '@angular/common';
 import { AuctionsService } from '../../services/auctions.service';
+import { WindowService } from '../../services/window.service';
+import { SideSearchSectionComponent } from '../../components/side-search-section/side-search-section.component';
 
 @Component({
-    selector: 'dd24-search-results-page',
+    selector: 'dd24-auctions-search-page',
     standalone: true,
-    imports: [AuctionListComponent, AsyncPipe],
-    templateUrl: './search-results-page.component.html',
-    styleUrl: './search-results-page.component.scss',
+    imports: [AuctionListComponent, AsyncPipe, SideSearchSectionComponent],
+    templateUrl: './auctions-search-page.component.html',
+    styleUrl: './auctions-search-page.component.scss',
 })
-export class SearchResultsPageComponent implements OnInit {
+export class AuctionsSearchPageComponent implements OnInit {
     constructor(
         private readonly route: ActivatedRoute,
         private readonly auctionsService: AuctionsService,
+        public readonly windowService: WindowService,
     ) {}
 
     ngOnInit(): void {

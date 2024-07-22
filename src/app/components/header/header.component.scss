@@ -53,11 +53,13 @@
         }
 
         .navbar-tabs-section {
-            @include layouts.flex($justify: space-between);
+            @include layouts.flex($justify: space-between, $gap: 1rem);
 
             .navbar-tabs {
                 @include layouts.flex($align: stretch);
+                flex-shrink: 0;
                 .navbar-tab {
+                    @include layouts.flex($align: center);
                     padding: 0.2em 0.4em;
                     font-weight: var(--font-weight-bold);
                     border-right: var(--border);
@@ -67,6 +69,7 @@
                 }
             }
             .navbar-path {
+                flex-shrink: 1;
                 @include layouts.flex($align: center);
             }
         }

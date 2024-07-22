@@ -15,4 +15,5 @@ export type AuctionSearchParameters = Partial<{
     type: string;
     category: string;
     macroCategory: string;
+    policy: string;
 }>;
