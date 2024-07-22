@@ -28,9 +28,6 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
 
     private readonly requestKeySubject = new ReplaySubject<void>(1);
 
-    private initialized: boolean = false;
-    private newParams: boolean = false;
-
     public readonly requestKey$ = this.requestKeySubject.asObservable().pipe(
         map(() => AuctionsSearchPageComponent.REQUEST_KEY),
         distinctUntilChanged(),
@@ -43,19 +40,20 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        let initialized = false;
+        let newParams = false;
+
         combineLatest([
             this.searchService.validatedSearchParameters$.pipe(
-                tap(() => (this.newParams = true)),
+                tap(() => (newParams = true)),
             ),
             this.windowService.isMobile$,
         ])
             .pipe(
                 debounceTime(100),
-                filter(
-                    (args) => (this.initialized || !args[1]) && this.newParams,
-                ),
+                filter((args) => (initialized || !args[1]) && newParams),
                 map((params) => params[0]),
-                tap(() => (this.newParams = false)),
+                tap(() => (newParams = false)),
             )
             .subscribe((params) => {
                 this.auctionsService.set(
@@ -68,7 +66,7 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
                     },
                 );
                 this.requestKeySubject.next();
-                this.initialized = true;
+                initialized = true;
             });
     }
 
