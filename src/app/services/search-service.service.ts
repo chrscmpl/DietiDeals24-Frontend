@@ -13,6 +13,7 @@ import {
 import {
     AuctionSearchParameters,
     AuctionType,
+    SearchPolicy,
 } from '../typeUtils/auction.utils';
 import { Nullable } from '../typeUtils/nullable';
 import { cloneTruthy } from '../helpers/cloneTruthy';
@@ -115,8 +116,11 @@ export class SearchServiceService {
         return category;
     }
 
-    private validatePolicy(policy: string | undefined): string | null {
-        // if (policy == this.lastSearchParameters.policy) return policy ?? null;
-        return policy || null;
+    private validatePolicy(
+        policy: SearchPolicy | undefined,
+    ): SearchPolicy | null {
+        if (policy == this.lastSearchParameters.policy) return policy ?? null;
+        if (!policy || !Object.keys(SearchPolicy).includes(policy)) return null;
+        return policy as SearchPolicy;
     }
 }

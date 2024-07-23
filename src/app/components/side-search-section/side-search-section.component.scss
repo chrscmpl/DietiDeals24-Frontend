@@ -1,0 +1,38 @@
+@use "layouts";
+
+.side-search-form {
+    @include layouts.flex(column, center, stretch, 1rem, nowrap);
+    font-size: var(--font-size-small);
+    padding: 0.4rem;
+    color: var(--text-color-2);
+    font-weight: var(--font-weight-regular);
+}
+
+.side-search-policy-section {
+    @include layouts.flex(row, start, center, 1ch, nowrap);
+}
+
+.side-search-switch {
+    height: 1.25rem;
+}
+
+label {
+    cursor: pointer;
+}
+
+:host ::ng-deep {
+    .p-inputswitch {
+        height: 1.25rem;
+        width: 2rem;
+    }
+
+    .p-inputswitch-slider::before {
+        width: 0.65rem;
+        height: 0.65rem;
+        margin-top: -0.325rem;
+    }
+
+    .p-inputswitch-checked .p-inputswitch-slider::before {
+        transform: translateX(0.8rem);
+    }
+}

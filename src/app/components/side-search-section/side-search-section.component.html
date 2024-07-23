@@ -1,1 +1,17 @@
-<p>side-search-section works!</p>
+<form class="side-search-form" [formGroup]="sideSearchForm">
+    <section class="side-search-policy-section">
+        <p-inputSwitch
+            class="side-search-switch"
+            inputId="side-search-policy-switch"
+            formControlName="policy"
+            [falseValue]="policiesOptions.trending"
+            [trueValue]="policiesOptions.expiration"
+            (onChange)="onPolicyChange($event)"
+        />
+        <label for="side-search-policy-switch">Sort by time left</label>
+    </section>
+    <p-divider class="side-search-divider" [style]="{ margin: 0 }"></p-divider>
+    <section class="side-search-type-section">type</section>
+    <p-divider class="side-search-divider" [style]="{ margin: 0 }"></p-divider>
+    <section class="side-search-category-section">category</section>
+</form>

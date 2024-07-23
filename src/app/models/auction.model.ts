@@ -3,12 +3,12 @@ import {
     ReverseAuctionSummaryDTO,
     SilentAuctionSummaryDTO,
 } from '../DTOs/auction.dto';
-import { AuctionType, auctionStatus } from '../typeUtils/auction.utils';
+import { AuctionType, AuctionStatus } from '../typeUtils/auction.utils';
 import { Location } from './location.model';
 import { UserSummary } from './user.model';
 
 export abstract class AuctionSummary {
-    public static STATUSES = auctionStatus;
+    public static STATUSES = AuctionStatus;
     public static TYPES = AuctionType;
     private _id: string;
     private _username: string;
@@ -19,7 +19,7 @@ export abstract class AuctionSummary {
     private _location: Location;
     private _endTime: Date;
     private _pictureUrl: string | null;
-    private _status: auctionStatus;
+    private _status: AuctionStatus;
     private _currency: string;
 
     constructor(auction: Omit<AuctionSummaryDTO, 'auctionType'>) {
@@ -82,7 +82,7 @@ export abstract class AuctionSummary {
         return this._pictureUrl;
     }
 
-    public get status(): auctionStatus {
+    public get status(): AuctionStatus {
         return this._status;
     }
 

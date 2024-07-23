@@ -52,9 +52,18 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
             ])
                 .pipe(
                     debounceTime(100),
-                    filter((args) => (initialized || !args[1]) && newParams),
+                    filter(
+                        ([params, isMobile]) =>
+                            (initialized ||
+                                !isMobile ||
+                                Object.keys(params).length > 0) &&
+                            newParams,
+                    ),
                     map((params) => params[0]),
-                    tap(() => (newParams = false)),
+                    tap(() => {
+                        newParams = false;
+                        initialized = true;
+                    }),
                 )
                 .subscribe((params) => {
                     this.auctionsService.set(
@@ -67,7 +76,6 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
                         },
                     );
                     this.requestKeySubject.next();
-                    initialized = true;
                 }),
         );
     }

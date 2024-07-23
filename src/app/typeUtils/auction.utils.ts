@@ -3,11 +3,16 @@ export enum AuctionType {
     reverse = 'reverse',
 }
 
-export enum auctionStatus {
+export enum AuctionStatus {
     active = 'active',
     pending = 'pending',
     accepted = 'accepted',
     rejected = 'rejected',
+}
+
+export enum SearchPolicy {
+    trending = 'trending',
+    expiration = 'expiration',
 }
 
 export type AuctionSearchParameters = Partial<{
@@ -15,5 +20,5 @@ export type AuctionSearchParameters = Partial<{
     type: string;
     category: string;
     macroCategory: string;
-    policy: string;
+    policy: SearchPolicy;
 }>;

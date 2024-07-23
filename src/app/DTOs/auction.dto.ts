@@ -1,10 +1,10 @@
-import { AuctionType, auctionStatus } from '../typeUtils/auction.utils';
+import { AuctionType, AuctionStatus } from '../typeUtils/auction.utils';
 
 export interface AuctionSummaryDTO {
     id: string;
     username: string;
     type: AuctionType;
-    status: auctionStatus;
+    status: AuctionStatus;
     title: string;
     conditions?: string | null;
     country: string;
