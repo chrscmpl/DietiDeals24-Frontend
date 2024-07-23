@@ -3,7 +3,7 @@
 .side-search-form {
     @include layouts.flex(column, center, stretch, 1rem, nowrap);
     font-size: var(--font-size-small);
-    padding: 0.4rem;
+    padding: 0 1rem;
     color: var(--text-color-2);
     font-weight: var(--font-weight-regular);
     line-height: normal;
@@ -22,7 +22,8 @@
     font-weight: var(--font-weight-bold);
 }
 
-.side-search-type-section {
+.side-search-type-section,
+.side-search-category-section {
     @include layouts.flex(column, start, start, 0.5rem, nowrap);
 }
 
@@ -32,6 +33,19 @@
 
 label {
     cursor: pointer;
+}
+
+.side-search-category-item {
+    font-size: var(--font-size-small);
+    line-height: normal;
+    display: inline-block;
+    padding: 0.2rem;
+    color: var(--links-color);
+
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
 
 :host ::ng-deep {
@@ -48,5 +62,27 @@ label {
 
     .p-inputswitch-checked .p-inputswitch-slider::before {
         transform: translateX(0.8rem);
+    }
+
+    .p-menuitem-text {
+        font-size: var(--font-size-small);
+    }
+
+    .p-panelmenu-panel {
+        border: none;
+        margin: 0;
+        padding: 0.4rem 0;
+    }
+
+    .p-panelmenu-header-action,
+    .p-menuitem-link {
+        background: none;
+        padding: 0;
+    }
+
+    .p-panelmenu-header-content,
+    .p-panelmenu-content,
+    .p-menuitem-content {
+        background: none;
     }
 }

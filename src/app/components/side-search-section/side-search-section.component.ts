@@ -12,11 +12,15 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { CategoriesService } from '../../services/categories.service';
-import { Subscription, take } from 'rxjs';
+import { map, Observable, Subscription, take } from 'rxjs';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchChangeEvent, InputSwitchModule } from 'primeng/inputswitch';
 import { SearchServiceService } from '../../services/search-service.service';
 import { CheckboxModule } from 'primeng/checkbox';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { MenuItem } from 'primeng/api';
+import { AsyncPipe } from '@angular/common';
+import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 
 interface sideSearchForm {
     policy: FormControl<SearchPolicy | null>;
@@ -29,9 +33,12 @@ interface sideSearchForm {
     standalone: true,
     imports: [
         ReactiveFormsModule,
+        AsyncPipe,
+        OneCharUpperPipe,
         DividerModule,
         InputSwitchModule,
         CheckboxModule,
+        PanelMenuModule,
     ],
     templateUrl: './side-search-section.component.html',
     styleUrl: './side-search-section.component.scss',
@@ -44,14 +51,31 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
     public typesControl!: FormControl<AuctionType[] | null>;
     public categoryControl!: FormControl<string | null>;
 
-    public policiesOptions = SearchPolicy;
-    public typesOptions = AuctionType;
+    public readonly policiesOptions = SearchPolicy;
+    public readonly typesOptions = AuctionType;
+
+    public categoryItems$: Observable<MenuItem[]> =
+        this.categoriesService.categories$.pipe(
+            map((categories) => {
+                return Object.entries(categories).map(([key, value]) => {
+                    return {
+                        label: this.oneCharUpperPipe.transform(key),
+                        items: value.map((category) => {
+                            return {
+                                label: category,
+                            };
+                        }),
+                    };
+                });
+            }),
+        );
 
     constructor(
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
         private readonly formBuilder: FormBuilder,
         private readonly searchService: SearchServiceService,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
     public ngOnInit(): void {
@@ -85,6 +109,11 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
             params.type ? [params.type] : Object.values(AuctionType),
             { emitEvent: false },
         );
+
+        this.categoryControl.setValue(
+            params.category ?? params.macroCategory ?? null,
+            { emitEvent: false },
+        );
     }
 
     public onPolicyChange(e: InputSwitchChangeEvent): void {
@@ -97,11 +126,16 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
             this.typesControl.setValue([interactedValue]);
         } else {
             this.selectType(
-                this.typesControl.value.length > 1
+                this.typesControl.value.length ===
+                    Object.values(AuctionType).length
                     ? null
-                    : this.typesControl.value[0],
+                    : this.typesControl.value.join(','),
             );
         }
+    }
+
+    public onCategoryChange(category: string | null): void {
+        this.selectCategory(category);
     }
 
     private selectPolicy(policy: SearchPolicy | null): void {
@@ -110,7 +144,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         });
     }
 
-    private selectType(type: AuctionType | null) {
+    private selectType(type: string | null) {
         this.setQueryParams({ type });
     }
 
@@ -140,5 +174,14 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
             queryParams: params,
             queryParamsHandling: 'merge',
         });
+    }
+
+    public onCategoryItemKeyPress(
+        category: string | null,
+        e: KeyboardEvent,
+    ): void {
+        if (e.key === 'Enter') {
+            this.selectCategory(category);
+        }
     }
 }
