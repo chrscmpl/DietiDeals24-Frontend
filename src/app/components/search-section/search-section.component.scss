@@ -109,10 +109,14 @@
 
     .category-selection {
         @include viewports.desktop {
-            .p-dropdown,
-            .p-dropdown-panel {
+            .p-dropdown {
                 min-width: 30ch;
             }
+        }
+
+        .p-dropdown-panel {
+            min-width: 30ch;
+            margin-right: 0.9ch;
         }
     }
 
@@ -122,5 +126,9 @@
                 border-radius: 0;
             }
         }
+    }
+
+    .p-inputgroup-addon > div {
+        @include layouts.center;
     }
 }
