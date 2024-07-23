@@ -40,7 +40,6 @@ export class NavigationService {
     ) {
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),
-            map((event) => event as NavigationEnd),
             startWith(null),
             switchMap(() =>
                 merge(

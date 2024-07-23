@@ -15,11 +15,17 @@ import {
     Subscription,
     tap,
 } from 'rxjs';
+import { SearchSectionComponent } from '../../components/search-section/search-section.component';
 
 @Component({
     selector: 'dd24-auctions-search-page',
     standalone: true,
-    imports: [AuctionListComponent, AsyncPipe, SideSearchSectionComponent],
+    imports: [
+        AuctionListComponent,
+        AsyncPipe,
+        SideSearchSectionComponent,
+        SearchSectionComponent,
+    ],
     templateUrl: './auctions-search-page.component.html',
     styleUrl: './auctions-search-page.component.scss',
 })

@@ -19,8 +19,10 @@ import {
     AuctionType,
 } from '../../typeUtils/auction.utils';
 import { CategoriesService } from '../../services/categories.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { SearchServiceService } from '../../services/search-service.service';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { WindowService } from '../../services/window.service';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -45,6 +47,8 @@ interface option {
         DropdownModule,
         OneCharUpperPipe,
         CategorySelectionComponent,
+        AsyncPipe,
+        NgTemplateOutlet,
     ],
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
@@ -63,6 +67,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
         private readonly searchService: SearchServiceService,
+        public readonly windowService: WindowService,
     ) {}
 
     public ngOnInit(): void {
@@ -100,7 +105,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
@@ -119,6 +124,13 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
 
         this.router.navigate(['/auctions'], {
             queryParams: params,
+        });
+    }
+
+    public submitIfMobile() {
+        console.log('submitIfMobile');
+        this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
+            if (isMobile) this.handleSubmit();
         });
     }
 }

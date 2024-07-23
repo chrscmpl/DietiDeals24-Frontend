@@ -1,6 +1,6 @@
 <main class="auctions-search-page dd24-main-page-alt">
     @if (windowService.isMobile$ | async) {
-        <div class="mobile-search">MOBILE SEARCH</div>
+        <dd24-search-section></dd24-search-section>
     } @else {
         <dd24-side-search-section
             class="side-search"

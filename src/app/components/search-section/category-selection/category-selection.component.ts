@@ -1,4 +1,12 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { CategoriesService } from '../../../services/categories.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -41,6 +49,8 @@ interface group {
 export class CategorySelectionComponent implements OnInit, OnDestroy {
     @Input({ required: true }) form!: FormGroup;
     @Input({ required: true }) controlName!: string;
+
+    @Output() valueChange: EventEmitter<void> = new EventEmitter();
 
     @ViewChild('dropdown') dropdown!: Dropdown;
 
@@ -117,12 +127,18 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     }
 
     public setValue(value: string | null): void {
+        const oldValue = this.form.controls[this.controlName]?.value;
         this.form.controls[this.controlName]?.setValue(value);
         this.dropdown.hide();
+        if (oldValue !== value) this.valueChange.emit();
     }
 
     public onFilter(event: DropdownFilterEvent): void {
         this.showUI = event.filter.length === 0;
+    }
+
+    public emitChange(): void {
+        this.valueChange.emit();
     }
 
     private stringToOption(str: string, macroCategory: number): option {

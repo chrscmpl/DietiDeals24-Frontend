@@ -1,74 +1,115 @@
 @use "layouts";
+@use "viewports";
 
 .search-section {
     @include layouts.flex(row, start, stretch, 1ch);
     width: 100%;
     font-size: var(--font-size-large);
 
+    @include viewports.mobile {
+        justify-content: stretch;
+    }
+
     .search-inputs-container {
         @include layouts.flex(row, start, stretch);
         font-size: var(--font-size-medium);
-        border: 2px solid var(--outline-color);
         flex-grow: 1;
 
-        > :not(:last-child) {
-            border-right: 2px solid var(--outline-color);
+        @include viewports.desktop {
+            border: 2px solid var(--outline-color);
+
+            > :not(:last-child) {
+                border-right: 2px solid var(--outline-color);
+            }
         }
+
+        @include viewports.mobile {
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: 1rem;
+            gap: 1ch;
+        }
+    }
+}
+
+.search-bar-wrapper {
+    @include layouts.flex(row, space-between, stretch, 1ch);
+    flex-grow: 1;
+
+    @include viewports.mobile {
+        width: 100%;
+    }
+}
+
+.auction-type-selection,
+.category-selection {
+    @include viewports.mobile {
+        width: calc(50% - 0.6ch);
     }
 }
 
 :host ::ng-deep {
     .search-bar {
-        input {
-            border: none;
-            outline: none;
-            padding-left: 0;
-            box-shadow: none;
-        }
-        .p-inputgroup-addon {
-            border: none;
-            outline: none;
-            padding: 0;
-            color: var(--basic-affordances-color);
-            background: var(--inputs-background);
+        @include viewports.desktop {
+            input {
+                border: none;
+                outline: none;
+                padding-left: 0;
+                box-shadow: none;
+            }
+
+            .p-inputgroup-addon {
+                border: none;
+                outline: none;
+                padding: 0;
+                color: var(--basic-affordances-color);
+                background: var(--inputs-background);
+            }
         }
     }
 
     .auction-type-selection,
     .category-selection {
-        .p-dropdown {
-            border: none;
-            outline: none;
-            box-shadow: none;
-            min-width: 20ch;
-            .p-dropdown-label {
-                color: var(--text-color-1);
-            }
-            .p-dropdown-panel {
-                position: absolute;
-                top: 100%;
-                min-width: 20ch;
-                left: 0;
+        @include viewports.desktop {
+            .p-dropdown {
                 border: none;
-                outline: 2px solid var(--outline-color);
-                border-radius: 0;
-                .p-dropdown-items {
-                    padding: 0;
-                    .p-dropdown-item {
-                        border-radius: 0;
-                        margin-bottom: 0;
+                outline: none;
+                box-shadow: none;
+                min-width: 20ch;
+                .p-dropdown-label {
+                    color: var(--text-color-1);
+                }
+                .p-dropdown-panel {
+                    position: absolute;
+                    min-width: 20ch;
+                    top: 100%;
+                    left: 0;
+                    border: none;
+                    outline: 2px solid var(--outline-color);
+                    border-radius: 0;
+                    .p-dropdown-items {
+                        padding: 0;
+                        .p-dropdown-item {
+                            border-radius: 0;
+                            margin-bottom: 0;
+                        }
                     }
                 }
+                svg {
+                    color: var(--outline-color);
+                }
             }
-            svg {
-                color: var(--outline-color);
+        }
+        @include viewports.mobile {
+            .p-dropdown {
+                width: 100%;
             }
         }
     }
 
     .category-selection {
-        .p-dropdown {
-            min-width: 30ch;
+        @include viewports.desktop {
+            .p-dropdown,
             .p-dropdown-panel {
                 min-width: 30ch;
             }
@@ -76,8 +117,10 @@
     }
 
     .search-button {
-        button {
-            border-radius: 0;
+        @include viewports.desktop {
+            button {
+                border-radius: 0;
+            }
         }
     }
 }
