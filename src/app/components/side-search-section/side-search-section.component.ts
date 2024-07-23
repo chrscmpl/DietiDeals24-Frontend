@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuctionType, SearchPolicy } from '../../typeUtils/auction.utils';
+import {
+    AuctionSearchParameters,
+    AuctionType,
+    SearchPolicy,
+} from '../../typeUtils/auction.utils';
 import {
     FormBuilder,
     FormControl,
@@ -12,24 +16,36 @@ import { Subscription, take } from 'rxjs';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchChangeEvent, InputSwitchModule } from 'primeng/inputswitch';
 import { SearchServiceService } from '../../services/search-service.service';
+import { CheckboxModule } from 'primeng/checkbox';
 
 interface sideSearchForm {
     policy: FormControl<SearchPolicy | null>;
-    type: FormControl<AuctionType | null>;
+    types: FormControl<AuctionType[] | null>;
     category: FormControl<string | null>;
 }
 
 @Component({
     selector: 'dd24-side-search-section',
     standalone: true,
-    imports: [ReactiveFormsModule, DividerModule, InputSwitchModule],
+    imports: [
+        ReactiveFormsModule,
+        DividerModule,
+        InputSwitchModule,
+        CheckboxModule,
+    ],
     templateUrl: './side-search-section.component.html',
     styleUrl: './side-search-section.component.scss',
 })
 export class SideSearchSectionComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
+
     public sideSearchForm!: FormGroup<sideSearchForm>;
+    public policyControl!: FormControl<SearchPolicy | null>;
+    public typesControl!: FormControl<AuctionType[] | null>;
+    public categoryControl!: FormControl<string | null>;
+
     public policiesOptions = SearchPolicy;
+    public typesOptions = AuctionType;
 
     constructor(
         private readonly router: Router,
@@ -39,19 +55,19 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
+        this.policyControl = new FormControl<SearchPolicy | null>(null);
+        this.typesControl = new FormControl<AuctionType[] | null>([]);
+        this.categoryControl = new FormControl<string | null>(null);
+
         this.sideSearchForm = this.formBuilder.group<sideSearchForm>({
-            policy: new FormControl<SearchPolicy | null>(null),
-            type: new FormControl<AuctionType | null>(null),
-            category: new FormControl<string | null>(null),
+            policy: this.policyControl,
+            types: this.typesControl,
+            category: this.categoryControl,
         });
 
         this.subscriptions.push(
             this.searchService.validatedSearchParameters$.subscribe(
-                (params) => {
-                    this.sideSearchForm
-                        .get('policy')
-                        ?.setValue(params.policy ?? null, { emitEvent: false });
-                },
+                this.updateValues.bind(this),
             ),
         );
     }
@@ -60,20 +76,45 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
+    private updateValues(params: AuctionSearchParameters): void {
+        this.policyControl.setValue(params.policy ?? null, {
+            emitEvent: false,
+        });
+
+        this.typesControl.setValue(
+            params.type ? [params.type] : Object.values(AuctionType),
+            { emitEvent: false },
+        );
+    }
+
     public onPolicyChange(e: InputSwitchChangeEvent): void {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.selectPolicy(e.checked as any);
     }
 
-    public selectPolicy(policy: SearchPolicy | null): void {
-        this.setQueryParams({ policy });
+    public onTypeChange(interactedValue: AuctionType): void {
+        if (!this.typesControl.value || this.typesControl.value.length === 0) {
+            this.typesControl.setValue([interactedValue]);
+        } else {
+            this.selectType(
+                this.typesControl.value.length > 1
+                    ? null
+                    : this.typesControl.value[0],
+            );
+        }
     }
 
-    public selectType(type: AuctionType | null) {
+    private selectPolicy(policy: SearchPolicy | null): void {
+        this.setQueryParams({
+            policy: policy === SearchPolicy.trending ? null : policy,
+        });
+    }
+
+    private selectType(type: AuctionType | null) {
         this.setQueryParams({ type });
     }
 
-    public selectCategory(category: string | null): void {
+    private selectCategory(category: string | null): void {
         if (category === null) {
             this.setQueryParams({ category: null, macroCategory: null });
             return;

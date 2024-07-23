@@ -17,7 +17,7 @@ export enum SearchPolicy {
 
 export type AuctionSearchParameters = Partial<{
     keywords: string;
-    type: string;
+    type: AuctionType;
     category: string;
     macroCategory: string;
     policy: SearchPolicy;

@@ -6,6 +6,7 @@
     padding: 0.4rem;
     color: var(--text-color-2);
     font-weight: var(--font-weight-regular);
+    line-height: normal;
 }
 
 .side-search-policy-section {
@@ -14,6 +15,19 @@
 
 .side-search-switch {
     height: 1.25rem;
+}
+
+.side-search-header {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+}
+
+.side-search-type-section {
+    @include layouts.flex(column, start, start, 0.5rem, nowrap);
+}
+
+.side-search-checkbox-wrapper {
+    @include layouts.flex(row, start, center, 1ch, nowrap);
 }
 
 label {

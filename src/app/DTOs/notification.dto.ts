@@ -3,8 +3,8 @@ import { AuctionSummaryDTO } from './auction.dto';
 
 export interface NotificationResponse {
     notifications: NotificationDTO[];
-    notificationsCount: number;
-    unreadNotificationsCount: number;
+    notificationsCounter: number;
+    unreadNotifications: number;
 }
 
 export interface NotificationDTO {

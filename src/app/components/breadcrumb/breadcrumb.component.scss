@@ -1,4 +1,8 @@
 :host ::ng-deep {
+    .p-breadcrumb {
+        border-radius: 0;
+    }
+
     .p-breadcrumb-list {
         flex-wrap: wrap;
     }

@@ -16,6 +16,7 @@
     .title {
         font-size: var(--font-size-large);
         flex: 1;
+        line-height: calc(var(--font-size-large) * 0.8);
 
         &.long {
             font-size: var(--font-size-medium);

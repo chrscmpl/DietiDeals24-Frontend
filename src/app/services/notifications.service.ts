@@ -43,8 +43,8 @@ export class NotificationsService {
             http: this.http,
             url: `${environment.backendHost}/notifications/all`,
             factory: (res: NotificationResponse): DisplayableNotification[] => {
-                this.notificationsCount = res.notificationsCount;
-                this.unreadNotificationsCount = res.unreadNotificationsCount;
+                this.notificationsCount = res.notificationsCounter;
+                this.unreadNotificationsCount = res.unreadNotifications;
                 return notificationsBuilder.buildArray(res.notifications);
             },
             queryParameters: {},

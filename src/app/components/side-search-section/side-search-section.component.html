@@ -4,6 +4,7 @@
             class="side-search-switch"
             inputId="side-search-policy-switch"
             formControlName="policy"
+            name="policy"
             [falseValue]="policiesOptions.trending"
             [trueValue]="policiesOptions.expiration"
             (onChange)="onPolicyChange($event)"
@@ -11,7 +12,27 @@
         <label for="side-search-policy-switch">Sort by time left</label>
     </section>
     <p-divider class="side-search-divider" [style]="{ margin: 0 }"></p-divider>
-    <section class="side-search-type-section">type</section>
+    <section class="side-search-type-section">
+        <h4 class="side-search-header">Auction type</h4>
+        <div class="side-search-checkbox-wrapper">
+            <p-checkbox
+                formControlName="types"
+                inputId="type"
+                [value]="typesOptions.silent"
+                (onChange)="onTypeChange(typesOptions.silent)"
+            ></p-checkbox>
+            <label for="type">Silent Auctions</label>
+        </div>
+        <div class="side-search-checkbox-wrapper">
+            <p-checkbox
+                formControlName="types"
+                inputId="type"
+                [value]="typesOptions.reverse"
+                (onChange)="onTypeChange(typesOptions.reverse)"
+            ></p-checkbox>
+            <label for="type">Reverse Auctions</label>
+        </div>
+    </section>
     <p-divider class="side-search-divider" [style]="{ margin: 0 }"></p-divider>
     <section class="side-search-category-section">category</section>
 </form>
