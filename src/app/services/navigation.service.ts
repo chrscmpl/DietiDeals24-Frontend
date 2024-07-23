@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import {
     Observable,
+    auditTime,
     distinctUntilChanged,
     filter,
     map,
+    merge,
     shareReplay,
     startWith,
     switchMap,
@@ -36,16 +38,15 @@ export class NavigationService {
         private route: ActivatedRoute,
         private searchService: SearchServiceService,
     ) {
-        const queryParams$ = this.route.queryParams.pipe(shareReplay(1));
-
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),
             map((event) => event as NavigationEnd),
             startWith(null),
-            switchMap((event: NavigationEnd | null) =>
-                event && event.urlAfterRedirects.startsWith('/auctions')
-                    ? this.searchService.validatedSearchParameters$
-                    : queryParams$,
+            switchMap(() =>
+                merge(
+                    this.route.queryParams,
+                    this.searchService.validatedSearchParameters$,
+                ).pipe(auditTime(100)),
             ),
             map((query) => ({
                 path: this.getCurrentPath(),
