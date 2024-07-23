@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import {
     Observable,
     distinctUntilChanged,
@@ -7,12 +7,12 @@ import {
     map,
     shareReplay,
     startWith,
-    withLatestFrom,
+    switchMap,
 } from 'rxjs';
+import { SearchServiceService } from './search-service.service';
+import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 
-interface query {
-    [key: string]: string;
-}
+type query = Params | AuctionSearchParameters;
 
 @Injectable({
     providedIn: 'root',
@@ -34,12 +34,20 @@ export class NavigationService {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private searchService: SearchServiceService,
     ) {
+        const queryParams$ = this.route.queryParams.pipe(shareReplay(1));
+
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),
+            map((event) => event as NavigationEnd),
             startWith(null),
-            withLatestFrom(this.route.queryParams),
-            map(([_, query]) => ({
+            switchMap((event: NavigationEnd | null) =>
+                event && event.urlAfterRedirects.startsWith('/auctions')
+                    ? this.searchService.validatedSearchParameters$
+                    : queryParams$,
+            ),
+            map((query) => ({
                 path: this.getCurrentPath(),
                 query: query,
             })),
