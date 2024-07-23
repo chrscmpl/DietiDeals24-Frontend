@@ -37,6 +37,7 @@
     flex-grow: 1;
 
     @include viewports.mobile {
+        height: 2.65rem;
         width: 100%;
     }
 }
@@ -68,6 +69,15 @@
         }
     }
 
+    .auction-type-selection {
+        @include viewports.desktop {
+            .p-dropdown,
+            .p-dropdown-panel {
+                min-width: 20ch;
+            }
+        }
+    }
+
     .auction-type-selection,
     .category-selection {
         @include viewports.desktop {
@@ -75,13 +85,11 @@
                 border: none;
                 outline: none;
                 box-shadow: none;
-                min-width: 20ch;
                 .p-dropdown-label {
                     color: var(--text-color-1);
                 }
                 .p-dropdown-panel {
                     position: absolute;
-                    min-width: 20ch;
                     top: 100%;
                     left: 0;
                     border: none;
@@ -116,7 +124,9 @@
 
         .p-dropdown-panel {
             min-width: 30ch;
-            margin-right: 0.9ch;
+            @include viewports.mobile {
+                margin-right: 0.9ch;
+            }
         }
     }
 
