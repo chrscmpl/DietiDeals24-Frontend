@@ -1,18 +1,15 @@
+import { MediaMatcher } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
-import {
-    ReplaySubject,
-    distinctUntilChanged,
-    fromEvent,
-    map,
-    shareReplay,
-    startWith,
-} from 'rxjs';
+import { ReplaySubject, fromEvent, map, shareReplay, startWith } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class WindowService {
-    constructor() {
+    private readonly matchMobile =
+        this.mediaMatcher.matchMedia('(max-width: 768px)');
+
+    constructor(private readonly mediaMatcher: MediaMatcher) {
         this.UIhiddenSUbject.next(false);
     }
 
@@ -26,14 +23,12 @@ export class WindowService {
         this.UIhiddenSUbject.next(!isVisible);
     }
 
-    public isMobile$ = fromEvent(window, 'resize', { passive: true }).pipe(
-        startWith(this.getIsMobile()),
-        map(() => this.getIsMobile()),
-        distinctUntilChanged(),
+    public isMobile$ = fromEvent<MediaQueryListEvent>(
+        this.matchMobile,
+        'change',
+    ).pipe(
+        map((e) => e.matches),
+        startWith(this.matchMobile.matches),
         shareReplay(1),
     );
-
-    private getIsMobile() {
-        return window.innerWidth <= 768;
-    }
 }

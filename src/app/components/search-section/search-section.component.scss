@@ -15,7 +15,7 @@
         font-size: var(--font-size-medium);
         flex-grow: 1;
 
-        @include viewports.desktop {
+        @include viewports.notMobile {
             border: 2px solid var(--outline-color);
 
             > :not(:last-child) {
@@ -51,7 +51,7 @@
 
 :host ::ng-deep {
     .search-bar {
-        @include viewports.desktop {
+        @include viewports.notMobile {
             input {
                 border: none;
                 outline: none;
@@ -70,7 +70,7 @@
     }
 
     .auction-type-selection {
-        @include viewports.desktop {
+        @include viewports.notMobile {
             .p-dropdown,
             .p-dropdown-panel {
                 min-width: 20ch;
@@ -80,7 +80,7 @@
 
     .auction-type-selection,
     .category-selection {
-        @include viewports.desktop {
+        @include viewports.notMobile {
             .p-dropdown {
                 border: none;
                 outline: none;
@@ -116,7 +116,7 @@
     }
 
     .category-selection {
-        @include viewports.desktop {
+        @include viewports.notMobile {
             .p-dropdown {
                 min-width: 30ch;
             }
@@ -131,7 +131,7 @@
     }
 
     .search-button {
-        @include viewports.desktop {
+        @include viewports.notMobile {
             button {
                 border-radius: 0;
             }

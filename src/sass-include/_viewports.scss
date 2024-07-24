@@ -4,8 +4,8 @@
     }
 }
 
-@mixin desktop {
-    @media (min-width: 769px) {
+@mixin notMobile {
+    @media not (max-width: 768px) {
         @content;
     }
 }
