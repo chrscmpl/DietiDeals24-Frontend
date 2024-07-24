@@ -93,7 +93,7 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
 
         const height = this.element.nativeElement.clientHeight;
 
-        if (this.scrollPosition === 0) {
+        if (this.scrollPosition <= 10) {
             this.sticky = false;
         } else if (this.scrollPosition > height) {
             if (

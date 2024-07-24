@@ -45,9 +45,12 @@
         <section class="navbar-tabs-section">
             <section class="navbar-tabs">
                 @for (tab of tabs; track $index) {
-                    <a class="navbar-tab custom-link" [routerLink]="tab.url">{{
-                        tab.name
-                    }}</a>
+                    <a
+                        class="navbar-tab custom-link"
+                        [routerLink]="tab.url"
+                        routerLinkActive="navbar-tab-active"
+                        >{{ tab.name }}</a
+                    >
                 }
             </section>
             <section class="navbar-path">

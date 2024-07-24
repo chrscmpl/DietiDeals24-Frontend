@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search-section/search-section.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ import { NotificationsMenuComponent } from '../notifications-menu/notifications-
     imports: [
         SearchSectionComponent,
         RouterLink,
+        RouterLinkActive,
         TitleCasePipe,
         AsyncPipe,
         ButtonModule,

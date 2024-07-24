@@ -66,6 +66,9 @@
                     &:first-child {
                         border-left: var(--border);
                     }
+                    &.navbar-tab-active {
+                        background-color: var(--border-color-transparent);
+                    }
                 }
             }
             .navbar-path {

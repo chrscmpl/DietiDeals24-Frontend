@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit {
                     items: categories.map((category) => {
                         return {
                             label: category,
-                            routerLink: ['/search', { category: category }],
+                            routerLink: ['/auctions', { category: category }],
                             command: () => this.hideSidebar(),
                         };
                     }),
