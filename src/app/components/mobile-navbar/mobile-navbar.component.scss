@@ -25,10 +25,13 @@
         }
 
         &.nav-entry-active {
-            background-color: var(--border-color-transparent);
+            background: radial-gradient(
+                var(--border-color-transparent) 0%,
+                transparent 140%
+            );
 
             .nav-link-icon:not(.create) {
-                color: var(--text-color-2);
+                color: var(--text-color-3);
             }
         }
     }

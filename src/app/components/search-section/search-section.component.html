@@ -12,7 +12,6 @@
     class="search-section"
     [formGroup]="searchForm"
     (ngSubmit)="handleSubmit()"
-    [class.mobile]="windowService.isMobile$ | async"
 >
     <div class="search-inputs-container">
         <div class="search-bar-wrapper">
@@ -37,25 +36,32 @@
                 </button>
             }
         </div>
-        @if (showExtraControls) {
+        @if (renderExtraControls) {
             <p-dropdown
                 class="auction-type-selection"
+                [class.extra-control-shown]="showExtraControls"
+                [class.hidden]="displayNoneExtraControls"
                 formControlName="type"
                 [options]="auctionTypeOptions"
                 optionLabel="name"
                 optionValue="value"
                 (onChange)="submitIfMobile()"
-                appendTo="body"
             >
             </p-dropdown>
             <dd24-category-selection
                 class="category-selection"
+                [class.extra-control-shown]="showExtraControls"
+                [class.hidden]="displayNoneExtraControls"
                 [form]="searchForm"
                 controlName="category"
                 (valueChange)="submitIfMobile()"
             ></dd24-category-selection>
             @if (windowService.isMobile$ | async) {
-                <div class="policy-selection">
+                <div
+                    class="policy-selection"
+                    [class.extra-control-shown]="showExtraControls"
+                    [class.hidden]="displayNoneExtraControls"
+                >
                     <p-inputSwitch
                         class="policy-switch"
                         inputId="search-section-policy-switch"

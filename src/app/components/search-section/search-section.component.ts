@@ -67,7 +67,9 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
 
     public policyOptions = SearchPolicy;
 
+    public displayNoneExtraControls: boolean = true;
     public showExtraControls: boolean = false;
+    public renderExtraControls: boolean = false;
 
     constructor(
         private readonly formBuilder: FormBuilder,
@@ -118,6 +120,8 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
                 .pipe(filter((isMobile) => !isMobile))
                 .subscribe(() => {
                     this.showExtraControls = true;
+                    this.renderExtraControls = true;
+                    this.displayNoneExtraControls = false;
                     this.searchForm.get('policy')?.setValue(null);
                 }),
         ]);
@@ -153,6 +157,15 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
     }
 
     public toggleExtraControls() {
-        this.showExtraControls = !this.showExtraControls;
+        if (this.renderExtraControls === false) this.renderExtraControls = true;
+        if (this.showExtraControls) {
+            this.showExtraControls = false;
+            setTimeout(() => {
+                if (this) this.displayNoneExtraControls = true;
+            }, 60);
+            return;
+        }
+        this.displayNoneExtraControls = false;
+        this.showExtraControls = true;
     }
 }

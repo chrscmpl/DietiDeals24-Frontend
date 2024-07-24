@@ -5,7 +5,10 @@
 .auctions-search-page {
     @include layouts.grid("side-search auctions ." 1fr/ 15% 1fr 15%);
     @include viewports.mobile {
-        @include layouts.grid("mobile-search" auto "auctions" 1fr / 1fr);
+        @include layouts.grid(
+            $template: "mobile-search" auto "auctions" 1fr / 1fr,
+            $gap: var(--page-items-gap)
+        );
         @include box.padding-horizontal(2%);
     }
 }

@@ -33,3 +33,15 @@
         flex: 1;
     }
 }
+
+.link-active {
+    background: radial-gradient(
+        var(--border-color-transparent) 0%,
+        transparent 140%
+    );
+    border-radius: 5000px;
+
+    .link-icon {
+        color: var(--text-color-3);
+    }
+}

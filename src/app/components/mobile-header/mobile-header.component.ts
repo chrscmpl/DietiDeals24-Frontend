@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WindowService } from '../../services/window.service';
 import { AsyncPipe, Location } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { LogoComponent } from '../logo/logo.component';
 import { NavigationService } from '../../services/navigation.service';
@@ -10,7 +10,7 @@ import { delay, map, Observable, shareReplay, startWith, tap } from 'rxjs';
 @Component({
     selector: 'dd24-mobile-header',
     standalone: true,
-    imports: [AsyncPipe, RouterLink, LogoComponent],
+    imports: [AsyncPipe, RouterLink, RouterLinkActive, LogoComponent],
     templateUrl: './mobile-header.component.html',
     styleUrl: './mobile-header.component.scss',
 })
