@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -17,17 +17,20 @@ import { Nullable } from '../../typeUtils/nullable';
 import {
     AuctionSearchParameters,
     AuctionType,
+    SearchPolicy,
 } from '../../typeUtils/auction.utils';
 import { CategoriesService } from '../../services/categories.service';
-import { Subscription, take } from 'rxjs';
+import { filter, Subscription, take } from 'rxjs';
 import { SearchServiceService } from '../../services/search-service.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { WindowService } from '../../services/window.service';
+import { InputSwitch, InputSwitchModule } from 'primeng/inputswitch';
 
 interface searchForm {
     keywords: FormControl<string | null>;
     type: FormControl<AuctionType | null>;
     category: FormControl<string | null>;
+    policy: FormControl<SearchPolicy | null>;
 }
 
 interface option {
@@ -49,6 +52,7 @@ interface option {
         CategorySelectionComponent,
         AsyncPipe,
         NgTemplateOutlet,
+        InputSwitchModule,
     ],
     templateUrl: './search-section.component.html',
     styleUrl: './search-section.component.scss',
@@ -60,6 +64,8 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
     public auctionTypeOptions: option[] = [
         { name: 'All auctions', value: null },
     ];
+
+    public policyOptions = SearchPolicy;
 
     constructor(
         private readonly formBuilder: FormBuilder,
@@ -75,6 +81,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
             keywords: new FormControl<string | null>(null),
             type: new FormControl<AuctionType | null>(null),
             category: new FormControl<string | null>(null),
+            policy: new FormControl<SearchPolicy | null>(null),
         });
 
         this.auctionTypeOptions = this.auctionTypeOptions.concat(
@@ -86,7 +93,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
             }),
         );
 
-        this.subscriptions.push(
+        this.subscriptions = this.subscriptions.concat([
             this.searchService.validatedSearchParameters$.subscribe(
                 (params) => {
                     this.searchForm
@@ -100,9 +107,17 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
                         ?.setValue(
                             params.category ?? params.macroCategory ?? null,
                         );
+                    this.searchForm
+                        .get('policy')
+                        ?.setValue(params.policy ?? null);
                 },
             ),
-        );
+            this.windowService.isMobile$
+                .pipe(filter((isMobile) => !isMobile))
+                .subscribe(() => {
+                    this.searchForm.get('policy')?.setValue(null);
+                }),
+        ]);
     }
 
     public ngOnDestroy(): void {

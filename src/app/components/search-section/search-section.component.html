@@ -44,6 +44,22 @@
             controlName="category"
             (valueChange)="submitIfMobile()"
         ></dd24-category-selection>
+        @if (windowService.isMobile$ | async) {
+            <div class="policy-selection">
+                <p-inputSwitch
+                    class="policy-switch"
+                    inputId="search-section-policy-switch"
+                    formControlName="policy"
+                    name="policy"
+                    [falseValue]="policyOptions.trending"
+                    [trueValue]="policyOptions.expiration"
+                    (onChange)="submitIfMobile()"
+                />
+                <label for="search-section-policy-switch"
+                    >Sort by time left</label
+                >
+            </div>
+        }
     </div>
     @if ((windowService.isMobile$ | async) === false) {
         <ng-container *ngTemplateOutlet="searchButton"></ng-container>
