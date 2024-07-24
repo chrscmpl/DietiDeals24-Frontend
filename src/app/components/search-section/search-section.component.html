@@ -12,6 +12,7 @@
     class="search-section"
     [formGroup]="searchForm"
     (ngSubmit)="handleSubmit()"
+    [class.mobile]="windowService.isMobile$ | async"
 >
     <div class="search-inputs-container">
         <div class="search-bar-wrapper">
@@ -27,38 +28,48 @@
             </p-inputGroup>
             @if (windowService.isMobile$ | async) {
                 <ng-container *ngTemplateOutlet="searchButton"></ng-container>
+                <button
+                    type="button"
+                    class="extra-controls-btn"
+                    (click)="toggleExtraControls()"
+                >
+                    <i class="pi pi-ellipsis-v"></i>
+                </button>
             }
         </div>
-        <p-dropdown
-            class="auction-type-selection"
-            formControlName="type"
-            [options]="auctionTypeOptions"
-            optionLabel="name"
-            optionValue="value"
-            (onChange)="submitIfMobile()"
-        >
-        </p-dropdown>
-        <dd24-category-selection
-            class="category-selection"
-            [form]="searchForm"
-            controlName="category"
-            (valueChange)="submitIfMobile()"
-        ></dd24-category-selection>
-        @if (windowService.isMobile$ | async) {
-            <div class="policy-selection">
-                <p-inputSwitch
-                    class="policy-switch"
-                    inputId="search-section-policy-switch"
-                    formControlName="policy"
-                    name="policy"
-                    [falseValue]="policyOptions.trending"
-                    [trueValue]="policyOptions.expiration"
-                    (onChange)="submitIfMobile()"
-                />
-                <label for="search-section-policy-switch"
-                    >Sort by time left</label
-                >
-            </div>
+        @if (showExtraControls) {
+            <p-dropdown
+                class="auction-type-selection"
+                formControlName="type"
+                [options]="auctionTypeOptions"
+                optionLabel="name"
+                optionValue="value"
+                (onChange)="submitIfMobile()"
+                appendTo="body"
+            >
+            </p-dropdown>
+            <dd24-category-selection
+                class="category-selection"
+                [form]="searchForm"
+                controlName="category"
+                (valueChange)="submitIfMobile()"
+            ></dd24-category-selection>
+            @if (windowService.isMobile$ | async) {
+                <div class="policy-selection">
+                    <p-inputSwitch
+                        class="policy-switch"
+                        inputId="search-section-policy-switch"
+                        formControlName="policy"
+                        name="policy"
+                        [falseValue]="policyOptions.trending"
+                        [trueValue]="policyOptions.expiration"
+                        (onChange)="submitIfMobile()"
+                    />
+                    <label for="search-section-policy-switch"
+                        >Sort by time left</label
+                    >
+                </div>
+            }
         }
     </div>
     @if ((windowService.isMobile$ | async) === false) {

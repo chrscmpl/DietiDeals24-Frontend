@@ -24,7 +24,7 @@ import { filter, Subscription, take } from 'rxjs';
 import { SearchServiceService } from '../../services/search-service.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { WindowService } from '../../services/window.service';
-import { InputSwitch, InputSwitchModule } from 'primeng/inputswitch';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -66,6 +66,8 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
     ];
 
     public policyOptions = SearchPolicy;
+
+    public showExtraControls: boolean = false;
 
     constructor(
         private readonly formBuilder: FormBuilder,
@@ -115,6 +117,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
             this.windowService.isMobile$
                 .pipe(filter((isMobile) => !isMobile))
                 .subscribe(() => {
+                    this.showExtraControls = true;
                     this.searchForm.get('policy')?.setValue(null);
                 }),
         ]);
@@ -147,5 +150,9 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
             if (isMobile) this.handleSubmit();
         });
+    }
+
+    public toggleExtraControls() {
+        this.showExtraControls = !this.showExtraControls;
     }
 }

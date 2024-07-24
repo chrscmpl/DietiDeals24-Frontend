@@ -12,6 +12,7 @@
         scrollHeight="20em"
         (onFilter)="onFilter($event)"
         (onChange)="emitChange()"
+        appendTo="body"
     >
         <ng-template let-group pTemplate="group">
             @if (showUI && group.macroCategory === -1) {

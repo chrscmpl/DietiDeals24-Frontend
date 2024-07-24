@@ -53,12 +53,38 @@
     @include layouts.flex(row, start, center, 1ch);
     font-size: var(--font-size-medium);
     color: var(--text-color-2);
+
     .policy-switch {
         @include layouts.center;
     }
 
     label {
         cursor: pointer;
+    }
+}
+
+.extra-controls-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    @include layouts.center;
+
+    i {
+        color: var(--text-color-3);
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bold);
+
+        &:active {
+            color: var(--text-color-2);
+        }
+    }
+}
+
+.mobile {
+    .auction-type-selection,
+    .category-selection,
+    .policy-selection {
+        animation: fadeInFromTop 0.15s linear forwards;
     }
 }
 

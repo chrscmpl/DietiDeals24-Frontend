@@ -72,6 +72,35 @@
     }
 }
 
+@keyframes fadeInFromTop {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scaleY(0);
+        height: 0;
+    }
+    20% {
+        height: calc(fit-content / 5);
+    }
+    33% {
+        height: calc(fit-content / 3);
+    }
+    50% {
+        opacity: 0;
+        height: calc(fit-content / 2);
+    }
+    66% {
+        height: calc(fit-content / 1.5);
+    }
+    80% {
+        height: calc(fit-content / 1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+        height: fit-content;
+    }
+}
+
 .dd24-main-page {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
     font-size: var(--font-size-medium);
