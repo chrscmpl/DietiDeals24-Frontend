@@ -1,4 +1,6 @@
 import {
+    AuctionDTO,
+    AuctionSummaryDTO,
     ReverseAuctionDTO,
     ReverseAuctionSummaryDTO,
     SilentAuctionDTO,
@@ -17,29 +19,27 @@ import {
 import { AuctionType } from '../../typeUtils/auction.utils';
 import { Builder } from './Builder';
 
-export const auctionSummaryBuilder = new Builder<AuctionSummary>(
-    (type: string) => {
-        switch (type) {
-            case AuctionType.silent:
-                return (item: SilentAuctionSummaryDTO) =>
-                    new SilentAuctionSummary(item);
-            case AuctionType.reverse:
-                return (item: ReverseAuctionSummaryDTO) =>
-                    new ReverseAuctionSummary(item);
-            default:
-                throw new Error('Invalid auction summary DTO');
-        }
-    },
-    'type',
-);
-
-export const auctionBuilder = new Builder<Auction>((type: string) => {
-    switch (type) {
+export const auctionSummaryBuilder = new Builder<
+    AuctionSummaryDTO,
+    AuctionSummary
+>((dto) => {
+    switch (dto.type) {
         case AuctionType.silent:
-            return (item: SilentAuctionDTO) => new SilentAuction(item);
+            return new SilentAuctionSummary(dto as SilentAuctionSummaryDTO);
         case AuctionType.reverse:
-            return (item: ReverseAuctionDTO) => new ReverseAuction(item);
+            return new ReverseAuctionSummary(dto as ReverseAuctionSummaryDTO);
+        default:
+            throw new Error('Invalid auction summary DTO');
+    }
+});
+
+export const auctionBuilder = new Builder<AuctionDTO, Auction>((dto) => {
+    switch (dto.type) {
+        case AuctionType.silent:
+            return new SilentAuction(dto as SilentAuctionDTO);
+        case AuctionType.reverse:
+            return new ReverseAuction(dto as ReverseAuctionDTO);
         default:
             throw new Error('Invalid auction DTO');
     }
-}, 'type');
+});

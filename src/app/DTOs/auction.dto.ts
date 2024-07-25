@@ -25,11 +25,13 @@ export interface ReverseAuctionSummaryDTO extends AuctionSummaryDTO {
 }
 
 export interface AuctionDTO extends AuctionSummaryDTO {
-    description: string;
-    bids: number;
+    category: string;
+    description?: string | null;
+    bids?: number | null;
     username: string;
+    profilePictureUrl?: string | null;
     pictureUrl: undefined;
-    pictures: string[];
+    picturesUrls: string[];
 }
 
 export interface SilentAuctionDTO extends AuctionDTO, SilentAuctionSummaryDTO {

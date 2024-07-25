@@ -1,0 +1,25 @@
+<div class="user-preview">
+    <p-avatar
+        class="avatar"
+        [icon]="
+            !profilePictureUrl || showProfilePicturePlaceholder
+                ? 'pi pi-user'
+                : undefined
+        "
+        shape="circle"
+        [style]="{
+            'background-color': 'var(--accent-color-2)',
+            border: '2px solid var(--outline-color)',
+            color: 'var(--text-accent-color-2)',
+            'border-width': '2px'
+        }"
+        [image]="
+            profilePictureUrl && !showProfilePicturePlaceholder
+                ? profilePictureUrl
+                : undefined
+        "
+        (onImageError)="onProfilePictureError()"
+    ></p-avatar>
+    <span class="username">{{ username }}</span>
+    <span class="location">{{ city }}, {{ country }}</span>
+</div>

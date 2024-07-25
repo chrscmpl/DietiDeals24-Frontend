@@ -7,24 +7,32 @@ import { AuctionType } from '../typeUtils/auction.utils';
 import { AuctionSummary } from './auction.summary.model';
 
 export abstract class Auction extends AuctionSummary {
-    private _description: string;
-    private _bids: number;
+    private _category: string;
+    private _description: string | null;
+    private _bids: number | null;
     private _username: string;
-    private _pictures: string[];
+    private _profilePictureUrl: string | null;
+    private _picturesUrls: string[];
 
-    constructor(auction: AuctionDTO) {
-        super(auction);
-        this._description = auction.description;
-        this._bids = auction.bids;
-        this._username = auction.username;
-        this._pictures = auction.pictures;
+    constructor(dto: AuctionDTO) {
+        super(dto);
+        this._category = dto.category;
+        this._description = dto.description ?? null;
+        this._bids = dto.bids ?? null;
+        this._username = dto.username;
+        this._profilePictureUrl = dto.profilePictureUrl ?? null;
+        this._picturesUrls = dto.picturesUrls;
     }
 
-    public get description(): string {
+    public get category(): string {
+        return this._category;
+    }
+
+    public get description(): string | null {
         return this._description;
     }
 
-    public get bids(): number {
+    public get bids(): number | null {
         return this._bids;
     }
 
@@ -32,8 +40,12 @@ export abstract class Auction extends AuctionSummary {
         return this._username;
     }
 
-    public get pictures(): string[] {
-        return this._pictures;
+    public get profilePictureUrl(): string | null {
+        return this._profilePictureUrl;
+    }
+
+    public get picturesUrls(): string[] {
+        return this._picturesUrls;
     }
 }
 

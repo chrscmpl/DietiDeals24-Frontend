@@ -1,25 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export class Builder<T> {
-    private getConstructor: (type: string) => (item: any) => T;
-    private typeKey: string;
+export class Builder<DTO, Entity> {
+    private factory: (dto: DTO) => Entity;
 
-    public constructor(
-        getConstructor: (type: string) => (item: any) => T,
-        typeKey: string,
-    ) {
-        this.getConstructor = getConstructor;
-        this.typeKey = typeKey;
+    public constructor(factory: (dto: DTO) => Entity) {
+        this.factory = factory;
     }
 
-    private build(item: any): T {
-        return this.getConstructor(item[this.typeKey])(item);
+    public buildSingle(dto: DTO): Entity {
+        return this.factory(dto);
     }
 
-    public buildSingle(item: any): T {
-        return this.build(item);
-    }
-
-    public buildArray(items: any[]): T[] {
-        return items.map((item) => this.build(item));
+    public buildArray(dtos: DTO[]): Entity[] {
+        return dtos.map((dto) => this.factory(dto));
     }
 }

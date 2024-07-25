@@ -1,15 +1,66 @@
-:host ::ng-deep {
-    .p-dialog {
-        position: relative;
-    }
-    .p-dialog-header {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 0;
-        background: none;
-    }
-    .p-dialog-content {
-        border-radius: var(--border-radius-large);
-    }
+@use "layouts";
+
+.auction-details {
+    @include layouts.grid(
+        $template: "picture picture" auto "category user" auto "title title"
+            auto "conditions conditions" auto "description description" auto
+            "separator-1 separator-1" auto "auction-type auction-type" auto
+            "bid bid" auto "time time" auto "separator-2 separator-2" auto
+            "bid-btn bid-btn" auto / 1fr 1fr,
+
+        $gap: 0,
+        $justify-items: center,
+        $align-items: center,
+        $justify-content: stretch,
+        $align-content: stretch
+    );
+    --auction-details-padding: 1.5rem;
+    width: 100%;
+    min-height: max(98svh, 45rem);
+    color: var(--text-color-1);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    padding: var(--auction-details-padding);
+    overflow: visible;
+}
+
+.auction-image-container {
+    grid-area: picture;
+    @include layouts.center;
+    height: 20rem;
+    width: calc(100% + var(--auction-details-padding) * 2);
+    background-color: black;
+    border-bottom: var(--border);
+    margin: calc(var(--auction-details-padding) * -1);
+    margin-bottom: 0;
+}
+
+.auction-image {
+    display: block;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.auction-category {
+    grid-area: category;
+    font-size: var(--font-size-large);
+    color: var(--text-color-3);
+    font-weight: var(--font-weight-bold);
+    justify-self: start;
+}
+
+.auction-title {
+    grid-area: title;
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+}
+
+.auction-conditions {
+    grid-area: conditions;
+    color: var(--text-color-3);
+}
+
+.auction-description {
+    grid-area: description;
 }

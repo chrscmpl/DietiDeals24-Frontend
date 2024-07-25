@@ -18,15 +18,15 @@ export abstract class AuctionSummary {
     private _status: AuctionStatus;
     private _currency: string;
 
-    constructor(auction: AuctionSummaryDTO) {
-        this._id = auction.id;
-        this._title = auction.title;
-        this._conditions = auction.conditions ?? null;
-        this._location = { country: auction.country, city: auction.city };
-        this._endTime = new Date(auction.endTime);
-        this._pictureUrl = auction.pictureUrl ?? null;
-        this._status = auction.status;
-        this._currency = auction.currency;
+    constructor(dto: AuctionSummaryDTO) {
+        this._id = dto.id;
+        this._title = dto.title;
+        this._conditions = dto.conditions ?? null;
+        this._location = { country: dto.country, city: dto.city };
+        this._endTime = new Date(dto.endTime);
+        this._pictureUrl = dto.pictureUrl ?? null;
+        this._status = dto.status;
+        this._currency = dto.currency;
     }
 
     public get id(): string {
@@ -74,9 +74,9 @@ export abstract class AuctionSummary {
 
 export class SilentAuctionSummary extends AuctionSummary {
     private _minimumBid: number;
-    constructor(auction: SilentAuctionSummaryDTO) {
-        super(auction);
-        this._minimumBid = auction.minimumBid;
+    constructor(dto: SilentAuctionSummaryDTO) {
+        super(dto);
+        this._minimumBid = dto.minimumBid;
     }
 
     public get minimumBid(): number {
@@ -100,10 +100,10 @@ export class ReverseAuctionSummary extends AuctionSummary {
     private _maximumStartingBid: number;
     private _lowestBid: number;
 
-    constructor(auction: ReverseAuctionSummaryDTO) {
-        super(auction);
-        this._maximumStartingBid = auction.maximumStartingBid;
-        this._lowestBid = auction.lowestBid;
+    constructor(dto: ReverseAuctionSummaryDTO) {
+        super(dto);
+        this._maximumStartingBid = dto.maximumStartingBid;
+        this._lowestBid = dto.lowestBid;
     }
 
     public get maximumStartingBid(): number {

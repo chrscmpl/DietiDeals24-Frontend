@@ -3,24 +3,48 @@
     [(visible)]="display"
     draggable="false"
     resizable="false"
+    [showHeader]="false"
     (onHide)="onClose()"
     [closeIcon]="
         (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'
     "
+    [dismissableMask]="true"
+    maskStyle="overflow: scroll;align-items: start;padding: 1svh;"
+    [style]="{ position: 'relative', 'max-height': 'none' }"
+    [contentStyle]="{
+        'border-radius': 'var(--border-radius-large)',
+        width: 'min(40rem, 100svw)',
+        padding: 0,
+        'max-height': 'none'
+    }"
 >
     <div class="auction-details">
         <div class="auction-image-container">
-            <!-- @if (auction.pictureUrl && !showImagePlaceholder) {
+            @if (
+                auction.picturesUrls[currentPictureIndex] &&
+                !showImagePlaceholder
+            ) {
                 <img
-                    class="auction-card-image"
-                    [src]="auction.pictureUrl"
+                    class="auction-image"
+                    [src]="auction.picturesUrls[currentPictureIndex]"
                     alt="Auction image"
                     (error)="onImageError()"
                 />
             } @else {
                 <i class="auction-card-missing-image pi pi-image"></i>
-            } -->
+            }
         </div>
-        {{ auction?.title }}
+        <h3 class="auction-category">{{ auction.category }}</h3>
+        <dd24-user-preview
+            [profilePictureUrl]="auction.profilePictureUrl"
+            [username]="auction.username"
+            [country]="auction.location.country"
+            [city]="auction.location.city"
+        ></dd24-user-preview>
+        <h1 class="auction-title">
+            {{ auction.title }}
+        </h1>
+        <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
+        <p class="auction-description">{{ auction.description ?? "" }}</p>
     </div>
 </p-dialog>

@@ -1,0 +1,27 @@
+@use "layouts";
+
+.user-preview {
+    @include layouts.grid(
+        $template: "avatar username" auto "avatar location" auto / auto 1fr,
+        $align-content: center
+    );
+
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-regular);
+    line-height: normal;
+    column-gap: 0.5ch;
+}
+
+.avatar {
+    grid-area: avatar;
+}
+
+.username {
+    grid-area: username;
+    color: var(--text-color-1);
+}
+
+.location {
+    grid-area: location;
+    color: var(--text-color-3);
+}

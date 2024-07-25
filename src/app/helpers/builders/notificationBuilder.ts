@@ -6,13 +6,12 @@ import {
 } from '../../models/notification.model';
 import { Builder } from './Builder';
 
-export const notificationsBuilder = new Builder<Notification>(
-    (type: string) => {
+export const notificationsBuilder = new Builder<NotificationDTO, Notification>(
+    (dto) => {
         const constructor = NotificationConstructors.get(
-            type as NotificationType,
+            dto.notificationType as NotificationType,
         );
         if (!constructor) throw new Error('Invalid notification DTO');
-        return (item: NotificationDTO) => new constructor(item);
+        return new constructor(dto);
     },
-    'notificationType',
 );
