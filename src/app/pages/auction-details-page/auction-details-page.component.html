@@ -1,0 +1,26 @@
+<p-dialog
+    [modal]="true"
+    [(visible)]="display"
+    draggable="false"
+    resizable="false"
+    (onHide)="onClose()"
+    [closeIcon]="
+        (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'
+    "
+>
+    <div class="auction-details">
+        <div class="auction-image-container">
+            <!-- @if (auction.pictureUrl && !showImagePlaceholder) {
+                <img
+                    class="auction-card-image"
+                    [src]="auction.pictureUrl"
+                    alt="Auction image"
+                    (error)="onImageError()"
+                />
+            } @else {
+                <i class="auction-card-missing-image pi pi-image"></i>
+            } -->
+        </div>
+        {{ auction?.title }}
+    </div>
+</p-dialog>

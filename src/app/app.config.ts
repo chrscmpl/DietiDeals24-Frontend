@@ -18,6 +18,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { EmailVerificationGuard } from './guards/email-not-verified.guard';
 import { MaskedEmailPipe } from './pipes/masked-email.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
+import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -37,6 +38,7 @@ export const appConfig: ApplicationConfig = {
         ShowUIGuard,
         AuthenticationGuard,
         EmailVerificationGuard,
+        ResolveAuctionGuard,
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',

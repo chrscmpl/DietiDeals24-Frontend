@@ -1,7 +1,7 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
-import { auctionBuilder } from '../helpers/auctionBuilder';
+import { auctionSummaryBuilder } from '../helpers/builders/auctionBuilder';
 import { routerLinkType } from '../typeUtils/routerLinkType';
-import { AuctionSummary } from './auction.model';
+import { AuctionSummary } from './auction.summary.model';
 
 export interface DisplayableNotification {
     readonly id: string;
@@ -33,7 +33,7 @@ export class Notification implements DisplayableNotification {
         this._type = dto.notificationType;
         this._read = dto.read;
         this._auction = dto.auction
-            ? auctionBuilder.buildSingle(dto.auction)
+            ? auctionSummaryBuilder.buildSingle(dto.auction)
             : null;
     }
 

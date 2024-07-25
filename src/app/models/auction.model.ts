@@ -1,99 +1,45 @@
 import {
-    AuctionSummaryDTO,
-    ReverseAuctionSummaryDTO,
-    SilentAuctionSummaryDTO,
+    AuctionDTO,
+    ReverseAuctionDTO,
+    SilentAuctionDTO,
 } from '../DTOs/auction.dto';
-import { AuctionType, AuctionStatus } from '../typeUtils/auction.utils';
-import { Location } from './location.model';
-import { UserSummary } from './user.model';
+import { AuctionType } from '../typeUtils/auction.utils';
+import { AuctionSummary } from './auction.summary.model';
 
-export abstract class AuctionSummary {
-    public static STATUSES = AuctionStatus;
-    public static TYPES = AuctionType;
-    private _id: string;
-    private _title: string;
-    private _description?: string;
-    private _user?: UserSummary;
-    private _conditions: string | null;
-    private _location: Location;
-    private _endTime: Date;
-    private _pictureUrl: string | null;
-    private _status: AuctionStatus;
-    private _currency: string;
+export abstract class Auction extends AuctionSummary {
+    private _description: string;
+    private _bids: number;
+    private _username: string;
+    private _pictures: string[];
 
-    constructor(auction: Omit<AuctionSummaryDTO, 'auctionType'>) {
-        this._id = auction.id;
-        this._title = auction.title;
-        this._conditions = auction.conditions ?? null;
-        this._location = { country: auction.country, city: auction.city };
-        this._endTime = new Date(auction.endTime);
-        this._pictureUrl = auction.pictureUrl ?? null;
-        this._status = auction.status;
-        this._currency = auction.currency;
+    constructor(auction: AuctionDTO) {
+        super(auction);
+        this._description = auction.description;
+        this._bids = auction.bids;
+        this._username = auction.username;
+        this._pictures = auction.pictures;
     }
 
-    public get id(): string {
-        return this._id;
-    }
-
-    public get title(): string {
-        return this._title;
-    }
-
-    public get description(): string | undefined {
+    public get description(): string {
         return this._description;
     }
 
-    private set description(value: string) {
-        this._description = value;
+    public get bids(): number {
+        return this._bids;
     }
 
-    public get user(): UserSummary | undefined {
-        return this._user;
+    public get username(): string {
+        return this._username;
     }
 
-    private set user(value: UserSummary) {
-        this._user = value;
+    public get pictures(): string[] {
+        return this._pictures;
     }
-
-    public get conditions(): string | null {
-        return this._conditions;
-    }
-
-    public get location(): Location {
-        return this._location;
-    }
-
-    public get timeLeft(): number {
-        return Math.floor((this._endTime.getTime() - Date.now()) / 1000);
-    }
-
-    public get endTime(): Date {
-        return this._endTime;
-    }
-
-    public get pictureUrl(): string | null {
-        return this._pictureUrl;
-    }
-
-    public get status(): AuctionStatus {
-        return this._status;
-    }
-
-    public get currency(): string {
-        return this._currency;
-    }
-
-    public abstract get lastBid(): number;
-
-    public abstract get lastBidDescription(): string;
-
-    public abstract get type(): AuctionType;
 }
 
-export class SilentAuctionSummary extends AuctionSummary {
+export class SilentAuction extends Auction {
     private _minimumBid: number;
-    constructor(auction: Omit<SilentAuctionSummaryDTO, 'auctionType'>) {
+    constructor(auction: SilentAuctionDTO) {
         super(auction);
         this._minimumBid = auction.minimumBid;
     }
@@ -115,11 +61,11 @@ export class SilentAuctionSummary extends AuctionSummary {
     }
 }
 
-export class ReverseAuctionSummary extends AuctionSummary {
+export class ReverseAuction extends Auction {
     private _maximumStartingBid: number;
     private _lowestBid: number;
 
-    constructor(auction: Omit<ReverseAuctionSummaryDTO, 'auctionType'>) {
+    constructor(auction: ReverseAuctionDTO) {
         super(auction);
         this._maximumStartingBid = auction.maximumStartingBid;
         this._lowestBid = auction.lowestBid;

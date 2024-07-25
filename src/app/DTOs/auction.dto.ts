@@ -23,3 +23,22 @@ export interface ReverseAuctionSummaryDTO extends AuctionSummaryDTO {
     maximumStartingBid: number;
     lowestBid: number;
 }
+
+export interface AuctionDTO extends AuctionSummaryDTO {
+    description: string;
+    bids: number;
+    username: string;
+    pictureUrl: undefined;
+    pictures: string[];
+}
+
+export interface SilentAuctionDTO extends AuctionDTO, SilentAuctionSummaryDTO {
+    type: AuctionType.silent;
+    pictureUrl: undefined;
+}
+
+// eslint-disable-next-line prettier/prettier
+export interface ReverseAuctionDTO extends AuctionDTO, ReverseAuctionSummaryDTO {
+    type: AuctionType.reverse;
+    pictureUrl: undefined;
+}

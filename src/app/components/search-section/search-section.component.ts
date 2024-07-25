@@ -150,7 +150,6 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
     }
 
     public submitIfMobile() {
-        console.log('submitIfMobile');
         this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
             if (isMobile) this.handleSubmit();
         });

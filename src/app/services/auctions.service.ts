@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuctionSummary } from '../models/auction.model';
+import { AuctionSummary } from '../models/auction.summary.model';
 import { PaginatedRequestParams } from '../helpers/paginatedRequest';
-import { auctionBuilder } from '../helpers/auctionBuilder';
+import {
+    auctionBuilder,
+    auctionSummaryBuilder,
+} from '../helpers/builders/auctionBuilder';
 import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
-import { Observer, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterruptedResettableObserver';
+import { AuctionDTO, AuctionSummaryDTO } from '../DTOs/auction.dto';
+import { Auction } from '../models/auction.model';
 
 export type RequestKey = string;
 
@@ -77,6 +82,17 @@ export class AuctionsService {
         this.requestsMap.delete(key);
     }
 
+    public getDetails(id: string): Observable<Auction> {
+        return this.http
+            .get<AuctionDTO>(
+                `${environment.backendHost}/auctions/specific/public-view`,
+                {
+                    params: { id },
+                },
+            )
+            .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
+    }
+
     private getRequest(
         key: RequestKey,
     ): PaginatedRequestManager<AuctionSummary> {
@@ -97,7 +113,8 @@ export class AuctionsService {
         return Object.assign(params, {
             http: this.http,
             url: `${environment.backendHost}/auctions/search`,
-            factory: auctionBuilder.buildArray,
+            factory: (dtos: AuctionSummaryDTO[]) =>
+                auctionSummaryBuilder.buildArray(dtos),
         });
     }
 }

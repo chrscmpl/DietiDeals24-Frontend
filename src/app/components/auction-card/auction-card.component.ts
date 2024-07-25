@@ -7,12 +7,13 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { AuctionSummary } from '../../models/auction.model';
+import { AuctionSummary } from '../../models/auction.summary.model';
 import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { IntervalPipe } from '../../pipes/interval.pipe';
 import { WindowService } from '../../services/window.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -25,6 +26,7 @@ import { WindowService } from '../../services/window.service';
         IntervalPipe,
         CurrencyPipe,
         AsyncPipe,
+        RouterLink,
     ],
     templateUrl: './auction-card.component.html',
     styleUrl: './auction-card.component.scss',

@@ -4,7 +4,7 @@ import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
-import { notificationsBuilder } from '../helpers/notificationBuilder';
+import { notificationsBuilder } from '../helpers/builders/notificationBuilder';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
 

@@ -15,6 +15,8 @@ import { ThemeSettingsComponent } from './pages/settings-popup/theme-settings/th
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
+import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
+import { resolveAuctionGuard } from './guards/resolve-auction.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -62,8 +64,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'auction/:id',
+        outlet: 'overlay',
+        component: AuctionDetailsPageComponent,
+        resolve: { auction: resolveAuctionGuard },
+    },
+    {
         path: 'settings',
-        title: 'Settings',
         outlet: 'overlay',
         component: SettingsPopupComponent,
         children: [

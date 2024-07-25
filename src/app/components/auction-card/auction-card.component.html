@@ -1,4 +1,14 @@
-<div class="auction-card">
+<div
+    class="auction-card"
+    [routerLink]="[
+        '',
+        {
+            outlets: {
+                overlay: ['auction', auction.id]
+            }
+        }
+    ]"
+>
     <div class="auction-card-image-container">
         @if (auction.pictureUrl && !showImagePlaceholder) {
             <img

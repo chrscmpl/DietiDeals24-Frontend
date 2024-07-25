@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuctionSummary } from '../../models/auction.model';
+import { AuctionSummary } from '../../models/auction.summary.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
 import { Subscription } from 'rxjs';

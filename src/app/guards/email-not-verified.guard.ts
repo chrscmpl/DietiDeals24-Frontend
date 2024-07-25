@@ -1,11 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import {
-    ActivatedRouteSnapshot,
     CanActivate,
     CanActivateFn,
     CanDeactivate,
     CanDeactivateFn,
-    RouterStateSnapshot,
 } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
@@ -15,28 +13,18 @@ export class EmailVerificationGuard
 {
     constructor(private authenticationService: AuthenticationService) {}
 
-    public canActivate(
-        _: ActivatedRouteSnapshot,
-        __: RouterStateSnapshot,
-    ): boolean {
+    public canActivate(): boolean {
         return !!this.authenticationService.emailToVerify;
     }
 
-    public canDeactivate(
-        _: unknown,
-        __: ActivatedRouteSnapshot,
-        ___: RouterStateSnapshot,
-    ): boolean {
+    public canDeactivate(): boolean {
         this.authenticationService.emailToVerify = null;
         return true;
     }
 }
 
-export const emailVerificationActivateGuard: CanActivateFn = (r, s) =>
-    inject(EmailVerificationGuard).canActivate(r, s);
+export const emailVerificationActivateGuard: CanActivateFn = () =>
+    inject(EmailVerificationGuard).canActivate();
 
-export const emailVerificationDeactivateGuard: CanDeactivateFn<unknown> = (
-    c,
-    s,
-    r,
-) => inject(EmailVerificationGuard).canDeactivate(c, s, r);
+export const emailVerificationDeactivateGuard: CanDeactivateFn<unknown> = () =>
+    inject(EmailVerificationGuard).canDeactivate();

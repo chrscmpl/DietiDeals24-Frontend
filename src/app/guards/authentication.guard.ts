@@ -32,5 +32,5 @@ export class AuthenticationGuard implements CanActivate {
 export const authenticationGuard: CanActivateFn = (r, s) =>
     inject(AuthenticationGuard).canActivate(r, s);
 
-export const notAUthenticatedGuard: CanActivateFn = (_, __) =>
+export const notAUthenticatedGuard: CanActivateFn = () =>
     inject(AuthenticationService).isLogged$.pipe(map((isLogged) => !isLogged));

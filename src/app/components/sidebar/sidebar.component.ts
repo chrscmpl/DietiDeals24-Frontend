@@ -38,6 +38,7 @@ export class SidebarComponent implements OnInit {
                     label: 'Theme',
                     icon: 'pi pi-palette',
                     routerLink: [
+                        '',
                         {
                             outlets: {
                                 overlay: ['settings', 'theme'],
