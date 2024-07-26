@@ -106,7 +106,10 @@ export class AuctionsService {
             pictureUrl: undefined,
             currency: 'USD',
             description:
-                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it",
+                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it" +
+                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it".toUpperCase() +
+                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it" +
+                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it".toUpperCase(),
             bids: undefined,
             username: 'ciccio pasticcio',
             picturesUrls: [

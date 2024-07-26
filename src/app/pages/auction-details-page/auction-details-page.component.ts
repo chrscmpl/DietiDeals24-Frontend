@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnInit,
+    ViewChild,
+    viewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { take } from 'rxjs';
@@ -33,7 +41,7 @@ import { MessageService } from 'primeng/api';
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
 })
-export class AuctionDetailsPageComponent implements OnInit {
+export class AuctionDetailsPageComponent implements OnInit, AfterViewInit {
     public display: boolean = true;
 
     public auction!: Auction;
@@ -42,18 +50,40 @@ export class AuctionDetailsPageComponent implements OnInit {
 
     public showImagePlaceholder: boolean = false;
 
+    public expandable: boolean = false;
+    public expanded: boolean = false;
+
+    @ViewChild('auctionDetailsContainer', { read: ElementRef })
+    public containerElement!: ElementRef;
+
     constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
         public readonly windowService: WindowService,
         private readonly clipboard: Clipboard,
         private readonly message: MessageService,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
         });
+    }
+
+    public ngAfterViewInit(): void {
+        const notExpandedHeight = Math.max(
+            parseFloat(getComputedStyle(document.documentElement).fontSize) *
+                50,
+            window.innerHeight * 0.98,
+        );
+        const containerHeight =
+            this.containerElement.nativeElement.offsetHeight;
+
+        if (containerHeight > notExpandedHeight) {
+            this.expandable = true;
+            this.changeDetectorRef.detectChanges();
+        }
     }
 
     public onClose(): void {
@@ -78,6 +108,10 @@ export class AuctionDetailsPageComponent implements OnInit {
         if (this.currentPictureIndex > 0) {
             this.currentPictureIndex--;
         }
+    }
+
+    public onExpand(): void {
+        this.expanded = true;
     }
 
     public onImageError(): void {

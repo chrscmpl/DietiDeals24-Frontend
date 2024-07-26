@@ -266,3 +266,7 @@ i {
     height: 1.5rem;
     @include layouts.center;
 }
+
+.p-button-secondary {
+    --p-focus-ring-color: rgba(0, 0, 0, 0.3);
+}

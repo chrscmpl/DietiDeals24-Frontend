@@ -13,12 +13,16 @@
     [style]="{ position: 'relative', 'max-height': 'none' }"
     [contentStyle]="{
         'border-radius': 'var(--border-radius-large)',
-        width: 'min(40rem, 100svw)',
+        width: 'min(45rem, 100svw)',
         padding: 0,
         'max-height': 'none'
     }"
 >
-    <div class="auction-details">
+    <div
+        #auctionDetailsContainer
+        class="auction-details"
+        [class.auction-details-expanded]="expanded || !expandable"
+    >
         <div class="auction-image-container">
             @if (
                 auction.picturesUrls[currentPictureIndex] &&
@@ -46,7 +50,27 @@
             {{ auction.title }}
         </h1>
         <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
-        <p class="auction-description">{{ auction.description ?? "" }}</p>
+        <span
+            class="auction-description-wrapper"
+            [class.auction-description-expanded]="expanded || !expandable"
+            ><p class="auction-description">
+                {{ auction.description ?? "" }}
+            </p>
+            @if (expandable && !expanded) {
+                <span class="auction-description-mask"></span>
+                <p-button
+                    class="expand-btn"
+                    label="SHOW ALL"
+                    severity="secondary"
+                    (click)="onExpand()"
+                    [style]="{
+                        'border-radius': '0',
+                        color: 'var(--text-color-3)',
+                        'font-weight': 'var(--font-weight-bolder)'
+                    }"
+                ></p-button>
+            }
+        </span>
         <p-divider class="divider"></p-divider>
         <dd24-auction-type-link
             class="auction-type"

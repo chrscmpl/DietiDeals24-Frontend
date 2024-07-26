@@ -3,7 +3,8 @@
 .user-preview {
     @include layouts.grid(
         $template: "avatar username" auto "avatar location" auto / auto 1fr,
-        $align-content: center
+        $align-content: center,
+        $align-items: center
     );
 
     font-size: var(--font-size-small);

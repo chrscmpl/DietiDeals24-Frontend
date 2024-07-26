@@ -8,11 +8,11 @@ $highlightBg: rgba(34, 211, 238, 0.16);
 $highlightTextColor: rgba(255, 255, 255, 0.87);
 $highlightFocusBg: rgba($primaryColor, 0.24);
 
-$secondaryColor: #00ff51;
+$secondaryColor: darken(#23e496, 20%);
 $secondaryTextColor: #ffffff;
 
 $sideColor: #0f172a;
-$sideBorderColor: rgb(170, 247, 216, 0.5);
+$sideBorderColor: #484c54;
 
 $shade000: rgba(255, 255, 255, 0.7);
 $shade50: rgba(255, 255, 255, 0.6);
@@ -30,10 +30,10 @@ $shade950: #0a1522;
 $secondaryButtonBg: $shade900;
 $secondaryButtonTextColor: $shade000;
 $secondaryButtonBorder: 1px solid $shade100;
-$secondaryButtonHoverBg: rgba($shade100, 0.1);
-$secondaryButtonTextHoverColor: rgba($shade000, 1);
+$secondaryButtonHoverBg: #1d242f;
+$secondaryButtonTextHoverColor: #b8bace;
 $secondaryButtonHoverBorderColor: $shade100;
-$secondaryButtonActiveBg: rgba($shade100, 0.4);
+$secondaryButtonActiveBg: #414652;
 $secondaryButtonTextActiveColor: $shade000;
 $secondaryButtonActiveBorderColor: $shade100;
 $secondaryButtonFocusShadow: none;
