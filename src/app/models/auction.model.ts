@@ -21,7 +21,7 @@ export abstract class Auction extends AuctionSummary {
         this._bids = dto.bids ?? null;
         this._username = dto.username;
         this._profilePictureUrl = dto.profilePictureUrl ?? null;
-        this._picturesUrls = dto.picturesUrls;
+        this._picturesUrls = dto.picturesUrls ?? [];
     }
 
     public get category(): string {

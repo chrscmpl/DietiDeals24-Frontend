@@ -6,6 +6,8 @@
     font-weight: var(--font-weight-regular);
     padding: 0.2em 2em;
     border-top: var(--border);
+    background-color: var(--background-color);
+
     .footer-links {
         @include layouts.grid(
             1fr / 1fr auto 1fr,

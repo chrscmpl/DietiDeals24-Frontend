@@ -52,7 +52,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
     public categoryControl!: FormControl<string | null>;
 
     public readonly policiesOptions = SearchPolicy;
-    public readonly typesOptions = AuctionType;
+    public readonly typesOptions = Object.values(AuctionType);
 
     public categoryItems$: Observable<MenuItem[]> =
         this.categoriesService.categories$.pipe(
@@ -126,8 +126,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
             this.typesControl.setValue([interactedValue]);
         } else {
             this.selectType(
-                this.typesControl.value.length ===
-                    Object.values(AuctionType).length
+                this.typesControl.value.length === this.typesOptions.length
                     ? null
                     : this.typesControl.value.join(','),
             );
