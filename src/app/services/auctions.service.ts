@@ -6,10 +6,14 @@ import {
     auctionBuilder,
     auctionSummaryBuilder,
 } from '../helpers/builders/auctionBuilder';
-import { AuctionSearchParameters } from '../typeUtils/auction.utils';
+import {
+    AuctionSearchParameters,
+    AuctionStatus,
+    AuctionType,
+} from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable, of, Subscription } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterruptedResettableObserver';
 import { AuctionDTO, AuctionSummaryDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
@@ -83,14 +87,37 @@ export class AuctionsService {
     }
 
     public getDetails(id: string): Observable<Auction> {
-        return this.http
-            .get<AuctionDTO>(
-                `${environment.backendHost}/auctions/specific/public-view`,
-                {
-                    params: { id },
-                },
-            )
-            .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
+        // return this.http
+        //     .get<AuctionDTO>(
+        //         `${environment.backendHost}/auctions/specific/public-view`,
+        //         {
+        //             params: { id },
+        //         },
+        //     )
+        return of({
+            id,
+            type: AuctionType.silent,
+            status: AuctionStatus.active,
+            title: 'Iphone 15 Pro Max',
+            conditions: 'new',
+            country: 'Italy',
+            city: 'Milan',
+            endTime: new Date(Date.now() + 25 * 60 * 60 * 1000).toString(),
+            pictureUrl: undefined,
+            currency: 'USD',
+            description:
+                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it",
+            bids: undefined,
+            username: 'ciccio pasticcio',
+            picturesUrls: [
+                'https://www.apple.com/v/iphone/home/bv/images/meta/iphone__ky2k6x5u6vue_og.png',
+                'https://m.media-amazon.com/images/I/61bK6PMOC3L._AC_UF1000,1000_QL80_.jpg',
+                'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-card-40-iphone15prohero-202309_FMT_WHH?wid=508&hei=472&fmt=p-jpg&qlt=95&.v=1693086369818',
+            ],
+            profilePictureUrl: null,
+            category: 'Electronics',
+            minimumBid: 1200,
+        }).pipe(map((dto) => auctionBuilder.buildSingle(dto)));
     }
 
     private getRequest(

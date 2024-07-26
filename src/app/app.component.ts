@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -7,7 +7,7 @@ import { AsyncPipe } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -16,6 +16,7 @@ import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directi
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'dd24-root',
@@ -33,12 +34,16 @@ import { NotificationsService } from './services/notifications.service';
         SidebarComponent,
         StretchOnScrollDirective,
         SmartStickyDirective,
+        ToastModule,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
     private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
+    private static readonly INITIAL_WARNING_COUNTER = 5;
+    private static readonly INITIAL_WARNING_ITEM_NAME = 'warn-again-counter';
+
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
 
     constructor(
@@ -47,6 +52,7 @@ export class AppComponent implements OnInit {
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
+        private messageService: MessageService,
     ) {}
 
     ngOnInit(): void {
@@ -57,6 +63,10 @@ export class AppComponent implements OnInit {
             this.authentication.getUserData();
         }
         this.configureNotifications();
+    }
+
+    ngAfterViewInit(): void {
+        this.updateInitialWarningStatus();
     }
 
     public onMainRouterOutletActivate(): void {
@@ -82,6 +92,36 @@ export class AppComponent implements OnInit {
             } else if (interval) {
                 clearInterval(interval);
             }
+        });
+    }
+
+    private updateInitialWarningStatus(): void {
+        const timesWarned: number = Number(
+            localStorage.getItem(AppComponent.INITIAL_WARNING_ITEM_NAME) ?? 0,
+        );
+
+        if (timesWarned > 0) {
+            localStorage.setItem(
+                AppComponent.INITIAL_WARNING_ITEM_NAME,
+                String(timesWarned - 1),
+            );
+            return;
+        }
+
+        this.showInitialWarning();
+
+        localStorage.setItem(
+            AppComponent.INITIAL_WARNING_ITEM_NAME,
+            String(AppComponent.INITIAL_WARNING_COUNTER - 1),
+        );
+    }
+
+    private showInitialWarning(): void {
+        this.messageService.add({
+            severity: 'warn',
+            summary: 'This is not a real e-commerce platform',
+            detail: 'This is a student project, not a real platform. Please do not use real data. Any transaction you make will not be real.',
+            life: 10000,
         });
     }
 }

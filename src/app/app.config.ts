@@ -19,6 +19,7 @@ import { EmailVerificationGuard } from './guards/email-not-verified.guard';
 import { MaskedEmailPipe } from './pipes/masked-email.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -39,6 +40,7 @@ export const appConfig: ApplicationConfig = {
         AuthenticationGuard,
         EmailVerificationGuard,
         ResolveAuctionGuard,
+        MessageService,
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',

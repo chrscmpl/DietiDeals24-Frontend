@@ -13,6 +13,7 @@ import { TimerComponent } from '../../components/timer/timer.component';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { ButtonModule } from 'primeng/button';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -46,6 +47,7 @@ export class AuctionDetailsPageComponent implements OnInit {
         private readonly router: Router,
         public readonly windowService: WindowService,
         private readonly clipboard: Clipboard,
+        private readonly message: MessageService,
     ) {}
 
     public ngOnInit(): void {
@@ -60,6 +62,10 @@ export class AuctionDetailsPageComponent implements OnInit {
 
     public onShare(): void {
         this.clipboard.copy(window.location.href);
+        this.message.add({
+            severity: 'info',
+            summary: 'Link copied to clipboard',
+        });
     }
 
     public onNextPicture(): void {

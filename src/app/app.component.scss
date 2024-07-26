@@ -41,7 +41,8 @@
         right: 1rem;
     }
 
-    .sidebar {
+    .sidebar,
+    .toast {
         grid-area: header;
     }
 }

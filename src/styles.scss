@@ -252,3 +252,17 @@ i {
     animation: p-progress-spinner-dash 1.5s ease-in-out infinite;
     stroke: var(--border-color);
 }
+
+.p-toast-message-content {
+    height: min-content;
+}
+
+.p-toast-detail {
+    margin: 0;
+}
+
+.p-toast-message-icon,
+.p-toast-icon-close {
+    height: 1.5rem;
+    @include layouts.center;
+}
