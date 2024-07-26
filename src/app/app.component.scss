@@ -42,7 +42,9 @@
     }
 
     .sidebar,
-    .toast {
+    .toast,
+    .overlay-outlet,
+    .overlay-outlet + * {
         grid-area: header;
     }
 }

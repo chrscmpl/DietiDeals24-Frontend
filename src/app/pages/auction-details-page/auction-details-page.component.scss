@@ -17,7 +17,7 @@
         @include layouts.grid(
             "nav" auto "info" 1fr "bottom-section" auto / 1fr
         );
-        height: 100vh;
+        height: 100svh;
         --auction-details-padding: 0.5rem;
     }
 }

@@ -4,7 +4,6 @@
             (activate)="onMainRouterOutletActivate()"
             (deactivate)="onMainRouterOutletDeactivate()"
         ></router-outlet>
-        <router-outlet name="overlay"></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
             <dd24-loading-placeholder
                 [style]="{ padding: '1rem 15%' }"
@@ -41,4 +40,5 @@
     }
     <dd24-sidebar class="sidebar"></dd24-sidebar>
     <p-toast class="toast" [baseZIndex]="9999999999"></p-toast>
+    <router-outlet class="overlay-outlet" name="overlay"></router-outlet>
 </div>
