@@ -13,11 +13,14 @@
     padding: 0;
     background-color: var(--component-color);
 
+    min-height: max(98svh, 50rem);
+
     @include viewports.mobile {
         @include layouts.grid(
             "nav" auto "info" 1fr "bottom-section" auto / 1fr
         );
         height: 100svh;
+        min-height: 0;
         --auction-details-padding: 0.5rem;
     }
 }
@@ -39,8 +42,8 @@
     grid-area: info;
     @include layouts.grid(
         $template: "picture picture" auto "category user" auto "title title"
-            auto "conditions conditions" auto "description description" 1fr /
-            1fr 1fr,
+            auto "conditions conditions" auto "description description"
+            minmax(0, 1fr) / 1fr 1fr,
 
         $gap: 0,
         $justify-items: center,
@@ -50,14 +53,6 @@
     );
     width: 100%;
     padding: var(--auction-details-padding);
-
-    min-height: max(98svh, 50rem);
-
-    &:not(.auction-details-expanded) {
-        @include viewports.notMobile {
-            max-height: max(98svh, 50rem);
-        }
-    }
 
     @include viewports.mobile {
         overflow: auto;
@@ -117,9 +112,14 @@
 
 .auction-description-wrapper {
     grid-area: description;
-    @include layouts.grid($align-content: start, $align-items: start);
-    overflow-y: hidden;
+    @include layouts.grid(
+        $template: "." minmax(0, 1fr) / 1fr,
+        $align-content: start,
+        $align-items: start
+    );
+    overflow: hidden;
     align-self: start;
+    min-height: 0;
 
     > * {
         grid-area: 1/1;
@@ -127,7 +127,7 @@
 
     &:not(.auction-description-expanded) {
         @include viewports.notMobile {
-            height: 100%;
+            max-height: max(13svh, 13rem);
         }
     }
 }
@@ -135,6 +135,8 @@
 .auction-description {
     overflow-y: hidden;
     height: 100%;
+    max-height: 100%;
+    min-height: 0;
 }
 
 .expand-btn {

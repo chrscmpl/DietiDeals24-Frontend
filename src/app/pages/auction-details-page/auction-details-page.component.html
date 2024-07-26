@@ -18,11 +18,12 @@
         'max-height': 'none'
     }"
 >
-    <div #auctionDetailsContainer class="auction-details">
-        <div
-            class="auction-details-info"
-            [class.auction-details-expanded]="expanded || !expandable"
-        >
+    <div
+        #auctionDetailsContainer
+        class="auction-details"
+        [class.auction-details-expanded]="expanded || !expandable"
+    >
+        <div class="auction-details-info">
             <div class="auction-image-container">
                 @if (
                     auction.picturesUrls[currentPictureIndex] &&
