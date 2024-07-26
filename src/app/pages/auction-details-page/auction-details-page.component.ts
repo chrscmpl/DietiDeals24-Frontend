@@ -3,13 +3,13 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    OnDestroy,
     OnInit,
     ViewChild,
-    viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
-import { take } from 'rxjs';
+import { filter, Subscription, take } from 'rxjs';
 import { WindowService } from '../../services/window.service';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Auction } from '../../models/auction.model';
@@ -41,7 +41,10 @@ import { MessageService } from 'primeng/api';
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
 })
-export class AuctionDetailsPageComponent implements OnInit, AfterViewInit {
+export class AuctionDetailsPageComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    private readonly subscriptions: Subscription[] = [];
     public display: boolean = true;
 
     public auction!: Auction;
@@ -69,6 +72,15 @@ export class AuctionDetailsPageComponent implements OnInit, AfterViewInit {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
         });
+
+        this.subscriptions.push(
+            this.windowService.isMobile$
+                .pipe(filter((isMobile) => isMobile))
+                .subscribe(() => {
+                    this.expandable = true;
+                    this.expanded = true;
+                }),
+        );
     }
 
     public ngAfterViewInit(): void {
@@ -84,6 +96,10 @@ export class AuctionDetailsPageComponent implements OnInit, AfterViewInit {
             this.expandable = true;
             this.changeDetectorRef.detectChanges();
         }
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
     public onClose(): void {

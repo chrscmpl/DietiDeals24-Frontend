@@ -9,7 +9,7 @@
         (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'
     "
     [dismissableMask]="true"
-    maskStyle="overflow: scroll;align-items: start;padding: 1svh;"
+    maskStyle="overflow: scroll;align-items: start;padding: 1svh; "
     [style]="{ position: 'relative', 'max-height': 'none' }"
     [contentStyle]="{
         'border-radius': 'var(--border-radius-large)',
@@ -18,122 +18,147 @@
         'max-height': 'none'
     }"
 >
-    <div
-        #auctionDetailsContainer
-        class="auction-details"
-        [class.auction-details-expanded]="expanded || !expandable"
-    >
-        <div class="auction-image-container">
-            @if (
-                auction.picturesUrls[currentPictureIndex] &&
-                !showImagePlaceholder
-            ) {
-                <img
-                    class="auction-image"
-                    [src]="auction.picturesUrls[currentPictureIndex]"
-                    alt="Auction image"
-                    (error)="onImageError()"
-                />
-            } @else {
-                <i class="auction-card-missing-image pi pi-image"></i>
-            }
-        </div>
-        <h3 class="auction-category">{{ auction.category }}</h3>
-        <dd24-user-preview
-            class="auction-user"
-            [profilePictureUrl]="auction.profilePictureUrl"
-            [username]="auction.username"
-            [country]="auction.location.country"
-            [city]="auction.location.city"
-        ></dd24-user-preview>
-        <h1 class="auction-title">
-            {{ auction.title }}
-        </h1>
-        <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
-        <span
-            class="auction-description-wrapper"
-            [class.auction-description-expanded]="expanded || !expandable"
-            ><p class="auction-description">
-                {{ auction.description ?? "" }}
-            </p>
-            @if (expandable && !expanded) {
-                <span class="auction-description-mask"></span>
+    <div #auctionDetailsContainer class="auction-details">
+        <div
+            class="auction-details-info"
+            [class.auction-details-expanded]="expanded || !expandable"
+        >
+            <div class="auction-image-container">
+                @if (
+                    auction.picturesUrls[currentPictureIndex] &&
+                    !showImagePlaceholder
+                ) {
+                    <img
+                        class="auction-image"
+                        [src]="auction.picturesUrls[currentPictureIndex]"
+                        alt="Auction image"
+                        (error)="onImageError()"
+                    />
+                } @else {
+                    <i class="auction-card-missing-image pi pi-image"></i>
+                }
+            </div>
+            <h3 class="auction-category">{{ auction.category }}</h3>
+            <dd24-user-preview
+                class="auction-user"
+                [profilePictureUrl]="auction.profilePictureUrl"
+                [username]="auction.username"
+                [country]="auction.location.country"
+                [city]="auction.location.city"
+            ></dd24-user-preview>
+            <h1 class="auction-title">
+                {{ auction.title }}
+            </h1>
+            <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
+            <span
+                class="auction-description-wrapper"
+                [class.auction-description-expanded]="expanded || !expandable"
+                ><p class="auction-description">
+                    {{ auction.description ?? "" }}
+                </p>
+                @if (expandable && !expanded) {
+                    <span class="auction-description-mask"></span>
+                    <p-button
+                        class="expand-btn"
+                        label="SHOW ALL"
+                        severity="secondary"
+                        (click)="onExpand()"
+                        [style]="{
+                            'border-radius': '0',
+                            color: 'var(--text-color-3)',
+                            'font-weight': 'var(--font-weight-bolder)'
+                        }"
+                    ></p-button>
+                }
+            </span>
+
+            @if ((windowService.isMobile$ | async) === false) {
                 <p-button
-                    class="expand-btn"
-                    label="SHOW ALL"
+                    class="overlay-btn close-btn"
+                    icon="pi pi-times"
+                    [rounded]="true"
                     severity="secondary"
-                    (click)="onExpand()"
-                    [style]="{
-                        'border-radius': '0',
-                        color: 'var(--text-color-3)',
-                        'font-weight': 'var(--font-weight-bolder)'
-                    }"
+                    (click)="onClose()"
+                ></p-button>
+                <p-button
+                    class="overlay-btn share-btn"
+                    icon="pi pi-share-alt"
+                    [rounded]="true"
+                    severity="secondary"
+                    (click)="onShare()"
                 ></p-button>
             }
-        </span>
-        <p-divider class="divider"></p-divider>
-        <dd24-auction-type-link
-            class="auction-type"
-            [type]="auction.type"
-        ></dd24-auction-type-link>
-        <p class="auction-bid">
-            {{
-                (auction.lastBidDescription | oneCharUpper) +
-                    ": " +
-                    (auction.lastBid | currency: auction.currency)
-            }}
-        </p>
-        <p class="auction-time">
-            <span>Time left: </span>
-            <dd24-timer
-                [timeLeft]="auction.timeLeft"
-                style="font-weight: var(--font-weight-bolder)"
-            ></dd24-timer>
-            <span class="auction-end-date">
-                (Until {{ auction.endTime | localDate }})</span
-            >
-        </p>
+            @if (auction.picturesUrls.length > 1) {
+                @if (currentPictureIndex + 1 < auction.picturesUrls.length) {
+                    <p-button
+                        class="overlay-btn next-pic-btn"
+                        icon="pi pi-chevron-right"
+                        [rounded]="true"
+                        severity="secondary"
+                        (click)="onNextPicture()"
+                    ></p-button>
+                }
+                @if (currentPictureIndex > 0) {
+                    <p-button
+                        class="overlay-btn prev-pic-btn"
+                        icon="pi pi-chevron-left"
+                        [rounded]="true"
+                        severity="secondary"
+                        (click)="onPrevPicture()"
+                    ></p-button>
+                }
+            }
+        </div>
 
-        <div class="auction-bid-btn-wrapper">
+        <section class="auction-details-bottom">
+            <dd24-auction-type-link
+                class="auction-type"
+                [type]="auction.type"
+            ></dd24-auction-type-link>
+            <p class="auction-bid">
+                {{
+                    (auction.lastBidDescription | oneCharUpper) +
+                        ": " +
+                        (auction.lastBid | currency: auction.currency)
+                }}
+            </p>
+            <p class="auction-time">
+                <span>Time left: </span>
+                <dd24-timer
+                    [timeLeft]="auction.timeLeft"
+                    style="font-weight: var(--font-weight-bolder)"
+                ></dd24-timer>
+                <span class="auction-end-date">
+                    (Until {{ auction.endTime | localDate }})</span
+                >
+            </p>
+
+            @if ((windowService.isMobile$ | async) === false) {
+                <p-divider
+                    class="divider"
+                    [style]="{
+                        'margin-top': 'var(--auction-details-padding)',
+                        'margin-bottom': 'var(--auction-details-padding)'
+                    }"
+                ></p-divider>
+            }
             <p-button
                 class="auction-bid-btn"
                 label="Make a bid"
                 [style]="{ padding: '1rem' }"
             ></p-button>
-        </div>
-        <p-button
-            class="overlay-btn close-btn"
-            icon="pi pi-times"
-            [rounded]="true"
-            severity="secondary"
-            (click)="onClose()"
-        ></p-button>
-        <p-button
-            class="overlay-btn share-btn"
-            icon="pi pi-share-alt"
-            [rounded]="true"
-            severity="secondary"
-            (click)="onShare()"
-        ></p-button>
-        @if (auction.picturesUrls.length > 1) {
-            @if (currentPictureIndex + 1 < auction.picturesUrls.length) {
-                <p-button
-                    class="overlay-btn next-pic-btn"
-                    icon="pi pi-chevron-right"
-                    [rounded]="true"
-                    severity="secondary"
-                    (click)="onNextPicture()"
-                ></p-button>
-            }
-            @if (currentPictureIndex > 0) {
-                <p-button
-                    class="overlay-btn prev-pic-btn"
-                    icon="pi pi-chevron-left"
-                    [rounded]="true"
-                    severity="secondary"
-                    (click)="onPrevPicture()"
-                ></p-button>
-            }
+        </section>
+
+        @if (windowService.isMobile$ | async) {
+            <nav class="auction-details-navbar">
+                <button class="auction-details-navbar-btn" (click)="onClose()">
+                    <i class="auction-details-navbar-icon pi pi-arrow-left"></i>
+                </button>
+
+                <button class="auction-details-navbar-btn" (click)="onShare()">
+                    <i class="auction-details-navbar-icon pi pi-share-alt"></i>
+                </button>
+            </nav>
         }
     </div>
 </p-dialog>

@@ -1,12 +1,46 @@
 @use "layouts";
 @use "box";
+@use "viewports";
 
 .auction-details {
+    @include layouts.grid("info" 1fr "bottom-section" auto / 1fr);
+    --auction-details-padding: 1.5rem;
+    width: 100%;
+    color: var(--text-color-1);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    overflow: hidden;
+    padding: 0;
+    background-color: var(--component-color);
+
+    @include viewports.mobile {
+        @include layouts.grid(
+            "nav" auto "info" 1fr "bottom-section" auto / 1fr
+        );
+        height: 100vh;
+        --auction-details-padding: 0.5rem;
+    }
+}
+
+.auction-details-navbar {
+    grid-area: nav;
+    @include layouts.flex(row, space-between, center);
+    padding: 0.5rem 1rem;
+    background-color: var(--component-color);
+    border-bottom: var(--border);
+}
+
+.auction-details-navbar-icon {
+    font-size: 2rem;
+    color: var(--basic-affordances-color);
+}
+
+.auction-details-info {
+    grid-area: info;
     @include layouts.grid(
         $template: "picture picture" auto "category user" auto "title title"
-            auto "conditions conditions" auto "description description" 1fr
-            "divider divider" auto "auction-type auction-type" auto "bid bid"
-            auto "time time" auto "bid-btn bid-btn" auto / 1fr 1fr,
+            auto "conditions conditions" auto "description description" 1fr /
+            1fr 1fr,
 
         $gap: 0,
         $justify-items: center,
@@ -14,27 +48,31 @@
         $justify-content: stretch,
         $align-content: stretch
     );
-    --auction-details-padding: 1.5rem;
     width: 100%;
-    min-height: max(98svh, 50rem);
-    color: var(--text-color-1);
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-regular);
     padding: var(--auction-details-padding);
-    overflow: visible;
+
+    min-height: max(98svh, 50rem);
 
     &:not(.auction-details-expanded) {
-        max-height: max(98svh, 50rem);
+        @include viewports.notMobile {
+            max-height: max(98svh, 50rem);
+        }
+    }
+
+    @include viewports.mobile {
+        overflow: auto;
+        height: 100%;
+        min-height: 0;
     }
 }
 
 .auction-image-container {
     grid-area: picture;
     @include layouts.center;
+    border-bottom: var(--border);
     height: 20rem;
     width: calc(100% + var(--auction-details-padding) * 2);
     background-color: black;
-    border-bottom: var(--border);
     margin: calc(var(--auction-details-padding) * -1);
     margin-bottom: 0;
 }
@@ -88,7 +126,9 @@
     }
 
     &:not(.auction-description-expanded) {
-        height: 100%;
+        @include viewports.notMobile {
+            height: 100%;
+        }
     }
 }
 
@@ -109,15 +149,13 @@
     background: linear-gradient(transparent 30%, var(--component-color) 95%);
 }
 
-.divider,
-.auction-bid-btn-wrapper {
+.divider {
     width: calc(100% + var(--auction-details-padding) * 2);
     @include box.margin-horizontal(calc(var(--auction-details-padding) * -1));
 }
 
 .divider {
     grid-area: divider;
-    margin-bottom: 1rem;
 }
 
 .auction-type,
@@ -148,16 +186,20 @@
     }
 }
 
-.auction-bid-btn-wrapper {
-    grid-area: bid-btn;
+.auction-details-bottom {
+    grid-area: bottom-section;
+    width: 100%;
     border-top: var(--border);
-    @include layouts.center;
-    padding-top: var(--auction-details-padding);
-    margin-top: 1rem;
+    @include layouts.flex(column, start, start);
+    padding: var(--auction-details-padding);
     background-color: var(--component-color);
 
     .auction-bid-btn {
         width: 60%;
+        align-self: center;
+        @include viewports.mobile {
+            margin-top: var(--auction-details-padding);
+        }
     }
 }
 
@@ -199,6 +241,20 @@
         .p-button-icon::before {
             font-size: 1.5rem;
             color: white;
+        }
+    }
+}
+
+@include viewports.mobile {
+    :host ::ng-deep {
+        .p-dialog-content {
+            border: none !important;
+            border-radius: 0 !important;
+        }
+        .p-dialog-mask {
+            padding: 0 !important;
+            overflow: hidden !important;
+            height: 100vh !important;
         }
     }
 }
