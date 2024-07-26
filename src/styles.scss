@@ -253,6 +253,13 @@ i {
     stroke: var(--border-color);
 }
 
+.p-toast-message {
+    @include viewports.mobile {
+        margin-top: 2rem;
+        margin-left: 1.5rem;
+    }
+}
+
 .p-toast-message-content {
     height: min-content;
 }
