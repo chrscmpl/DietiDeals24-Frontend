@@ -61,7 +61,7 @@
                 .navbar-tab {
                     @include layouts.flex($align: center);
                     padding: 0.2em 0.4em;
-                    font-weight: var(--font-weight-bold);
+                    font-weight: var(--font-weight-bolder);
                     border-right: var(--border);
                     &:first-child {
                         border-left: var(--border);
@@ -87,7 +87,7 @@
     .nav-auth-btn button {
         padding: 0.5em 1.5em;
         height: fit-content;
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-bolder);
     }
 
     .p-breadcrumb {

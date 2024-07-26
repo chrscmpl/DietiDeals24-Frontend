@@ -36,6 +36,7 @@
         </div>
         <h3 class="auction-category">{{ auction.category }}</h3>
         <dd24-user-preview
+            class="auction-user"
             [profilePictureUrl]="auction.profilePictureUrl"
             [username]="auction.username"
             [country]="auction.location.country"
@@ -46,5 +47,69 @@
         </h1>
         <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
         <p class="auction-description">{{ auction.description ?? "" }}</p>
+        <p-divider class="divider"></p-divider>
+        <dd24-auction-type-link
+            class="auction-type"
+            [type]="auction.type"
+        ></dd24-auction-type-link>
+        <p class="auction-bid">
+            {{
+                (auction.lastBidDescription | oneCharUpper) +
+                    ": " +
+                    (auction.lastBid | currency: auction.currency)
+            }}
+        </p>
+        <p class="auction-time">
+            <span>Time left: </span>
+            <dd24-timer
+                [timeLeft]="auction.timeLeft"
+                style="font-weight: var(--font-weight-bolder)"
+            ></dd24-timer>
+            <span class="auction-end-date">
+                (Until {{ auction.endTime | localDate }})</span
+            >
+        </p>
+
+        <div class="auction-bid-btn-wrapper">
+            <p-button
+                class="auction-bid-btn"
+                label="Make a bid"
+                [style]="{ padding: '1rem' }"
+            ></p-button>
+        </div>
+        <p-button
+            class="overlay-btn close-btn"
+            icon="pi pi-times"
+            [rounded]="true"
+            severity="secondary"
+            (click)="onClose()"
+        ></p-button>
+        <p-button
+            class="overlay-btn share-btn"
+            icon="pi pi-share-alt"
+            [rounded]="true"
+            severity="secondary"
+            (click)="onShare()"
+        ></p-button>
+        @if (auction.picturesUrls.length > 1) {
+            @if (currentPictureIndex + 1 < auction.picturesUrls.length) {
+                <p-button
+                    class="overlay-btn next-pic-btn"
+                    icon="pi pi-chevron-right"
+                    [rounded]="true"
+                    severity="secondary"
+                    (click)="onNextPicture()"
+                ></p-button>
+            }
+            @if (currentPictureIndex > 0) {
+                <p-button
+                    class="overlay-btn prev-pic-btn"
+                    icon="pi pi-chevron-left"
+                    [rounded]="true"
+                    severity="secondary"
+                    (click)="onPrevPicture()"
+                ></p-button>
+            }
+        }
     </div>
 </p-dialog>

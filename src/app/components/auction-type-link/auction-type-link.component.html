@@ -2,7 +2,8 @@
     >{{ type + " AUCTION" | uppercase }}
     <a
         class="auction-type-link"
-        routerLink="/help"
-        [queryParams]="{ question: type + '-auctions' }"
+        (click)="onNavigate()"
+        tabindex="0"
+        (keypress)="onKeyPress($event)"
         ><i class="pi pi-info-circle"></i></a
 ></span>

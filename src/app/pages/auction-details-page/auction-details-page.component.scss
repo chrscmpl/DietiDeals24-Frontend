@@ -1,12 +1,12 @@
 @use "layouts";
+@use "box";
 
 .auction-details {
     @include layouts.grid(
         $template: "picture picture" auto "category user" auto "title title"
-            auto "conditions conditions" auto "description description" auto
-            "separator-1 separator-1" auto "auction-type auction-type" auto
-            "bid bid" auto "time time" auto "separator-2 separator-2" auto
-            "bid-btn bid-btn" auto / 1fr 1fr,
+            auto "conditions conditions" auto "description description" 1fr
+            "divider divider" auto "auction-type auction-type" auto "bid bid"
+            auto "time time" auto "bid-btn bid-btn" auto / 1fr 1fr,
 
         $gap: 0,
         $justify-items: center,
@@ -42,18 +42,29 @@
     max-height: 100%;
 }
 
+.auction-category,
+.auction-user,
+.divider {
+    @include box.margin-vertical(1rem);
+}
+
 .auction-category {
     grid-area: category;
     font-size: var(--font-size-large);
     color: var(--text-color-3);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bolder);
     justify-self: start;
+}
+
+.auction-user {
+    grid-area: user;
+    justify-self: end;
 }
 
 .auction-title {
     grid-area: title;
     font-size: var(--font-size-large);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bolder);
 }
 
 .auction-conditions {
@@ -63,4 +74,98 @@
 
 .auction-description {
     grid-area: description;
+    align-self: start;
+}
+
+.divider,
+.auction-bid-btn-wrapper {
+    width: calc(100% + var(--auction-details-padding) * 2);
+    @include box.margin-horizontal(calc(var(--auction-details-padding) * -1));
+}
+
+.divider {
+    grid-area: divider;
+}
+
+.auction-type,
+.auction-bid,
+.auction-time {
+    justify-self: start;
+}
+
+.auction-type {
+    grid-area: auction-type;
+}
+
+.auction-bid,
+.auction-time {
+    margin-top: 0.5rem;
+}
+
+.auction-bid {
+    grid-area: bid;
+    font-weight: var(--font-weight-bolder);
+    font-size: var(--font-size-large);
+}
+
+.auction-time {
+    grid-area: time;
+    .auction-end-date {
+        white-space: nowrap;
+    }
+}
+
+.auction-bid-btn-wrapper {
+    grid-area: bid-btn;
+    border-top: var(--border);
+    @include layouts.center;
+    padding-top: var(--auction-details-padding);
+    margin-top: 1rem;
+    background-color: var(--component-color);
+
+    .auction-bid-btn {
+        width: 60%;
+    }
+}
+
+.close-btn {
+    grid-area: picture;
+    justify-self: end;
+    align-self: start;
+    margin: calc(var(--auction-details-padding) * -0.7);
+}
+
+.share-btn {
+    grid-area: picture;
+    justify-self: end;
+    align-self: start;
+    margin: calc(var(--auction-details-padding) * -0.7);
+    margin-right: 3rem;
+}
+
+.next-pic-btn {
+    grid-area: picture;
+    justify-self: end;
+    align-self: center;
+    margin-right: calc(var(--auction-details-padding) * -0.7);
+}
+
+.prev-pic-btn {
+    grid-area: picture;
+    justify-self: start;
+    align-self: center;
+    margin-left: calc(var(--auction-details-padding) * -0.7);
+}
+
+:host ::ng-deep {
+    .overlay-btn {
+        .p-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+        }
+        .p-button-icon::before {
+            font-size: 1.5rem;
+            color: white;
+        }
+    }
 }

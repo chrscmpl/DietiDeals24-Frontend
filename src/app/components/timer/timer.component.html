@@ -1,0 +1,5 @@
+<span
+    class="auction-card-time-left-amount"
+    [class.danger]="timeLeft > 0 && timeLeft < 86400"
+    >{{ timeLeft | interval: "minutes" }}</span
+>

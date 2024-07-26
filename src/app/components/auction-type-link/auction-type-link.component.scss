@@ -4,7 +4,7 @@
     @include layouts.flex(row, start, center, 0.5ch);
     font-size: var(--font-size-large);
     color: var(--accent-color-2);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bolder);
 }
 
 .auction-type-link {
@@ -12,6 +12,6 @@
     i {
         font-size: var(--font-size-large);
         color: var(--accent-color-2);
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-bolder);
     }
 }

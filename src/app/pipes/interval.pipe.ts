@@ -54,7 +54,7 @@ export class IntervalPipe implements PipeTransform {
             ret.push(this.pluralize('minute', minutes));
         if (precision >= Precision.seconds)
             ret.push(this.pluralize('second', seconds));
-        return ret.join(', ');
+        return ret.filter((s) => s.length).join(', ');
     }
 
     private buildShortString(interval: Interval, precision: Precision) {
@@ -89,7 +89,8 @@ export class IntervalPipe implements PipeTransform {
     }
 
     private pluralize(unit: string, value?: number): string {
-        return `${value ?? '0'} ${unit}${value !== 1 ? 's' : ''}`;
+        if (!value) return '';
+        return `${value} ${unit}${value !== 1 ? 's' : ''}`;
     }
 
     private formatNumber(num?: number): string {

@@ -66,7 +66,7 @@
             @include layouts.flex(row, space-between, center);
 
             > span {
-                font-weight: var(--font-weight-bold);
+                font-weight: var(--font-weight-bolder);
             }
         }
     }
@@ -86,7 +86,7 @@
         margin-bottom: 0;
     }
     .p-divider-content {
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-bolder);
         color: var(--text-color-3);
     }
     .google-registration-btn button {

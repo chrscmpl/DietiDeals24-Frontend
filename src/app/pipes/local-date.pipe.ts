@@ -15,6 +15,8 @@ export class LocalDatePipe implements PipeTransform {
         }
         if (dayDifference === 0) {
             return this.datePipe.transform(date, "'today at' HH:mm");
+        } else if (dayDifference <= 1) {
+            return this.datePipe.transform(date, "'tomorrow at' HH:mm");
         } else if (dayDifference < 7) {
             return this.datePipe.transform(date, "EEEE 'at' HH:mm");
         } else {
@@ -23,8 +25,8 @@ export class LocalDatePipe implements PipeTransform {
     }
 
     private dayDifference(date: Date): number {
-        const now = new Date();
-        const diff = date.getTime() - now.getTime();
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
+        const today = new Date().setHours(0, 0, 0, 0);
+        const otherDay = new Date(date).setHours(0, 0, 0, 0);
+        return (otherDay - today) / (1000 * 60 * 60 * 24);
     }
 }

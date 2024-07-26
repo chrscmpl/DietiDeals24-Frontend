@@ -68,7 +68,7 @@
 
         .auction-card-title {
             font-size: var(--font-size-large);
-            font-weight: var(--font-weight-bold);
+            font-weight: var(--font-weight-bolder);
         }
 
         .auction-card-secondary-line {
@@ -97,15 +97,11 @@
 
         .auction-card-sum {
             font-size: var(--font-size-large);
-            font-weight: var(--font-weight-bold);
+            font-weight: var(--font-weight-bolder);
         }
         .auction-card-time-left {
             font-size: var(--font-size-medium);
             color: var(--text-color-3);
-
-            .auction-card-time-left-amount {
-                font-weight: var(--font-weight-bold);
-            }
         }
     }
 }
