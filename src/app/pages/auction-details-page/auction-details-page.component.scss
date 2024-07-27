@@ -288,15 +288,6 @@
 
 // do not encapsulate
 ::ng-deep {
-    .carousel-overlay {
-        .auction-image {
-            cursor: default !important;
-        }
-        .carousel-item-mask {
-            cursor: pointer !important;
-        }
-    }
-
     .dd24-carousel {
         .p-carousel-container {
             @include layouts.grid();
@@ -349,6 +340,27 @@
         .p-carousel-next:enabled:hover,
         .p-carousel-prev:enabled:hover {
             background: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .dd24-carousel-overlay {
+        .auction-image {
+            cursor: default !important;
+        }
+        .carousel-item-mask {
+            cursor: pointer !important;
+        }
+
+        @include viewports.notMobile() {
+            .p-carousel-prev,
+            .p-carousel-next {
+                height: 6rem !important;
+                width: 6rem !important;
+            }
+
+            .carousel-icon {
+                font-size: 4rem !important;
+            }
         }
     }
 }
