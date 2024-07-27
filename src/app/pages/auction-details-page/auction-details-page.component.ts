@@ -22,7 +22,7 @@ import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { ButtonModule } from 'primeng/button';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'primeng/api';
-import { CarouselModule } from 'primeng/carousel';
+import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -53,12 +53,13 @@ export class AuctionDetailsPageComponent
 
     public currentPictureIndex: number = 0;
 
-    public showImagePlaceholder: boolean = false;
-
     public expandable: boolean = false;
     public expanded: boolean = false;
 
-    public carouselItems: { url: string }[] = [];
+    public carouselItems: { url: string; index: number; isEmpty?: boolean }[] =
+        [];
+
+    private errorPictureIndexes: number[] = [];
 
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
@@ -75,9 +76,14 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
-            this.carouselItems = this.auction.picturesUrls.map((url) => ({
-                url,
-            }));
+            this.carouselItems = this.auction.picturesUrls.map(
+                (url, index) => ({
+                    url,
+                    index,
+                }),
+            );
+            if (!this.carouselItems.length)
+                this.carouselItems.push({ url: '', index: 0, isEmpty: true });
         });
 
         this.subscriptions.push(
@@ -137,7 +143,11 @@ export class AuctionDetailsPageComponent
         this.expanded = true;
     }
 
-    public onImageError(): void {
-        this.showImagePlaceholder = true;
+    public onImageError(index: number): void {
+        this.errorPictureIndexes.push(index);
+    }
+
+    public isPictureErrored(index: number): boolean {
+        return this.errorPictureIndexes.includes(index);
     }
 }

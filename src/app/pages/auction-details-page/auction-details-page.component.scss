@@ -67,7 +67,6 @@
     border-bottom: var(--border);
     height: 20rem;
     width: calc(100% + var(--auction-details-padding) * 2);
-    background-color: black;
     margin: calc(var(--auction-details-padding) * -1);
     margin-bottom: 0;
 }
@@ -82,6 +81,17 @@
     object-fit: cover;
     max-width: 100%;
     max-height: 100%;
+}
+
+.auction-image-placeholder {
+    height: 100%;
+    width: 100%;
+    @include layouts.center;
+}
+
+.auction-image-placeholder-icon {
+    color: var(--accent-color-2);
+    font-size: 10rem;
 }
 
 .auction-category,
@@ -270,6 +280,10 @@
         height: 100%;
     }
 
+    .p-carousel-content {
+        height: 100%;
+    }
+
     .p-carousel-indicators {
         display: none;
     }
@@ -305,5 +319,9 @@
     .p-carousel-next:enabled:hover,
     .p-carousel-prev:enabled:hover {
         background: rgba(0, 0, 0, 0.3);
+    }
+
+    .p-carousel-item:has(.auction-image) {
+        background-color: black;
     }
 }

@@ -31,17 +31,21 @@
                     [numVisible]="1"
                     [style]="{ height: '100%', width: '100%' }"
                     ><ng-template let-picture pTemplate="item">
-                        @if (!showImagePlaceholder) {
+                        @if (
+                            !picture.isEmpty && !isPictureErrored(picture.index)
+                        ) {
                             <img
                                 class="auction-image"
                                 [src]="picture.url"
                                 alt="Auction image"
-                                (error)="onImageError()"
+                                (error)="onImageError(picture.index)"
                             />
                         } @else {
-                            <i
-                                class="auction-card-missing-image pi pi-image"
-                            ></i>
+                            <div class="auction-image-placeholder">
+                                <i
+                                    class="auction-image-placeholder-icon pi pi-image"
+                                ></i>
+                            </div>
                         }
                     </ng-template>
                     <ng-template pTemplate="previousicon">
