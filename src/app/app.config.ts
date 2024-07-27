@@ -16,7 +16,7 @@ import { ShowUIGuard } from './guards/show-ui.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { provideServiceWorker } from '@angular/service-worker';
 import { EmailVerificationGuard } from './guards/email-not-verified.guard';
-import { MaskedEmailPipe } from './pipes/masked-email.pipe';
+import { MaskedPipe } from './pipes/masked.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
 import { MessageService } from 'primeng/api';
@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
         TitleCasePipe,
         IntervalPipe,
         CurrencyPipe,
-        MaskedEmailPipe,
+        MaskedPipe,
         FindCurrencyPipe,
         HideUIGuard,
         ShowUIGuard,

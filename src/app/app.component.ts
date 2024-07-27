@@ -12,7 +12,6 @@ import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
-import { StretchOnScrollDirective } from './directives/stretch-on-scroll.directive';
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
@@ -32,7 +31,6 @@ import { ToastModule } from 'primeng/toast';
         MobileHeaderComponent,
         ButtonModule,
         SidebarComponent,
-        StretchOnScrollDirective,
         SmartStickyDirective,
         ToastModule,
     ],

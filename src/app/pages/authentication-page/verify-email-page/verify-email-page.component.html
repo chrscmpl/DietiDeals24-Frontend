@@ -40,7 +40,7 @@
                     showEmail
                         ? verificationForm.get("email")?.value ?? ""
                         : (verificationForm.get("email")?.value ?? ""
-                          | maskedEmail)
+                          | masked: "email")
                 }}
                 <button
                     class="email-mask-toggle"

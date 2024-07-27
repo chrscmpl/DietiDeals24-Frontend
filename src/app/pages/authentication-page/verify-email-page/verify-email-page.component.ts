@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputComponent } from '../../../components/input/input.component';
-import { MaskedEmailPipe } from '../../../pipes/masked-email.pipe';
+import { MaskedPipe } from '../../../pipes/masked.pipe';
 import { emailVerificationDTO } from '../../../DTOs/user.dto';
 import { RedirectionService } from '../../../services/redirection.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -29,7 +29,7 @@ interface verificationForm {
         InputOtpModule,
         ButtonModule,
         InputComponent,
-        MaskedEmailPipe,
+        MaskedPipe,
     ],
     templateUrl: './verify-email-page.component.html',
     styleUrl: './verify-email-page.component.scss',
