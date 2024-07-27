@@ -76,11 +76,28 @@
     width: 100%;
 }
 
+.carousel-item-wrapper {
+    height: 100%;
+    width: 100%;
+    @include layouts.grid;
+
+    > * {
+        grid-area: 1/1;
+    }
+
+    &:has(.auction-image) {
+        background-color: black;
+    }
+}
+
 .auction-image {
     display: block;
     object-fit: cover;
     max-width: 100%;
     max-height: 100%;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
 }
 
 .auction-image-placeholder {
@@ -267,61 +284,69 @@
     }
 }
 
-:host ::ng-deep {
-    .p-carousel-container {
-        @include layouts.grid();
-        > * {
-            grid-area: 1/1;
+// do not encapsulate
+::ng-deep {
+    .carousel-overlay {
+        .auction-image {
+            cursor: default !important;
+        }
+        .carousel-item-mask {
+            cursor: pointer !important;
         }
     }
 
-    .p-carousel-container,
-    .p-carousel-items-container {
-        height: 100%;
-    }
+    .dd24-carousel {
+        .p-carousel-container {
+            @include layouts.grid();
+            > * {
+                grid-area: 1/1;
+            }
+        }
 
-    .p-carousel-content {
-        height: 100%;
-    }
+        .p-carousel-container,
+        .p-carousel-items-container {
+            height: 100%;
+        }
 
-    .p-carousel-indicators {
-        display: none;
-    }
+        .p-carousel-content {
+            height: 100%;
+        }
 
-    .p-carousel-item {
-        @include layouts.center;
-    }
+        .p-carousel-indicators {
+            display: none;
+        }
 
-    .p-carousel-prev.p-disabled,
-    .p-carousel-next.p-disabled {
-        opacity: 0;
-    }
+        .p-carousel-item {
+            @include layouts.center;
+        }
 
-    .p-carousel-prev {
-        justify-self: start;
-        align-self: center;
-    }
+        .p-carousel-prev.p-disabled,
+        .p-carousel-next.p-disabled {
+            opacity: 0;
+        }
 
-    .p-carousel-next {
-        justify-self: end;
-        align-self: center;
-    }
+        .p-carousel-prev {
+            justify-self: start;
+            align-self: center;
+        }
 
-    .p-carousel-prev,
-    .p-carousel-next {
-        height: 2.5rem;
-        width: 2.5rem;
-        background-color: rgba(0, 0, 0, 0.5);
-        --p-focus-ring-color: rgba(255, 255, 255, 0.5);
-        z-index: 100000;
-    }
+        .p-carousel-next {
+            justify-self: end;
+            align-self: center;
+        }
 
-    .p-carousel-next:enabled:hover,
-    .p-carousel-prev:enabled:hover {
-        background: rgba(0, 0, 0, 0.3);
-    }
+        .p-carousel-prev,
+        .p-carousel-next {
+            height: 2.5rem;
+            width: 2.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            --p-focus-ring-color: rgba(255, 255, 255, 0.5);
+            z-index: 100000;
+        }
 
-    .p-carousel-item:has(.auction-image) {
-        background-color: black;
+        .p-carousel-next:enabled:hover,
+        .p-carousel-prev:enabled:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
     }
 }

@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { filter, Subscription, take } from 'rxjs';
 import { WindowService } from '../../services/window.service';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
 import { Auction } from '../../models/auction.model';
 import { UserPreviewComponent } from '../../components/user-preview/user-preview.component';
 import { DividerModule } from 'primeng/divider';
@@ -39,6 +39,7 @@ import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
         LocalDatePipe,
         ButtonModule,
         CarouselModule,
+        NgTemplateOutlet,
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
@@ -60,6 +61,8 @@ export class AuctionDetailsPageComponent
         [];
 
     private errorPictureIndexes: number[] = [];
+
+    public displayCarouselOverlay: boolean = false;
 
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
@@ -149,5 +152,21 @@ export class AuctionDetailsPageComponent
 
     public isPictureErrored(index: number): boolean {
         return this.errorPictureIndexes.includes(index);
+    }
+
+    public showCarouselOverlay() {
+        this.displayCarouselOverlay = true;
+    }
+
+    public hideCarouselOverlay() {
+        this.displayCarouselOverlay = false;
+    }
+
+    public hideCarouselOverlayKeypress(e: KeyboardEvent) {
+        if (e.key === 'Enter') this.hideCarouselOverlay();
+    }
+
+    public showCarouselOverlayKeypress(e: KeyboardEvent) {
+        if (e.key === 'Enter') this.showCarouselOverlay();
     }
 }

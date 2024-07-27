@@ -1,9 +1,51 @@
+<ng-template #imageCarousel
+    ><p-carousel
+        class="auction-image-carousel dd24-carousel"
+        [value]="carouselItems"
+        [numVisible]="1"
+        [style]="{ height: '100%', width: '100%' }"
+        ><ng-template let-picture pTemplate="item">
+            <div class="carousel-item-wrapper">
+                @if (!picture.isEmpty && !isPictureErrored(picture.index)) {
+                    <div
+                        class="carousel-item-mask"
+                        (click)="hideCarouselOverlay()"
+                        tabindex="0"
+                        (keypress)="hideCarouselOverlayKeypress($event)"
+                    ></div>
+                    <img
+                        class="auction-image"
+                        [src]="picture.url"
+                        alt="Auction image"
+                        (error)="onImageError(picture.index)"
+                        (click)="showCarouselOverlay()"
+                        tabindex="0"
+                        (keypress)="showCarouselOverlayKeypress($event)"
+                    />
+                } @else {
+                    <div class="auction-image-placeholder">
+                        <i
+                            class="auction-image-placeholder-icon pi pi-image"
+                        ></i>
+                    </div>
+                }
+            </div>
+        </ng-template>
+        <ng-template pTemplate="previousicon">
+            <i class="pi pi-chevron-left carousel-icon"></i>
+        </ng-template>
+
+        <ng-template pTemplate="nexticon">
+            <i class="pi pi-chevron-right carousel-icon"></i>
+        </ng-template> </p-carousel
+></ng-template>
+
 <p-dialog
-    [modal]="true"
+    modal="true"
     [(visible)]="display"
     draggable="false"
     resizable="false"
-    [showHeader]="false"
+    showHeader="false"
     (onHide)="onClose()"
     [closeIcon]="
         (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'
@@ -25,37 +67,7 @@
     >
         <div class="auction-details-info">
             <div class="auction-image-container">
-                <p-carousel
-                    class="auction-image-carousel"
-                    [value]="carouselItems"
-                    [numVisible]="1"
-                    [style]="{ height: '100%', width: '100%' }"
-                    ><ng-template let-picture pTemplate="item">
-                        @if (
-                            !picture.isEmpty && !isPictureErrored(picture.index)
-                        ) {
-                            <img
-                                class="auction-image"
-                                [src]="picture.url"
-                                alt="Auction image"
-                                (error)="onImageError(picture.index)"
-                            />
-                        } @else {
-                            <div class="auction-image-placeholder">
-                                <i
-                                    class="auction-image-placeholder-icon pi pi-image"
-                                ></i>
-                            </div>
-                        }
-                    </ng-template>
-                    <ng-template pTemplate="previousicon">
-                        <i class="pi pi-chevron-left carousel-icon"></i>
-                    </ng-template>
-
-                    <ng-template pTemplate="nexticon">
-                        <i class="pi pi-chevron-right carousel-icon"></i>
-                    </ng-template>
-                </p-carousel>
+                <ng-container *ngTemplateOutlet="imageCarousel"></ng-container>
             </div>
             <h3 class="auction-category">{{ auction.category }}</h3>
             <dd24-user-preview
@@ -160,4 +172,26 @@
             </nav>
         }
     </div>
+
+    <p-dialog
+        contentStyleClass="carousel-overlay"
+        modal="true"
+        draggable="false"
+        resizable="false"
+        showHeader="false"
+        appendTo="body"
+        [(visible)]="displayCarouselOverlay"
+        maskStyle="align-items: center;padding: 0; "
+        [style]="{ position: 'relative', 'max-height': 'none', border: 'none' }"
+        [contentStyle]="{
+            'border-radius': '0',
+            border: 'none',
+            width: '100sv',
+            height: '100svh',
+            padding: 0,
+            'max-height': 'none'
+        }"
+    >
+        <ng-container *ngTemplateOutlet="imageCarousel"></ng-container
+    ></p-dialog>
 </p-dialog>
