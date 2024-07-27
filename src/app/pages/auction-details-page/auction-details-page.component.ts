@@ -64,6 +64,8 @@ export class AuctionDetailsPageComponent
 
     public displayCarouselOverlay: boolean = false;
 
+    public imageCarouselPage: number = 0;
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -168,5 +170,9 @@ export class AuctionDetailsPageComponent
 
     public showCarouselOverlayKeypress(e: KeyboardEvent) {
         if (e.key === 'Enter') this.showCarouselOverlay();
+    }
+
+    public onImageCarouselNavigation(e: CarouselPageEvent) {
+        if (typeof e.page === 'number') this.imageCarouselPage = e.page;
     }
 }
