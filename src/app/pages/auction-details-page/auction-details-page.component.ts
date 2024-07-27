@@ -22,6 +22,7 @@ import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { ButtonModule } from 'primeng/button';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'primeng/api';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -37,6 +38,7 @@ import { MessageService } from 'primeng/api';
         TimerComponent,
         LocalDatePipe,
         ButtonModule,
+        CarouselModule,
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
@@ -56,6 +58,8 @@ export class AuctionDetailsPageComponent
     public expandable: boolean = false;
     public expanded: boolean = false;
 
+    public carouselItems: { url: string }[] = [];
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -71,6 +75,9 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
+            this.carouselItems = this.auction.picturesUrls.map((url) => ({
+                url,
+            }));
         });
 
         this.subscriptions.push(

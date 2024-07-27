@@ -72,6 +72,11 @@
     margin-bottom: 0;
 }
 
+.auction-image-carousel {
+    height: 100%;
+    width: 100%;
+}
+
 .auction-image {
     display: block;
     object-fit: cover;
@@ -127,7 +132,7 @@
 
     &:not(.auction-description-expanded) {
         @include viewports.notMobile {
-            max-height: max(13svh, 13rem);
+            max-height: max(23svh, 13rem);
         }
     }
 }
@@ -220,18 +225,9 @@
     margin-right: 3rem;
 }
 
-.next-pic-btn {
-    grid-area: picture;
-    justify-self: end;
-    align-self: center;
-    margin-right: calc(var(--auction-details-padding) * -0.7);
-}
-
-.prev-pic-btn {
-    grid-area: picture;
-    justify-self: start;
-    align-self: center;
-    margin-left: calc(var(--auction-details-padding) * -0.7);
+.carousel-icon {
+    font-size: 2rem;
+    color: white;
 }
 
 :host ::ng-deep {
@@ -258,5 +254,56 @@
             overflow: hidden !important;
             height: 100vh !important;
         }
+    }
+}
+
+:host ::ng-deep {
+    .p-carousel-container {
+        @include layouts.grid();
+        > * {
+            grid-area: 1/1;
+        }
+    }
+
+    .p-carousel-container,
+    .p-carousel-items-container {
+        height: 100%;
+    }
+
+    .p-carousel-indicators {
+        display: none;
+    }
+
+    .p-carousel-item {
+        @include layouts.center;
+    }
+
+    .p-carousel-prev.p-disabled,
+    .p-carousel-next.p-disabled {
+        opacity: 0;
+    }
+
+    .p-carousel-prev {
+        justify-self: start;
+        align-self: center;
+    }
+
+    .p-carousel-next {
+        justify-self: end;
+        align-self: center;
+    }
+
+    .p-carousel-prev,
+    .p-carousel-next {
+        height: 2.5rem;
+        width: 2.5rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        --p-focus-ring-color: rgba(255, 255, 255, 0.5);
+        z-index: 100000;
+    }
+
+    .p-carousel-next:enabled:hover,
+    .p-carousel-prev:enabled:hover {
+        background: rgba(0, 0, 0, 0.3);
     }
 }

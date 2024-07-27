@@ -25,19 +25,33 @@
     >
         <div class="auction-details-info">
             <div class="auction-image-container">
-                @if (
-                    auction.picturesUrls[currentPictureIndex] &&
-                    !showImagePlaceholder
-                ) {
-                    <img
-                        class="auction-image"
-                        [src]="auction.picturesUrls[currentPictureIndex]"
-                        alt="Auction image"
-                        (error)="onImageError()"
-                    />
-                } @else {
-                    <i class="auction-card-missing-image pi pi-image"></i>
-                }
+                <p-carousel
+                    class="auction-image-carousel"
+                    [value]="carouselItems"
+                    [numVisible]="1"
+                    [style]="{ height: '100%', width: '100%' }"
+                    ><ng-template let-picture pTemplate="item">
+                        @if (!showImagePlaceholder) {
+                            <img
+                                class="auction-image"
+                                [src]="picture.url"
+                                alt="Auction image"
+                                (error)="onImageError()"
+                            />
+                        } @else {
+                            <i
+                                class="auction-card-missing-image pi pi-image"
+                            ></i>
+                        }
+                    </ng-template>
+                    <ng-template pTemplate="previousicon">
+                        <i class="pi pi-chevron-left carousel-icon"></i>
+                    </ng-template>
+
+                    <ng-template pTemplate="nexticon">
+                        <i class="pi pi-chevron-right carousel-icon"></i>
+                    </ng-template>
+                </p-carousel>
             </div>
             <h3 class="auction-category">{{ auction.category }}</h3>
             <dd24-user-preview
@@ -88,26 +102,6 @@
                     severity="secondary"
                     (click)="onShare()"
                 ></p-button>
-            }
-            @if (auction.picturesUrls.length > 1) {
-                @if (currentPictureIndex + 1 < auction.picturesUrls.length) {
-                    <p-button
-                        class="overlay-btn next-pic-btn"
-                        icon="pi pi-chevron-right"
-                        [rounded]="true"
-                        severity="secondary"
-                        (click)="onNextPicture()"
-                    ></p-button>
-                }
-                @if (currentPictureIndex > 0) {
-                    <p-button
-                        class="overlay-btn prev-pic-btn"
-                        icon="pi pi-chevron-left"
-                        [rounded]="true"
-                        severity="secondary"
-                        (click)="onPrevPicture()"
-                    ></p-button>
-                }
             }
         </div>
 

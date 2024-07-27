@@ -16,6 +16,7 @@ import {
     tap,
 } from 'rxjs';
 import { SearchSectionComponent } from '../../components/search-section/search-section.component';
+import { AuctionSearchParameters } from '../../typeUtils/auction.utils';
 
 @Component({
     selector: 'dd24-auctions-search-page',
@@ -71,23 +72,22 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
                         initialized = true;
                     }),
                 )
-                .subscribe((params) => {
-                    this.auctionsService.set(
-                        AuctionsSearchPageComponent.REQUEST_KEY,
-                        {
-                            queryParameters: params,
-                            pageNumber: 1,
-                            pageSize: 10,
-                            eager: true,
-                        },
-                    );
-                    this.requestKeySubject.next();
-                }),
+                .subscribe(this.startSearch.bind(this)),
         );
     }
 
     ngOnDestroy(): void {
         this.requestKeySubject.complete();
         this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+
+    private startSearch(params: AuctionSearchParameters) {
+        this.auctionsService.set(AuctionsSearchPageComponent.REQUEST_KEY, {
+            queryParameters: params,
+            pageNumber: 1,
+            pageSize: 10,
+            eager: true,
+        });
+        this.requestKeySubject.next();
     }
 }

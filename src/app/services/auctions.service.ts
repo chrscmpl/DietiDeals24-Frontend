@@ -94,6 +94,14 @@ export class AuctionsService {
         //             params: { id },
         //         },
         //     )
+        const description =
+            "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it";
+        const repeat = (str: string, n: number): string => {
+            let res = '';
+            for (let i = 0; i < n; i++)
+                res += i % 2 === 0 ? str : str.toUpperCase();
+            return res;
+        };
         return of({
             id,
             type: AuctionType.silent,
@@ -105,8 +113,7 @@ export class AuctionsService {
             endTime: new Date(Date.now() + 25 * 60 * 60 * 1000).toString(),
             pictureUrl: undefined,
             currency: 'USD',
-            description:
-                "Brand new product from Apple sure to blow your expectations what are you even doing if you don't have one like it's 2024 and you are still using a Samsung Galaxy what are you doing with your life you should totally make the brand of phone you use part of your personality and be proud of it",
+            description: repeat(description, 24),
             bids: undefined,
             username: 'ciccio pasticcio',
             picturesUrls: [
