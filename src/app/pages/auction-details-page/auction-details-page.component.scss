@@ -341,6 +341,32 @@
         .p-carousel-prev:enabled:hover {
             background: rgba(0, 0, 0, 0.3);
         }
+
+        & + .overlay-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            .p-button {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                height: 6rem;
+                width: 6rem;
+                margin: 0.5rem;
+
+                @include viewports.mobile {
+                    height: 2.5rem;
+                    width: 2.5rem;
+                }
+            }
+            .p-button-icon::before {
+                font-size: 4rem;
+                color: white;
+                @include viewports.mobile {
+                    font-size: 2rem;
+                }
+            }
+        }
     }
 
     .dd24-carousel-overlay {
