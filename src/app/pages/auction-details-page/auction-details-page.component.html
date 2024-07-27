@@ -6,13 +6,13 @@
         [style]="{ height: '100%', width: '100%' }"
         ><ng-template let-picture pTemplate="item">
             <div class="carousel-item-wrapper">
+                <div
+                    class="carousel-item-mask"
+                    (click)="hideCarouselOverlay()"
+                    tabindex="0"
+                    (keypress)="hideCarouselOverlayKeypress($event)"
+                ></div>
                 @if (!picture.isEmpty && !isPictureErrored(picture.index)) {
-                    <div
-                        class="carousel-item-mask"
-                        (click)="hideCarouselOverlay()"
-                        tabindex="0"
-                        (keypress)="hideCarouselOverlayKeypress($event)"
-                    ></div>
                     <img
                         class="auction-image"
                         [src]="picture.url"
