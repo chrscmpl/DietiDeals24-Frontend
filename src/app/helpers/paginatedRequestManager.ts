@@ -74,10 +74,10 @@ export class PaginatedRequestManager<Entity> {
         this._elements.length = 0;
         if (!paginationParams) {
             this.request.reset();
-            return;
+        } else {
+            this.request.complete();
+            this.request = new PaginatedRequest<Entity>(paginationParams);
         }
-        this.request.complete();
-        this.request = new PaginatedRequest<Entity>(paginationParams);
         this.subscribeToData();
     }
 
