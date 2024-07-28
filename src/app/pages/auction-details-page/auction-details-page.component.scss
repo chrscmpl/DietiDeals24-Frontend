@@ -227,8 +227,19 @@
 
 .auction-time {
     grid-area: time;
-    .auction-end-date {
-        white-space: nowrap;
+}
+
+.auction-end-date {
+    @include viewports.notMobile {
+        &::before {
+            content: " (";
+        }
+        &::after {
+            content: ")";
+        }
+    }
+    @include viewports.mobile {
+        display: block;
     }
 }
 

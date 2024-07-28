@@ -9,29 +9,30 @@
     padding-bottom: env(safe-area-inset-bottom);
     background-color: var(--background-color);
 
-    @include viewports.mobile {
-        height: 100svh;
-        overflow: hidden;
-    }
-
     .header {
         grid-area: header;
         width: 100%;
         top: 0;
         z-index: 500;
+
+        @include viewports.mobile {
+            position: sticky;
+            top: 0;
+        }
     }
 
     .content {
         grid-area: main;
-
-        @include viewports.mobile {
-            overflow-y: auto;
-        }
     }
 
     .footer {
         grid-area: footer;
         z-index: 500;
+
+        @include viewports.mobile {
+            position: sticky;
+            bottom: 0;
+        }
     }
 
     .create-auction-button {
