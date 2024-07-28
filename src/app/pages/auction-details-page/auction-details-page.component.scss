@@ -215,6 +215,16 @@
     font-size: var(--font-size-large);
 }
 
+.auction-bids-count {
+    color: var(--text-color-3);
+    margin-left: 1ch;
+    @include viewports.mobile {
+        font-size: var(--font-size-medium);
+        display: block;
+        margin-left: 0;
+    }
+}
+
 .auction-time {
     grid-area: time;
     .auction-end-date {

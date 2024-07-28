@@ -143,11 +143,13 @@
                 [type]="auction.type"
             ></dd24-auction-type-link>
             <p class="auction-bid">
-                {{
-                    (auction.lastBidDescription | oneCharUpper) +
-                        ": " +
-                        (auction.lastBid | currency: auction.currency)
-                }}
+                {{ auction.lastBidDescription | oneCharUpper }}:
+                {{ auction.lastBid | currency: auction.currency }}
+                @if (auction.bids) {
+                    <span class="auction-bids-count">
+                        {{ auction.bids }} bids made</span
+                    >
+                }
             </p>
             <p class="auction-time">
                 <span>Time left: </span>

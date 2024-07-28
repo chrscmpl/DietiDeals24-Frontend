@@ -13,7 +13,8 @@
         "watch": "ng serve --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint",
-        "backend": "cd ../DietiDeals24-Backend && docker-compose up"
+        "backend": "cd ../DietiDeals24-Backend && git pull && docker-compose up",
+        "backend-down": "cd ../DietiDeals24-Backend && docker-compose down -v"
     },
     "private": true,
     "dependencies": {
