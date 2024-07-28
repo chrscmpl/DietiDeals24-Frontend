@@ -3,7 +3,7 @@
 @use "box";
 
 .authentication-page {
-    height: 100vh;
+    height: 100svh;
     background-color: var(--background-color);
     width: 100%;
 
@@ -17,7 +17,9 @@
 
     @include viewports.mobile {
         grid-template: "main" 1fr / 1fr;
-        height: 100%;
+        height: auto;
+        min-height: 100%;
+        background-color: var(--component-color);
     }
 
     .banner {
@@ -65,7 +67,8 @@
         grid-area: main;
         @include layouts.flex(column, start, center, 1rem);
         @include box.padding-vertical(2rem);
-        overflow: scroll;
+        overflow-y: auto;
+        height: 100%;
         .logo {
             align-self: center;
             display: block;
@@ -75,8 +78,9 @@
             flex: 1;
         }
         @include viewports.mobile {
+            height: auto;
+            overflow: hidden;
             align-items: stretch;
-            overflow: auto;
             background-color: var(--component-color);
         }
     }

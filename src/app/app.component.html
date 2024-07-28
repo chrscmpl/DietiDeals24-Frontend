@@ -32,7 +32,13 @@
         }
     } @else {
         @defer (when windowService.isMobile$ | async) {
-            <dd24-mobile-header class="header"></dd24-mobile-header>
+            <dd24-mobile-header
+                class="header"
+                dd24SmartSticky
+                [transitionTime]="0.3"
+                [hideOffset]="70"
+                [showOffset]="30"
+            ></dd24-mobile-header>
             @if ((windowService.UIhidden$ | async) === false) {
                 <dd24-mobile-navbar class="footer"></dd24-mobile-navbar>
             }
