@@ -16,6 +16,7 @@ import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'dd24-root',
@@ -33,6 +34,7 @@ import { ToastModule } from 'primeng/toast';
         SidebarComponent,
         SmartStickyDirective,
         ToastModule,
+        ConfirmDialogModule,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],

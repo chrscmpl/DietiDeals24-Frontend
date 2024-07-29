@@ -19,7 +19,8 @@ import { EmailVerificationGuard } from './guards/email-not-verified.guard';
 import { MaskedPipe } from './pipes/masked.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -40,7 +41,9 @@ export const appConfig: ApplicationConfig = {
         AuthenticationGuard,
         EmailVerificationGuard,
         ResolveAuctionGuard,
+        ConfirmReloadGuard,
         MessageService,
+        ConfirmationService,
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',

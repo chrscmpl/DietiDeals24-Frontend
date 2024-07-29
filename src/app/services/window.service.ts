@@ -31,4 +31,16 @@ export class WindowService {
         startWith(this.matchMobile.matches),
         shareReplay(1),
     );
+
+    public confirmReload(value: boolean) {
+        if (value) {
+            window.onbeforeunload = (e) => {
+                const confirmMessage = 'Are you sure you want to leave?';
+                e.returnValue = confirmMessage;
+                return confirmMessage;
+            };
+        } else {
+            window.onbeforeunload = null;
+        }
+    }
 }

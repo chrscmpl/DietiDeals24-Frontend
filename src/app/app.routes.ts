@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AuctionsSearchPageComponent } from './pages/auctions-search-page/auctions-search-page.component';
-import { EmptyComponent } from './components/empty/empty.component';
 import { hideUIGuard } from './guards/hide-ui.guard';
 import { showUIGuard } from './guards/show-ui.guard';
 import {
@@ -17,6 +16,10 @@ import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
 import { resolveAuctionGuard } from './guards/resolve-auction.guard';
+import {
+    confirmReloadActivateGuard,
+    confirmReloadDeactivateGuard,
+} from './guards/confirm-reload.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -56,8 +59,12 @@ export const routes: Routes = [
     {
         path: 'auth',
         title: 'Authentication',
-        canActivate: [notAUthenticatedGuard, hideUIGuard],
-        canDeactivate: [showUIGuard],
+        canActivate: [
+            notAUthenticatedGuard,
+            hideUIGuard,
+            confirmReloadActivateGuard,
+        ],
+        canDeactivate: [showUIGuard, confirmReloadDeactivateGuard],
         loadChildren: () =>
             import('./modules/auth-routing/auth-routing.module').then(
                 (m) => m.AuthRoutingModule,
@@ -84,10 +91,6 @@ export const routes: Routes = [
                 component: ThemeSettingsComponent,
             },
         ],
-    },
-    {
-        path: 'redirect',
-        component: EmptyComponent,
     },
     {
         path: '**',
