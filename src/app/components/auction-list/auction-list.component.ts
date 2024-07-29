@@ -41,6 +41,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public showEmpty: boolean = false;
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(1000);
     private initialized: boolean = false;
+    private lastLength: number = -1;
 
     public get requestKey(): RequestKey | null {
         return this._requestKey;
@@ -58,7 +59,11 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public scrolled(index: number): void {
-        if (index === Math.floor((this.auctions.length / 4) * 3)) {
+        if (
+            index >= Math.floor((this.auctions.length / 4) * 3) &&
+            index > this.lastLength
+        ) {
+            this.lastLength = this.auctions.length;
             this.more();
         }
     }
