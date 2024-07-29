@@ -54,6 +54,8 @@ export class AuctionDetailsPageComponent
 
     public auction!: Auction;
 
+    public timeLeft: number = 0;
+
     public currentPictureIndex: number = 0;
 
     public expandable: boolean = false;
@@ -83,6 +85,7 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
+            this.timeLeft = this.auction.endTime.getTime() - Date.now();
             this.carouselItems = this.auction.picturesUrls.map(
                 (url, index) => ({
                     url,

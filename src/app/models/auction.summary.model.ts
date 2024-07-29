@@ -45,10 +45,6 @@ export abstract class AuctionSummary {
         return this._location;
     }
 
-    public get timeLeft(): number {
-        return Math.floor((this._endTime.getTime() - Date.now()) / 1000);
-    }
-
     public get endTime(): Date {
         return this._endTime;
     }

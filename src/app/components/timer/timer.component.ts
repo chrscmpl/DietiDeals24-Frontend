@@ -25,7 +25,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
     public ngOnInit(): void {
-        this.timeAmount = this.timeLeft;
+        this.timeAmount = Math.floor(this.timeLeft / 1000);
         this.timerTimeout = setTimeout(() => {
             this.timerInterval = setInterval(() => {
                 this.timeAmount -= 60;
