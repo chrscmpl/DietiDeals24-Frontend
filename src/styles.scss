@@ -278,3 +278,9 @@ i {
 .p-button-secondary {
     --p-focus-ring-color: rgba(0, 0, 0, 0.3);
 }
+
+.p-autocomplete-item,
+.p-dropdown-item {
+    white-space: wrap;
+    line-height: normal;
+}
