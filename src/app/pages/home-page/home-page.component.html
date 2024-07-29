@@ -1,36 +1,33 @@
 <main class="home-page dd24-main-page">
-    @if (!hideTrendingCategories) {
-        <section class="trending-categories">
-            <h2>Trending Categories</h2>
-            <div class="trending-categories-buttons">
-                @if (
-                    (categoryButtonsLoadingIndicator.isLoading$ | async) ===
-                    false
+    <section class="trending-categories">
+        <h2>Trending Categories</h2>
+        <div class="trending-categories-buttons">
+            @if (
+                (categoryButtonsLoadingIndicator.isLoading$ | async) === false
+            ) {
+                @for (
+                    category of categoriesService.trendingCategories$ | async;
+                    track $index
                 ) {
-                    @for (
-                        category of categoriesService.trendingCategories$
-                            | async;
-                        track $index
-                    ) {
-                        <p-button
-                            outlined="true"
-                            class="trending-category-button"
-                            [routerLink]="['/auctions', { category: category }]"
-                        >
-                            {{ category }}
-                        </p-button>
-                    }
-                } @else {
-                    @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
-                        <p-button
-                            outlined="true"
-                            class="trending-category-button trending-category-loading-button"
-                        ></p-button>
-                    }
+                    <p-button
+                        outlined="true"
+                        class="trending-category-button"
+                        [routerLink]="['/auctions', { category: category }]"
+                    >
+                        {{ category }}
+                    </p-button>
                 }
-            </div>
-        </section>
-    }
+            } @else {
+                @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
+                    <p-button
+                        outlined="true"
+                        class="trending-category-button trending-category-loading-button"
+                    ></p-button>
+                }
+            }
+        </div>
+    </section>
+
     @if ((windowService.isMobile$ | async) === false) {
         <section class="create-auction-banner">
             <div class="create-auction-banner-img-container">

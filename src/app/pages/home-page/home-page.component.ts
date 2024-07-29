@@ -27,7 +27,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(0);
 
-    public hideTrendingCategories: boolean = false;
     private readonly subscriptions: Subscription[] = [];
 
     constructor(
@@ -49,7 +48,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.categoriesService.trendingCategories$.subscribe(() => {
                 this.categoryButtonsLoadingIndicator.stop();
-                this.hideTrendingCategories = false;
             }),
         );
         this.categoriesService.refreshTrendingCategories({
