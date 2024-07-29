@@ -5,6 +5,7 @@ import {
     Renderer2,
     Input,
     OnDestroy,
+    NgZone,
 } from '@angular/core';
 import { fromEvent, Observable, Subscription, throttleTime } from 'rxjs';
 
@@ -65,8 +66,9 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
     }
 
     constructor(
-        private element: ElementRef,
-        private renderer: Renderer2,
+        private readonly element: ElementRef,
+        private readonly renderer: Renderer2,
+        private readonly zone: NgZone,
     ) {}
 
     ngAfterViewInit(): void {
@@ -74,9 +76,12 @@ export class SmartStickyDirective implements AfterViewInit, OnDestroy {
         this.setAnimation();
         this.setOffsets();
         this.renderer.addClass(this.element.nativeElement, `dd24-smart-sticky`);
-        this.subscriptions.push(
-            this.scroll$.subscribe(this.onScroll.bind(this)),
-        );
+
+        this.zone.runOutsideAngular(() => {
+            this.subscriptions.push(
+                this.scroll$.subscribe(this.onScroll.bind(this)),
+            );
+        });
     }
 
     ngOnDestroy(): void {
