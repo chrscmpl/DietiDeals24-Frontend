@@ -32,13 +32,7 @@ export class SettingsPopupComponent {
         {
             label: 'Theme',
             icon: 'pi pi-palette',
-            routerLink: [
-                {
-                    outlets: {
-                        overlay: ['settings', 'theme'],
-                    },
-                },
-            ],
+            routerLink: ['theme'],
         },
     ];
 
