@@ -28,7 +28,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
         new LoadingIndicator(0);
 
     public hideTrendingCategories: boolean = false;
-    private static readonly hideTrendingCategoriesTimeout: number = 2000;
     private readonly subscriptions: Subscription[] = [];
 
     constructor(
@@ -58,12 +57,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 console.error(err);
             },
         });
-        setTimeout(() => {
-            if (this && !this.categoriesService.trendingCategories) {
-                this.categoryButtonsLoadingIndicator.stop();
-                this.hideTrendingCategories = true;
-            }
-        }, HomePageComponent.hideTrendingCategoriesTimeout);
     }
 
     ngOnDestroy(): void {
