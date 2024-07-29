@@ -121,7 +121,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             severity: 'warn',
             summary: 'This is not a real e-commerce platform',
             detail: 'This is a student project, not a real platform. Please do not use real data. Any transaction you make will not be real.',
-            life: 10000,
+            life: 100000,
         });
     }
 }

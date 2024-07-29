@@ -49,6 +49,7 @@ import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 export class AuctionDetailsPageComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
+    private static readonly EXPANDABLE_THRESHOLD = 30;
     private readonly subscriptions: Subscription[] = [];
     public display: boolean = true;
 
@@ -100,8 +101,7 @@ export class AuctionDetailsPageComponent
             this.windowService.isMobile$
                 .pipe(filter((isMobile) => isMobile))
                 .subscribe(() => {
-                    this.expandable = true;
-                    this.expanded = true;
+                    this.expandable = false;
                 }),
         );
     }
@@ -115,7 +115,10 @@ export class AuctionDetailsPageComponent
         const containerHeight =
             this.containerElement.nativeElement.offsetHeight;
 
-        if (containerHeight > notExpandedHeight) {
+        if (
+            containerHeight >
+            notExpandedHeight + AuctionDetailsPageComponent.EXPANDABLE_THRESHOLD
+        ) {
             this.expandable = true;
             this.changeDetectorRef.detectChanges();
         }
