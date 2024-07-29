@@ -25,7 +25,7 @@ export interface PaginatedRequestParams<Entity> {
 
 export class PaginatedRequest<Entity> {
     private readonly pageNumber: number;
-    private readonly pageSize: number;
+    private readonly _pageSize: number;
     private readonly maximumResults: number;
     private readonly queryParameters: any;
     private readonly http: HttpClient;
@@ -47,7 +47,7 @@ export class PaginatedRequest<Entity> {
         this.url = params.url;
         this.factory = params.factory;
         this.queryParameters = params.queryParameters;
-        this.pageSize = params.pageSize;
+        this._pageSize = params.pageSize;
         this.pageNumber = params.pageNumber;
         this.currentPage = params.pageNumber;
         this.maximumResults = params.maximumResults ?? Infinity;
@@ -62,7 +62,7 @@ export class PaginatedRequest<Entity> {
     }
 
     private wasMaximumResultsExceeded(): boolean {
-        return this.currentPage * this.pageSize > this.maximumResults;
+        return this.currentPage * this._pageSize > this.maximumResults;
     }
 
     private makeHttpRequest(): Observable<any[]> {
@@ -70,7 +70,7 @@ export class PaginatedRequest<Entity> {
             params: {
                 ...this.queryParameters,
                 page: this.currentPage,
-                size: this.pageSize,
+                size: this._pageSize,
             },
         });
     }
@@ -83,6 +83,10 @@ export class PaginatedRequest<Entity> {
             );
         }
         return this.makeHttpRequest();
+    }
+
+    public get pageSize(): number {
+        return this._pageSize;
     }
 
     public more(): void {

@@ -65,6 +65,10 @@ export class AuctionsService {
         return this.getRequest(key).elements;
     }
 
+    public pageSize(key: RequestKey): number {
+        return this.getRequest(key).pageSize;
+    }
+
     public more(key: RequestKey): void {
         this.getRequest(key).more();
     }

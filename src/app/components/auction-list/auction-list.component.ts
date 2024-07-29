@@ -41,7 +41,18 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     public showEmpty: boolean = false;
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(1000);
     private initialized: boolean = false;
-    private lastLength: number = -1;
+    private lastLength: number = 0;
+    private _pageSize: number = -1;
+    private itemsBeforeMore: number = 0;
+
+    private get pageSize(): number {
+        return this._pageSize;
+    }
+
+    private set pageSize(value: number) {
+        this._pageSize = value;
+        this.itemsBeforeMore = Math.floor(value / 4) * 3;
+    }
 
     public get requestKey(): RequestKey | null {
         return this._requestKey;
@@ -59,13 +70,14 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public scrolled(index: number): void {
-        if (
-            index >= Math.floor((this.auctions.length / 4) * 3) &&
-            index > this.lastLength
-        ) {
+        if (this.shouldLoadMore(index)) {
             this.lastLength = this.auctions.length;
             this.more();
         }
+    }
+
+    private shouldLoadMore(index: number) {
+        return index >= this.lastLength + this.itemsBeforeMore;
     }
 
     public more(): void {
@@ -88,6 +100,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.showEmpty = false;
         this.startLoading();
         this.auctions = this.auctionsService.elements(this.requestKey);
+        this.pageSize = this.auctionsService.pageSize(this.requestKey);
 
         this.subscriptions.push(
             this.auctionsService.subscribeUninterrupted(this.requestKey, {
@@ -111,6 +124,10 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                     this.error = false;
                     this.showEmpty = false;
                     this.startLoading();
+                    if (this.requestKey)
+                        this.pageSize = this.auctionsService.pageSize(
+                            this.requestKey,
+                        );
                 },
             }),
         );

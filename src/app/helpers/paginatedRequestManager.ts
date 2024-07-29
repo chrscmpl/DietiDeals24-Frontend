@@ -36,6 +36,10 @@ export class PaginatedRequestManager<Entity> {
         this.subscribeToData();
     }
 
+    public get pageSize(): number {
+        return this.request.pageSize;
+    }
+
     public get elements(): ReadonlyArray<Entity> {
         return this._elements;
     }
