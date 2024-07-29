@@ -59,9 +59,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isLoadingRouteIndicator.start();
         this.configurePrimeNG();
         this.themeService.initTheme();
-        if (localStorage.getItem('authorizationToken')) {
-            this.authentication.getUserData();
-        }
         this.configureNotifications();
     }
 

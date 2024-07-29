@@ -5,9 +5,11 @@ import {
     Observable,
     Observer,
     ReplaySubject,
+    catchError,
     filter,
     map,
     tap,
+    throwError,
     withLatestFrom,
 } from 'rxjs';
 import {
@@ -24,6 +26,7 @@ import { environment } from '../../environments/environment';
 export class AuthenticationService {
     private _isLogged = false;
     private _loggedUser: User | null = null;
+    private _initialized = false;
 
     public emailToVerify: string | null = null;
 
@@ -35,11 +38,13 @@ export class AuthenticationService {
         return this._loggedUser;
     }
 
+    private readonly initializedSubject = new ReplaySubject<void>(1);
     private readonly loggedUserSubject = new ReplaySubject<void>(1);
     private readonly isLoggedSubject = new ReplaySubject<void>(1);
 
     constructor(private readonly http: HttpClient) {
         this.isLoggedSubject.next();
+        this.getUserData();
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
@@ -53,6 +58,9 @@ export class AuthenticationService {
             filter(() => this.isLogged),
             map(() => this.loggedUser as User),
         );
+
+    public readonly initialized$: Observable<void> =
+        this.initializedSubject.asObservable();
 
     public login(
         credentials: UserCredentials,
@@ -97,6 +105,10 @@ export class AuthenticationService {
             .pipe(
                 map((dto: UserDTO) => new User(dto)),
                 tap(this.setLoggedUser.bind(this)),
+                catchError((e) => {
+                    this.setInitialized();
+                    return throwError(() => e);
+                }),
             )
             .subscribe(cb);
     }
@@ -109,9 +121,16 @@ export class AuthenticationService {
     }
 
     private setLoggedUser(user: User): void {
+        this.setInitialized();
         this._isLogged = true;
         this._loggedUser = user;
         this.isLoggedSubject.next();
         this.loggedUserSubject.next();
+    }
+
+    private setInitialized() {
+        if (this._initialized) return;
+        this._initialized = true;
+        this.initializedSubject.next();
     }
 }
