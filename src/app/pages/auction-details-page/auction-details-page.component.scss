@@ -258,6 +258,10 @@
             margin-top: var(--auction-details-padding);
         }
     }
+
+    @include viewports.mobile {
+        box-shadow: 0 -0.2rem 0.8rem var(--border-color);
+    }
 }
 
 .close-btn {
