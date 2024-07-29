@@ -1,5 +1,12 @@
 import { AsyncPipe, CommonModule, CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { AuctionSummary } from '../../models/auction.summary.model';
 import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
@@ -23,6 +30,7 @@ import { TimerComponent } from '../timer/timer.component';
     ],
     templateUrl: './auction-card.component.html',
     styleUrl: './auction-card.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionCardComponent implements OnInit {
     @Input({ required: true }) auction!: AuctionSummary;

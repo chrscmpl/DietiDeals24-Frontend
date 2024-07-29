@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -43,6 +44,7 @@ import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionDetailsPageComponent
     implements OnInit, AfterViewInit, OnDestroy

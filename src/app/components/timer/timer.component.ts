@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { IntervalPipe } from '../../pipes/interval.pipe';
 
 @Component({
@@ -7,21 +14,27 @@ import { IntervalPipe } from '../../pipes/interval.pipe';
     imports: [IntervalPipe],
     templateUrl: './timer.component.html',
     styleUrl: './timer.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent implements OnInit, OnDestroy {
-    @Input({ required: true }) timeLeft!: number;
+    public timeAmount: number = 0;
+    @Input({ required: true }) timeLeft: number = 0;
     private timerTimeout!: ReturnType<typeof setTimeout>;
     private timerInterval?: ReturnType<typeof setInterval>;
 
+    constructor(private readonly changeDetector: ChangeDetectorRef) {}
+
     public ngOnInit(): void {
+        this.timeAmount = this.timeLeft;
         this.timerTimeout = setTimeout(() => {
             this.timerInterval = setInterval(() => {
-                this.timeLeft -= 60;
-                if (this.timeLeft <= 0) {
+                this.timeAmount -= 60;
+                this.changeDetector.markForCheck();
+                if (this.timeAmount <= 0) {
                     clearInterval(this.timerInterval);
                 }
             }, 60000);
-        }, this.timeLeft % 60);
+        }, this.timeAmount % 60);
     }
 
     public ngOnDestroy(): void {
