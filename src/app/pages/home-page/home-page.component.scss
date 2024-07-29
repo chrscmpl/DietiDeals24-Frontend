@@ -4,11 +4,13 @@
 .home-page {
     .trending-categories {
         @include layouts.flex(column, start, stretch, 0.5em);
+
         > :first-child {
             font-size: var(--font-size-medium);
             font-weight: var(--font-weight-regular);
             align-self: start;
         }
+
         .trending-categories-buttons {
             @include layouts.grid(
                 $template: 1fr / repeat(auto-fit, minmax(15ch, 1fr)),
@@ -102,6 +104,62 @@
     }
 }
 
+@include viewports.mobile {
+    .home-page-carousel {
+        cursor: pointer;
+        margin-top: -1em;
+        margin-bottom: calc(var(--page-items-gap) * -1);
+        margin-right: -2%;
+        margin-left: -2%;
+    }
+
+    .carousel-item-wrapper {
+        @include layouts.grid(
+            $template: 1fr /5fr 2fr,
+            $justify-content: center,
+            $justify-items: center,
+            $align-content: stretch,
+            $align-items: end
+        );
+        height: 10rem;
+    }
+
+    .carousel-image {
+        grid-column: 1 / 3;
+        grid-row: 1 / -1;
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-text {
+        grid-area: 1/1;
+        @include layouts.center;
+        font-size: var(--font-size-medium);
+        color: white;
+        width: 33%;
+        justify-self: end;
+        align-self: stretch;
+        text-align: end;
+        padding-right: 1ch;
+        line-height: var(--line-height-medium);
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(0, 0, 0, 0.5) 20%,
+            black 110%
+        );
+    }
+
+    .carousel-item-button {
+        grid-area: 1/2;
+        align-self: stretch;
+        justify-self: end;
+    }
+}
+
 :host ::ng-deep {
     .create-auction-button .p-button {
         height: 100%;
@@ -128,5 +186,14 @@
         span {
             flex-grow: 0;
         }
+    }
+
+    .p-carousel-indicators {
+        padding-bottom: 0;
+    }
+
+    .carousel-item-button .p-button-label {
+        height: fit-content;
+        flex-grow: 0;
     }
 }

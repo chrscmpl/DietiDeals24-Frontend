@@ -9,6 +9,7 @@ import { AuctionsService } from '../../services/auctions.service';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
 import { Subscription } from 'rxjs';
+import { CarouselModule } from 'primeng/carousel';
 
 @Component({
     selector: 'dd24-home-page',
@@ -19,6 +20,7 @@ import { Subscription } from 'rxjs';
         AuctionCardComponent,
         AuctionListComponent,
         ButtonModule,
+        CarouselModule,
     ],
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.scss',
