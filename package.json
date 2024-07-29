@@ -14,7 +14,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "backend": "cd ../DietiDeals24-Backend && git pull && docker-compose up",
-        "backend-down": "cd ../DietiDeals24-Backend && docker-compose down -v"
+        "backend-down": "cd ../DietiDeals24-Backend && docker-compose down -v",
+        "backend-newdb": "npm run backend-down && rimraf postgres_volume && npm run backend"
     },
     "private": true,
     "dependencies": {
@@ -50,6 +51,7 @@
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.1.3",
+        "gzipper": "^7.2.0",
         "jasmine-core": "~5.1.0",
         "karma": "~6.4.0",
         "karma-chrome-launcher": "~3.2.0",
@@ -58,8 +60,8 @@
         "karma-jasmine-html-reporter": "~2.1.0",
         "prettier": "^3.2.5",
         "prettier-eslint": "^16.3.0",
-        "typescript": "~5.2.2",
-        "gzipper": "^7.2.0",
-        "serve": "^14.2.3"
+        "rimraf": "^6.0.1",
+        "serve": "^14.2.3",
+        "typescript": "~5.2.2"
     }
 }
