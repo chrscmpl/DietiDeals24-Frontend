@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 .notification-wrapper {
     @include layouts.grid(
@@ -15,6 +16,11 @@
 
     &.unread {
         background-color: var(--accent-color-1-transparent);
+    }
+
+    @include viewports.mobile {
+        padding: 1rem 0.4rem;
+        row-gap: 0.5rem;
     }
 }
 

@@ -62,9 +62,9 @@ export class NotificationsListComponent implements AfterViewInit {
 
     public onRead(notification: DisplayableNotification): void {
         this.read.emit(notification);
-        this.router.navigate(notification.link);
         if (!notification.read)
             this.notificationsService.markAsRead(notification);
+        this.router.navigate(notification.link);
     }
 
     public onNotificationLoaded(notification: DisplayableNotification) {

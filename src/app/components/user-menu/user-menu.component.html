@@ -1,7 +1,11 @@
 <div class="user-menu">
     <p-menu
         class="p-fluid"
-        [style]="{ width: 'fit-content', 'max-width': '40vw' }"
+        [style]="{
+            width: 'fit-content',
+            'max-width': '40svw',
+            'background-color': 'var(--component-color)'
+        }"
         [model]="items"
         [class.closed]="!isOpen"
     >

@@ -93,10 +93,14 @@ export class NotificationsService {
         if (notification.read) return;
         notification.read = true;
         this.unreadNotificationsCount--;
-        this.http.post(
-            `${environment.backendHost}/notifications/${notification.id}/read`,
-            {},
-        );
+        if (this.unreadNotificationsCount < 0)
+            this.unreadNotificationsCount = 0;
+        this.http
+            .post(
+                `${environment.backendHost}/notifications/mark-as-read?notificationId=${notification.id}`,
+                {},
+            )
+            .subscribe();
     }
 
     public markAllAsRead(): void {
@@ -104,7 +108,9 @@ export class NotificationsService {
             (notification) => (notification.read = true),
         );
         this.unreadNotificationsCount = 0;
-        this.http.post(`${environment.backendHost}/notifications/read`, {});
+        this.http
+            .post(`${environment.backendHost}/notifications/read`, {})
+            .subscribe();
     }
 
     public deleteOne(notification: DisplayableNotification): void {
@@ -114,15 +120,19 @@ export class NotificationsService {
         if (index === -1) return;
         if (!notification.read) this.unreadNotificationsCount--;
         this.request.editableElements.splice(index, 1);
-        this.http.delete(
-            `${environment.backendHost}/notifications/${notification.id}`,
-        );
+        this.http
+            .delete(
+                `${environment.backendHost}/notifications/mark-as-eliminated?notificationId=${notification.id}`,
+            )
+            .subscribe();
     }
 
     public deleteAll(): void {
         this.request.editableElements.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
-        this.http.delete(`${environment.backendHost}/notifications`);
+        this.http
+            .delete(`${environment.backendHost}/notifications`)
+            .subscribe();
     }
 
     public get unreadNotificationsCount(): number {
