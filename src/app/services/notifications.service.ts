@@ -93,8 +93,6 @@ export class NotificationsService {
         if (notification.read) return;
         notification.read = true;
         this.unreadNotificationsCount--;
-        if (this.unreadNotificationsCount < 0)
-            this.unreadNotificationsCount = 0;
         this.http
             .post(
                 `${environment.backendHost}/notifications/mark-as-read?notificationId=${notification.id}`,
@@ -157,7 +155,7 @@ export class NotificationsService {
     }
 
     private set unreadNotificationsCount(value: number) {
-        this._unreadNotificationsCount = value;
+        this._unreadNotificationsCount = value >= 0 ? value : 0;
         this.unreadNotificationsSubject.next();
     }
 }
