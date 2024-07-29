@@ -25,7 +25,7 @@ export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
-        title: 'Home',
+        title: 'DietiDeals24',
         component: HomePageComponent,
     },
     {

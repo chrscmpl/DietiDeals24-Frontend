@@ -142,7 +142,6 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.loadingIndicator.start();
         this.showEmpty = false;
-        console.log('start loading');
         setTimeout(() => {
             if (this.loading) this.stopLoading();
         }, this.loadingIndicator.startDelay + AuctionListComponent.LOADING_STOP_FALLBACK_DELAY);

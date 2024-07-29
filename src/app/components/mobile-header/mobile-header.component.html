@@ -7,7 +7,7 @@
         <button (click)="windowService.isSidebarVisible = true">
             <i class="pi pi-bars"></i>
         </button>
-        @if ((title$ | async) !== "Home") {
+        @if ((title$ | async) !== "DietiDeals24") {
             <h1 class="title" [class.long]="longTitle">{{ title$ | async }}</h1>
         } @else {
             <dd24-logo class="logo"></dd24-logo>
