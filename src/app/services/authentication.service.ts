@@ -44,7 +44,8 @@ export class AuthenticationService {
 
     constructor(private readonly http: HttpClient) {
         this.isLoggedSubject.next();
-        this.getUserData();
+        if (localStorage.getItem('authorizationToken')) this.getUserData();
+        else this.setInitialized();
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject

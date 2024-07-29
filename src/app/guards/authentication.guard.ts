@@ -21,7 +21,7 @@ export class AuthenticationGuard implements CanActivate {
     public canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return this.authenticationService.isLogged$.pipe(
             withLatestFrom(this.authenticationService.initialized$),
-            map(([isLogged, _]) => {
+            map(([isLogged]) => {
                 if (isLogged) return true;
                 this.redirection.routeBeforeRedirection = state.url;
                 return this.router.parseUrl('/auth');
