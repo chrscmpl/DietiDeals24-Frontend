@@ -58,13 +58,14 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     }
 
     public scrolled(index: number): void {
-        if (index === this.auctions.length - 1) {
+        if (index === Math.floor((this.auctions.length / 4) * 3)) {
             this.more();
         }
     }
 
     public more(): void {
         if (this.requestKey === null) return;
+        this.startLoading();
         this.auctionsService.more(this.requestKey);
     }
 
