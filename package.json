@@ -13,9 +13,9 @@
         "watch": "ng serve --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint",
-        "backend": "cd ../DietiDeals24-Backend && git pull && docker-compose up",
-        "backend-down": "cd ../DietiDeals24-Backend && docker-compose down -v",
-        "backend-newdb": "npm run backend-down && rimraf postgres_volume && npm run backend"
+        "backend": "git --git-dir=../DietiDeals24-Backend/.git --work-tree=../DietiDeals24-Backend pull && docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml up",
+        "backend-down": "docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml down -v",
+        "backend-newdb": "npm run backend-down && rimraf ../DietiDeals24-Backend/postgres_volume && npm run backend"
     },
     "private": true,
     "dependencies": {
