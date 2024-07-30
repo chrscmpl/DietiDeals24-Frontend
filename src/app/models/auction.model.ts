@@ -79,6 +79,14 @@ export class SilentAuction extends Auction {
     public override bidValid(bid: number): boolean {
         return bid > this._minimumBid;
     }
+
+    public override newBidCategory(): 'buying' {
+        return 'buying';
+    }
+
+    public override newBidDescription(): string {
+        return `more than CURRENCY{${this._minimumBid}|${this.currency}}`;
+    }
 }
 
 export class ReverseAuction extends Auction {
@@ -115,5 +123,13 @@ export class ReverseAuction extends Auction {
 
     public override bidValid(bid: number): boolean {
         return bid < this._lowestBid;
+    }
+
+    public override newBidCategory(): 'selling' {
+        return 'selling';
+    }
+
+    public override newBidDescription(): string {
+        return `less than CURRENCY{${this._lowestBid}|${this.currency}}`;
     }
 }

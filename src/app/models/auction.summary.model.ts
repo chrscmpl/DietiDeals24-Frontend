@@ -68,6 +68,10 @@ export abstract class AuctionSummary {
     public abstract get type(): AuctionType;
 
     public abstract bidValid(bid: number): boolean;
+
+    public abstract newBidCategory(): 'selling' | 'buying';
+
+    public abstract newBidDescription(): string;
 }
 
 export class SilentAuctionSummary extends AuctionSummary {
@@ -95,6 +99,14 @@ export class SilentAuctionSummary extends AuctionSummary {
 
     public override bidValid(bid: number): boolean {
         return bid > this._minimumBid;
+    }
+
+    public override newBidCategory(): 'buying' {
+        return 'buying';
+    }
+
+    public override newBidDescription(): string {
+        return `more than CURRENCY{${this._minimumBid}|${this.currency}}`;
     }
 }
 
@@ -132,5 +144,13 @@ export class ReverseAuctionSummary extends AuctionSummary {
 
     public override bidValid(bid: number): boolean {
         return bid < this._lowestBid;
+    }
+
+    public override newBidCategory(): 'selling' {
+        return 'selling';
+    }
+
+    public override newBidDescription(): string {
+        return `less than CURRENCY{${this._lowestBid}|${this.currency}}`;
     }
 }

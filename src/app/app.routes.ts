@@ -23,6 +23,7 @@ import {
 import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
 import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
 import { shouldSpecifyChildGuard } from './guards/should-specify-child.guard';
+import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -93,8 +94,18 @@ export const routes: Routes = [
         children: [
             {
                 path: 'bid',
-                component: BiddingPageComponent,
-                title: 'Bid',
+                children: [
+                    {
+                        path: '',
+                        title: 'Bid',
+                        component: BiddingPageComponent,
+                    },
+                    {
+                        path: 'checkout',
+                        title: 'Checkout',
+                        component: CheckoutPageComponent,
+                    },
+                ],
             },
         ],
     },

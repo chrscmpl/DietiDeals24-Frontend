@@ -11,5 +11,42 @@
             }"
             [skipLocationChange]="true"
         ></dd24-auction-card>
+        <form [formGroup]="bidForm" (ngSubmit)="onSubmit()">
+            <label for="bidAmount"
+                >Your {{ auction.newBidCategory() }} bid</label
+            >
+            <dd24-input
+                controlName="amount"
+                [errorMessages]="[
+                    {
+                        validation: 'required',
+                        message: 'You need to enter a bid amount'
+                    }
+                ]"
+            >
+                <p-inputGroup>
+                    <p-inputGroupAddon>
+                        {{ currencySymbol }}
+                    </p-inputGroupAddon>
+                    <p-inputNumber
+                        formControlName="amount"
+                        class="amount-input"
+                        name="amount"
+                        id="bidAmount"
+                        [placeholder]="
+                            auction.newBidDescription()
+                                | findCurrency
+                                | oneCharUpper
+                        "
+                        showButtons="false"
+                        [inputStyle]="{
+                            borderTopLeftRadius: 0,
+                            borderBottomLeftRadius: 0,
+                            maxWidth: '25ch'
+                        }"
+                    ></p-inputNumber>
+                </p-inputGroup>
+            </dd24-input>
+        </form>
     }
 </main>

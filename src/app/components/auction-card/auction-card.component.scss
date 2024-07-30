@@ -81,6 +81,9 @@
     #{&}-auction-type {
         grid-area: type;
         padding: 0.2rem 1rem;
+        @include viewports.mobile {
+            padding: 1rem;
+        }
     }
 
     #{&}-details-container {
