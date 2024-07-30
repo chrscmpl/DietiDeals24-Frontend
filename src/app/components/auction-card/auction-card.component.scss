@@ -100,8 +100,18 @@
         }
 
         .auction-card-sum {
-            font-size: var(--font-size-large);
             font-weight: var(--font-weight-bolder);
+            font-size: var(--font-size-large);
+            line-height: var(--line-height-large);
+            @include viewports.mobile {
+                font-size: var(--font-size-medium);
+                line-height: var(--line-height-medium);
+
+                .auction-card-sum-amount {
+                    color: var(--accent-color-2);
+                    font-weight: var(--font-weight-bolder);
+                }
+            }
         }
         .auction-card-time-left {
             font-size: var(--font-size-medium);

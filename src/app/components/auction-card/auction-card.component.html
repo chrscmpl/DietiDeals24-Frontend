@@ -35,7 +35,9 @@
         <span class="auction-card-sum">
             @if (auction.status === statuses.active) {
                 {{ auction.lastBidDescription | oneCharUpper }}:
-                {{ auction.lastBid | currency: auction.currency }}
+                <span class="auction-card-sum-amount">{{
+                    auction.lastBid | currency: auction.currency
+                }}</span>
             }
         </span>
 
