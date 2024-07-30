@@ -20,6 +20,7 @@ import {
     confirmReloadActivateGuard,
     confirmReloadDeactivateGuard,
 } from './guards/confirm-reload.guard';
+import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -75,6 +76,16 @@ export const routes: Routes = [
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
         resolve: { auction: resolveAuctionGuard },
+    },
+    {
+        path: 'txn',
+        component: TransactionsPageComponent,
+        canActivate: [
+            authenticationGuard,
+            hideUIGuard,
+            confirmReloadActivateGuard,
+        ],
+        canDeactivate: [showUIGuard, confirmReloadDeactivateGuard],
     },
     {
         path: 'settings',

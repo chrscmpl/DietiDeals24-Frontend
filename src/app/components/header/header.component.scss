@@ -27,8 +27,9 @@
             .hamburger-btn {
                 color: var(--outline-color);
                 padding: 0;
-                aspect-ratio: 1/1;
+                align-self: stretch;
                 background-color: transparent;
+                cursor: pointer;
                 border: none;
                 i {
                     font-size: calc(var(--font-size-large) * 1.2);

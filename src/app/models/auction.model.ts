@@ -47,6 +47,10 @@ export abstract class Auction extends AuctionSummary {
     public get picturesUrls(): string[] {
         return this._picturesUrls;
     }
+
+    public override get pictureUrl(): string | null {
+        return this._picturesUrls[0] ?? null;
+    }
 }
 
 export class SilentAuction extends Auction {
@@ -71,6 +75,10 @@ export class SilentAuction extends Auction {
     public override get type(): AuctionType {
         return AuctionType.silent;
     }
+
+    public override bidValid(bid: number): boolean {
+        return bid > this._minimumBid;
+    }
 }
 
 export class ReverseAuction extends Auction {
@@ -80,7 +88,7 @@ export class ReverseAuction extends Auction {
     constructor(auction: ReverseAuctionDTO) {
         super(auction);
         this._maximumStartingBid = auction.maximumBid;
-        this._lowestBid = auction.lowestBidSoFar;
+        this._lowestBid = auction.lowestBidSoFar ?? auction.maximumBid;
     }
 
     public get maximumStartingBid(): number {
@@ -103,5 +111,9 @@ export class ReverseAuction extends Auction {
 
     public override get type(): AuctionType {
         return AuctionType.reverse;
+    }
+
+    public override bidValid(bid: number): boolean {
+        return bid < this._lowestBid;
     }
 }
