@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { RedirectionService } from '../services/redirection.service';
 import { AuthenticationService } from '../services/authentication.service';
-import { map, withLatestFrom } from 'rxjs';
+import { map, skipUntil } from 'rxjs';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -20,8 +20,8 @@ export class AuthenticationGuard implements CanActivate {
 
     public canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return this.authenticationService.isLogged$.pipe(
-            withLatestFrom(this.authenticationService.initialized$),
-            map(([isLogged]) => {
+            skipUntil(this.authenticationService.initialized$),
+            map((isLogged) => {
                 if (isLogged) return true;
                 this.redirection.routeBeforeRedirection = state.url;
                 return this.router.parseUrl('/auth');
