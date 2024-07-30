@@ -12,7 +12,7 @@ import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { WindowService } from '../../services/window.service';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TimerComponent } from '../timer/timer.component';
 
 @Component({
@@ -25,7 +25,6 @@ import { TimerComponent } from '../timer/timer.component';
         LocalDatePipe,
         CurrencyPipe,
         AsyncPipe,
-        RouterLink,
         TimerComponent,
     ],
     templateUrl: './auction-card.component.html',
@@ -34,12 +33,18 @@ import { TimerComponent } from '../timer/timer.component';
 })
 export class AuctionCardComponent implements OnInit {
     @Input({ required: true }) auction!: AuctionSummary;
+    @Input() cardStyle: { [key: string]: string | number } = {};
+    @Input() skipLocationChange: boolean = false;
+
     @Output() loaded = new EventEmitter<number>();
     public statuses = AuctionSummary.STATUSES;
     public showImagePlaceholder: boolean = false;
     public timeLeft: number = 0;
 
-    constructor(public readonly windowService: WindowService) {}
+    constructor(
+        public readonly windowService: WindowService,
+        private readonly router: Router,
+    ) {}
 
     ngOnInit(): void {
         this.loaded.emit();
@@ -48,5 +53,25 @@ export class AuctionCardComponent implements OnInit {
 
     public onImageError(): void {
         this.showImagePlaceholder = true;
+    }
+
+    public onClick(): void {
+        this.router.navigate(
+            [
+                '',
+                {
+                    outlets: {
+                        overlay: ['auction', this.auction.id],
+                    },
+                },
+            ],
+            { skipLocationChange: this.skipLocationChange },
+        );
+    }
+
+    public onKeyPress(event: KeyboardEvent): void {
+        if (event.key === 'Enter') {
+            this.onClick();
+        }
     }
 }

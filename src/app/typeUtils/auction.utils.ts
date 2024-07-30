@@ -4,10 +4,10 @@ export enum AuctionType {
 }
 
 export enum AuctionStatus {
-    active = 'active',
-    pending = 'pending',
-    accepted = 'accepted',
-    rejected = 'rejected',
+    active = 'ACTIVE',
+    pending = 'PENDING',
+    accepted = 'ACCEPTED',
+    rejected = 'REJECTED',
 }
 
 export enum SearchPolicy {

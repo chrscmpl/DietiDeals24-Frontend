@@ -1,13 +1,9 @@
 <div
     class="auction-card"
-    [routerLink]="[
-        '',
-        {
-            outlets: {
-                overlay: ['auction', auction.id]
-            }
-        }
-    ]"
+    [style]="cardStyle"
+    (click)="onClick()"
+    tabindex="0"
+    (keypress)="onKeyPress($event)"
 >
     <div class="auction-card-image-container">
         @if (auction.pictureUrl && !showImagePlaceholder) {

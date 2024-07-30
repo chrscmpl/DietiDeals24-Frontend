@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { take } from 'rxjs';
+import { AuctionCardComponent } from '../../../components/auction-card/auction-card.component';
 
 @Component({
     selector: 'dd24-bidding-page',
     standalone: true,
-    imports: [],
+    imports: [AuctionCardComponent],
     templateUrl: './bidding-page.component.html',
     styleUrl: './bidding-page.component.scss',
 })

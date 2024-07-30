@@ -1,5 +1,15 @@
 <main class="bidding-page">
+    <h1 class="bidding-page-title">Make your bid</h1>
     @if (auction) {
-        <p>{{ auction.title }}</p>
+        <dd24-auction-card
+            class="bidding-page-auction-card"
+            [auction]="auction"
+            [cardStyle]="{
+                borderRadius: 0,
+                borderLeft: 'none',
+                borderRight: 'none'
+            }"
+            [skipLocationChange]="true"
+        ></dd24-auction-card>
     }
 </main>
