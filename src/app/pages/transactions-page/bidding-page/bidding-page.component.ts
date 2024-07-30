@@ -11,7 +11,7 @@ import { take } from 'rxjs';
     styleUrl: './bidding-page.component.scss',
 })
 export class BiddingPageComponent implements OnInit {
-    public auction!: Auction;
+    public auction?: Auction;
 
     constructor(private readonly route: ActivatedRoute) {}
 

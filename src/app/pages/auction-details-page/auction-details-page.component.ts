@@ -53,7 +53,7 @@ export class AuctionDetailsPageComponent
     private readonly subscriptions: Subscription[] = [];
     public display: boolean = true;
 
-    public auction!: Auction;
+    public auction?: Auction;
 
     public timeLeft: number = 0;
 
@@ -86,6 +86,7 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
+            if (!this.auction) return;
             this.timeLeft = this.auction.endTime.getTime() - Date.now();
             this.carouselItems = this.auction.picturesUrls.map(
                 (url, index) => ({
@@ -141,7 +142,10 @@ export class AuctionDetailsPageComponent
     }
 
     public onNextPicture(): void {
-        if (this.currentPictureIndex < this.auction.picturesUrls.length - 1) {
+        if (
+            this.currentPictureIndex <
+            (this.auction?.picturesUrls.length ?? 0) - 1
+        ) {
             this.currentPictureIndex++;
         }
     }
