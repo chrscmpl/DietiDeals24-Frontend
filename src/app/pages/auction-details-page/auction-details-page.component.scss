@@ -137,6 +137,7 @@
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     text-align: center;
+    margin-top: 0.5rem;
 }
 
 .auction-conditions {
@@ -145,6 +146,7 @@
 }
 
 .auction-description-wrapper {
+    margin-top: 0.5rem;
     grid-area: description;
     @include layouts.grid(
         $template: "." minmax(0, 1fr) / 1fr,
@@ -161,7 +163,7 @@
 
     &:not(.auction-description-expanded) {
         @include viewports.notMobile {
-            max-height: max(23svh, 13rem);
+            max-height: max(21svh, 12rem);
         }
     }
 }

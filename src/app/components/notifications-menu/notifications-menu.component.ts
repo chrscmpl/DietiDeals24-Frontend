@@ -95,6 +95,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     private onHide() {
         this.notificationsService.lockRefresh(false);
         this.removeScrollListener();
+        this.extraButtonsVisible = false;
     }
 
     private onWindowScroll() {
