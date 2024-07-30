@@ -45,7 +45,13 @@ export class NotificationsService {
             factory: (res: NotificationResponse): DisplayableNotification[] => {
                 this.notificationsCount = res.notificationsCounter;
                 this.unreadNotificationsCount = res.unreadNotifications;
-                return notificationsBuilder.buildArray(res.notifications);
+                return notificationsBuilder.buildArray(
+                    res.notifications.filter(
+                        (dto) =>
+                            this.notifications.find((n) => n.id === dto.id) ===
+                            undefined,
+                    ),
+                );
             },
             queryParameters: {},
             pageNumber: 1,

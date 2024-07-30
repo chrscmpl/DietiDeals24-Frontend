@@ -97,9 +97,6 @@ export class PaginatedRequest<Entity> {
         }
         this.newRequest()
             .pipe(
-                tap((res: Entity[]) => {
-                    if (!res.length) this.complete();
-                }),
                 catchError((err) => {
                     this.currentPage--;
                     this.dataSubject.error(err);
