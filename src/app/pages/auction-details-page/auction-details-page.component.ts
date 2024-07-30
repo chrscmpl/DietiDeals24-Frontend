@@ -187,4 +187,15 @@ export class AuctionDetailsPageComponent
     public onImageCarouselNavigation(e: CarouselPageEvent) {
         if (typeof e.page === 'number') this.imageCarouselPage = e.page;
     }
+
+    public onBid(): void {
+        this.router.navigate([
+            {
+                outlets: {
+                    overlay: null,
+                    primary: ['txn', this.auction?.id, 'bid'],
+                },
+            },
+        ]);
+    }
 }
