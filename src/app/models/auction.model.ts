@@ -79,8 +79,8 @@ export class ReverseAuction extends Auction {
 
     constructor(auction: ReverseAuctionDTO) {
         super(auction);
-        this._maximumStartingBid = auction.maximumStartingBid;
-        this._lowestBid = auction.lowestBid;
+        this._maximumStartingBid = auction.maximumBid;
+        this._lowestBid = auction.lowestBidSoFar;
     }
 
     public get maximumStartingBid(): number {

@@ -20,8 +20,8 @@ export interface SilentAuctionSummaryDTO extends AuctionSummaryDTO {
 
 export interface ReverseAuctionSummaryDTO extends AuctionSummaryDTO {
     type: AuctionType.reverse;
-    maximumStartingBid: number;
-    lowestBid: number;
+    maximumBid: number;
+    lowestBidSoFar: number;
 }
 
 export interface AuctionDTO extends AuctionSummaryDTO {

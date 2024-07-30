@@ -10,6 +10,10 @@
         outline: none;
     }
 
+    .p-dialog-header-close {
+        padding: 0;
+    }
+
     @include viewports.mobile {
         .p-dialog-mask {
             justify-content: stretch;
