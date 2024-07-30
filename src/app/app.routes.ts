@@ -21,6 +21,8 @@ import {
     confirmReloadDeactivateGuard,
 } from './guards/confirm-reload.guard';
 import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
+import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
+import { shouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -72,20 +74,29 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'auction/:id',
+        path: 'auction/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
         resolve: { auction: resolveAuctionGuard },
     },
     {
-        path: 'txn',
+        path: 'txn/:auction-id',
         component: TransactionsPageComponent,
         canActivate: [
             authenticationGuard,
+            shouldSpecifyChildGuard,
             hideUIGuard,
             /*confirmReloadActivateGuard*/
         ],
+        resolve: { auction: resolveAuctionGuard },
         canDeactivate: [showUIGuard /*confirmReloadDeactivateGuard*/],
+        children: [
+            {
+                path: 'bid',
+                component: BiddingPageComponent,
+                title: 'Bid',
+            },
+        ],
     },
     {
         path: 'settings',

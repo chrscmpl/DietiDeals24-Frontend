@@ -21,6 +21,7 @@ import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
+import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -42,6 +43,7 @@ export const appConfig: ApplicationConfig = {
         EmailVerificationGuard,
         ResolveAuctionGuard,
         ConfirmReloadGuard,
+        ShouldSpecifyChildGuard,
         MessageService,
         ConfirmationService,
         provideServiceWorker('ngsw-worker.js', {

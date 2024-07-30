@@ -9,7 +9,7 @@ export class ResolveAuctionGuard implements Resolve<Auction> {
     constructor(private auctionsService: AuctionsService) {}
 
     public resolve(route: ActivatedRouteSnapshot): Observable<Auction> {
-        const auctionId: string = route.params['id'];
+        const auctionId: string = route.params['auction-id'];
         return this.auctionsService.getDetails(auctionId);
     }
 }
