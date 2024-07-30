@@ -45,6 +45,7 @@
             color: var(--text-accent-color-2);
             overflow: hidden;
             padding: calc(var(--size) / 4);
+            cursor: pointer;
 
             i {
                 height: var(--size);

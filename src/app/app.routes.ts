@@ -83,9 +83,9 @@ export const routes: Routes = [
         canActivate: [
             authenticationGuard,
             hideUIGuard,
-            confirmReloadActivateGuard,
+            /*confirmReloadActivateGuard*/
         ],
-        canDeactivate: [showUIGuard, confirmReloadDeactivateGuard],
+        canDeactivate: [showUIGuard /*confirmReloadDeactivateGuard*/],
     },
     {
         path: 'settings',

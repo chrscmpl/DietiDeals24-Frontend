@@ -1,1 +1,16 @@
-<p>transactions-page works!</p>
+<div class="transactions-page">
+    @if ((windowService.isMobile$ | async) === false) {
+        <aside class="transactions-page-side">
+            <button
+                class="transactions-page-back-button"
+                (click)="location.back()"
+            >
+                <i class="pi pi-arrow-left"></i>
+            </button>
+            <dd24-logo class="logo"></dd24-logo>
+        </aside>
+    }
+    <main class="transactions-page-main">
+        <router-outlet class="transactions-page-outlet"></router-outlet>
+    </main>
+</div>
