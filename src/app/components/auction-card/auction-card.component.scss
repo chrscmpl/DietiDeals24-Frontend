@@ -12,6 +12,7 @@
     border-radius: var(--border-radius-large);
     overflow: hidden;
     cursor: pointer;
+    background-color: var(--component-color);
 
     @include viewports.mobile {
         @include layouts.grid(

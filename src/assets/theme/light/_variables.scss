@@ -941,6 +941,7 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --surface-overlay: var(--gray-0);
     --surface-border: var(--gray-300);
     --surface-border-transparent: #{rgba($shade300, 0.55)};
+    --surface-outline: #{$shade950};
     --surface-hover: var(--gray-100);
     --focus-ring: #{$focusShadow};
     --maskbg: #{$maskBg};

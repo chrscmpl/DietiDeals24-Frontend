@@ -1,40 +1,40 @@
-$primaryColor: #23e496;
-$primaryLightColor: #57f7b7;
-$primaryLighterColor: #8af8cc;
-$primaryLightestColor: rgb(170, 247, 216, 0.5);
+$primaryColor: #1eb377;
+$primaryLightColor: #24bf81;
+$primaryLighterColor: #29cc8b;
+$primaryLightestColor: #2bd993;
 $primaryTextColor: #030712;
 
 $highlightBg: rgba(34, 211, 238, 0.16);
 $highlightTextColor: rgba(255, 255, 255, 0.87);
 $highlightFocusBg: rgba($primaryColor, 0.24);
 
-$secondaryColor: darken(#23e496, 20%);
+$secondaryColor: #1eb377;
 $secondaryTextColor: #ffffff;
 
-$sideColor: #0f172a;
-$sideBorderColor: #484c54;
+$sideColor: #18181b;
+$sideBorderColor: #27272a;
 
-$shade000: rgba(255, 255, 255, 0.7);
-$shade50: rgba(255, 255, 255, 0.6);
-$shade100: rgba(255, 255, 255, 0.5);
-$shade200: #646871;
-$shade300: #686c76;
-$shade400: #5d626c;
-$shade500: #484c54;
-$shade600: #353b43;
-$shade700: #2a303a;
-$shade800: #111825;
-$shade900: #0d111b;
-$shade950: #0a1522;
+$shade000: #ffffff;
+$shade50: #fafafa;
+$shade100: #f4f4f5;
+$shade200: #e4e4e7;
+$shade300: #d4d4d8;
+$shade400: #a1a1aa;
+$shade500: #71717a;
+$shade600: #52525b;
+$shade700: #3f3f46;
+$shade800: #27272a;
+$shade900: #18181b;
+$shade950: #111111;
 
 $secondaryButtonBg: $shade900;
 $secondaryButtonTextColor: $shade000;
 $secondaryButtonBorder: 1px solid $shade100;
-$secondaryButtonHoverBg: #1d242f;
-$secondaryButtonTextHoverColor: #b8bace;
+$secondaryButtonHoverBg: #27272a;
+$secondaryButtonTextHoverColor: $shade000;
 $secondaryButtonHoverBorderColor: $shade100;
-$secondaryButtonActiveBg: #414652;
-$secondaryButtonTextActiveColor: $shade000;
+$secondaryButtonActiveBg: #3f3f46;
+$secondaryButtonTextActiveColor: $shade50;
 $secondaryButtonActiveBorderColor: $shade100;
 $secondaryButtonFocusShadow: none;
 
