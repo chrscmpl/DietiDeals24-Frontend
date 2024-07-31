@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { take } from 'rxjs';
@@ -45,6 +45,7 @@ export class BiddingPageComponent implements OnInit {
     constructor(
         private readonly route: ActivatedRoute,
         private readonly formBuilder: FormBuilder,
+        @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
     public ngOnInit(): void {

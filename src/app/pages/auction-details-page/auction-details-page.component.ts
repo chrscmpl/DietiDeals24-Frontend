@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -45,6 +46,7 @@ import { UserService } from '../../services/user.service';
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionDetailsPageComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -208,6 +210,7 @@ export class AuctionDetailsPageComponent
                 .subscribe((user) => {
                     console.log(user);
                     this.user = user;
+                    this.changeDetectorRef.detectChanges();
                 });
     }
 
