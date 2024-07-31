@@ -9,6 +9,7 @@ import { map, Observable, Subscription } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterruptedResettableObserver';
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
+import { Cacheable } from 'ts-cacheable';
 
 export type RequestKey = string;
 
@@ -82,6 +83,7 @@ export class AuctionsService {
         this.requestsMap.delete(key);
     }
 
+    @Cacheable({ maxCacheCount: 16 })
     public getDetails(id: string): Observable<Auction> {
         return this.http
             .get<AuctionDTO>(
@@ -90,7 +92,12 @@ export class AuctionsService {
                     params: { id },
                 },
             )
-            .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
+            .pipe(
+                map((dto) => {
+                    console.log(dto);
+                    return auctionBuilder.buildSingle(dto);
+                }),
+            );
     }
 
     private getRequest(key: RequestKey): PaginatedRequestManager<Auction> {
