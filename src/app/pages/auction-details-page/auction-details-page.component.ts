@@ -130,10 +130,15 @@ export class AuctionDetailsPageComponent
     }
 
     public onShare(): void {
-        this.clipboard.copy(window.location.href);
-        this.message.add({
-            severity: 'info',
-            summary: 'Link copied to clipboard',
+        this.route.url.pipe(take(1)).subscribe((url) => {
+            this.clipboard.copy(
+                location.origin +
+                    `/home(${this.route.outlet}:${url.map((seg) => seg.path).join('/')})`,
+            );
+            this.message.add({
+                severity: 'info',
+                summary: 'Link copied to clipboard',
+            });
         });
     }
 

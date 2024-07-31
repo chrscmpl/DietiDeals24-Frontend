@@ -92,12 +92,7 @@ export class AuctionsService {
                     params: { id },
                 },
             )
-            .pipe(
-                map((dto) => {
-                    console.log(dto);
-                    return auctionBuilder.buildSingle(dto);
-                }),
-            );
+            .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
     }
 
     private getRequest(key: RequestKey): PaginatedRequestManager<Auction> {
