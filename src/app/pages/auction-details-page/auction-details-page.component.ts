@@ -1,6 +1,5 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -25,6 +24,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'primeng/api';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { UserSummary } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -45,7 +45,6 @@ import { UserSummary } from '../../models/user.model';
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionDetailsPageComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -79,6 +78,7 @@ export class AuctionDetailsPageComponent
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly userService: UserService,
         private readonly router: Router,
         public readonly windowService: WindowService,
         private readonly clipboard: Clipboard,
@@ -89,16 +89,9 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
-            if (!this.auction) return;
-            this.timeLeft = this.auction.endTime.getTime() - Date.now();
-            this.carouselItems = this.auction.picturesUrls.map(
-                (url, index) => ({
-                    url,
-                    index,
-                }),
-            );
-            if (!this.carouselItems.length)
-                this.carouselItems.push({ url: '', index: 0, isEmpty: true });
+            this.initUser();
+            this.initTimer();
+            this.initCarousel();
         });
 
         this.subscriptions.push(
@@ -200,5 +193,31 @@ export class AuctionDetailsPageComponent
                 },
             },
         ]);
+    }
+
+    private initUser() {
+        if (this.auction?.userId)
+            this.userService
+                .getSummary(this.auction.userId)
+                .pipe(take(1))
+                .subscribe((user) => {
+                    console.log(user);
+                    this.user = user;
+                });
+    }
+
+    private initTimer() {
+        if (!this.auction) return;
+        this.timeLeft = this.auction.endTime.getTime() - Date.now();
+    }
+
+    private initCarousel() {
+        this.carouselItems =
+            this.auction?.picturesUrls.map((url, index) => ({
+                url,
+                index,
+            })) ?? [];
+        if (!this.carouselItems.length)
+            this.carouselItems.push({ url: '', index: 0, isEmpty: true });
     }
 }

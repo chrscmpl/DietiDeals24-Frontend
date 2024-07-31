@@ -1,4 +1,4 @@
-import { UserDTO } from '../DTOs/user.dto';
+import { UserDTO, UserSummaryDTO } from '../DTOs/user.dto';
 import { link } from '../helpers/links';
 import { Location } from './location.model';
 
@@ -11,7 +11,6 @@ export interface ProfileInformationInterface {
     links: link[];
     onlineAuctions: number;
     pastDeals: number;
-    contactData: contactData[];
 }
 
 export interface UserInterface {
@@ -36,13 +35,32 @@ export class User implements UserInterface {
     }
 }
 
-export type UserSummary = {
-    username: string;
-    profilePictureUrl: string | null;
-    location: Location | null;
-};
+export class UserSummary {
+    private _id: string;
+    private _username: string;
+    private _profilePictureUrl: string | null;
+    private _location: Location;
 
-export interface contactData {
-    email?: string;
-    phone?: string;
+    public constructor(dto: UserSummaryDTO) {
+        this._id = dto.id;
+        this._username = dto.username;
+        this._profilePictureUrl = dto.profilePictureUrl;
+        this._location = { country: dto.country, city: dto.city };
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get username(): string {
+        return this._username;
+    }
+
+    public get profilePictureUrl(): string | null {
+        return this._profilePictureUrl;
+    }
+
+    public get location(): Location {
+        return this._location;
+    }
 }

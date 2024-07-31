@@ -2,6 +2,14 @@ import { UserInterface } from '../models/user.model';
 
 export type UserDTO = Omit<UserInterface, 'profileInformation'>;
 
+export type UserSummaryDTO = {
+    id: string;
+    username: string;
+    profilePictureUrl: string;
+    country: string;
+    city: string;
+};
+
 export type UserRegistrationDTO = {
     name: string;
     surname: string;
