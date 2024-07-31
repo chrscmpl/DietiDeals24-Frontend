@@ -1,5 +1,5 @@
 import { NotificationType } from '../models/notification.model';
-import { AuctionSummaryDTO } from './auction.dto';
+import { AuctionDTO } from './auction.dto';
 
 export interface NotificationResponse {
     notifications: NotificationDTO[];
@@ -12,5 +12,5 @@ export interface NotificationDTO {
     notificationType: NotificationType;
     read: boolean;
 
-    auction?: AuctionSummaryDTO | null;
+    auction?: AuctionDTO | null;
 }

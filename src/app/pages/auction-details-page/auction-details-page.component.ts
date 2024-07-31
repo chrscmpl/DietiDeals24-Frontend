@@ -24,6 +24,7 @@ import { ButtonModule } from 'primeng/button';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'primeng/api';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
+import { UserSummary } from '../../models/user.model';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -54,6 +55,8 @@ export class AuctionDetailsPageComponent
     public display: boolean = true;
 
     public auction?: Auction;
+
+    public user?: UserSummary;
 
     public timeLeft: number = 0;
 

@@ -1,6 +1,6 @@
 import { AuctionType, AuctionStatus } from '../typeUtils/auction.utils';
 
-export interface AuctionSummaryDTO {
+export interface AuctionDTO {
     id: string;
     type: AuctionType;
     status: AuctionStatus;
@@ -11,36 +11,21 @@ export interface AuctionSummaryDTO {
     endTime: string;
     pictureUrl?: string | null;
     currency: string;
+
+    category?: string | null;
+    description?: string | null;
+    numberOfBids?: number | null;
+    userId?: string | null;
+    picturesUrls?: string[] | null;
 }
 
-export interface SilentAuctionSummaryDTO extends AuctionSummaryDTO {
+export interface SilentAuctionDTO extends AuctionDTO {
     type: AuctionType.silent;
     minimumBid: number;
 }
 
-export interface ReverseAuctionSummaryDTO extends AuctionSummaryDTO {
+export interface ReverseAuctionDTO extends AuctionDTO {
     type: AuctionType.reverse;
     maximumBid: number;
     lowestBidSoFar: number;
-}
-
-export interface AuctionDTO extends AuctionSummaryDTO {
-    category: string;
-    description?: string | null;
-    bids?: number | null;
-    username: string;
-    profilePictureUrl?: string | null;
-    pictureUrl: undefined;
-    picturesUrls: string[];
-}
-
-export interface SilentAuctionDTO extends AuctionDTO, SilentAuctionSummaryDTO {
-    type: AuctionType.silent;
-    pictureUrl: undefined;
-}
-
-// eslint-disable-next-line prettier/prettier
-export interface ReverseAuctionDTO extends AuctionDTO, ReverseAuctionSummaryDTO {
-    type: AuctionType.reverse;
-    pictureUrl: undefined;
 }

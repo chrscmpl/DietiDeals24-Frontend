@@ -2,7 +2,7 @@
     <p-avatar
         class="avatar"
         [icon]="
-            !profilePictureUrl || showProfilePicturePlaceholder
+            !user.profilePictureUrl || showProfilePicturePlaceholder
                 ? 'pi pi-user'
                 : undefined
         "
@@ -14,12 +14,15 @@
             'border-width': '2px'
         }"
         [image]="
-            profilePictureUrl && !showProfilePicturePlaceholder
-                ? profilePictureUrl
+            user.profilePictureUrl && !showProfilePicturePlaceholder
+                ? user.profilePictureUrl
                 : undefined
         "
         (onImageError)="onProfilePictureError()"
     ></p-avatar>
-    <span class="username">{{ username }}</span>
-    <span class="location">{{ city }}, {{ country }}</span>
+    <span class="username">{{ user.username }}</span>
+    <span class="location"
+        >{{ city ?? user.location?.city }},
+        {{ country ?? user.location?.country }}</span
+    >
 </div>

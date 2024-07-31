@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AvatarModule } from 'primeng/avatar';
+import { UserSummary } from '../../models/user.model';
 
 @Component({
     selector: 'dd24-user-preview',
@@ -9,10 +10,9 @@ import { AvatarModule } from 'primeng/avatar';
     styleUrl: './user-preview.component.scss',
 })
 export class UserPreviewComponent {
-    @Input() profilePictureUrl?: string | null | undefined;
-    @Input({ required: true }) username!: string;
-    @Input({ required: true }) country!: string;
-    @Input({ required: true }) city!: string;
+    @Input({ required: true }) user!: UserSummary;
+    @Input() country?: string;
+    @Input() city?: string;
 
     public showProfilePicturePlaceholder: boolean = false;
 

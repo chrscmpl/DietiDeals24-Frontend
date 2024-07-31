@@ -1,7 +1,7 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
-import { auctionSummaryBuilder } from '../helpers/builders/auctionBuilder';
+import { auctionBuilder } from '../helpers/builders/auctionBuilder';
 import { routerLinkType } from '../typeUtils/routerLinkType';
-import { AuctionSummary } from './auction.summary.model';
+import { Auction } from './auction.model';
 
 export interface DisplayableNotification {
     readonly id: string;
@@ -26,14 +26,14 @@ export class Notification implements DisplayableNotification {
     private _type: NotificationType;
     private _read: boolean;
 
-    private _auction: AuctionSummary | null;
+    private _auction: Auction | null;
 
     constructor(dto: NotificationDTO) {
         this._id = dto.id;
         this._type = dto.notificationType;
         this._read = dto.read;
         this._auction = dto.auction
-            ? auctionSummaryBuilder.buildSingle(dto.auction)
+            ? auctionBuilder.buildSingle(dto.auction)
             : null;
     }
 
@@ -53,7 +53,7 @@ export class Notification implements DisplayableNotification {
         this._read = value;
     }
 
-    public get auction(): AuctionSummary | null {
+    public get auction(): Auction | null {
         return this._auction;
     }
 

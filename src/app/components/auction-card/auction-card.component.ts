@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { AuctionSummary } from '../../models/auction.summary.model';
+import { Auction } from '../../models/auction.model';
 import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
@@ -32,12 +32,12 @@ import { TimerComponent } from '../timer/timer.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionCardComponent implements OnInit {
-    @Input({ required: true }) auction!: AuctionSummary;
+    @Input({ required: true }) auction!: Auction;
     @Input() cardStyle: { [key: string]: string | number } = {};
     @Input() skipLocationChange: boolean = false;
 
     @Output() loaded = new EventEmitter<number>();
-    public statuses = AuctionSummary.STATUSES;
+    public statuses = Auction.STATUSES;
     public showImagePlaceholder: boolean = false;
     public timeLeft: number = 0;
 

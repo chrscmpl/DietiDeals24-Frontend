@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuctionSummary } from '../../models/auction.summary.model';
+import { Auction } from '../../models/auction.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
 import { Subscription } from 'rxjs';
@@ -38,7 +38,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
 
     private _requestKey!: RequestKey | null;
     private readonly subscriptions: Subscription[] = [];
-    public auctions: ReadonlyArray<AuctionSummary> = [];
+    public auctions: ReadonlyArray<Auction> = [];
     public error: boolean = false;
     public showEmpty: boolean = false;
     public loadingIndicator: LoadingIndicator = new LoadingIndicator(1000);
@@ -107,7 +107,7 @@ export class AuctionListComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.auctionsService.subscribeUninterrupted(this.requestKey, {
-                next: (auctions: AuctionSummary[]) => {
+                next: (auctions: Auction[]) => {
                     this.error = false;
                     this.stopLoading();
                     auctions.forEach((a) => {

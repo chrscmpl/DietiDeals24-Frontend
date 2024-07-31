@@ -84,13 +84,14 @@
                     ></ng-container>
                 </div>
                 <h3 class="auction-category">{{ auction.category }}</h3>
-                <dd24-user-preview
-                    class="auction-user"
-                    [profilePictureUrl]="auction.profilePictureUrl"
-                    [username]="auction.username"
-                    [country]="auction.location.country"
-                    [city]="auction.location.city"
-                ></dd24-user-preview>
+                @if (user) {
+                    <dd24-user-preview
+                        class="auction-user"
+                        [user]="user"
+                        [country]="auction.location.country"
+                        [city]="auction.location.city"
+                    ></dd24-user-preview>
+                }
                 <h1 class="auction-title">
                     {{ auction.title }}
                 </h1>

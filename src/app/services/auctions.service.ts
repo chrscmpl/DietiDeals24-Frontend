@@ -1,23 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuctionSummary } from '../models/auction.summary.model';
 import { PaginatedRequestParams } from '../helpers/paginatedRequest';
-import {
-    auctionBuilder,
-    auctionSummaryBuilder,
-} from '../helpers/builders/auctionBuilder';
+import { auctionBuilder } from '../helpers/builders/auctionBuilder';
 import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
 import { map, Observable, Subscription } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterruptedResettableObserver';
-import { AuctionDTO, AuctionSummaryDTO } from '../DTOs/auction.dto';
+import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
 
 export type RequestKey = string;
 
 export type auctionsPaginationParams = Omit<
-    PaginatedRequestParams<AuctionSummary>,
+    PaginatedRequestParams<Auction>,
     'http' | 'factory' | 'url' | 'queryParameters'
 > & {
     queryParameters: AuctionSearchParameters;
@@ -29,7 +25,7 @@ export type auctionsPaginationParams = Omit<
 export class AuctionsService {
     private requestsMap = new Map<
         RequestKey,
-        PaginatedRequestManager<AuctionSummary>
+        PaginatedRequestManager<Auction>
     >();
 
     public constructor(private readonly http: HttpClient) {}
@@ -56,12 +52,12 @@ export class AuctionsService {
 
     public subscribeUninterrupted(
         key: RequestKey,
-        observer: Partial<UninterruptedResettableObserver<AuctionSummary[]>>,
+        observer: Partial<UninterruptedResettableObserver<Auction[]>>,
     ): Subscription {
         return this.getRequest(key).subscribeUninterrupted(observer);
     }
 
-    public elements(key: RequestKey): ReadonlyArray<AuctionSummary> {
+    public elements(key: RequestKey): ReadonlyArray<Auction> {
         return this.getRequest(key).elements;
     }
 
@@ -97,9 +93,7 @@ export class AuctionsService {
             .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
     }
 
-    private getRequest(
-        key: RequestKey,
-    ): PaginatedRequestManager<AuctionSummary> {
+    private getRequest(key: RequestKey): PaginatedRequestManager<Auction> {
         const request = this.requestsMap.get(key);
         if (!request) throw new Error(`Auctions Request not found: ${key}`);
         return request;
@@ -107,18 +101,17 @@ export class AuctionsService {
 
     private createAuctionsRequestManager(
         params: auctionsPaginationParams,
-    ): PaginatedRequestManager<AuctionSummary> {
+    ): PaginatedRequestManager<Auction> {
         return new PaginatedRequestManager(this.completeParams(params));
     }
 
     private completeParams(
         params: auctionsPaginationParams,
-    ): PaginatedRequestParams<AuctionSummary> {
+    ): PaginatedRequestParams<Auction> {
         return Object.assign(params, {
             http: this.http,
             url: `${environment.backendHost}/auctions/search`,
-            factory: (dtos: AuctionSummaryDTO[]) =>
-                auctionSummaryBuilder.buildArray(dtos),
+            factory: (dtos: AuctionDTO[]) => auctionBuilder.buildArray(dtos),
         });
     }
 }
