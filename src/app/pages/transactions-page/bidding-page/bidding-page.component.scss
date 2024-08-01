@@ -15,3 +15,24 @@
 .bidding-page-auction-card {
     margin: 0 -2rem;
 }
+
+.bidding-page-form {
+    @include layouts.grid(
+        "label ." auto "input btn" auto / auto auto,
+        $justify-content: start,
+        $justify-items: start
+    );
+    column-gap: 1ch;
+}
+
+.bidding-page-input-label {
+    grid-area: label;
+}
+
+.bidding-page-input {
+    grid-area: input;
+}
+
+.bidding-page-submit-btn {
+    grid-area: btn;
+}

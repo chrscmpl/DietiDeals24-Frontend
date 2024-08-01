@@ -5,9 +5,9 @@
             (deactivate)="onMainRouterOutletDeactivate()"
         ></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
-            <dd24-loading-placeholder
-                [style]="{ padding: '1rem 15%' }"
-            ></dd24-loading-placeholder>
+            <div class="placeholder">
+                <dd24-loading-placeholder></dd24-loading-placeholder>
+            </div>
         }
     </div>
     @if ((windowService.isMobile$ | async) === false) {

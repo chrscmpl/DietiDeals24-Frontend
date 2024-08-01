@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -58,6 +64,8 @@ interface option {
     styleUrl: './search-section.component.scss',
 })
 export class SearchSectionComponent implements OnInit, OnDestroy {
+    @ViewChild('keywordsInput') keywordsInput!: ElementRef<HTMLInputElement>;
+
     private subscriptions: Subscription[] = [];
     public searchForm!: FormGroup<searchForm>;
 
@@ -166,5 +174,9 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         }
         this.displayNoneExtraControls = false;
         this.showExtraControls = true;
+    }
+
+    public focusKeywordsInput() {
+        this.keywordsInput?.nativeElement?.focus();
     }
 }

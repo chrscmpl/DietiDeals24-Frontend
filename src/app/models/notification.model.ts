@@ -102,7 +102,7 @@ class AuctionExpiredNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 
@@ -120,7 +120,7 @@ class AuctionAbortedNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 
@@ -138,7 +138,7 @@ class NewBidNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 
@@ -156,7 +156,7 @@ class OutBidNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 
@@ -174,7 +174,7 @@ class WinningBidNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 
@@ -192,7 +192,7 @@ class BidRejectedNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return [{ outlets: { overlay: ['/auctions', this.auction?.id] } }];
+        return [{ outlets: { overlay: ['auctions', this.auction?.id] } }];
     }
 }
 

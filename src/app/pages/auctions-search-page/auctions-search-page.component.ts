@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { AsyncPipe } from '@angular/common';
 import { AuctionsService } from '../../services/auctions.service';
@@ -13,6 +19,7 @@ import {
     map,
     ReplaySubject,
     Subscription,
+    take,
     tap,
 } from 'rxjs';
 import { SearchSectionComponent } from '../../components/search-section/search-section.component';
@@ -30,7 +37,12 @@ import { AuctionSearchParameters } from '../../typeUtils/auction.utils';
     templateUrl: './auctions-search-page.component.html',
     styleUrl: './auctions-search-page.component.scss',
 })
-export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
+export class AuctionsSearchPageComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    @ViewChild('mobileSearchSection')
+    mobileSearchSection?: SearchSectionComponent;
+
     private static readonly REQUEST_KEY = '/auctions';
     private readonly subscriptions: Subscription[] = [];
     private readonly requestKeySubject = new ReplaySubject<void>(1);
@@ -46,7 +58,7 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
         public readonly windowService: WindowService,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         let initialized = false;
         let newParams = false;
 
@@ -76,7 +88,15 @@ export class AuctionsSearchPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy(): void {
+    public ngAfterViewInit(): void {
+        this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
+            if (isMobile) {
+                this.mobileSearchSection?.focusKeywordsInput();
+            }
+        });
+    }
+
+    public ngOnDestroy(): void {
         this.requestKeySubject.complete();
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }

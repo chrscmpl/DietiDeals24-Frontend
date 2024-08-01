@@ -886,7 +886,7 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --font-weight: #{$fontWeight};
     --text-color: #{$textColor};
     --text-color-secondary: #{$textSecondaryColor};
-    --text-color-tertiary: #{$shade100};
+    --text-color-tertiary: #{$shade500};
     --text-color-suggestion: #{$inputPlaceholderTextColor};
     --primary-color: #{$primaryColor};
     --primary-color-transparent: #{rgba($primaryColor, 0.2)};
@@ -939,7 +939,7 @@ $imagePreviewActionIconBorderRadius: 50% !default;
     --affordances-color: #{$shade100};
     --inputs-bg: #{$inputBg};
     --color-side: #{$sideColor};
-    --color-side-text: #{$shade000};
+    --color-side-text: #{$shade400};
     --border-color-side: #{$sideBorderColor};
     color-scheme: dark;
 }

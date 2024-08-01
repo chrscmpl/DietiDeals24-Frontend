@@ -11,24 +11,35 @@
             }"
             [skipLocationChange]="true"
         ></dd24-auction-card>
-        <form [formGroup]="bidForm" (ngSubmit)="onSubmit()">
-            <label for="bidAmount"
+        <form
+            class="bidding-page-form"
+            [formGroup]="bidForm"
+            (ngSubmit)="onSubmit()"
+        >
+            <label class="bidding-page-input-label" for="bidAmount"
                 >Your {{ auction.newBidCategory() }} bid</label
             >
             <dd24-input
+                class="bidding-page-input"
                 controlName="amount"
                 [errorMessages]="[
                     {
                         validation: 'required',
                         message: 'You need to enter a bid amount'
+                    },
+                    {
+                        customValidation: 'invalidBid',
+                        message: this.auction.invalidBidError() | findCurrency
                     }
                 ]"
+                [floatingError]="true"
             >
                 <p-inputGroup>
                     <p-inputGroupAddon>
                         {{ currencySymbol }}
                     </p-inputGroupAddon>
                     <p-inputNumber
+                        #amountInput
                         formControlName="amount"
                         class="amount-input"
                         name="amount"
@@ -46,9 +57,15 @@
                             borderBottomLeftRadius: 0,
                             maxWidth: '25ch'
                         }"
+                        autofocus
                     ></p-inputNumber>
                 </p-inputGroup>
             </dd24-input>
+            <p-button
+                class="bidding-page-submit-btn"
+                label="Bid"
+                type="submit"
+            ></p-button>
         </form>
     }
 </main>

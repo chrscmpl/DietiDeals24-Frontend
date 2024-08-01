@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-    Component,
-    OnInit,
-    Input,
-    NO_ERRORS_SCHEMA,
-    OnDestroy,
-    AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { AbstractControl, ControlContainer } from '@angular/forms';
 import {
     inputErrorMessagesManager,
@@ -25,6 +18,7 @@ import { AsyncPipe } from '@angular/common';
 export class InputComponent implements OnInit {
     @Input() errorMessages: errorMessage[] = [];
     @Input({ required: true }) controlName!: string;
+    @Input() floatingError: boolean = false;
 
     private control?: AbstractControl | null;
     public error: string = '';

@@ -1,6 +1,8 @@
 <div class="input-container">
     <ng-content></ng-content>
-    <span class="error error-message">
-        {{ error }}
-    </span>
+    @if (error) {
+        <span class="error error-message" [class.floating]="floatingError">
+            {{ error }}
+        </span>
+    }
 </div>

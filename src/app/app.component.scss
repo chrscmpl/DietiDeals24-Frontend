@@ -44,6 +44,14 @@
     .dialog {
         grid-area: header;
     }
+
+    .placeholder {
+        padding: var(--page-items-gap) 15%;
+
+        @include viewports.mobile {
+            padding: 1em 2%;
+        }
+    }
 }
 
 :host ::ng-deep {

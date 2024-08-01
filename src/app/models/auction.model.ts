@@ -103,6 +103,8 @@ export abstract class Auction {
     public abstract newBidCategory(): 'selling' | 'buying';
 
     public abstract newBidDescription(): string;
+
+    public abstract invalidBidError(): string;
 }
 
 export class SilentAuction extends Auction {
@@ -138,6 +140,10 @@ export class SilentAuction extends Auction {
 
     public override newBidDescription(): string {
         return `more than CURRENCY{${this._minimumBid}|${this.currency}}`;
+    }
+
+    public override invalidBidError(): string {
+        return `Bid must be higher than CURRENCY{${this._minimumBid}|${this.currency}}`;
     }
 }
 
@@ -183,5 +189,9 @@ export class ReverseAuction extends Auction {
 
     public override newBidDescription(): string {
         return `less than CURRENCY{${this._lowestBid}|${this.currency}}`;
+    }
+
+    public override invalidBidError(): string {
+        return `Bid must be lower than CURRENCY{${this._lowestBid}|${this.currency}}`;
     }
 }

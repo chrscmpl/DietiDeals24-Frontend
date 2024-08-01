@@ -115,13 +115,14 @@
 
 .auction-category,
 .auction-user {
-    margin-top: 1rem;
+    margin-top: 0.8rem;
     margin-bottom: 0.2rem;
 }
 
 .auction-category {
     grid-area: category;
     font-size: var(--font-size-large);
+    line-height: var(--line-height-large);
     color: var(--text-color-3);
     font-weight: var(--font-weight-bolder);
     justify-self: start;
@@ -136,8 +137,8 @@
     grid-area: title;
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
     text-align: center;
-    margin-top: 0.5rem;
 }
 
 .auction-conditions {

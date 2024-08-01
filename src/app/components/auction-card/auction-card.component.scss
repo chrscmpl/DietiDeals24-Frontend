@@ -61,6 +61,7 @@
         color: var(--text-color-1);
         padding: 1rem;
         grid-area: title;
+        overflow: hidden;
 
         @include viewports.mobile {
             padding: 0 1rem;
@@ -70,6 +71,12 @@
         .auction-card-title {
             font-size: var(--font-size-large);
             font-weight: var(--font-weight-bolder);
+            line-height: var(--line-height-large);
+
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .auction-card-secondary-line {

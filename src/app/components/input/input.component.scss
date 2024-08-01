@@ -5,11 +5,20 @@
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     width: 100%;
+    position: relative;
 
     .error {
         color: var(--error-color);
         font-size: var(--font-size-small);
         font-weight: var(--font-weight-normal);
         margin-top: 0.25rem;
+
+        &.floating {
+            position: absolute;
+            bottom: 0;
+            transform: translateY(100%);
+            left: 0;
+            margin: 0;
+        }
     }
 }
