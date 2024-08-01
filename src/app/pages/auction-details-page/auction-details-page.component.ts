@@ -132,15 +132,10 @@ export class AuctionDetailsPageComponent
     }
 
     public onShare(): void {
-        this.route.url.pipe(take(1)).subscribe((url) => {
-            this.clipboard.copy(
-                location.origin +
-                    `/home(${this.route.outlet}:${url.map((seg) => seg.path).join('/')})`,
-            );
-            this.message.add({
-                severity: 'info',
-                summary: 'Link copied to clipboard',
-            });
+        this.clipboard.copy(`${location.origin}/auctions/${this.auction?.id}`);
+        this.message.add({
+            severity: 'info',
+            summary: 'Link copied to clipboard',
         });
     }
 

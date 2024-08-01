@@ -75,10 +75,14 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'auction/:auction-id',
+        path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
         resolve: { auction: resolveAuctionGuard },
+    },
+    {
+        path: 'auctions/:auction-id',
+        redirectTo: '/home(overlay:auctions/:auction-id)',
     },
     {
         path: 'txn/:auction-id',

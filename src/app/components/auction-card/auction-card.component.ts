@@ -61,7 +61,7 @@ export class AuctionCardComponent implements OnInit {
                 '',
                 {
                     outlets: {
-                        overlay: ['auction', this.auction.id],
+                        overlay: ['auctions', this.auction.id],
                     },
                 },
             ],
