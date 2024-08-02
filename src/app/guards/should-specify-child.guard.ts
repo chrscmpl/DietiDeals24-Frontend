@@ -14,5 +14,5 @@ export class ShouldSpecifyChildGuard implements CanActivate {
     }
 }
 
-export const shouldSpecifyChildGuard: CanActivateFn = (r) =>
+export const shouldSpecifyChildFnGuard: CanActivateFn = (r) =>
     inject(ShouldSpecifyChildGuard).canActivate(r);

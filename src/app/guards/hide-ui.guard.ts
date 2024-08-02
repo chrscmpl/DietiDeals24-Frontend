@@ -12,5 +12,5 @@ export class HideUIGuard implements CanActivate {
     }
 }
 
-export const hideUIGuard: CanActivateFn = () =>
+export const hideUIFnGuard: CanActivateFn = () =>
     inject(HideUIGuard).canActivate();

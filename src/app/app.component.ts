@@ -1,5 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import {
+    NavigationCancel,
+    NavigationEnd,
+    Router,
+    RouterLink,
+    RouterOutlet,
+} from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingIndicator } from './helpers/loadingIndicator';
@@ -17,6 +23,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { filter, take } from 'rxjs';
 
 @Component({
     selector: 'dd24-root',
@@ -48,6 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     constructor(
         public readonly windowService: WindowService,
+        private readonly router: Router,
         private readonly primengConfig: PrimeNGConfig,
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
@@ -55,14 +63,15 @@ export class AppComponent implements OnInit, AfterViewInit {
         private messageService: MessageService,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
+        this.redirectOnBadInitialRoute();
         this.configurePrimeNG();
         this.themeService.initTheme();
         this.configureNotifications();
     }
 
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         this.updateInitialWarningStatus();
     }
 
@@ -72,6 +81,24 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public onMainRouterOutletDeactivate(): void {
         this.isLoadingRouteIndicator.start();
+    }
+
+    private redirectOnBadInitialRoute(): void {
+        this.router.events
+            .pipe(
+                filter(
+                    (e) =>
+                        e instanceof NavigationEnd ||
+                        e instanceof NavigationCancel,
+                ),
+                take(1),
+            )
+            .subscribe((e) => {
+                if (e instanceof NavigationCancel) {
+                    this.windowService.setUIvisibility(true);
+                    this.router.navigate(['/home']);
+                }
+            });
     }
 
     private configurePrimeNG(): void {

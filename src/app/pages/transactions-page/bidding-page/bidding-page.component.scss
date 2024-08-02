@@ -1,9 +1,15 @@
 @use "layouts";
+@use "viewports";
 
 .bidding-page {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
     color: var(--text-color-1);
-    padding: 4rem 2rem;
+    padding: 2rem;
+    padding-top: 4rem;
+
+    @include viewports.mobile {
+        height: 100%;
+    }
 }
 
 .bidding-page-title {
@@ -23,6 +29,13 @@
         $justify-items: start
     );
     column-gap: 1ch;
+
+    @include viewports.mobile {
+        height: 100%;
+        grid-template: "label" auto "input" auto "." 1fr "btn" auto / 1fr;
+        justify-content: stretch;
+        justify-items: stretch;
+    }
 }
 
 .bidding-page-input-label {

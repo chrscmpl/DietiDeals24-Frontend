@@ -263,7 +263,7 @@
     }
 
     @include viewports.mobile {
-        box-shadow: 0 -0.2rem 0.8rem var(--border-color);
+        box-shadow: var(--mobile-overlay-shadow-top);
     }
 }
 

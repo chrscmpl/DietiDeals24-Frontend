@@ -2,14 +2,22 @@
 @use "viewports";
 
 .home-page {
+    .home-page-section-header {
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--line-height-medium);
+        align-self: start;
+
+        @include viewports.mobile {
+            font-weight: var(--font-weight-bolder);
+            font-size: var(--font-size-large);
+            line-height: var(--line-height-large);
+            margin-bottom: 0.2rem;
+        }
+    }
+
     .trending-categories {
         @include layouts.flex(column, start, stretch, 0.5em);
-
-        > :first-child {
-            font-size: var(--font-size-medium);
-            font-weight: var(--font-weight-regular);
-            align-self: start;
-        }
 
         .trending-categories-buttons {
             @include layouts.grid(
@@ -108,7 +116,7 @@
     .home-page-carousel {
         cursor: pointer;
         margin-top: -1em;
-        margin-bottom: calc(var(--page-items-gap) * -1);
+        margin-bottom: calc(var(--page-items-gap) * -0.5);
         margin-right: -2%;
         margin-left: -2%;
     }

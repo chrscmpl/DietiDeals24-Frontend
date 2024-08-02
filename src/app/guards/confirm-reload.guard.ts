@@ -22,8 +22,8 @@ export class ConfirmReloadGuard implements CanActivate, CanDeactivate<unknown> {
     }
 }
 
-export const confirmReloadActivateGuard: CanActivateFn = () =>
+export const confirmReloadActivateFnGuard: CanActivateFn = () =>
     inject(ConfirmReloadGuard).canActivate();
 
-export const confirmReloadDeactivateGuard: CanDeactivateFn<unknown> = () =>
+export const confirmReloadDeactivateFnGuard: CanDeactivateFn<unknown> = () =>
     inject(ConfirmReloadGuard).canDeactivate();

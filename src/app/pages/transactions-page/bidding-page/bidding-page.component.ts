@@ -1,5 +1,5 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { take } from 'rxjs';
 import { AuctionCardComponent } from '../../../components/auction-card/auction-card.component';
@@ -17,8 +17,9 @@ import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 import { FindCurrencyPipe } from '../../../pipes/find-currency.pipe';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { CurrencyPipe, getCurrencySymbol } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, getCurrencySymbol } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { WindowService } from '../../../services/window.service';
 
 interface BidForm {
     amount: FormControl<number | null>;
@@ -38,6 +39,7 @@ interface BidForm {
         InputGroupAddonModule,
         CurrencyPipe,
         ButtonModule,
+        AsyncPipe,
     ],
     templateUrl: './bidding-page.component.html',
     styleUrl: './bidding-page.component.scss',
@@ -48,7 +50,9 @@ export class BiddingPageComponent implements OnInit {
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly formBuilder: FormBuilder,
+        public readonly windowService: WindowService,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -77,7 +81,13 @@ export class BiddingPageComponent implements OnInit {
         return { invalidBid: true };
     }
 
-    public onSubmit(): void {}
+    public onSubmit(): void {
+        if (!this.bidForm.valid) return;
+        this.router.navigate(['checkout'], {
+            relativeTo: this.route,
+            state: { amount: this.bidForm.controls.amount.value },
+        });
+    }
 
     public get currencySymbol(): string {
         if (!this.auction) return '';

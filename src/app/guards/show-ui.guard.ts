@@ -12,5 +12,5 @@ export class ShowUIGuard implements CanDeactivate<unknown> {
     }
 }
 
-export const showUIGuard: CanDeactivateFn<unknown> = () =>
+export const showUIFnGuard: CanDeactivateFn<unknown> = () =>
     inject(ShowUIGuard).canDeactivate();

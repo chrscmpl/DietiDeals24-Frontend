@@ -1,5 +1,7 @@
 <main class="bidding-page">
-    <h1 class="bidding-page-title">Make your bid</h1>
+    @if ((windowService.isMobile$ | async) === false) {
+        <h1 class="bidding-page-title">Make your bid</h1>
+    }
     @if (auction) {
         <dd24-auction-card
             class="bidding-page-auction-card"
@@ -54,8 +56,7 @@
                         [maxFractionDigits]="2"
                         [inputStyle]="{
                             borderTopLeftRadius: 0,
-                            borderBottomLeftRadius: 0,
-                            maxWidth: '25ch'
+                            borderBottomLeftRadius: 0
                         }"
                         autofocus
                     ></p-inputNumber>

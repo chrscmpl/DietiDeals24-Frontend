@@ -23,8 +23,9 @@ export class EmailVerificationGuard
     }
 }
 
-export const emailVerificationActivateGuard: CanActivateFn = () =>
+export const emailVerificationActivateFnGuard: CanActivateFn = () =>
     inject(EmailVerificationGuard).canActivate();
 
-export const emailVerificationDeactivateGuard: CanDeactivateFn<unknown> = () =>
-    inject(EmailVerificationGuard).canDeactivate();
+export const emailVerificationDeactivateFnGuard: CanDeactivateFn<
+    unknown
+> = () => inject(EmailVerificationGuard).canDeactivate();

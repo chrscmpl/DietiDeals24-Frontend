@@ -1,4 +1,4 @@
-<nav class="mobile-nav">
+<nav class="mobile-nav" [class.minimal]="windowService.UIhidden$ | async">
     @if (windowService.UIhidden$ | async) {
         <button (click)="location.back()">
             <i class="pi pi-arrow-left"></i>

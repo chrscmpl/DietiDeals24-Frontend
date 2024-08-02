@@ -7,8 +7,8 @@ import { ForgotPasswordPageComponent } from '../../pages/authentication-page/for
 import { AuthenticationPageComponent } from '../../pages/authentication-page/authentication-page.component';
 import { VerifyEmailPageComponent } from '../../pages/authentication-page/verify-email-page/verify-email-page.component';
 import {
-    emailVerificationActivateGuard,
-    emailVerificationDeactivateGuard,
+    emailVerificationActivateFnGuard,
+    emailVerificationDeactivateFnGuard,
 } from '../../guards/email-not-verified.guard';
 
 const routes: Routes = [
@@ -40,8 +40,8 @@ const routes: Routes = [
                 path: 'verify-email',
                 title: 'Verify Email',
                 component: VerifyEmailPageComponent,
-                canActivate: [emailVerificationActivateGuard],
-                canDeactivate: [emailVerificationDeactivateGuard],
+                canActivate: [emailVerificationActivateFnGuard],
+                canDeactivate: [emailVerificationDeactivateFnGuard],
             },
         ],
     },

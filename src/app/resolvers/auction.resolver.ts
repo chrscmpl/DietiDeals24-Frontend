@@ -5,7 +5,7 @@ import { AuctionsService } from '../services/auctions.service';
 import { inject, Injectable } from '@angular/core';
 
 @Injectable()
-export class ResolveAuctionGuard implements Resolve<Auction> {
+export class AuctionResolver implements Resolve<Auction> {
     constructor(private auctionsService: AuctionsService) {}
 
     public resolve(route: ActivatedRouteSnapshot): Observable<Auction> {
@@ -15,6 +15,6 @@ export class ResolveAuctionGuard implements Resolve<Auction> {
     }
 }
 
-export const resolveAuctionGuard: ResolveFn<Auction> = (route) => {
-    return inject(ResolveAuctionGuard).resolve(route);
+export const auctionResolver: ResolveFn<Auction> = (route) => {
+    return inject(AuctionResolver).resolve(route);
 };

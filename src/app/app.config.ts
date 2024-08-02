@@ -1,5 +1,5 @@
 import { ApplicationConfig, LOCALE_ID } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withDebugTracing } from '@angular/router';
 
 import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
@@ -18,14 +18,15 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { EmailVerificationGuard } from './guards/email-not-verified.guard';
 import { MaskedPipe } from './pipes/masked.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
-import { ResolveAuctionGuard } from './guards/resolve-auction.guard';
+import { AuctionResolver } from './resolvers/auction.resolver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
+import { BidAmountSetGuard } from './guards/bid-amount-set.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(routes),
+        provideRouter(routes, withDebugTracing()),
         provideHttpClient(withInterceptors([authorizationInterceptor])),
         importProvidersFrom([BrowserAnimationsModule]),
         Location,
@@ -41,9 +42,10 @@ export const appConfig: ApplicationConfig = {
         ShowUIGuard,
         AuthenticationGuard,
         EmailVerificationGuard,
-        ResolveAuctionGuard,
+        AuctionResolver,
         ConfirmReloadGuard,
         ShouldSpecifyChildGuard,
+        BidAmountSetGuard,
         MessageService,
         ConfirmationService,
         { provide: LOCALE_ID, useValue: 'en-US' },
