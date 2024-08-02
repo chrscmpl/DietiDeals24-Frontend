@@ -12,7 +12,7 @@ import {
     switchMap,
 } from 'rxjs';
 import { SearchServiceService } from './search-service.service';
-import { AuctionSearchParameters } from '../typeUtils/auction.utils';
+import { AuctionSearchParameters } from '../DTOs/auctionSearchParameters.dto';
 
 type query = Params | AuctionSearchParameters;
 

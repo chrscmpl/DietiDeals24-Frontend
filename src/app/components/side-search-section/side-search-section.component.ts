@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-    AuctionSearchParameters,
-    AuctionType,
-    SearchPolicy,
-} from '../../typeUtils/auction.utils';
+import { AuctionType } from '../../enums/auctionType.enum';
 import {
     FormBuilder,
     FormControl,
@@ -21,6 +17,8 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
 import { AsyncPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
+import { SearchPolicy } from '../../enums/searchPolicy.enum';
+import { AuctionSearchParameters } from '../../DTOs/auctionSearchParameters.dto';
 
 interface sideSearchForm {
     policy: FormControl<SearchPolicy | null>;

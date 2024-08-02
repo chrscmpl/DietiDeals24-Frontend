@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedRequestParams } from '../helpers/paginatedRequest';
 import { auctionBuilder } from '../helpers/builders/auctionBuilder';
-import { AuctionSearchParameters } from '../typeUtils/auction.utils';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
 import { map, Observable, Subscription } from 'rxjs';
@@ -10,6 +9,7 @@ import { UninterruptedResettableObserver } from '../helpers/uninterruptedResetta
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
 import { Cacheable } from 'ts-cacheable';
+import { AuctionSearchParameters } from '../DTOs/auctionSearchParameters.dto';
 
 export type RequestKey = string;
 

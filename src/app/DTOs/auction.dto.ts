@@ -1,4 +1,5 @@
-import { AuctionType, AuctionStatus } from '../typeUtils/auction.utils';
+import { AuctionStatus } from '../enums/auctionStatus.enum';
+import { AuctionType } from '../enums/auctionType.enum';
 
 export interface AuctionDTO {
     id: string;

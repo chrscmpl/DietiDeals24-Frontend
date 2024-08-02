@@ -1,7 +1,17 @@
-<p>
-    You are {{ operation === "bid" ? "making" : "accepting" }} a
-    {{ auction?.newBidCategory() }} bid for
-    {{ bidAmount | currency: auction?.currency }}
-</p>
+<main class="checkout-page">
+    @if ((windowService.isMobile$ | async) === false) {
+        <h1 class="checkout-page-title">Checkout</h1>
+    }
+    <p class="checkout-recap">
+        You are {{ operation === OPERATIONS.bid ? "making" : "accepting" }} a
+        {{ auction?.newBidCategory() }} bid for
+        {{ bidAmount | currency: auction?.currency }}
+    </p>
 
-<p>Select your payment{{ operation === "bid" ? "" : " receiving" }} method</p>
+    <p>
+        Select your payment{{
+            operation === OPERATIONS.bid ? "" : " receiving"
+        }}
+        method:
+    </p>
+</main>

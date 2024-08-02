@@ -1,0 +1,23 @@
+@use "layouts";
+@use "viewports";
+
+.checkout-page {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+    color: var(--text-color-1);
+    padding: 2rem;
+    padding-top: 4rem;
+
+    @include viewports.mobile {
+        height: 100%;
+    }
+}
+
+.checkout-page-title {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
+}
+
+.checkout-recap {
+    font-weight: var(--font-weight-bolder);
+}
