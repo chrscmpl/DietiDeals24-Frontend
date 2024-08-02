@@ -9,19 +9,22 @@ import { Location } from './location.model';
 export abstract class Auction {
     public static STATUSES = AuctionStatus;
     public static TYPES = AuctionType;
-    private _id: string;
-    private _title: string;
-    private _conditions: string | null;
-    private _location: Location;
-    private _endTime: Date;
-    private _status: AuctionStatus;
-    private _currency: string;
+    protected _id: string;
+    protected _title: string;
+    protected _conditions: string | null;
+    protected _location: Location;
+    protected _endTime: Date;
+    protected _status: AuctionStatus;
+    protected _currency: string;
 
-    private _category: string | null;
-    private _description: string | null;
-    private _bids: number | null;
-    private _userId: string | null;
-    private _picturesUrls: string[];
+    protected _winningBid: number | null;
+    protected _winnerId: string | null;
+
+    protected _category: string | null;
+    protected _description: string | null;
+    protected _bids: number | null;
+    protected _userId: string | null;
+    protected _picturesUrls: string[];
 
     constructor(dto: AuctionDTO) {
         this._id = dto.id;
@@ -31,6 +34,9 @@ export abstract class Auction {
         this._endTime = new Date(dto.endTime);
         this._status = dto.status;
         this._currency = dto.currency;
+
+        this._winningBid = dto.winningBid ?? null;
+        this._winnerId = dto.winnerId ?? null;
 
         this._category = dto.category ?? null;
         this._description = dto.description ?? null;
@@ -68,6 +74,14 @@ export abstract class Auction {
         return this._currency;
     }
 
+    public get winningBid(): number | null {
+        return this._winningBid;
+    }
+
+    public get winnerId(): string | null {
+        return this._winnerId;
+    }
+
     public get category(): string | null {
         return this._category;
     }
@@ -98,6 +112,8 @@ export abstract class Auction {
 
     public abstract get type(): AuctionType;
 
+    public abstract nextValidBid(): number;
+
     public abstract bidValid(bid: number): boolean;
 
     public abstract newBidCategory(): 'selling' | 'buying';
@@ -108,7 +124,7 @@ export abstract class Auction {
 }
 
 export class SilentAuction extends Auction {
-    private _minimumBid: number;
+    protected _minimumBid: number;
     constructor(dto: SilentAuctionDTO) {
         super(dto);
         this._minimumBid = dto.minimumBid;
@@ -130,8 +146,12 @@ export class SilentAuction extends Auction {
         return AuctionType.silent;
     }
 
+    public override nextValidBid(): number {
+        return this._minimumBid;
+    }
+
     public override bidValid(bid: number): boolean {
-        return bid > this._minimumBid;
+        return bid >= this._minimumBid;
     }
 
     public override newBidCategory(): 'buying' {
@@ -139,22 +159,26 @@ export class SilentAuction extends Auction {
     }
 
     public override newBidDescription(): string {
-        return `more than CURRENCY{${this._minimumBid}|${this.currency}}`;
+        return `at least CURRENCY{${this._minimumBid}|${this.currency}}`;
     }
 
     public override invalidBidError(): string {
-        return `Bid must be higher than CURRENCY{${this._minimumBid}|${this.currency}}`;
+        return `Bid must be equal or higher than CURRENCY{${this._minimumBid}|${this.currency}}`;
     }
 }
 
 export class ReverseAuction extends Auction {
-    private _maximumStartingBid: number;
-    private _lowestBid: number;
+    protected static MINIMUM_BID_DIFFERENCE = 1;
+
+    protected _maximumStartingBid: number;
+    protected _lowestBid: number;
 
     constructor(dto: ReverseAuctionDTO) {
         super(dto);
         this._maximumStartingBid = dto.maximumBid;
         this._lowestBid = dto.lowestBidSoFar ?? dto.maximumBid;
+        if (this._winningBid === null && this.status !== AuctionStatus.active)
+            this._winningBid = this._lowestBid;
     }
 
     public get maximumStartingBid(): number {
@@ -179,8 +203,14 @@ export class ReverseAuction extends Auction {
         return AuctionType.reverse;
     }
 
+    public override nextValidBid(): number {
+        return this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE > 0
+            ? this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE
+            : this._lowestBid - 0.01;
+    }
+
     public override bidValid(bid: number): boolean {
-        return bid < this._lowestBid;
+        return bid <= this.nextValidBid();
     }
 
     public override newBidCategory(): 'selling' {
@@ -188,10 +218,10 @@ export class ReverseAuction extends Auction {
     }
 
     public override newBidDescription(): string {
-        return `less than CURRENCY{${this._lowestBid}|${this.currency}}`;
+        return `no more than CURRENCY{${this.nextValidBid()}|${this.currency}}`;
     }
 
     public override invalidBidError(): string {
-        return `Bid must be lower than CURRENCY{${this._lowestBid}|${this.currency}}`;
+        return `Bid must not be higher than CURRENCY{${this.nextValidBid()}|${this.currency}}`;
     }
 }

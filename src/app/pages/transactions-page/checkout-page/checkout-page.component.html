@@ -1,1 +1,7 @@
-<p>checkout-page works!</p>
+<p>
+    You are {{ operation === "bid" ? "making" : "accepting" }} a
+    {{ auction?.newBidCategory() }} bid for
+    {{ bidAmount | currency: auction?.currency }}
+</p>
+
+<p>Select your payment{{ operation === "bid" ? "" : " receiving" }} method</p>

@@ -27,6 +27,9 @@ $shade800: #27272a;
 $shade900: #18181b;
 $shade950: #111111;
 
+$focusOutlineColor: $primaryLightestColor;
+$focusShadow: 0 0 0 0.1rem $focusOutlineColor;
+
 $secondaryButtonBg: $shade900;
 $secondaryButtonTextColor: $shade000;
 $secondaryButtonBorder: 1px solid $shade100;

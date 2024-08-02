@@ -64,6 +64,7 @@ export class BiddingPageComponent implements OnInit {
             amount: new FormControl<number | null>(null, {
                 validators: [
                     Validators.required,
+                    Validators.min(0),
                     this.validateBidAmount.bind(this),
                 ],
                 updateOn: 'submit',
@@ -85,7 +86,7 @@ export class BiddingPageComponent implements OnInit {
         if (!this.bidForm.valid) return;
         this.router.navigate(['checkout'], {
             relativeTo: this.route,
-            state: { amount: this.bidForm.controls.amount.value },
+            state: { bidAmount: this.bidForm.controls.amount.value },
         });
     }
 

@@ -30,6 +30,10 @@
                         message: 'You need to enter a bid amount'
                     },
                     {
+                        validation: 'min',
+                        message: 'Bid must not be a negative number'
+                    },
+                    {
                         customValidation: 'invalidBid',
                         message: this.auction.invalidBidError() | findCurrency
                     }
@@ -37,7 +41,13 @@
                 [floatingError]="true"
             >
                 <p-inputGroup>
-                    <p-inputGroupAddon>
+                    <p-inputGroupAddon
+                        [style]="
+                            (this.windowService.isMobile$ | async)
+                                ? { fontSize: '1.8em' }
+                                : {}
+                        "
+                    >
                         {{ currencySymbol }}
                     </p-inputGroupAddon>
                     <p-inputNumber
@@ -51,6 +61,7 @@
                                 | findCurrency
                                 | oneCharUpper
                         "
+                        min="0"
                         showButtons="false"
                         [locale]="locale"
                         [maxFractionDigits]="2"

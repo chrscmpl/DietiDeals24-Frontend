@@ -12,6 +12,9 @@ export interface AuctionDTO {
     pictureUrl?: string | null;
     currency: string;
 
+    winningBid?: number | null;
+    winnerId: string | null;
+
     category?: string | null;
     description?: string | null;
     numberOfBids?: number | null;

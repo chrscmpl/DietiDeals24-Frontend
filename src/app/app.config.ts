@@ -1,5 +1,5 @@
 import { ApplicationConfig, LOCALE_ID } from '@angular/core';
-import { provideRouter, withDebugTracing } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
@@ -26,7 +26,7 @@ import { BidAmountSetGuard } from './guards/bid-amount-set.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideRouter(routes, withDebugTracing()),
+        provideRouter(routes),
         provideHttpClient(withInterceptors([authorizationInterceptor])),
         importProvidersFrom([BrowserAnimationsModule]),
         Location,
