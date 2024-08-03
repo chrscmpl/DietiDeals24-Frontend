@@ -19,7 +19,7 @@
             (ngSubmit)="onSubmit()"
         >
             <label class="bidding-page-input-label" for="bidAmount"
-                >Your {{ auction.newBidCategory() }} bid</label
+                >Your {{ auction.kind | auctionKind: "bid" }} bid</label
             >
             <dd24-input
                 class="bidding-page-input"

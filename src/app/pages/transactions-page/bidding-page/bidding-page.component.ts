@@ -20,6 +20,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { AsyncPipe, CurrencyPipe, getCurrencySymbol } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../../services/window.service';
+import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
 
 interface BidForm {
     amount: FormControl<number | null>;
@@ -40,6 +41,7 @@ interface BidForm {
         CurrencyPipe,
         ButtonModule,
         AsyncPipe,
+        AuctionKindPipe,
     ],
     templateUrl: './bidding-page.component.html',
     styleUrl: './bidding-page.component.scss',

@@ -19,6 +19,8 @@ import { PaymentMethodCategory } from '../../../enums/payment-method-category.en
 import { TransactionOperation } from '../../../enums/transaction-operation.enum';
 import { PaymentMethodType } from '../../../enums/payment-method-type';
 import { paymentMethodTypesPerCategory } from '../../../helpers/payment-method-types-per-category';
+import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
+import { AuctionKind } from '../../../enums/auction-kind.enum';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -34,6 +36,7 @@ interface PaymentMethodForm {
         AsyncPipe,
         PaymentMethodOptionComponent,
         ReactiveFormsModule,
+        AuctionKindPipe,
     ],
     templateUrl: './checkout-page.component.html',
     styleUrl: './checkout-page.component.scss',
@@ -43,6 +46,7 @@ export class CheckoutPageComponent implements OnInit {
     public bidAmount?: number;
     public auction?: Auction;
     public operation?: TransactionOperation;
+    public requiredCategory?: PaymentMethodCategory;
 
     public paymentMethodForm!: FormGroup<PaymentMethodForm>;
 
@@ -83,6 +87,8 @@ export class CheckoutPageComponent implements OnInit {
                     if (this.operation === TransactionOperation.conclude)
                         this.bidAmount = this.auction?.winningBid ?? undefined;
 
+                    this.initRequiredCategory();
+
                     if (this.invalidOperation())
                         this.router.navigate(['..'], {
                             relativeTo: this.route,
@@ -110,13 +116,23 @@ export class CheckoutPageComponent implements OnInit {
         );
     }
 
+    private initRequiredCategory() {
+        if (this.operation === TransactionOperation.bid) {
+            this.requiredCategory =
+                this.auction?.kind === AuctionKind.buying
+                    ? PaymentMethodCategory.receiving
+                    : PaymentMethodCategory.paying;
+        } else if (this.operation === TransactionOperation.conclude) {
+            this.requiredCategory =
+                this.auction?.kind === AuctionKind.buying
+                    ? PaymentMethodCategory.paying
+                    : PaymentMethodCategory.receiving;
+        }
+    }
+
     private initPaymentOptions() {
         this.payment
-            .getPaymentMethods(
-                this.operation === TransactionOperation.bid
-                    ? PaymentMethodCategory.paying
-                    : PaymentMethodCategory.receiving,
-            )
+            .getPaymentMethods(this.requiredCategory as PaymentMethodCategory)
             .pipe(take(1))
             .subscribe((methods) => {
                 this.savedPaymentMethodOptions = methods;
@@ -124,9 +140,7 @@ export class CheckoutPageComponent implements OnInit {
 
         this.newPaymentMethodOptions =
             paymentMethodTypesPerCategory.get(
-                this.operation === TransactionOperation.bid
-                    ? PaymentMethodCategory.paying
-                    : PaymentMethodCategory.receiving,
+                this.requiredCategory as PaymentMethodCategory,
             ) ?? [];
     }
 
@@ -136,6 +150,9 @@ export class CheckoutPageComponent implements OnInit {
             this.bidAmount === undefined ||
             !Object.values(TransactionOperation).includes(
                 this.operation as TransactionOperation,
+            ) ||
+            !Object.values(PaymentMethodCategory).includes(
+                this.requiredCategory as PaymentMethodCategory,
             )
         );
     }

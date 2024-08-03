@@ -3,6 +3,7 @@ import {
     ReverseAuctionDTO,
     SilentAuctionDTO,
 } from '../DTOs/auction.dto';
+import { AuctionKind } from '../enums/auction-kind.enum';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuctionType } from '../enums/auction-type.enum';
 import { Location } from './location.model';
@@ -115,9 +116,9 @@ export abstract class Auction {
 
     public abstract get type(): AuctionType;
 
-    public abstract validateBid(bid: number): bidValidationError | null;
+    public abstract get kind(): AuctionKind;
 
-    public abstract newBidCategory(): 'selling' | 'buying';
+    public abstract validateBid(bid: number): bidValidationError | null;
 
     public abstract newBidDescription(): string;
 
@@ -147,12 +148,12 @@ export class SilentAuction extends Auction {
         return AuctionType.silent;
     }
 
-    public override validateBid(bid: number): bidValidationError | null {
-        return bid < this._minimumBid ? { min: true } : null;
+    public override get kind(): AuctionKind {
+        return AuctionKind.selling;
     }
 
-    public override newBidCategory(): 'buying' {
-        return 'buying';
+    public override validateBid(bid: number): bidValidationError | null {
+        return bid < this._minimumBid ? { min: true } : null;
     }
 
     public override newBidDescription(): string {
@@ -202,6 +203,10 @@ export class ReverseAuction extends Auction {
         return AuctionType.reverse;
     }
 
+    public override get kind(): AuctionKind {
+        return AuctionKind.buying;
+    }
+
     private nextValidBid(): number {
         return this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE > 0
             ? this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE
@@ -214,10 +219,6 @@ export class ReverseAuction extends Auction {
             : bid < 0
               ? { min: true }
               : null;
-    }
-
-    public override newBidCategory(): 'selling' {
-        return 'selling';
     }
 
     public override newBidDescription(): string {
