@@ -26,6 +26,7 @@ import { MessageService } from 'primeng/api';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { UserSummary } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { TransactionOperation } from '../../enums/transaction-operation.enum';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -191,7 +192,11 @@ export class AuctionDetailsPageComponent
             {
                 outlets: {
                     overlay: null,
-                    primary: ['txn', this.auction?.id, 'bid'],
+                    primary: [
+                        'txn',
+                        this.auction?.id,
+                        TransactionOperation.bid,
+                    ],
                 },
             },
         ]);

@@ -5,7 +5,7 @@ import { combineLatest, take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { WindowService } from '../../../services/window.service';
 import { PaymentMethodOptionComponent } from '../../../components/payment-method-option/payment-method-option.component';
-import { ChosenPaymentMethodDTO } from '../../../DTOs/payment-method.dto';
+import { SavedChosenPaymentMethodDTO } from '../../../DTOs/payment-method.dto';
 import {
     FormBuilder,
     FormControl,
@@ -16,14 +16,14 @@ import {
 import { PaymentMethod } from '../../../models/payment-method.model';
 import { PaymentService } from '../../../services/payment.service';
 import { PaymentMethodCategory } from '../../../enums/payment-method-category.enum';
-
-enum CheckoutOperation {
-    bid,
-    conclude,
-}
+import { TransactionOperation } from '../../../enums/transaction-operation.enum';
+import { PaymentMethodType } from '../../../enums/payment-method-type';
+import { paymentMethodTypesPerCategory } from '../../../helpers/payment-method-types-per-category';
 
 interface PaymentMethodForm {
-    chosenPaymentMethod: FormControl<ChosenPaymentMethodDTO | null>;
+    chosenPaymentMethod: FormControl<
+        SavedChosenPaymentMethodDTO | PaymentMethodType | null
+    >;
 }
 
 @Component({
@@ -39,14 +39,18 @@ interface PaymentMethodForm {
     styleUrl: './checkout-page.component.scss',
 })
 export class CheckoutPageComponent implements OnInit {
-    public readonly OPERATIONS = CheckoutOperation;
+    public readonly OPERATIONS = TransactionOperation;
     public bidAmount?: number;
     public auction?: Auction;
-    public operation?: CheckoutOperation;
+    public operation?: TransactionOperation;
 
     public paymentMethodForm!: FormGroup<PaymentMethodForm>;
 
-    public paymentMethodOptions: PaymentMethod[] = [];
+    public savedPaymentMethodOptions: PaymentMethod[] = [];
+
+    public newPaymentMethodOptions: PaymentMethodType[] = [];
+
+    public newPaymentMethodFormVisible?: null | PaymentMethodType = null;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -57,6 +61,12 @@ export class CheckoutPageComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
+        this.initCheckoutOperation();
+
+        this.initForm();
+    }
+
+    private initCheckoutOperation() {
         this.bidAmount = window.history.state.bidAmount;
 
         if (this.route.parent?.parent?.data && this.route.parent?.url)
@@ -68,40 +78,65 @@ export class CheckoutPageComponent implements OnInit {
                 .subscribe(([data, url]) => {
                     this.auction = data['auction'];
 
-                    this.operation =
-                        CheckoutOperation[
-                            url[0].path as keyof typeof CheckoutOperation
-                        ];
+                    this.operation = url[0].path as TransactionOperation;
 
-                    if (this.operation === CheckoutOperation.conclude)
+                    if (this.operation === TransactionOperation.conclude)
                         this.bidAmount = this.auction?.winningBid ?? undefined;
 
-                    if (
-                        !this.auction ||
-                        this.operation === undefined ||
-                        this.bidAmount === undefined
-                    )
+                    if (this.invalidOperation())
                         this.router.navigate(['..'], {
                             relativeTo: this.route,
                         });
 
-                    this.payment
-                        .getPaymentMethods(
-                            this.operation === CheckoutOperation.bid
-                                ? PaymentMethodCategory.paying
-                                : PaymentMethodCategory.receiving,
-                        )
-                        .pipe(take(1))
-                        .subscribe((methods) => {
-                            this.paymentMethodOptions = methods;
-                        });
+                    this.initPaymentOptions();
                 });
+    }
 
+    private initForm() {
         this.paymentMethodForm = this.formBuilder.group({
-            chosenPaymentMethod: new FormControl<ChosenPaymentMethodDTO | null>(
-                null,
-                Validators.required,
-            ),
+            chosenPaymentMethod: new FormControl<
+                SavedChosenPaymentMethodDTO | PaymentMethodType | null
+            >(null, Validators.required),
         });
+
+        this.paymentMethodForm.controls.chosenPaymentMethod.valueChanges.subscribe(
+            (value) => {
+                this.newPaymentMethodFormVisible = Object.values(
+                    PaymentMethodType,
+                ).includes(value as PaymentMethodType)
+                    ? (value as PaymentMethodType)
+                    : null;
+            },
+        );
+    }
+
+    private initPaymentOptions() {
+        this.payment
+            .getPaymentMethods(
+                this.operation === TransactionOperation.bid
+                    ? PaymentMethodCategory.paying
+                    : PaymentMethodCategory.receiving,
+            )
+            .pipe(take(1))
+            .subscribe((methods) => {
+                this.savedPaymentMethodOptions = methods;
+            });
+
+        this.newPaymentMethodOptions =
+            paymentMethodTypesPerCategory.get(
+                this.operation === TransactionOperation.bid
+                    ? PaymentMethodCategory.paying
+                    : PaymentMethodCategory.receiving,
+            ) ?? [];
+    }
+
+    private invalidOperation(): boolean {
+        return (
+            !this.auction ||
+            this.bidAmount === undefined ||
+            !Object.values(TransactionOperation).includes(
+                this.operation as TransactionOperation,
+            )
+        );
     }
 }

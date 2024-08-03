@@ -3,6 +3,8 @@
     [formGroup]="form"
     [style]="optionStyle"
     (click)="onSelect()"
+    tabindex="0"
+    (keypress)="onKeyPress($event)"
 >
     <p-radioButton
         #radioButton
@@ -10,21 +12,30 @@
         [value]="optionValue"
         [formControlName]="controlName"
     ></p-radioButton>
-    <span class="payment-method-label">Use saved {{ value.readableType }}</span>
-    <span class="payment-method-number">{{
-        showNumber
-            ? value.identifyingNumber
-            : (value.identifyingNumber | masked: "payment")
-    }}</span>
-    <button
-        class="payment-option-mask-btn"
-        (click)="toggleNumberVisibility($event)"
-    >
-        <i
-            class="mask-button-icon pi"
-            [class.pi-eye]="!showNumber"
-            [class.pi-eye-slash]="showNumber"
-        ></i>
-    </button>
-    <!-- <div class="option-mask"></div> -->
+    @if (isSavedPaymentMethod()) {
+        <span class="payment-method-label"
+            >Use saved
+            {{ savedPaymentMethodValue.type | paymentMethodLabel }}</span
+        >
+        <span class="payment-method-number">{{
+            showNumber
+                ? savedPaymentMethodValue.identifyingNumber
+                : (savedPaymentMethodValue.identifyingNumber
+                  | masked: "payment")
+        }}</span>
+        <button
+            class="payment-option-mask-btn"
+            (click)="toggleNumberVisibility($event)"
+        >
+            <i
+                class="mask-button-icon pi"
+                [class.pi-eye]="!showNumber"
+                [class.pi-eye-slash]="showNumber"
+            ></i>
+        </button>
+    } @else {
+        <span class="payment-method-label"
+            >Add a new {{ paymentMethodTypeValue | paymentMethodLabel }}</span
+        >
+    }
 </div>

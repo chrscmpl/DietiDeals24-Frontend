@@ -25,6 +25,7 @@ import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bid
 import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 import { bidAmountSetFnGuard } from './guards/bid-amount-set.guard';
+import { TransactionOperation } from './enums/transaction-operation.enum';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -98,7 +99,7 @@ export const routes: Routes = [
         canDeactivate: [showUIFnGuard /*confirmReloadDeactivateGuard*/],
         children: [
             {
-                path: 'bid',
+                path: TransactionOperation.bid,
                 children: [
                     {
                         path: '',

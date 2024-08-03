@@ -22,6 +22,10 @@
     font-weight: var(--font-weight-bolder);
 }
 
+.checkout-form-label {
+    margin-bottom: calc(var(--page-items-gap) * -0.8);
+}
+
 .payment-method-form {
     margin: 0 -2rem;
     border-top: var(--border);

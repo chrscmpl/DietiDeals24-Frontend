@@ -62,6 +62,10 @@
 
     --mobile-overlay-shadow-top: 0 -0.2rem 0.8rem var(--border-color);
 
+    --font: var(--font-family);
+    --monospace-font: monospace;
+
+    font-family: var(--font);
     font-size: var(--font-size-medium);
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-medium);

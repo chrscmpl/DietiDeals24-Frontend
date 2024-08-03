@@ -31,9 +31,15 @@ export type PaymentMethodRegistrationDTO =
     | CreditCardRegistrationDTO
     | IBANRegistrationDTO;
 
+export interface SavedChosenPaymentMethodDTO {
+    id: string;
+}
+
+export interface NewChosenPaymentMethodDTO {
+    save: boolean;
+    newMethod: PaymentMethodRegistrationDTO;
+}
+
 export type ChosenPaymentMethodDTO =
-    | { id: string }
-    | {
-          save: boolean;
-          newMethod: PaymentMethodRegistrationDTO;
-      };
+    | SavedChosenPaymentMethodDTO
+    | NewChosenPaymentMethodDTO;

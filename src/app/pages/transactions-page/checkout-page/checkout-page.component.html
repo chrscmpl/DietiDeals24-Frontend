@@ -8,23 +8,39 @@
         {{ bidAmount | currency: auction?.currency }}
     </p>
 
-    <p>
+    <p class="checkout-form-label">
         Select your payment{{
             operation === OPERATIONS.bid ? "" : " receiving"
         }}
         method:
     </p>
     <form class="payment-method-form" [formGroup]="paymentMethodForm">
-        @for (temp of paymentMethodOptions; track temp.id) {
+        @for (savedMethod of savedPaymentMethodOptions; track savedMethod.id) {
             <dd24-payment-method-option
                 class="payment-method-option"
                 [form]="paymentMethodForm"
                 controlName="chosenPaymentMethod"
-                [value]="temp"
+                [value]="savedMethod"
                 [optionStyle]="{
                     paddingLeft: '2rem',
                     paddingRight: '2rem',
                     borderBottom: 'var(--border)'
+                }"
+            ></dd24-payment-method-option>
+        }
+        @for (newMethod of newPaymentMethodOptions; track $index) {
+            <dd24-payment-method-option
+                [value]="newMethod"
+                class="payment-method-option"
+                [form]="paymentMethodForm"
+                controlName="chosenPaymentMethod"
+                [optionStyle]="{
+                    paddingLeft: '2rem',
+                    paddingRight: '2rem',
+                    borderBottom:
+                        newPaymentMethodFormVisible !== newMethod
+                            ? 'var(--border)'
+                            : ''
                 }"
             ></dd24-payment-method-option>
         }

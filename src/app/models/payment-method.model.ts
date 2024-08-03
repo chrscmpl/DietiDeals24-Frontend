@@ -22,8 +22,6 @@ export abstract class PaymentMethod {
     public abstract get type(): PaymentMethodType;
 
     public abstract get identifyingNumber(): string;
-
-    public abstract get readableType(): string;
 }
 
 export class CreditCard extends PaymentMethod {
@@ -45,10 +43,6 @@ export class CreditCard extends PaymentMethod {
     public get identifyingNumber(): string {
         return this._cardNumber;
     }
-
-    public get readableType(): string {
-        return 'credit card';
-    }
 }
 
 export class IBAN extends PaymentMethod {
@@ -69,9 +63,5 @@ export class IBAN extends PaymentMethod {
 
     public get identifyingNumber(): string {
         return this._iban;
-    }
-
-    public get readableType(): string {
-        return 'IBAN';
     }
 }
