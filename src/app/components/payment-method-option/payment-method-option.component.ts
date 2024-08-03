@@ -5,6 +5,9 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaskedPipe } from '../../pipes/masked.pipe';
 import { PaymentMethodType } from '../../enums/payment-method-type';
 import { PaymentMethodLabelPipe } from '../../pipes/payment-method-label.pipe';
+import { WindowService } from '../../services/window.service';
+import { AsyncPipe } from '@angular/common';
+import { SavedChosenPaymentMethodDTO } from '../../DTOs/payment-method.dto';
 
 @Component({
     selector: 'dd24-payment-method-option',
@@ -14,6 +17,7 @@ import { PaymentMethodLabelPipe } from '../../pipes/payment-method-label.pipe';
         ReactiveFormsModule,
         MaskedPipe,
         PaymentMethodLabelPipe,
+        AsyncPipe,
     ],
     templateUrl: './payment-method-option.component.html',
     styleUrl: './payment-method-option.component.scss',
@@ -27,22 +31,15 @@ export class PaymentMethodOptionComponent implements OnInit {
     @Input() public optionStyle: { [key: string]: string | number | boolean } =
         {};
 
-    public optionValue!: { id: string } | PaymentMethodType;
+    public optionValue!: SavedChosenPaymentMethodDTO | PaymentMethodType;
 
-    public showNumber: boolean = false;
-
-    constructor() {}
+    constructor(public readonly windowService: WindowService) {}
 
     public ngOnInit(): void {
         this.optionValue =
             this.value instanceof PaymentMethod
                 ? { id: this.value.id }
                 : this.value;
-    }
-
-    public toggleNumberVisibility(e: Event): void {
-        e.stopPropagation();
-        this.showNumber = !this.showNumber;
     }
 
     public onSelect() {

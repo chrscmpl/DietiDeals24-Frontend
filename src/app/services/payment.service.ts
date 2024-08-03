@@ -44,7 +44,7 @@ export class PaymentService {
                           {
                               id: '1',
                               type: PaymentMethodType.creditCard,
-                              cardNumber: '1234 5678 1234 5678',
+                              cardNumberLastDigits: '5678',
                           },
                           {
                               id: '2',
@@ -54,7 +54,7 @@ export class PaymentService {
                           {
                               id: '3',
                               type: PaymentMethodType.creditCard,
-                              cardNumber: '9876 5432 9876 5432',
+                              cardNumberLastDigits: '9876',
                           },
                           {
                               id: '4',

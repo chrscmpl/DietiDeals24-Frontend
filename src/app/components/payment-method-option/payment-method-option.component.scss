@@ -1,18 +1,23 @@
 @use "layouts";
+@use "viewports";
 
 .payment-method-option {
     @include layouts.flex(row, start, center, 1rem);
     padding: 1rem 0;
     position: relative;
     cursor: pointer;
+    background-color: var(--component-color);
+
+    @include viewports.mobile {
+        flex-wrap: wrap;
+    }
 }
 
 .payment-method-label {
     margin-right: 1rem;
 }
 
-.payment-method-number,
-.mask-button-icon {
+.payment-method-number {
     color: var(--text-color-3);
 }
 
@@ -20,10 +25,6 @@
     font-family: var(--monospace-font);
 }
 
-.payment-option-mask-btn {
-    cursor: pointer;
-}
-
-.mask-button-icon {
-    font-size: 1.8em;
+.spacer {
+    flex: 1;
 }

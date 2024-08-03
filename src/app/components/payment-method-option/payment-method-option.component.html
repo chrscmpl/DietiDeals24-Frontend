@@ -17,22 +17,13 @@
             >Use saved
             {{ savedPaymentMethodValue.type | paymentMethodLabel }}</span
         >
+        @if (windowService.isMobile$ | async) {
+            <div class="spacer"></div>
+        }
         <span class="payment-method-number">{{
-            showNumber
-                ? savedPaymentMethodValue.identifyingNumber
-                : (savedPaymentMethodValue.identifyingNumber
-                  | masked: "payment")
+            savedPaymentMethodValue.identifyingNumber
+                | masked: savedPaymentMethodValue.type
         }}</span>
-        <button
-            class="payment-option-mask-btn"
-            (click)="toggleNumberVisibility($event)"
-        >
-            <i
-                class="mask-button-icon pi"
-                [class.pi-eye]="!showNumber"
-                [class.pi-eye-slash]="showNumber"
-            ></i>
-        </button>
     } @else {
         <span class="payment-method-label"
             >Add a new {{ paymentMethodTypeValue | paymentMethodLabel }}</span

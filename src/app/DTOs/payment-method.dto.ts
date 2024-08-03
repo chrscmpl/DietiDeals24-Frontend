@@ -7,7 +7,7 @@ export interface PaymentMethodDTO {
 
 export interface CreditCardDTO extends PaymentMethodDTO {
     type: PaymentMethodType.creditCard;
-    cardNumber: string;
+    cardNumberLastDigits: string;
 }
 
 export interface IBANDTO extends PaymentMethodDTO {
@@ -17,9 +17,8 @@ export interface IBANDTO extends PaymentMethodDTO {
 
 interface CreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
-    cardNumber: string;
-    expirationDate: string;
-    cvv: string;
+    cardNumberLastDigits: string;
+    token: string;
 }
 
 interface IBANRegistrationDTO {

@@ -25,11 +25,11 @@ export abstract class PaymentMethod {
 }
 
 export class CreditCard extends PaymentMethod {
-    private _cardNumber: string;
+    private _cardNumberLastDigits: string;
 
     constructor(dto: CreditCardDTO) {
         super(dto);
-        this._cardNumber = dto.cardNumber;
+        this._cardNumberLastDigits = dto.cardNumberLastDigits;
     }
 
     public get category(): PaymentMethodCategory {
@@ -41,7 +41,7 @@ export class CreditCard extends PaymentMethod {
     }
 
     public get identifyingNumber(): string {
-        return this._cardNumber;
+        return this._cardNumberLastDigits;
     }
 }
 

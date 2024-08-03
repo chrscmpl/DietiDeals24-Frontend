@@ -1,9 +1,10 @@
 <p-dialog
     header="Settings"
-    [modal]="true"
+    modal="true"
     [(visible)]="display"
     draggable="false"
     resizable="false"
+    dismissableMask="true"
     (onHide)="onClose()"
     [closeIcon]="
         (windowService.isMobile$ | async) ? 'pi pi-arrow-left' : 'pi pi-times'

@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { PaymentMethodType } from '../enums/payment-method-type';
 
 @Pipe({
     name: 'masked',
@@ -7,10 +8,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class MaskedPipe implements PipeTransform {
     public transform(
         value: string,
-        type: 'email' | 'payment' | 'string' = 'string',
+        type: 'email' | PaymentMethodType | 'string' = 'string',
     ): string {
         if (type === 'email') return this.transformEmail(value);
-        if (type === 'payment') return this.transformPayment(value);
+        if (type === PaymentMethodType.creditCard)
+            return this.transformCreditCard(value);
+        if (type === PaymentMethodType.IBAN) return this.transformIBAN(value);
         return this.transformString(value);
     }
 
@@ -26,7 +29,11 @@ export class MaskedPipe implements PipeTransform {
         return `${local}@${email[1]}`;
     }
 
-    private transformPayment(value: string): string {
+    private transformCreditCard(value: string): string {
+        return '**** **** **** ' + value.slice(-4);
+    }
+
+    private transformIBAN(value: string): string {
         return value.slice(0, -4).replace(/[^\s]/g, '*') + value.slice(-4);
     }
 
