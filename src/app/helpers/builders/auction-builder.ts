@@ -8,8 +8,8 @@ import {
     ReverseAuction,
     SilentAuction,
 } from '../../models/auction.model';
-import { AuctionType } from '../../enums/auctionType.enum';
-import { Builder } from './Builder';
+import { AuctionType } from '../../enums/auction-type.enum';
+import { Builder } from './builder';
 
 export const auctionBuilder = new Builder<AuctionDTO, Auction>((dto) => {
     switch (dto.type) {

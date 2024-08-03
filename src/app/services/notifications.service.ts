@@ -4,9 +4,9 @@ import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
-import { notificationsBuilder } from '../helpers/builders/notificationBuilder';
+import { notificationsBuilder } from '../helpers/builders/notification-builder';
 import { environment } from '../../environments/environment';
-import { PaginatedRequestManager } from '../helpers/paginatedRequestManager';
+import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
 
 @Injectable({
     providedIn: 'root',

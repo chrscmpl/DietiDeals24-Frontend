@@ -10,11 +10,11 @@ import {
     startWith,
     withLatestFrom,
 } from 'rxjs';
-import { AuctionType } from '../enums/auctionType.enum';
+import { AuctionType } from '../enums/auction-type.enum';
 import { Nullable } from '../typeUtils/nullable';
-import { cloneTruthy } from '../helpers/cloneTruthy';
-import { AuctionSearchParameters } from '../DTOs/auctionSearchParameters.dto';
-import { SearchPolicy } from '../enums/searchPolicy.enum';
+import { cloneTruthy } from '../helpers/clone-truthy';
+import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
+import { SearchPolicy } from '../enums/search-policy.enum';
 
 @Injectable({
     providedIn: 'root',

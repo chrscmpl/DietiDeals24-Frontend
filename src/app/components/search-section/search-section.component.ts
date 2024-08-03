@@ -20,15 +20,15 @@ import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
 import { Router } from '@angular/router';
 import { Nullable } from '../../typeUtils/nullable';
-import { AuctionType } from '../../enums/auctionType.enum';
+import { AuctionType } from '../../enums/auction-type.enum';
 import { CategoriesService } from '../../services/categories.service';
 import { filter, Subscription, take } from 'rxjs';
 import { SearchServiceService } from '../../services/search-service.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { WindowService } from '../../services/window.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { SearchPolicy } from '../../enums/searchPolicy.enum';
-import { AuctionSearchParameters } from '../../DTOs/auctionSearchParameters.dto';
+import { SearchPolicy } from '../../enums/search-policy.enum';
+import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
 
 interface searchForm {
     keywords: FormControl<string | null>;

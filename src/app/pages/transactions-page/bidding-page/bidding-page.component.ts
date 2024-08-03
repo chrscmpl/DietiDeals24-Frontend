@@ -64,7 +64,6 @@ export class BiddingPageComponent implements OnInit {
             amount: new FormControl<number | null>(null, {
                 validators: [
                     Validators.required,
-                    Validators.min(0),
                     this.validateBidAmount.bind(this),
                 ],
                 updateOn: 'submit',
@@ -73,13 +72,9 @@ export class BiddingPageComponent implements OnInit {
     }
 
     private validateBidAmount(): ValidationErrors | null {
-        if (
-            !this.auction ||
-            !this.bidForm?.controls?.amount?.value ||
-            this.auction.bidValid(this.bidForm.controls.amount.value)
-        )
+        if (!this.auction || !this.bidForm?.controls?.amount?.value)
             return null;
-        return { invalidBid: true };
+        return this.auction.validateBid(this.bidForm.controls.amount.value);
     }
 
     public onSubmit(): void {

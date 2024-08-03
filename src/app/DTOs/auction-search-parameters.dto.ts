@@ -1,5 +1,5 @@
-import { AuctionType } from '../enums/auctionType.enum';
-import { SearchPolicy } from '../enums/searchPolicy.enum';
+import { AuctionType } from '../enums/auction-type.enum';
+import { SearchPolicy } from '../enums/search-policy.enum';
 
 export type AuctionSearchParameters = Partial<{
     keywords: string;

@@ -1,5 +1,5 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
-import { auctionBuilder } from '../helpers/builders/auctionBuilder';
+import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { routerLinkType } from '../typeUtils/routerLinkType';
 import { Auction } from './auction.model';
 

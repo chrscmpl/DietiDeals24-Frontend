@@ -6,7 +6,7 @@ import {
     Output,
 } from '@angular/core';
 import { NotificationsService } from '../../../services/notifications.service';
-import { LoadingIndicator } from '../../../helpers/loadingIndicator';
+import { LoadingIndicator } from '../../../helpers/loading-indicator';
 import { Subscription } from 'rxjs';
 import { DisplayableNotification } from '../../../models/notification.model';
 import { Router } from '@angular/router';

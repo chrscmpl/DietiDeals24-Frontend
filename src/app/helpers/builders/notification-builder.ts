@@ -4,7 +4,7 @@ import {
     NotificationConstructors,
     NotificationType,
 } from '../../models/notification.model';
-import { Builder } from './Builder';
+import { Builder } from './builder';
 
 export const notificationsBuilder = new Builder<NotificationDTO, Notification>(
     (dto) => {

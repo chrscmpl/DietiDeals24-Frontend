@@ -7,9 +7,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class MaskedPipe implements PipeTransform {
     public transform(
         value: string,
-        type: 'email' | 'string' = 'string',
+        type: 'email' | 'payment' | 'string' = 'string',
     ): string {
         if (type === 'email') return this.transformEmail(value);
+        if (type === 'payment') return this.transformPayment(value);
         return this.transformString(value);
     }
 
@@ -23,6 +24,10 @@ export class MaskedPipe implements PipeTransform {
                 : `${email[0][0]}***`;
 
         return `${local}@${email[1]}`;
+    }
+
+    private transformPayment(value: string): string {
+        return value.slice(0, -4).replace(/[^\s]/g, '*') + value.slice(-4);
     }
 
     private transformString(value: string): string {

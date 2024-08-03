@@ -1,0 +1,30 @@
+<div
+    class="payment-method-option"
+    [formGroup]="form"
+    [style]="optionStyle"
+    (click)="onSelect()"
+>
+    <p-radioButton
+        #radioButton
+        class="payment-method-radio"
+        [value]="optionValue"
+        [formControlName]="controlName"
+    ></p-radioButton>
+    <span class="payment-method-label">Use saved {{ value.readableType }}</span>
+    <span class="payment-method-number">{{
+        showNumber
+            ? value.identifyingNumber
+            : (value.identifyingNumber | masked: "payment")
+    }}</span>
+    <button
+        class="payment-option-mask-btn"
+        (click)="toggleNumberVisibility($event)"
+    >
+        <i
+            class="mask-button-icon pi"
+            [class.pi-eye]="!showNumber"
+            [class.pi-eye-slash]="showNumber"
+        ></i>
+    </button>
+    <!-- <div class="option-mask"></div> -->
+</div>

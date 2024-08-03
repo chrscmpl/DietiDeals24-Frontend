@@ -30,12 +30,14 @@
                         message: 'You need to enter a bid amount'
                     },
                     {
-                        validation: 'min',
-                        message: 'Bid must not be a negative number'
+                        customValidation: 'min',
+                        message:
+                            this.auction.getErrorMessage('min') | findCurrency
                     },
                     {
-                        customValidation: 'invalidBid',
-                        message: this.auction.invalidBidError() | findCurrency
+                        customValidation: 'max',
+                        message:
+                            this.auction.getErrorMessage('max') | findCurrency
                     }
                 ]"
                 [floatingError]="true"

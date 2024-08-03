@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
-import { AuctionType } from '../../enums/auctionType.enum';
+import { AuctionType } from '../../enums/auction-type.enum';
 import { Router } from '@angular/router';
 
 @Component({

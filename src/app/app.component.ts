@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { LoadingIndicator } from './helpers/loadingIndicator';
+import { LoadingIndicator } from './helpers/loading-indicator';
 import { AsyncPipe } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';

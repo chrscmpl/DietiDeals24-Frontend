@@ -3,9 +3,11 @@ import {
     ReverseAuctionDTO,
     SilentAuctionDTO,
 } from '../DTOs/auction.dto';
-import { AuctionStatus } from '../enums/auctionStatus.enum';
-import { AuctionType } from '../enums/auctionType.enum';
+import { AuctionStatus } from '../enums/auction-status.enum';
+import { AuctionType } from '../enums/auction-type.enum';
 import { Location } from './location.model';
+
+type bidValidationError = { min: true } | { max: true };
 
 export abstract class Auction {
     public static STATUSES = AuctionStatus;
@@ -113,15 +115,13 @@ export abstract class Auction {
 
     public abstract get type(): AuctionType;
 
-    public abstract nextValidBid(): number;
-
-    public abstract bidValid(bid: number): boolean;
+    public abstract validateBid(bid: number): bidValidationError | null;
 
     public abstract newBidCategory(): 'selling' | 'buying';
 
     public abstract newBidDescription(): string;
 
-    public abstract invalidBidError(): string;
+    public abstract getErrorMessage(error: 'min' | 'max'): string;
 }
 
 export class SilentAuction extends Auction {
@@ -147,12 +147,8 @@ export class SilentAuction extends Auction {
         return AuctionType.silent;
     }
 
-    public override nextValidBid(): number {
-        return this._minimumBid;
-    }
-
-    public override bidValid(bid: number): boolean {
-        return bid >= this._minimumBid;
+    public override validateBid(bid: number): bidValidationError | null {
+        return bid < this._minimumBid ? { min: true } : null;
     }
 
     public override newBidCategory(): 'buying' {
@@ -163,8 +159,10 @@ export class SilentAuction extends Auction {
         return `at least CURRENCY{${this._minimumBid}|${this.currency}}`;
     }
 
-    public override invalidBidError(): string {
-        return `Bid must be equal or higher than CURRENCY{${this._minimumBid}|${this.currency}}`;
+    public override getErrorMessage(error: 'min' | 'max'): string {
+        return error === 'min'
+            ? `Bid must be at least CURRENCY{${this._minimumBid}|${this.currency}}`
+            : '';
     }
 }
 
@@ -204,14 +202,18 @@ export class ReverseAuction extends Auction {
         return AuctionType.reverse;
     }
 
-    public override nextValidBid(): number {
+    private nextValidBid(): number {
         return this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE > 0
             ? this._lowestBid - ReverseAuction.MINIMUM_BID_DIFFERENCE
             : this._lowestBid - 0.01;
     }
 
-    public override bidValid(bid: number): boolean {
-        return bid <= this.nextValidBid();
+    public override validateBid(bid: number): bidValidationError | null {
+        return bid > this.nextValidBid()
+            ? { max: true }
+            : bid < 0
+              ? { min: true }
+              : null;
     }
 
     public override newBidCategory(): 'selling' {
@@ -222,7 +224,9 @@ export class ReverseAuction extends Auction {
         return `no more than CURRENCY{${this.nextValidBid()}|${this.currency}}`;
     }
 
-    public override invalidBidError(): string {
-        return `Bid must not be higher than CURRENCY{${this.nextValidBid()}|${this.currency}}`;
+    public override getErrorMessage(error: 'min' | 'max'): string {
+        return error === 'max'
+            ? `Bid must not be higher than CURRENCY{${this.nextValidBid()}|${this.currency}}`
+            : 'Bid must not be negative';
     }
 }

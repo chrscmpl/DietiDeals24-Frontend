@@ -14,4 +14,19 @@
         }}
         method:
     </p>
+    <form class="payment-method-form" [formGroup]="paymentMethodForm">
+        @for (temp of paymentMethodOptions; track temp.id) {
+            <dd24-payment-method-option
+                class="payment-method-option"
+                [form]="paymentMethodForm"
+                controlName="chosenPaymentMethod"
+                [value]="temp"
+                [optionStyle]="{
+                    paddingLeft: '2rem',
+                    paddingRight: '2rem',
+                    borderBottom: 'var(--border)'
+                }"
+            ></dd24-payment-method-option>
+        }
+    </form>
 </main>

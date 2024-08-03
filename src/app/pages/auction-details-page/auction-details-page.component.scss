@@ -264,6 +264,8 @@
 
     @include viewports.mobile {
         box-shadow: var(--mobile-overlay-shadow-top);
+        border-radius: var(--border-radius-large);
+        padding: calc(var(--auction-details-padding) * 2);
     }
 }
 

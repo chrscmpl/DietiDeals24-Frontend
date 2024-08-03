@@ -4,7 +4,7 @@ import { AbstractControl, ControlContainer } from '@angular/forms';
 import {
     inputErrorMessagesManager,
     errorMessage,
-} from '../../helpers/inputErrorMessagesManager';
+} from '../../helpers/input-error-messages-manager';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -26,7 +26,7 @@ export class InputComponent implements OnInit {
 
     constructor(private readonly controlContainer: ControlContainer) {}
 
-    ngOnInit() {
+    public ngOnInit() {
         this.control = this.controlContainer?.control?.get(this.controlName);
 
         if (!this.control) {
