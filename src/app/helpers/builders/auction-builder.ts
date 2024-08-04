@@ -8,14 +8,14 @@ import {
     ReverseAuction,
     SilentAuction,
 } from '../../models/auction.model';
-import { AuctionType } from '../../enums/auction-type.enum';
+import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { Builder } from './builder';
 
 export const auctionBuilder = new Builder<AuctionDTO, Auction>((dto) => {
     switch (dto.type) {
-        case AuctionType.silent:
+        case AuctionRuleSet.silent:
             return new SilentAuction(dto as SilentAuctionDTO);
-        case AuctionType.reverse:
+        case AuctionRuleSet.reverse:
             return new ReverseAuction(dto as ReverseAuctionDTO);
         default:
             throw new Error('Invalid auction DTO');

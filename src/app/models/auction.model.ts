@@ -5,14 +5,14 @@ import {
 } from '../DTOs/auction.dto';
 import { AuctionKind } from '../enums/auction-kind.enum';
 import { AuctionStatus } from '../enums/auction-status.enum';
-import { AuctionType } from '../enums/auction-type.enum';
+import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Location } from './location.model';
 
 type bidValidationError = { min: true } | { max: true };
 
 export abstract class Auction {
     public static STATUSES = AuctionStatus;
-    public static TYPES = AuctionType;
+    public static TYPES = AuctionRuleSet;
     protected _id: string;
     protected _title: string;
     protected _conditions: string | null;
@@ -114,7 +114,7 @@ export abstract class Auction {
 
     public abstract get lastBidDescription(): string;
 
-    public abstract get type(): AuctionType;
+    public abstract get ruleSet(): AuctionRuleSet;
 
     public abstract get kind(): AuctionKind;
 
@@ -144,8 +144,8 @@ export class SilentAuction extends Auction {
         return 'minimum bid';
     }
 
-    public override get type(): AuctionType {
-        return AuctionType.silent;
+    public override get ruleSet(): AuctionRuleSet {
+        return AuctionRuleSet.silent;
     }
 
     public override get kind(): AuctionKind {
@@ -199,8 +199,8 @@ export class ReverseAuction extends Auction {
             : 'lowest bid';
     }
 
-    public override get type(): AuctionType {
-        return AuctionType.reverse;
+    public override get ruleSet(): AuctionRuleSet {
+        return AuctionRuleSet.reverse;
     }
 
     public override get kind(): AuctionKind {

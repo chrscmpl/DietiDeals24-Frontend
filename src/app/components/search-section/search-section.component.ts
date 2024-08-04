@@ -20,7 +20,7 @@ import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
 import { Router } from '@angular/router';
 import { Nullable } from '../../typeUtils/nullable';
-import { AuctionType } from '../../enums/auction-type.enum';
+import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { CategoriesService } from '../../services/categories.service';
 import { filter, Subscription, take } from 'rxjs';
 import { SearchServiceService } from '../../services/search-service.service';
@@ -32,7 +32,7 @@ import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dt
 
 interface searchForm {
     keywords: FormControl<string | null>;
-    type: FormControl<AuctionType | null>;
+    type: FormControl<AuctionRuleSet | null>;
     category: FormControl<string | null>;
     policy: FormControl<SearchPolicy | null>;
 }
@@ -89,13 +89,13 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.searchForm = this.formBuilder.group<searchForm>({
             keywords: new FormControl<string | null>(null),
-            type: new FormControl<AuctionType | null>(null),
+            type: new FormControl<AuctionRuleSet | null>(null),
             category: new FormControl<string | null>(null),
             policy: new FormControl<SearchPolicy | null>(null),
         });
 
         this.auctionTypeOptions = this.auctionTypeOptions.concat(
-            Object.values(AuctionType).map((type) => {
+            Object.values(AuctionRuleSet).map((type) => {
                 return {
                     name: `${this.oneCharUpperPipe.transform(type)} auctions`,
                     value: type as string,
@@ -111,7 +111,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
                         ?.setValue(params.keywords ?? null);
                     this.searchForm
                         .get('type')
-                        ?.setValue((params.type as AuctionType) ?? null);
+                        ?.setValue((params.type as AuctionRuleSet) ?? null);
                     this.searchForm
                         .get('category')
                         ?.setValue(

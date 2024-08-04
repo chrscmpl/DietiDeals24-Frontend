@@ -33,6 +33,10 @@
             .nav-link-icon:not(.create) {
                 color: var(--text-color-3);
             }
+
+            .nav-link-icon {
+                font-weight: 900;
+            }
         }
     }
 }
@@ -51,6 +55,7 @@
         background-color: var(--border-color-transparent);
         .p-avatar-icon {
             color: var(--text-color-2);
+            font-weight: 900;
         }
     }
 }

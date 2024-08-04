@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuctionType } from '../../enums/auction-type.enum';
+import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import {
     FormBuilder,
     FormControl,
@@ -22,7 +22,7 @@ import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dt
 
 interface sideSearchForm {
     policy: FormControl<SearchPolicy | null>;
-    types: FormControl<AuctionType[] | null>;
+    types: FormControl<AuctionRuleSet[] | null>;
     category: FormControl<string | null>;
 }
 
@@ -46,11 +46,11 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
 
     public sideSearchForm!: FormGroup<sideSearchForm>;
     public policyControl!: FormControl<SearchPolicy | null>;
-    public typesControl!: FormControl<AuctionType[] | null>;
+    public typesControl!: FormControl<AuctionRuleSet[] | null>;
     public categoryControl!: FormControl<string | null>;
 
     public readonly policiesOptions = SearchPolicy;
-    public readonly typesOptions = Object.values(AuctionType);
+    public readonly typesOptions = Object.values(AuctionRuleSet);
 
     public categoryItems$: Observable<MenuItem[]> =
         this.categoriesService.categories$.pipe(
@@ -78,7 +78,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.policyControl = new FormControl<SearchPolicy | null>(null);
-        this.typesControl = new FormControl<AuctionType[] | null>([]);
+        this.typesControl = new FormControl<AuctionRuleSet[] | null>([]);
         this.categoryControl = new FormControl<string | null>(null);
 
         this.sideSearchForm = this.formBuilder.group<sideSearchForm>({
@@ -104,7 +104,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         });
 
         this.typesControl.setValue(
-            params.type ? [params.type] : Object.values(AuctionType),
+            params.type ? [params.type] : Object.values(AuctionRuleSet),
             { emitEvent: false },
         );
 
@@ -119,7 +119,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         this.selectPolicy(e.checked as any);
     }
 
-    public onTypeChange(interactedValue: AuctionType): void {
+    public onTypeChange(interactedValue: AuctionRuleSet): void {
         if (!this.typesControl.value || this.typesControl.value.length === 0) {
             this.typesControl.setValue([interactedValue]);
         } else {

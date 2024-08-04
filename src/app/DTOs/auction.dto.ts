@@ -1,9 +1,9 @@
 import { AuctionStatus } from '../enums/auction-status.enum';
-import { AuctionType } from '../enums/auction-type.enum';
+import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 
 export interface AuctionDTO {
     id: string;
-    type: AuctionType;
+    type: AuctionRuleSet;
     status: AuctionStatus;
     title: string;
     conditions?: string | null;
@@ -24,12 +24,12 @@ export interface AuctionDTO {
 }
 
 export interface SilentAuctionDTO extends AuctionDTO {
-    type: AuctionType.silent;
+    type: AuctionRuleSet.silent;
     minimumBid: number;
 }
 
 export interface ReverseAuctionDTO extends AuctionDTO {
-    type: AuctionType.reverse;
+    type: AuctionRuleSet.reverse;
     maximumBid: number;
     lowestBidSoFar: number;
 }

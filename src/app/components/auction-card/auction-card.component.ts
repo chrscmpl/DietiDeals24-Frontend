@@ -8,7 +8,7 @@ import {
     Output,
 } from '@angular/core';
 import { Auction } from '../../models/auction.model';
-import { AuctionTypeLinkComponent } from '../auction-type-link/auction-type-link.component';
+import { AuctionRuleSetLinkComponent } from '../auction-ruleset-link/auction-ruleset-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { WindowService } from '../../services/window.service';
@@ -20,7 +20,7 @@ import { TimerComponent } from '../timer/timer.component';
     standalone: true,
     imports: [
         CommonModule,
-        AuctionTypeLinkComponent,
+        AuctionRuleSetLinkComponent,
         OneCharUpperPipe,
         LocalDatePipe,
         CurrencyPipe,

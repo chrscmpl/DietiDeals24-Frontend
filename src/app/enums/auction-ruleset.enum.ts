@@ -1,4 +1,4 @@
-export enum AuctionType {
+export enum AuctionRuleSet {
     silent = 'silent',
     reverse = 'reverse',
 }

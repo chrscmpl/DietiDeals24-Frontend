@@ -43,6 +43,7 @@ interface PaymentMethodForm {
 })
 export class CheckoutPageComponent implements OnInit {
     public readonly OPERATIONS = TransactionOperation;
+    public readonly PAYMENT_METHOD_CATEGORIES = PaymentMethodCategory;
     public bidAmount?: number;
     public auction?: Auction;
     public operation?: TransactionOperation;

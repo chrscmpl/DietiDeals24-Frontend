@@ -16,7 +16,7 @@ import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
 import { Auction } from '../../models/auction.model';
 import { UserPreviewComponent } from '../../components/user-preview/user-preview.component';
 import { DividerModule } from 'primeng/divider';
-import { AuctionTypeLinkComponent } from '../../components/auction-type-link/auction-type-link.component';
+import { AuctionRuleSetLinkComponent } from '../../components/auction-ruleset-link/auction-ruleset-link.component';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { TimerComponent } from '../../components/timer/timer.component';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
@@ -36,7 +36,7 @@ import { TransactionOperation } from '../../enums/transaction-operation.enum';
         AsyncPipe,
         UserPreviewComponent,
         DividerModule,
-        AuctionTypeLinkComponent,
+        AuctionRuleSetLinkComponent,
         CurrencyPipe,
         OneCharUpperPipe,
         TimerComponent,

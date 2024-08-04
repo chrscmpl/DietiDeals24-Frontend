@@ -1,24 +1,24 @@
 import { Component, Input } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
-import { AuctionType } from '../../enums/auction-type.enum';
+import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'dd24-auction-type-link',
+    selector: 'dd24-auction-ruleset-link',
     standalone: true,
     imports: [UpperCasePipe],
-    templateUrl: './auction-type-link.component.html',
-    styleUrl: './auction-type-link.component.scss',
+    templateUrl: './auction-ruleset-link.component.html',
+    styleUrl: './auction-ruleset-link.component.scss',
 })
-export class AuctionTypeLinkComponent {
+export class AuctionRuleSetLinkComponent {
     @Input({ required: true })
-    type!: AuctionType;
+    ruleSet!: AuctionRuleSet;
 
     constructor(private readonly router: Router) {}
 
     public async onNavigate(): Promise<void> {
         await this.router.navigate(['/help'], {
-            fragment: `${this.type}-auctions`,
+            fragment: `${this.ruleSet}-auctions`,
             skipLocationChange: true,
         });
         this.router.navigate([{ outlets: { overlay: null } }]);

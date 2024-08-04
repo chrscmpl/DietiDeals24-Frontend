@@ -65,6 +65,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
+        this.configureLayout();
         this.redirectOnBadInitialRoute();
         this.configurePrimeNG();
         this.themeService.initTheme();
@@ -81,6 +82,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public onMainRouterOutletDeactivate(): void {
         this.isLoadingRouteIndicator.start();
+    }
+
+    private configureLayout(): void {
+        try {
+            const navigator: any = window.navigator; // eslint-disable-line @typescript-eslint/no-explicit-any
+            navigator.virtualKeyboard.overlaysContent = true;
+        } catch (e) {
+            console.error('Browser does not support VirtualKeyboard API');
+        }
     }
 
     private redirectOnBadInitialRoute(): void {

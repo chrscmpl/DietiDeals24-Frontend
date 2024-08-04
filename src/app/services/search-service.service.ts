@@ -10,7 +10,7 @@ import {
     startWith,
     withLatestFrom,
 } from 'rxjs';
-import { AuctionType } from '../enums/auction-type.enum';
+import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Nullable } from '../typeUtils/nullable';
 import { cloneTruthy } from '../helpers/clone-truthy';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
@@ -80,11 +80,11 @@ export class SearchServiceService {
         return keywords;
     }
 
-    private validateType(type: string | undefined): AuctionType | null {
+    private validateType(type: string | undefined): AuctionRuleSet | null {
         if (type == this.lastSearchParameters.type)
-            return (type as AuctionType) ?? null;
-        if (!type || !Object.keys(AuctionType).includes(type)) return null;
-        return type as AuctionType;
+            return (type as AuctionRuleSet) ?? null;
+        if (!type || !Object.keys(AuctionRuleSet).includes(type)) return null;
+        return type as AuctionRuleSet;
     }
 
     private validateMacroCategory(

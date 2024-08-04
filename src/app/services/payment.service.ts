@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { filter, map, Observable, of, Subject, switchMap } from 'rxjs';
+import { map, Observable, of, Subject, switchMap, throwError } from 'rxjs';
 import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
-import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
 import { Cacheable } from 'ts-cacheable';
-import { environment } from '../../environments/environment';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodBuilder } from '../helpers/builders/payment-method-builder';
 import { PaymentMethodType } from '../enums/payment-method-type';
@@ -25,17 +23,25 @@ export class PaymentService {
         );
     }
 
-    @Cacheable({
-        maxCacheCount: Object.keys(PaymentMethodCategory).length + 1,
-        cacheBusterObserver: paymentMethodCacheBuster.asObservable(),
-    })
     public getPaymentMethods(
         category?: PaymentMethodCategory,
     ): Observable<PaymentMethod[]> {
+        return this.retrieveAllPaymentMethods().pipe(
+            map((methods) => {
+                if (!category) return methods;
+                return methods.filter((method) => method.category === category);
+            }),
+        );
+    }
+
+    @Cacheable({
+        cacheBusterObserver: paymentMethodCacheBuster.asObservable(),
+    })
+    private retrieveAllPaymentMethods(): Observable<PaymentMethod[]> {
         return this.authentication.isLogged$.pipe(
             switchMap((isLogged) =>
                 !isLogged
-                    ? of([])
+                    ? throwError(() => new Error('User is not authenticated'))
                     : // : this.http
                       //       .get<
                       //           PaymentMethodDTO[]
@@ -62,15 +68,7 @@ export class PaymentService {
                               iban: 'IT60X0542811101000000123456',
                           },
                       ]).pipe(
-                          map((dtos) =>
-                              paymentMethodBuilder
-                                  .buildArray(dtos)
-                                  .filter(
-                                      (method) =>
-                                          !category ||
-                                          method.category === category,
-                                  ),
-                          ),
+                          map((dtos) => paymentMethodBuilder.buildArray(dtos)),
                       ),
             ),
         );

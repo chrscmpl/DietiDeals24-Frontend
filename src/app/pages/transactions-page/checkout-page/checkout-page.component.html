@@ -7,13 +7,15 @@
             You are
             {{ operation === OPERATIONS.bid ? "making" : "accepting" }} a
             {{ auction.kind | auctionKind: "bid" }} bid for
-            {{ bidAmount | currency: auction?.currency }}
+            {{ bidAmount | currency: auction.currency }}
         </p>
     }
 
     <p class="checkout-form-label">
         Select your payment{{
-            operation === OPERATIONS.bid ? "" : " receiving"
+            requiredCategory === PAYMENT_METHOD_CATEGORIES.paying
+                ? ""
+                : " receiving"
         }}
         method:
     </p>
