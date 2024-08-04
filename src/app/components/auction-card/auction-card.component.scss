@@ -3,8 +3,8 @@
 
 .auction-card {
     @include layouts.grid(
-        $template: "image title" auto "image type" auto "image details" 1fr /
-            auto 1fr
+        $template: "image title" auto "image type" auto "image details"
+            minmax(0, 1fr) / auto 1fr
     );
     min-height: var(--card-height);
     width: 100%;
@@ -16,7 +16,7 @@
 
     @include viewports.mobile {
         @include layouts.grid(
-            $template: "type type" auto "image title" auto "image details" 1fr /
+            $template: "type type" auto "image title" auto "image details" auto /
                 auto 1fr
         );
         padding-bottom: 1rem;
