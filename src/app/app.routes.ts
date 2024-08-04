@@ -24,9 +24,9 @@ import { TransactionsPageComponent } from './pages/transactions-page/transaction
 import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
 import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
-import { bidAmountSetFnGuard } from './guards/bid-amount-set.guard';
+
 import { TransactionOperation } from './enums/transaction-operation.enum';
-import { checkoutPaymentMethodsResolverFn } from './resolvers/checkout-payment-methods.resolver';
+import { checkoutInformationResolverFn } from './resolvers/checkout-information.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -110,9 +110,8 @@ export const routes: Routes = [
                     {
                         path: 'checkout',
                         title: 'Checkout',
-                        canActivate: [bidAmountSetFnGuard],
                         resolve: {
-                            paymentMethods: checkoutPaymentMethodsResolverFn,
+                            checkoutInformation: checkoutInformationResolverFn,
                         },
                         component: CheckoutPageComponent,
                     },

@@ -22,8 +22,7 @@ import { AuctionResolver } from './resolvers/auction.resolver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
-import { BidAmountSetGuard } from './guards/bid-amount-set.guard';
-import { CheckoutPaymentMethodsResolver } from './resolvers/checkout-payment-methods.resolver';
+import { CheckoutInformationResolver } from './resolvers/checkout-information.resolver';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -44,10 +43,9 @@ export const appConfig: ApplicationConfig = {
         AuthenticationGuard,
         EmailVerificationGuard,
         AuctionResolver,
-        CheckoutPaymentMethodsResolver,
+        CheckoutInformationResolver,
         ConfirmReloadGuard,
         ShouldSpecifyChildGuard,
-        BidAmountSetGuard,
         MessageService,
         ConfirmationService,
         { provide: LOCALE_ID, useValue: 'en-US' },

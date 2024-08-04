@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {
     NavigationCancel,
     NavigationEnd,
+    NavigationError,
     Router,
     RouterLink,
     RouterOutlet,
@@ -98,12 +99,13 @@ export class AppComponent implements OnInit, AfterViewInit {
                 filter(
                     (e) =>
                         e instanceof NavigationEnd ||
-                        e instanceof NavigationCancel,
+                        e instanceof NavigationCancel ||
+                        e instanceof NavigationError,
                 ),
                 take(1),
             )
             .subscribe((e) => {
-                if (e instanceof NavigationCancel) {
+                if (!(e instanceof NavigationEnd)) {
                     this.windowService.setUIvisibility(true);
                     this.router.navigate(['/home']);
                 }
