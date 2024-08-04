@@ -17,28 +17,35 @@ export class AuctionResolver implements Resolve<Auction> {
     }
 }
 
+function getValidationCallback(options?: {
+    ownAuction?: boolean;
+    fromParent?: boolean;
+}) {
+    return options?.ownAuction === undefined
+        ? () => {}
+        : (auction: Auction, user: AuthenticatedUser | null) => {
+              if (
+                  !user?.id ||
+                  !auction.userId ||
+                  options.ownAuction === (auction.userId === user.id)
+              )
+                  return;
+              throw new Error('Cannot access this auction');
+          };
+}
+
 export function getAuctionResolverFn(options?: {
     ownAuction?: boolean;
     fromParent?: boolean;
 }): ResolveFn<Auction> {
-    const validationCallback =
-        options?.ownAuction === undefined
-            ? () => {}
-            : (auction: Auction, user: AuthenticatedUser | null) => {
-                  console.log(auction.id, auction.userId, !!user, user?.id);
-                  if (
-                      !user?.id ||
-                      !auction.userId ||
-                      options.ownAuction === (auction.userId === user.id)
-                  )
-                      return;
-                  throw new Error('Cannot access this auction');
-              };
+    const validationCallback = getValidationCallback(options);
+
     return (route) => {
         const user =
             options?.ownAuction === undefined
                 ? null
                 : inject(AuthenticationService).loggedUser;
+
         return inject(AuctionResolver)
             .resolve(
                 options?.fromParent

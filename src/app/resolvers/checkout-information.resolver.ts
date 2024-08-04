@@ -25,9 +25,9 @@ export class CheckoutInformationResolver
     public resolve(
         route: ActivatedRouteSnapshot,
     ): Observable<CheckoutInformation> {
-        const auction: Auction | undefined = route.parent?.data?.['auction'];
+        const auction: Auction | undefined = route.data?.['auction'];
 
-        const operation: string | undefined = route.parent?.url[0]?.path;
+        const operation: string | undefined = route.url[0]?.path;
 
         let bidAmount: number | undefined =
             this.router.getCurrentNavigation()?.extras?.state?.['bidAmount'];
@@ -80,8 +80,13 @@ export class CheckoutInformationResolver
     }
 }
 
-export const checkoutInformationResolverFn: ResolveFn<CheckoutInformation> = (
-    route,
-) => {
-    return inject(CheckoutInformationResolver).resolve(route);
-};
+export function getCheckoutInformationResolverFn(options?: {
+    fromParent?: boolean;
+}): ResolveFn<CheckoutInformation> {
+    return (route) =>
+        inject(CheckoutInformationResolver).resolve(
+            options?.fromParent
+                ? (route.parent as ActivatedRouteSnapshot)
+                : route,
+        );
+}

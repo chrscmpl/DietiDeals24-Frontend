@@ -26,7 +26,7 @@ import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 
 import { TransactionOperation } from './enums/transaction-operation.enum';
-import { checkoutInformationResolverFn } from './resolvers/checkout-information.resolver';
+import { getCheckoutInformationResolverFn } from './resolvers/checkout-information.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -116,7 +116,10 @@ export const routes: Routes = [
                         path: 'checkout',
                         title: 'Checkout',
                         resolve: {
-                            checkoutInformation: checkoutInformationResolverFn,
+                            checkoutInformation:
+                                getCheckoutInformationResolverFn({
+                                    fromParent: true,
+                                }),
                         },
                         component: CheckoutPageComponent,
                     },
