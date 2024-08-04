@@ -1,5 +1,6 @@
 export const environment = {
     backendHost: 'http://localhost:8080',
+    disableWarnings: false,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,
     passwordMediumPattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})',
     passwordStrongPattern:

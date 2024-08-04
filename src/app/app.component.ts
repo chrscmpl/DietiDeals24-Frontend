@@ -24,6 +24,7 @@ import { NotificationsService } from './services/notifications.service';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { filter, take } from 'rxjs';
+import { WarningsService } from './services/warnings.service';
 
 @Component({
     selector: 'dd24-root',
@@ -48,8 +49,6 @@ import { filter, take } from 'rxjs';
 })
 export class AppComponent implements OnInit, AfterViewInit {
     private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
-    private static readonly INITIAL_WARNING_COUNTER = 5;
-    private static readonly INITIAL_WARNING_ITEM_NAME = 'warn-again-counter';
 
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
 
@@ -60,7 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
-        private messageService: MessageService,
+        private readonly warnings: WarningsService,
     ) {}
 
     public ngOnInit(): void {
@@ -73,7 +72,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     public ngAfterViewInit(): void {
-        this.updateInitialWarningStatus();
+        this.warnings.showInitialWarningIfFirstTimeLoaded();
     }
 
     public onMainRouterOutletActivate(): void {
@@ -88,8 +87,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         try {
             const navigator: any = window.navigator; // eslint-disable-line @typescript-eslint/no-explicit-any
             navigator.virtualKeyboard.overlaysContent = true;
-        } catch (e) {
-            console.error('Browser does not support VirtualKeyboard API');
+        } catch {
+            console.warn('Browser does not support VirtualKeyboard API');
         }
     }
 
@@ -126,36 +125,6 @@ export class AppComponent implements OnInit, AfterViewInit {
             } else if (interval) {
                 clearInterval(interval);
             }
-        });
-    }
-
-    private updateInitialWarningStatus(): void {
-        const timesWarned: number = Number(
-            localStorage.getItem(AppComponent.INITIAL_WARNING_ITEM_NAME) ?? 0,
-        );
-
-        if (timesWarned > 0) {
-            localStorage.setItem(
-                AppComponent.INITIAL_WARNING_ITEM_NAME,
-                String(timesWarned - 1),
-            );
-            return;
-        }
-
-        this.showInitialWarning();
-
-        localStorage.setItem(
-            AppComponent.INITIAL_WARNING_ITEM_NAME,
-            String(AppComponent.INITIAL_WARNING_COUNTER - 1),
-        );
-    }
-
-    private showInitialWarning(): void {
-        this.messageService.add({
-            severity: 'warn',
-            summary: 'This is not a real e-commerce platform',
-            detail: 'This is a student project, not a real platform. Please do not use real data. Any transaction you make will not be real.',
-            life: 10 * 60 * 1000,
         });
     }
 }
