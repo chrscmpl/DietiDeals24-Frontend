@@ -14,7 +14,6 @@ import {
     Validators,
 } from '@angular/forms';
 import { PaymentMethod } from '../../../models/payment-method.model';
-import { PaymentService } from '../../../services/payment.service';
 import { PaymentMethodCategory } from '../../../enums/payment-method-category.enum';
 import { TransactionOperation } from '../../../enums/transaction-operation.enum';
 import { PaymentMethodType } from '../../../enums/payment-method-type';
@@ -62,7 +61,6 @@ export class CheckoutPageComponent implements OnInit {
         private readonly router: Router,
         public readonly windowService: WindowService,
         private readonly formBuilder: FormBuilder,
-        private readonly payment: PaymentService,
     ) {}
 
     public ngOnInit(): void {
@@ -78,10 +76,14 @@ export class CheckoutPageComponent implements OnInit {
             combineLatest([
                 this.route.parent.parent.data,
                 this.route.parent.url,
+                this.route.data,
             ])
                 .pipe(take(1))
-                .subscribe(([data, url]) => {
-                    this.auction = data['auction'];
+                .subscribe(([auctionData, url, savedPaymentMethodsData]) => {
+                    this.auction = auctionData['auction'];
+
+                    this.savedPaymentMethodOptions =
+                        savedPaymentMethodsData['paymentMethods'];
 
                     this.operation = url[0].path as TransactionOperation;
 
@@ -132,13 +134,6 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private initPaymentOptions() {
-        this.payment
-            .getPaymentMethods(this.requiredCategory as PaymentMethodCategory)
-            .pipe(take(1))
-            .subscribe((methods) => {
-                this.savedPaymentMethodOptions = methods;
-            });
-
         this.newPaymentMethodOptions =
             paymentMethodTypesPerCategory.get(
                 this.requiredCategory as PaymentMethodCategory,
@@ -149,6 +144,7 @@ export class CheckoutPageComponent implements OnInit {
         return (
             !this.auction ||
             this.bidAmount === undefined ||
+            this.savedPaymentMethodOptions === undefined ||
             !Object.values(TransactionOperation).includes(
                 this.operation as TransactionOperation,
             ) ||

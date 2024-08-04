@@ -28,7 +28,7 @@
         tabindex="0"
     >
         @if (activeStep === 0) {
-            <ng-form class="inner-form" formGroupName="userData">
+            <div class="inner-form" formGroupName="userData">
                 <div class="input">
                     <label for="name">Name*</label>
                     <dd24-input
@@ -155,10 +155,10 @@
                         ></p-autoComplete>
                     </dd24-input>
                 </div>
-            </ng-form>
+            </div>
         }
         @if (activeStep === 1) {
-            <ng-form class="inner-form" formGroupName="credentials">
+            <div class="inner-form" formGroupName="credentials">
                 <div class="input">
                     <label for="email">Email*</label>
                     <dd24-input
@@ -272,10 +272,10 @@
                         />
                     </dd24-input>
                 </div>
-            </ng-form>
+            </div>
         }
         @if (activeStep === 2) {
-            <ng-form class="inner-form" formGroupName="privacyPolicy">
+            <div class="inner-form" formGroupName="privacyPolicy">
                 <div
                     class="privacy-policy-preview"
                     (click)="setDialogVisibility($event)"
@@ -301,7 +301,7 @@
                         policy</label
                     >
                 </div>
-            </ng-form>
+            </div>
         }
         @if (error) {
             <span class="error">{{ error }}</span>
@@ -315,10 +315,11 @@
     <p-dialog
         class="privacy-policy-dialog custom-dialog"
         header="Privacy Policy"
-        [resizable]="false"
-        [draggable]="false"
-        [modal]="true"
+        resizable="false"
+        draggable="false"
+        modal="true"
         [(visible)]="privacyPolicyDialogVisible"
+        dismissableMask="true"
     >
         <span>{{ environment.privacyPolicy }}</span>
     </p-dialog>

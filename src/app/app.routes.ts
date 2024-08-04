@@ -15,7 +15,7 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
-import { auctionResolver } from './resolvers/auction.resolver';
+import { auctionResolverFn } from './resolvers/auction.resolver';
 import {
     confirmReloadActivateFnGuard,
     confirmReloadDeactivateFnGuard,
@@ -26,6 +26,7 @@ import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 import { bidAmountSetFnGuard } from './guards/bid-amount-set.guard';
 import { TransactionOperation } from './enums/transaction-operation.enum';
+import { checkoutPaymentMethodsResolverFn } from './resolvers/checkout-payment-methods.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -80,7 +81,7 @@ export const routes: Routes = [
         path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
-        resolve: { auction: auctionResolver },
+        resolve: { auction: auctionResolverFn },
     },
     {
         path: 'auctions/:auction-id',
@@ -95,7 +96,7 @@ export const routes: Routes = [
             hideUIFnGuard,
             /*confirmReloadActivateGuard*/
         ],
-        resolve: { auction: auctionResolver },
+        resolve: { auction: auctionResolverFn },
         canDeactivate: [showUIFnGuard /*confirmReloadDeactivateGuard*/],
         children: [
             {
@@ -110,6 +111,9 @@ export const routes: Routes = [
                         path: 'checkout',
                         title: 'Checkout',
                         canActivate: [bidAmountSetFnGuard],
+                        resolve: {
+                            paymentMethods: checkoutPaymentMethodsResolverFn,
+                        },
                         component: CheckoutPageComponent,
                     },
                 ],
