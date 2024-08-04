@@ -17,7 +17,7 @@ export class AuctionResolver implements Resolve<Auction> {
     }
 }
 
-function getValidationCallback(options?: {
+function getAccessValidatorCallback(options?: {
     ownAuction?: boolean;
     fromParent?: boolean;
 }) {
@@ -25,8 +25,8 @@ function getValidationCallback(options?: {
         ? () => {}
         : (auction: Auction, user: AuthenticatedUser | null) => {
               if (
-                  !user?.id ||
-                  !auction.userId ||
+                  user?.id == undefined ||
+                  auction.userId == undefined ||
                   options.ownAuction === (auction.userId === user.id)
               )
                   return;
@@ -38,13 +38,10 @@ export function getAuctionResolverFn(options?: {
     ownAuction?: boolean;
     fromParent?: boolean;
 }): ResolveFn<Auction> {
-    const validationCallback = getValidationCallback(options);
+    const accessValidatorCallback = getAccessValidatorCallback(options);
 
     return (route) => {
-        const user =
-            options?.ownAuction === undefined
-                ? null
-                : inject(AuthenticationService).loggedUser;
+        const user = inject(AuthenticationService).loggedUser;
 
         return inject(AuctionResolver)
             .resolve(
@@ -52,6 +49,6 @@ export function getAuctionResolverFn(options?: {
                     ? (route.parent as ActivatedRouteSnapshot)
                     : route,
             )
-            .pipe(tap((auction) => validationCallback(auction, user)));
+            .pipe(tap((auction) => accessValidatorCallback(auction, user)));
     };
 }

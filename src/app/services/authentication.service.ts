@@ -64,17 +64,11 @@ export class AuthenticationService {
 
     public login(
         credentials: UserCredentials,
-        cb?: Partial<Observer<AuthenticatedUser>>,
+        cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post<AuthenticatedUserDTO>(
-                `${environment.backendHost}/login`,
-                credentials,
-            )
-            .pipe(
-                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
-                tap(this.setLoggedUser.bind(this)),
-            )
+            .post(`${environment.backendHost}/login`, credentials)
+            .pipe(tap(this.getUserData.bind(this)))
             .subscribe(cb);
     }
 
@@ -91,17 +85,11 @@ export class AuthenticationService {
 
     public verifyEmail(
         data: emailVerificationDTO,
-        cb?: Partial<Observer<AuthenticatedUser>>,
+        cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post<AuthenticatedUserDTO>(
-                `${environment.backendHost}/register/confirm`,
-                data,
-            )
-            .pipe(
-                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
-                tap(this.setLoggedUser.bind(this)),
-            )
+            .post(`${environment.backendHost}/register/confirm`, data)
+            .pipe(tap(this.getUserData.bind(this)))
             .subscribe(cb);
     }
 
