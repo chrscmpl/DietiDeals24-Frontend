@@ -27,6 +27,7 @@ import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { UserSummary } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -87,6 +88,7 @@ export class AuctionDetailsPageComponent
         private readonly clipboard: Clipboard,
         private readonly message: MessageService,
         private changeDetectorRef: ChangeDetectorRef,
+        public readonly authentication: AuthenticationService,
     ) {}
 
     public ngOnInit(): void {
