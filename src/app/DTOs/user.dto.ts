@@ -1,6 +1,20 @@
-import { UserInterface } from '../models/user.model';
+import { userLink } from '../models/user.model';
 
-export type UserDTO = Omit<UserInterface, 'profileInformation'>;
+export interface AuthenticatedUserDTO {
+    userId: string;
+    username: string;
+    name: string;
+    surname: string;
+    birthday: string;
+    email: string;
+    onlineAuctionsCounter?: number | null;
+    pastDealsCounter?: number | null;
+    profilePictureUrl?: string | null;
+    country?: string | null;
+    city?: string | null;
+    bio?: string | null;
+    links?: userLink[] | null;
+}
 
 export type UserSummaryDTO = {
     id: string;

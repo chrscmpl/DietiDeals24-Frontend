@@ -59,7 +59,7 @@ export class BiddingPageComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        this.route.parent?.parent?.data.pipe(take(1)).subscribe((data) => {
+        this.route.parent?.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
         });
         this.bidForm = this.formBuilder.group({

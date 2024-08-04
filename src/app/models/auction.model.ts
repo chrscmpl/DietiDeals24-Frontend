@@ -31,7 +31,7 @@ export abstract class Auction {
     protected _picturesUrls: string[];
 
     constructor(dto: AuctionDTO) {
-        this._id = dto.id;
+        this._id = String(dto.id);
         this._title = dto.title;
         this._conditions = dto.conditions ?? null;
         this._location = { country: dto.country, city: dto.city };
@@ -45,7 +45,7 @@ export abstract class Auction {
         this._category = dto.category ?? null;
         this._description = dto.description ?? null;
         this._bids = dto.numberOfBids ?? null;
-        this._userId = dto.userId ?? null;
+        this._userId = String(dto.userId) ?? null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
     }

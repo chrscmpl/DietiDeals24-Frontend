@@ -73,9 +73,6 @@ export class NotificationsService {
         this.authentication.isLogged$
             .pipe(filter((isLogged) => isLogged))
             .subscribe(() => {
-                this.unreadNotificationsCount =
-                    this.authentication.loggedUser
-                        ?.unreadNotificationsCounter ?? 0;
                 this.refresh();
             });
     }

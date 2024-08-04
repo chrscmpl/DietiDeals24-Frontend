@@ -1,37 +1,92 @@
-import { UserDTO, UserSummaryDTO } from '../DTOs/user.dto';
-import { link } from '../helpers/links';
+import { AuthenticatedUserDTO, UserSummaryDTO } from '../DTOs/user.dto';
 import { Location } from './location.model';
 
-export interface ProfileInformationInterface {
+export interface userLink {
     name: string;
-    surname: string;
-    birthday: Date;
-    location: Location | null;
-    bio: string | null;
-    links: link[];
-    onlineAuctions: number;
-    pastDeals: number;
+    url: string;
 }
 
-export interface UserInterface {
-    email: string;
-    username: string;
-    profilePictureUrl: string | null;
-    unreadNotificationsCounter: number;
-    profileInformation: ProfileInformationInterface | null;
-}
+export class AuthenticatedUser {
+    private _id: string;
+    private _username: string;
+    private _name: string;
+    private _surname: string;
+    private _birthday: string;
+    private _email: string;
+    private _onlineAuctionsCounter: number;
+    private _pastDealsCounter: number;
+    private _profilePictureUrl: string | null;
+    private _country: string | null;
+    private _city: string | null;
+    private _bio: string | null;
+    private _links: userLink[];
 
-export class User implements UserInterface {
-    email: string;
-    username: string;
-    profilePictureUrl: string | null;
-    unreadNotificationsCounter: number;
-    profileInformation: ProfileInformationInterface | null = null;
-    constructor(dto: UserDTO) {
-        this.email = dto.email;
-        this.username = dto.username;
-        this.profilePictureUrl = dto.profilePictureUrl;
-        this.unreadNotificationsCounter = dto.unreadNotificationsCounter;
+    public constructor(dto: AuthenticatedUserDTO) {
+        this._id = String(dto.userId);
+        this._username = dto.username;
+        this._name = dto.name;
+        this._surname = dto.surname;
+        this._birthday = dto.birthday;
+        this._email = dto.email;
+        this._onlineAuctionsCounter = dto.onlineAuctionsCounter ?? 0;
+        this._pastDealsCounter = dto.pastDealsCounter ?? 0;
+        this._profilePictureUrl = dto.profilePictureUrl ?? null;
+        this._country = dto.country ?? null;
+        this._city = dto.city ?? null;
+        this._bio = dto.bio ?? null;
+        this._links = dto.links ?? [];
+    }
+
+    public get id(): string {
+        return this._id;
+    }
+
+    public get username(): string {
+        return this._username;
+    }
+
+    public get name(): string {
+        return this._name;
+    }
+
+    public get surname(): string {
+        return this._surname;
+    }
+
+    public get birthday(): string {
+        return this._birthday;
+    }
+
+    public get email(): string {
+        return this._email;
+    }
+
+    public get onlineAuctionsCounter(): number {
+        return this._onlineAuctionsCounter;
+    }
+
+    public get pastDealsCounter(): number {
+        return this._pastDealsCounter;
+    }
+
+    public get profilePictureUrl(): string | null {
+        return this._profilePictureUrl;
+    }
+
+    public get country(): string | null {
+        return this._country;
+    }
+
+    public get city(): string | null {
+        return this._city;
+    }
+
+    public get bio(): string | null {
+        return this._bio;
+    }
+
+    public get links(): userLink[] {
+        return this._links;
     }
 }
 

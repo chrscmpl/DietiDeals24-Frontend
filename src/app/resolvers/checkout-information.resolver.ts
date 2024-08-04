@@ -25,8 +25,7 @@ export class CheckoutInformationResolver
     public resolve(
         route: ActivatedRouteSnapshot,
     ): Observable<CheckoutInformation> {
-        const auction: Auction | undefined =
-            route.parent?.parent?.data?.['auction'];
+        const auction: Auction | undefined = route.parent?.data?.['auction'];
 
         const operation: string | undefined = route.parent?.url[0]?.path;
 

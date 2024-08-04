@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
+import { AuthenticatedUser } from '../models/user.model';
 import {
     Observable,
     Observer,
@@ -14,7 +14,7 @@ import {
 } from 'rxjs';
 import {
     UserCredentials,
-    UserDTO,
+    AuthenticatedUserDTO,
     UserRegistrationDTO,
     emailVerificationDTO,
 } from '../DTOs/user.dto';
@@ -25,7 +25,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthenticationService {
     private _isLogged = false;
-    private _loggedUser: User | null = null;
+    private _loggedUser: AuthenticatedUser | null = null;
     private _initialized = false;
 
     public emailToVerify: string | null = null;
@@ -34,7 +34,7 @@ export class AuthenticationService {
         return this._isLogged;
     }
 
-    public get loggedUser(): User | null {
+    public get loggedUser(): AuthenticatedUser | null {
         return this._loggedUser;
     }
 
@@ -52,12 +52,11 @@ export class AuthenticationService {
         .asObservable()
         .pipe(map(() => this.isLogged));
 
-    public readonly loggedUser$: Observable<User> = this.loggedUserSubject
-        .asObservable()
-        .pipe(
+    public readonly loggedUser$: Observable<AuthenticatedUser> =
+        this.loggedUserSubject.asObservable().pipe(
             withLatestFrom(this.isLogged$),
             filter(() => this.isLogged),
-            map(() => this.loggedUser as User),
+            map(() => this.loggedUser as AuthenticatedUser),
         );
 
     public readonly initialized$: Observable<void> =
@@ -65,12 +64,15 @@ export class AuthenticationService {
 
     public login(
         credentials: UserCredentials,
-        cb?: Partial<Observer<User>>,
+        cb?: Partial<Observer<AuthenticatedUser>>,
     ): void {
         this.http
-            .post<UserDTO>(`${environment.backendHost}/login`, credentials)
+            .post<AuthenticatedUserDTO>(
+                `${environment.backendHost}/login`,
+                credentials,
+            )
             .pipe(
-                map((dto: UserDTO) => new User(dto)),
+                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
                 tap(this.setLoggedUser.bind(this)),
             )
             .subscribe(cb);
@@ -89,22 +91,27 @@ export class AuthenticationService {
 
     public verifyEmail(
         data: emailVerificationDTO,
-        cb?: Partial<Observer<User>>,
+        cb?: Partial<Observer<AuthenticatedUser>>,
     ): void {
         this.http
-            .post<UserDTO>(`${environment.backendHost}/register/confirm`, data)
+            .post<AuthenticatedUserDTO>(
+                `${environment.backendHost}/register/confirm`,
+                data,
+            )
             .pipe(
-                map((dto: UserDTO) => new User(dto)),
+                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
                 tap(this.setLoggedUser.bind(this)),
             )
             .subscribe(cb);
     }
 
-    public getUserData(cb?: Partial<Observer<User>>): void {
+    public getUserData(cb?: Partial<Observer<AuthenticatedUser>>): void {
         this.http
-            .get<UserDTO>(`${environment.backendHost}/profile/owner-view`)
+            .get<AuthenticatedUserDTO>(
+                `${environment.backendHost}/profile/owner-view`,
+            )
             .pipe(
-                map((dto: UserDTO) => new User(dto)),
+                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
                 tap(this.setLoggedUser.bind(this)),
                 catchError((e) => {
                     this.setInitialized();
@@ -121,7 +128,7 @@ export class AuthenticationService {
         this.isLoggedSubject.next();
     }
 
-    private setLoggedUser(user: User): void {
+    private setLoggedUser(user: AuthenticatedUser): void {
         this.setInitialized();
         this._isLogged = true;
         this._loggedUser = user;

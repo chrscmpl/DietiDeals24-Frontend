@@ -15,7 +15,7 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
-import { auctionResolverFn } from './resolvers/auction.resolver';
+import { getAuctionResolverFn } from './resolvers/auction.resolver';
 import {
     confirmReloadActivateFnGuard,
     confirmReloadDeactivateFnGuard,
@@ -81,7 +81,7 @@ export const routes: Routes = [
         path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
-        resolve: { auction: auctionResolverFn },
+        resolve: { auction: getAuctionResolverFn() },
     },
     {
         path: 'auctions/:auction-id',
@@ -96,11 +96,16 @@ export const routes: Routes = [
             hideUIFnGuard,
             /*confirmReloadActivateGuard*/
         ],
-        resolve: { auction: auctionResolverFn },
         canDeactivate: [showUIFnGuard /*confirmReloadDeactivateGuard*/],
         children: [
             {
                 path: TransactionOperation.bid,
+                resolve: {
+                    auction: getAuctionResolverFn({
+                        ownAuction: false,
+                        fromParent: true,
+                    }),
+                },
                 children: [
                     {
                         path: '',

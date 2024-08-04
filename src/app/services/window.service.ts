@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 import {
     Observable,
     ReplaySubject,
+    delay,
     distinctUntilChanged,
-    filter,
     fromEvent,
     map,
     merge,
+    of,
     shareReplay,
     startWith,
-    tap,
-    throttleTime,
+    switchMap,
 } from 'rxjs';
 
 @Injectable({
@@ -31,11 +31,11 @@ export class WindowService {
 
     public UIhidden$ = this.UIhiddenSUbject.asObservable();
 
-    public setUIvisibility(isVisible: boolean) {
+    public setUIvisibility(isVisible: boolean): void {
         this.UIhiddenSUbject.next(!isVisible);
     }
 
-    public isMobile$ = fromEvent<MediaQueryListEvent>(
+    public isMobile$: Observable<boolean> = fromEvent<MediaQueryListEvent>(
         this.matchMobile,
         'change',
     ).pipe(
@@ -48,15 +48,17 @@ export class WindowService {
         fromEvent(document.body, 'focus', { capture: true, passive: true }),
         fromEvent(document.body, 'blur', { capture: true, passive: true }),
     ).pipe(
-        filter<Event>((e) =>
-            (e?.target as Element)?.matches?.('input, textarea, select'),
+        map(
+            (e) =>
+                e.type === 'focus' &&
+                (e?.target as Element)?.matches?.('input, textarea, select'),
         ),
-        map((e) => e.type === 'focus'),
         distinctUntilChanged(),
+        switchMap((isOpen) => of(isOpen).pipe(delay(isOpen ? 0 : 50))),
         shareReplay(1),
     );
 
-    public confirmReload(value: boolean) {
+    public confirmReload(value: boolean): void {
         if (value) {
             window.onbeforeunload = (e) => {
                 const confirmMessage = 'Are you sure you want to leave?';
