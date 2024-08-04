@@ -1,6 +1,15 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
-import { ReplaySubject, fromEvent, map, shareReplay, startWith } from 'rxjs';
+import {
+    ReplaySubject,
+    distinctUntilChanged,
+    filter,
+    fromEvent,
+    map,
+    shareReplay,
+    startWith,
+    throttleTime,
+} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -29,6 +38,29 @@ export class WindowService {
     ).pipe(
         map((e) => e.matches),
         startWith(this.matchMobile.matches),
+        shareReplay(1),
+    );
+
+    private lastHeight = window.innerHeight;
+
+    public isVirtualKeyboardOpenFallback$ = fromEvent(
+        window.visualViewport ?? window,
+        'resize',
+    ).pipe(
+        startWith(null),
+        throttleTime(100),
+        map(() => window.innerHeight),
+        filter(
+            (height) =>
+                height < this.lastHeight - 100 ||
+                height > this.lastHeight + 100,
+        ),
+        map((height) => {
+            const ret = height < this.lastHeight;
+            this.lastHeight = height;
+            return ret;
+        }),
+        distinctUntilChanged(),
         shareReplay(1),
     );
 

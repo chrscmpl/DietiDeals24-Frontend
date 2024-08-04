@@ -40,7 +40,10 @@
                 [showOffset]="30"
             ></dd24-mobile-header>
             @if ((windowService.UIhidden$ | async) === false) {
-                <dd24-mobile-navbar class="footer"></dd24-mobile-navbar>
+                <dd24-mobile-navbar
+                    class="footer"
+                    [class.hidden]="hiddenMobileFooter"
+                ></dd24-mobile-navbar>
             }
         }
     }

@@ -55,6 +55,10 @@
     }
 }
 
+.hidden {
+    display: none;
+}
+
 :host ::ng-deep {
     .create-auction-button .p-button {
         padding: 1.8rem;

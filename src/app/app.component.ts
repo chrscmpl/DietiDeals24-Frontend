@@ -53,6 +53,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
 
+    public hiddenMobileFooter: boolean = false;
+
     constructor(
         public readonly windowService: WindowService,
         private readonly router: Router,
@@ -89,7 +91,14 @@ export class AppComponent implements OnInit, AfterViewInit {
             const navigator: any = window.navigator; // eslint-disable-line @typescript-eslint/no-explicit-any
             navigator.virtualKeyboard.overlaysContent = true;
         } catch {
-            console.warn('Browser does not support VirtualKeyboard API');
+            console.warn(
+                'Browser does not support VirtualKeyboard API, defaulting to fallback strategy for detecting virtual keyboard visibility',
+            );
+            this.windowService.isVirtualKeyboardOpenFallback$.subscribe(
+                (isOpen) => {
+                    this.hiddenMobileFooter = isOpen;
+                },
+            );
         }
     }
 
