@@ -6,7 +6,7 @@ import {
     Router,
 } from '@angular/router';
 import { PaymentService } from '../services/payment.service';
-import { map, Observable, take, throwError } from 'rxjs';
+import { catchError, map, Observable, of, take, throwError } from 'rxjs';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { AuctionKind } from '../enums/auction-kind.enum';
 import { TransactionOperation } from '../enums/transaction-operation.enum';
@@ -50,6 +50,7 @@ export class CheckoutInformationResolver
             return throwError(() => new Error('Invalid checkout operation'));
 
         return this.payment.getPaymentMethods(requiredCategory).pipe(
+            catchError(() => of([])),
             take(1),
             map((methods) => ({
                 methods,
