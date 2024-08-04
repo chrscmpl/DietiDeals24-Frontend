@@ -67,7 +67,9 @@
                         maxlength="9"
                         showButtons="false"
                         [locale]="locale"
-                        [maxFractionDigits]="2"
+                        [maxFractionDigits]="
+                            auction.currency | currencyDecimalDigits
+                        "
                         [inputStyle]="{
                             borderTopLeftRadius: 0,
                             borderBottomLeftRadius: 0

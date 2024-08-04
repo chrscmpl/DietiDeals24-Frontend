@@ -21,6 +21,7 @@ import { AsyncPipe, CurrencyPipe, getCurrencySymbol } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../../services/window.service';
 import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
+import { CurrencyDecimalDigitsPipe } from '../../../pipes/currency-decimal-digits.pipe';
 
 interface BidForm {
     amount: FormControl<number | null>;
@@ -42,6 +43,7 @@ interface BidForm {
         ButtonModule,
         AsyncPipe,
         AuctionKindPipe,
+        CurrencyDecimalDigitsPipe,
     ],
     templateUrl: './bidding-page.component.html',
     styleUrl: './bidding-page.component.scss',
