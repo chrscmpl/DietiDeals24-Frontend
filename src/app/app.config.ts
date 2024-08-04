@@ -23,6 +23,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 import { CheckoutInformationResolver } from './resolvers/checkout-information.resolver';
+import { ReloadFreelyGuard } from './guards/reload-freely.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -45,6 +46,7 @@ export const appConfig: ApplicationConfig = {
         AuctionResolver,
         CheckoutInformationResolver,
         ConfirmReloadGuard,
+        ReloadFreelyGuard,
         ShouldSpecifyChildGuard,
         MessageService,
         ConfirmationService,

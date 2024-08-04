@@ -16,10 +16,7 @@ import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
 import { getAuctionResolverFn } from './resolvers/auction.resolver';
-import {
-    confirmReloadActivateFnGuard,
-    confirmReloadDeactivateFnGuard,
-} from './guards/confirm-reload.guard';
+import { confirmReloadFnGuard } from './guards/confirm-reload.guard';
 import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
 import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
 import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
@@ -27,41 +24,57 @@ import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/c
 
 import { TransactionOperation } from './enums/transaction-operation.enum';
 import { getCheckoutInformationResolverFn } from './resolvers/checkout-information.resolver';
+import { reloadFreelyFnGuard } from './guards/reload-freely.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
         title: 'DietiDeals24',
+        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
         component: HomePageComponent,
     },
     {
         path: 'auctions',
         title: 'Auctions',
+        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
         component: AuctionsSearchPageComponent,
     },
     {
         path: 'your-page',
         title: 'Your Page',
         component: YourPageComponent,
-        canActivate: [authenticationFnGuard],
+        canActivate: [
+            showUIFnGuard,
+            reloadFreelyFnGuard,
+            authenticationFnGuard,
+        ],
     },
     {
         path: 'create-auction',
         title: 'Create an Auction',
         component: CreateAuctionPageComponent,
-        canActivate: [authenticationFnGuard],
+        canActivate: [
+            showUIFnGuard,
+            reloadFreelyFnGuard,
+            authenticationFnGuard,
+        ],
     },
     {
         path: 'notifications',
         title: 'Notifications',
         component: NotificationsPageComponent,
-        canActivate: [authenticationFnGuard],
+        canActivate: [
+            showUIFnGuard,
+            reloadFreelyFnGuard,
+            authenticationFnGuard,
+        ],
     },
     {
         path: 'help',
         title: 'Frequently Asked Questions',
         component: HelpPageComponent,
+        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
     },
     {
         path: 'auth',
@@ -69,9 +82,8 @@ export const routes: Routes = [
         canActivate: [
             dontAuthenticateFnGuard,
             hideUIFnGuard,
-            confirmReloadActivateFnGuard,
+            confirmReloadFnGuard,
         ],
-        canDeactivate: [showUIFnGuard, confirmReloadDeactivateFnGuard],
         loadChildren: () =>
             import('./modules/auth-routing/auth-routing.module').then(
                 (m) => m.AuthRoutingModule,
@@ -94,9 +106,8 @@ export const routes: Routes = [
             authenticationFnGuard,
             shouldSpecifyChildFnGuard,
             hideUIFnGuard,
-            /*confirmReloadActivateGuard*/
+            /*confirmReloadFnGuard*/
         ],
-        canDeactivate: [showUIFnGuard /*confirmReloadDeactivateGuard*/],
         children: [
             {
                 path: TransactionOperation.bid,

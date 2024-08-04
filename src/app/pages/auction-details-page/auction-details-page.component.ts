@@ -210,7 +210,6 @@ export class AuctionDetailsPageComponent
                 .getSummary(this.auction.userId)
                 .pipe(take(1))
                 .subscribe((user) => {
-                    console.log(user);
                     this.user = user;
                     this.changeDetectorRef.detectChanges();
                 });

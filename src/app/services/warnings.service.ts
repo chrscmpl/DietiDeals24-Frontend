@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Message, MessageService } from 'primeng/api';
-import { TransactionOperation } from '../enums/transaction-operation.enum';
-import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { environment } from '../../environments/environment';
+import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
+import { paymentMethodTypesByCategory } from '../helpers/payment-method-types-by-category';
 
 @Injectable({
     providedIn: 'root',
@@ -11,13 +12,32 @@ export class WarningsService {
     private static readonly INITIAL_WARNING_COUNTER = 5;
     private static readonly INITIAL_WARNING_LIFE = 10 * 60 * 1000;
     private static readonly INITIAL_WARNING_ITEM_NAME = 'warn-again-counter';
+    private static readonly TRANSACTION_WARNING_LIFE = 10 * 1000;
 
     constructor(private readonly messageService: MessageService) {}
 
-    public showTransactionWarning(
-        _: TransactionOperation,
-        __: PaymentMethodCategory,
-    ): void {}
+    public showTransactionWarning(category?: PaymentMethodCategory): void {
+        let paymentMethodTypes: PaymentMethodType[] = [];
+        if (category)
+            paymentMethodTypes =
+                paymentMethodTypesByCategory.get(category) ?? [];
+
+        let warningMessage =
+            'This is a student project, not a real platform, and this transaction is fake. Please do not use real data. Data about payment methods will not be sent to any payment processor.';
+        if (paymentMethodTypes.includes(PaymentMethodType.creditCard))
+            warningMessage +=
+                ' For credit cards, only the last 4 digits of the card number will be stored by our servers.';
+        else if (paymentMethodTypes.includes(PaymentMethodType.IBAN))
+            warningMessage +=
+                ' For IBANs, our servers may store the entire IBAN number or part of it.';
+
+        this.showWarning({
+            severity: 'warn',
+            summary: 'This transaction is fake',
+            detail: warningMessage,
+            life: WarningsService.TRANSACTION_WARNING_LIFE,
+        });
+    }
 
     public showInitialWarningIfFirstTimeLoaded(): void {
         const timesWarned: number = Number(

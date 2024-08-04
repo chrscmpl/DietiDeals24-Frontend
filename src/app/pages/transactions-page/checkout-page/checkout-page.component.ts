@@ -17,9 +17,10 @@ import { PaymentMethod } from '../../../models/payment-method.model';
 import { PaymentMethodCategory } from '../../../enums/payment-method-category.enum';
 import { TransactionOperation } from '../../../enums/transaction-operation.enum';
 import { PaymentMethodType } from '../../../enums/payment-method-type';
-import { paymentMethodTypesPerCategory } from '../../../helpers/payment-method-types-per-category';
+import { paymentMethodTypesByCategory } from '../../../helpers/payment-method-types-by-category';
 import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
 import { CheckoutInformation } from '../../../models/checkout-information.model';
+import { WarningsService } from '../../../services/warnings.service';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -60,6 +61,7 @@ export class CheckoutPageComponent implements OnInit {
         private readonly route: ActivatedRoute,
         public readonly windowService: WindowService,
         private readonly formBuilder: FormBuilder,
+        private readonly warning: WarningsService,
     ) {}
 
     public ngOnInit(): void {
@@ -79,6 +81,8 @@ export class CheckoutPageComponent implements OnInit {
             this.operation = checkoutInformation.operation;
             this.requiredCategory = checkoutInformation.requiredCategory;
             this.savedPaymentMethodOptions = checkoutInformation.methods;
+
+            // this.warning.showTransactionWarning(this.requiredCategory);
 
             this.initPaymentOptions();
         });
@@ -104,7 +108,7 @@ export class CheckoutPageComponent implements OnInit {
 
     private initPaymentOptions() {
         this.newPaymentMethodOptions =
-            paymentMethodTypesPerCategory.get(
+            paymentMethodTypesByCategory.get(
                 this.requiredCategory as PaymentMethodCategory,
             ) ?? [];
     }

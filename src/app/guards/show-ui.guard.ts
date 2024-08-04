@@ -1,16 +1,16 @@
-import { CanDeactivate, CanDeactivateFn } from '@angular/router';
+import { CanActivate, CanActivateFn } from '@angular/router';
 import { WindowService } from '../services/window.service';
 import { Injectable, inject } from '@angular/core';
 
 @Injectable()
-export class ShowUIGuard implements CanDeactivate<unknown> {
+export class ShowUIGuard implements CanActivate {
     constructor(private windowService: WindowService) {}
 
-    public canDeactivate() {
+    public canActivate() {
         this.windowService.setUIvisibility(true);
         return true;
     }
 }
 
-export const showUIFnGuard: CanDeactivateFn<unknown> = () =>
-    inject(ShowUIGuard).canDeactivate();
+export const showUIFnGuard: CanActivateFn = () =>
+    inject(ShowUIGuard).canActivate();

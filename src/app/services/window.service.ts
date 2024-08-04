@@ -66,7 +66,7 @@ export class WindowService {
                 return confirmMessage;
             };
         } else {
-            window.onbeforeunload = null;
+            if (window.onbeforeunload !== null) window.onbeforeunload = null;
         }
     }
 }
