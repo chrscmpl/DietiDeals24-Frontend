@@ -28,6 +28,7 @@ import { UserSummary } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuthenticationService } from '../../services/authentication.service';
+import { BidService } from '../../services/bid.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -68,6 +69,10 @@ export class AuctionDetailsPageComponent
     public expandable: boolean = false;
     public expanded: boolean = false;
 
+    public ownAuction: boolean = false;
+
+    public hasUserAlreadyBidded: boolean = false;
+
     public carouselItems: { url: string; index: number; isEmpty?: boolean }[] =
         [];
 
@@ -88,7 +93,8 @@ export class AuctionDetailsPageComponent
         private readonly clipboard: Clipboard,
         private readonly message: MessageService,
         private changeDetectorRef: ChangeDetectorRef,
-        public readonly authentication: AuthenticationService,
+        private readonly authentication: AuthenticationService,
+        private readonly bidService: BidService,
     ) {}
 
     public ngOnInit(): void {
@@ -105,6 +111,20 @@ export class AuctionDetailsPageComponent
                 .subscribe(() => {
                     this.expandable = false;
                 }),
+        );
+
+        this.subscriptions.push(
+            this.authentication.loggedUser$.subscribe(
+                (user) => (this.ownAuction = this.auction?.userId === user.id),
+            ),
+        );
+
+        this.subscriptions.push(
+            this.bidService.getOwnActiveBids().subscribe((bids) => {
+                this.hasUserAlreadyBidded = !!bids.find(
+                    (bid) => bid.auctionId === this.auction?.id,
+                );
+            }),
         );
     }
 

@@ -7,6 +7,7 @@ import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodBuilder } from '../helpers/builders/payment-method-builder';
 import { PaymentMethodType } from '../enums/payment-method-type';
+import { getOwnActiveBidsCacheBuster } from './bid.service';
 
 const paymentMethodCacheBuster = new Subject<void>();
 
@@ -19,6 +20,9 @@ export class PaymentService {
         private readonly http: HttpClient,
     ) {
         this.authentication.isLogged$.subscribe(() =>
+            paymentMethodCacheBuster.next(),
+        );
+        getOwnActiveBidsCacheBuster.subscribe(() =>
             paymentMethodCacheBuster.next(),
         );
     }

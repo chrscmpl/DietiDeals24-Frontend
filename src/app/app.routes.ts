@@ -114,6 +114,7 @@ export const routes: Routes = [
                     auction: getAuctionResolverFn({
                         ownAuction: false,
                         isAuctionActive: true,
+                        hasAlreadyBidded: false,
                         useParent: true,
                     }),
                 },

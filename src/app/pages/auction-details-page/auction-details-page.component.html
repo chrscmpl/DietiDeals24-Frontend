@@ -179,10 +179,7 @@
                     label="Make a bid"
                     [style]="{ padding: '1rem' }"
                     (onClick)="onBid()"
-                    [disabled]="
-                        authentication.loggedUser?.id &&
-                        authentication.loggedUser?.id === auction.userId
-                    "
+                    [disabled]="ownAuction || hasUserAlreadyBidded"
                 ></p-button>
             </section>
 

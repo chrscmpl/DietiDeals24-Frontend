@@ -144,8 +144,8 @@ export class AuthenticationService {
         this.initializedSubject.next();
     }
 
-    // These methods need to be static because they are needed in an interceptor
-    // As this service depends on HttpClient, it cannot be injected in the interceptor
+    // These methods need to be static because they are needed in an HttpInterceptor.
+    // As this service depends on HttpClient, it cannot be injected in the HttpInterceptor,
     // as it would create a circular dependency
 
     public static extractToken(res: HttpResponse<unknown>): void {
