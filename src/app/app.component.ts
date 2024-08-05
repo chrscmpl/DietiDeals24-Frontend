@@ -26,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { filter, take } from 'rxjs';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BidService } from './services/bid.service';
 
 @Component({
     selector: 'dd24-root',
@@ -63,6 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
         private readonly warnings: WarningsService,
+        _: BidService, // have it instantiated for caching purposes
     ) {}
 
     public ngOnInit(): void {

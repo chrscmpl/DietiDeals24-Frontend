@@ -22,7 +22,7 @@ export class WindowService {
         this.mediaMatcher.matchMedia('(max-width: 768px)');
 
     constructor(private readonly mediaMatcher: MediaMatcher) {
-        this.UIhiddenSUbject.next(false);
+        this.UIhiddenSUbject.next(true);
     }
 
     public isSidebarVisible = false;
