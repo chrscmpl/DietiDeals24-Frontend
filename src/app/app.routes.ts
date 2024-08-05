@@ -81,8 +81,11 @@ export const routes: Routes = [
     {
         path: 'auth',
         title: 'Authentication',
-        canActivate: [dontAuthenticateFnGuard],
-        canActivateChild: [hideUIFnGuard, confirmReloadFnGuard],
+        canActivate: [
+            dontAuthenticateFnGuard,
+            hideUIFnGuard,
+            confirmReloadFnGuard,
+        ],
 
         loadChildren: () =>
             import('./modules/auth-routing/auth-routing.module').then(
