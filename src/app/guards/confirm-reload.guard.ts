@@ -1,16 +1,19 @@
 import { inject, Injectable } from '@angular/core';
-import { CanActivate, CanActivateFn } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 import { WindowService } from '../services/window.service';
 
 @Injectable()
-export class ConfirmReloadGuard implements CanActivate {
+export class ConfirmReloadGuard {
     constructor(private windowService: WindowService) {}
 
-    public canActivate(): boolean {
-        this.windowService.confirmReload(true);
+    public canActivate(value: boolean): boolean {
+        this.windowService.confirmReload(value);
         return true;
     }
 }
 
 export const confirmReloadFnGuard: CanActivateFn = () =>
-    inject(ConfirmReloadGuard).canActivate();
+    inject(ConfirmReloadGuard).canActivate(true);
+
+export const dontConfirmReloadFnGuard: CanActivateFn = () =>
+    inject(ConfirmReloadGuard).canActivate(false);

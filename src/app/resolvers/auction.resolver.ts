@@ -5,6 +5,7 @@ import { AuctionsService } from '../services/auctions.service';
 import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { AuthenticatedUser } from '../models/user.model';
+import { AuctionStatus } from '../enums/auction-status.enum';
 
 @Injectable()
 export class AuctionResolver implements Resolve<Auction> {
@@ -19,24 +20,38 @@ export class AuctionResolver implements Resolve<Auction> {
 
 function getAccessValidatorCallback(options?: {
     ownAuction?: boolean;
+    isAuctionActive?: boolean;
     fromParent?: boolean;
 }) {
-    return options?.ownAuction === undefined
+    return options?.ownAuction === undefined &&
+        options?.isAuctionActive === undefined
         ? () => {}
         : (auction: Auction, user: AuthenticatedUser | null) => {
               if (
-                  user?.id == undefined ||
-                  auction.userId == undefined ||
-                  options.ownAuction === (auction.userId === user.id)
+                  options.ownAuction != undefined &&
+                  user?.id != undefined &&
+                  auction.userId != undefined &&
+                  options.ownAuction !== (auction.userId === user.id)
               )
-                  return;
-              throw new Error('Cannot access this auction');
+                  throw new Error(
+                      `Cannot access this auction because it is ${auction.userId === user.id ? '' : 'not '}yours`,
+                  );
+              if (
+                  options.isAuctionActive != undefined &&
+                  options.isAuctionActive !==
+                      (auction.status === AuctionStatus.active)
+              )
+                  throw new Error(
+                      `Cannot access this auction because it is ${auction.userId === AuctionStatus.active ? '' : 'not '}active`,
+                  );
+              return;
           };
 }
 
 export function getAuctionResolverFn(options?: {
     ownAuction?: boolean;
-    fromParent?: boolean;
+    isAuctionActive?: boolean;
+    useParent?: boolean;
 }): ResolveFn<Auction> {
     const accessValidatorCallback = getAccessValidatorCallback(options);
 
@@ -45,7 +60,7 @@ export function getAuctionResolverFn(options?: {
 
         return inject(AuctionResolver)
             .resolve(
-                options?.fromParent
+                options?.useParent
                     ? (route.parent as ActivatedRouteSnapshot)
                     : route,
             )

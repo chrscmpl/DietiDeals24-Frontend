@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuctionsSearchPageComponent } from './pages/auctions-search-page/auctions-search-page.component';
-import { hideUIFnGuard } from './guards/hide-ui.guard';
-import { showUIFnGuard } from './guards/show-ui.guard';
+
+import { showUIFnGuard, hideUIFnGuard } from './guards/show-ui.guard';
 import {
     authenticationFnGuard,
     dontAuthenticateFnGuard,
@@ -16,28 +16,29 @@ import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
 import { getAuctionResolverFn } from './resolvers/auction.resolver';
-import { confirmReloadFnGuard } from './guards/confirm-reload.guard';
+import {
+    confirmReloadFnGuard,
+    dontConfirmReloadFnGuard,
+} from './guards/confirm-reload.guard';
 import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
 import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
 import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
-
 import { TransactionOperation } from './enums/transaction-operation.enum';
 import { getCheckoutInformationResolverFn } from './resolvers/checkout-information.resolver';
-import { reloadFreelyFnGuard } from './guards/reload-freely.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
         title: 'DietiDeals24',
-        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
+        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
         component: HomePageComponent,
     },
     {
         path: 'auctions',
         title: 'Auctions',
-        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
+        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
         component: AuctionsSearchPageComponent,
     },
     {
@@ -46,7 +47,7 @@ export const routes: Routes = [
         component: YourPageComponent,
         canActivate: [
             showUIFnGuard,
-            reloadFreelyFnGuard,
+            dontConfirmReloadFnGuard,
             authenticationFnGuard,
         ],
     },
@@ -56,7 +57,7 @@ export const routes: Routes = [
         component: CreateAuctionPageComponent,
         canActivate: [
             showUIFnGuard,
-            reloadFreelyFnGuard,
+            dontConfirmReloadFnGuard,
             authenticationFnGuard,
         ],
     },
@@ -66,7 +67,7 @@ export const routes: Routes = [
         component: NotificationsPageComponent,
         canActivate: [
             showUIFnGuard,
-            reloadFreelyFnGuard,
+            dontConfirmReloadFnGuard,
             authenticationFnGuard,
         ],
     },
@@ -74,16 +75,14 @@ export const routes: Routes = [
         path: 'help',
         title: 'Frequently Asked Questions',
         component: HelpPageComponent,
-        canActivate: [showUIFnGuard, reloadFreelyFnGuard],
+        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
     },
     {
         path: 'auth',
         title: 'Authentication',
-        canActivate: [
-            dontAuthenticateFnGuard,
-            hideUIFnGuard,
-            confirmReloadFnGuard,
-        ],
+        canActivate: [dontAuthenticateFnGuard],
+        canActivateChild: [hideUIFnGuard, confirmReloadFnGuard],
+
         loadChildren: () =>
             import('./modules/auth-routing/auth-routing.module').then(
                 (m) => m.AuthRoutingModule,
@@ -114,7 +113,8 @@ export const routes: Routes = [
                 resolve: {
                     auction: getAuctionResolverFn({
                         ownAuction: false,
-                        fromParent: true,
+                        isAuctionActive: true,
+                        useParent: true,
                     }),
                 },
                 children: [
@@ -129,7 +129,7 @@ export const routes: Routes = [
                         resolve: {
                             checkoutInformation:
                                 getCheckoutInformationResolverFn({
-                                    fromParent: true,
+                                    useParent: true,
                                 }),
                         },
                         component: CheckoutPageComponent,

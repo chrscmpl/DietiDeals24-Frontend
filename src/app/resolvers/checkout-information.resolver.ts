@@ -81,11 +81,11 @@ export class CheckoutInformationResolver
 }
 
 export function getCheckoutInformationResolverFn(options?: {
-    fromParent?: boolean;
+    useParent?: boolean;
 }): ResolveFn<CheckoutInformation> {
     return (route) =>
         inject(CheckoutInformationResolver).resolve(
-            options?.fromParent
+            options?.useParent
                 ? (route.parent as ActivatedRouteSnapshot)
                 : route,
         );

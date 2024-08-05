@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticatedUser } from '../models/user.model';
 import {
@@ -67,8 +67,15 @@ export class AuthenticationService {
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post(`${environment.backendHost}/login`, credentials)
-            .pipe(tap(this.getUserData.bind(this)))
+            .post(`${environment.backendHost}/login`, credentials, {
+                observe: 'response',
+            })
+            .pipe(
+                tap((res: HttpResponse<unknown>) => {
+                    this.extractToken(res);
+                    this.getUserData();
+                }),
+            )
             .subscribe(cb);
     }
 
@@ -88,8 +95,15 @@ export class AuthenticationService {
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post(`${environment.backendHost}/register/confirm`, data)
-            .pipe(tap(this.getUserData.bind(this)))
+            .post(`${environment.backendHost}/register/confirm`, data, {
+                observe: 'response',
+            })
+            .pipe(
+                tap((res: HttpResponse<unknown>) => {
+                    this.extractToken(res);
+                    this.getUserData();
+                }),
+            )
             .subscribe(cb);
     }
 
@@ -107,6 +121,19 @@ export class AuthenticationService {
                 }),
             )
             .subscribe(cb);
+    }
+
+    public extractToken(res: HttpResponse<unknown>): void {
+        const token = res.headers.get('X-Auth-Token');
+        if (token) this.authorizationToken = token;
+    }
+
+    private set authorizationToken(token: string) {
+        localStorage.setItem('authorizationToken', token);
+    }
+
+    public get authorizationToken(): string | null {
+        return localStorage.getItem('authorizationToken');
     }
 
     public logout(): void {

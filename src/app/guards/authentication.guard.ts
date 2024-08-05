@@ -11,18 +11,19 @@ import { AuthenticationService } from '../services/authentication.service';
 import { map, skipUntil } from 'rxjs';
 
 @Injectable()
-export class AuthenticationGuard implements CanActivate {
+export class AuthenticationGuard {
     constructor(
         private router: Router,
         private redirection: RedirectionService,
         private authenticationService: AuthenticationService,
     ) {}
 
-    public canActivate(_: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    public canActivate(authenticate: boolean, state: RouterStateSnapshot) {
         return this.authenticationService.isLogged$.pipe(
             skipUntil(this.authenticationService.initialized$),
             map((isLogged) => {
-                if (isLogged) return true;
+                if (authenticate === isLogged) return true;
+                if (!authenticate) return false;
                 this.redirection.routeBeforeRedirection = state.url;
                 return this.router.parseUrl('/auth');
             }),
@@ -30,8 +31,8 @@ export class AuthenticationGuard implements CanActivate {
     }
 }
 
-export const authenticationFnGuard: CanActivateFn = (r, s) =>
-    inject(AuthenticationGuard).canActivate(r, s);
+export const authenticationFnGuard: CanActivateFn = (_, s) =>
+    inject(AuthenticationGuard).canActivate(true, s);
 
-export const dontAuthenticateFnGuard: CanActivateFn = () =>
-    inject(AuthenticationService).isLogged$.pipe(map((isLogged) => !isLogged));
+export const dontAuthenticateFnGuard: CanActivateFn = (_, s) =>
+    inject(AuthenticationGuard).canActivate(false, s);

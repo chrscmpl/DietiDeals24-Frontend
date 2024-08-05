@@ -1,6 +1,6 @@
 export enum AuctionStatus {
-    active = 'ACTIVE',
-    pending = 'PENDING',
-    accepted = 'ACCEPTED',
-    rejected = 'REJECTED',
+    active = 'active',
+    pending = 'pending',
+    accepted = 'accepted',
+    rejected = 'rejected',
 }

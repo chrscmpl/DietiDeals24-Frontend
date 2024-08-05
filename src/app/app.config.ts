@@ -11,7 +11,6 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authorizationInterceptor } from './interceptors/authorization.interceptor';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HideUIGuard } from './guards/hide-ui.guard';
 import { ShowUIGuard } from './guards/show-ui.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -23,7 +22,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 import { CheckoutInformationResolver } from './resolvers/checkout-information.resolver';
-import { ReloadFreelyGuard } from './guards/reload-freely.guard';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -39,14 +37,12 @@ export const appConfig: ApplicationConfig = {
         CurrencyPipe,
         MaskedPipe,
         FindCurrencyPipe,
-        HideUIGuard,
         ShowUIGuard,
         AuthenticationGuard,
         EmailVerificationGuard,
         AuctionResolver,
         CheckoutInformationResolver,
         ConfirmReloadGuard,
-        ReloadFreelyGuard,
         ShouldSpecifyChildGuard,
         MessageService,
         ConfirmationService,
