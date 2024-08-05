@@ -49,7 +49,3 @@ export interface NewChosenPaymentMethodDTO {
     save: boolean;
     newMethod: AuthorizedPaymentMethodRegistrationDTO;
 }
-
-export type ChosenPaymentMethodDTO =
-    | SavedChosenPaymentMethodDTO
-    | NewChosenPaymentMethodDTO;

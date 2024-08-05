@@ -47,6 +47,9 @@
     }
 
     .placeholder {
+        width: 100%;
+        height: 100%;
+        @include layouts.center;
         padding: var(--page-items-gap) 15%;
 
         @include viewports.mobile {

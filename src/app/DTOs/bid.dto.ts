@@ -1,4 +1,7 @@
-import { ChosenPaymentMethodDTO } from './payment-method.dto';
+import {
+    NewChosenPaymentMethodDTO,
+    SavedChosenPaymentMethodDTO,
+} from './payment-method.dto';
 
 export interface BidDTO {
     id: string;
@@ -6,8 +9,14 @@ export interface BidDTO {
     amount: number;
 }
 
-export interface BidCreationDTO {
-    auctionId: string;
-    amount: number;
-    paymentMethod: ChosenPaymentMethodDTO;
-}
+export type BidCreationDTO =
+    | {
+          auctionId: string;
+          amount: number;
+          savedPaymentMethod: SavedChosenPaymentMethodDTO;
+      }
+    | {
+          auctionId: string;
+          amount: number;
+          newPaymentMethod: NewChosenPaymentMethodDTO;
+      };

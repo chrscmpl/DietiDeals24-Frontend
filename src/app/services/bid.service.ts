@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { AuthenticationService } from './authentication.service';
 
-export const getOwnActiveBidsCacheBuster = new Subject<void>();
+export const newBidMade$ = new Subject<void>();
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +18,7 @@ export class BidService {
         private readonly auth: AuthenticationService,
     ) {
         this.auth.isLogged$.subscribe((isLogged) => {
-            getOwnActiveBidsCacheBuster.next();
+            newBidMade$.next();
             if (isLogged) this.refreshOwnActiveBids();
         });
     }
@@ -28,14 +28,14 @@ export class BidService {
     }
 
     @CacheBuster({
-        cacheBusterNotifier: getOwnActiveBidsCacheBuster,
+        cacheBusterNotifier: newBidMade$,
     })
     public createBid(bid: BidCreationDTO): Observable<unknown> {
         return this.http.post<unknown>(`${environment.backendHost}/bids`, bid);
     }
 
     @Cacheable({
-        cacheBusterObserver: getOwnActiveBidsCacheBuster.asObservable(),
+        cacheBusterObserver: newBidMade$,
     })
     public getOwnActiveBids(): Observable<Bid[]> {
         return this.http

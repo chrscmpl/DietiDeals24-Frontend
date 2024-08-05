@@ -6,7 +6,11 @@
         ></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
             <div class="placeholder">
-                <dd24-loading-placeholder></dd24-loading-placeholder>
+                <p-progressSpinner
+                    class="spinner"
+                    strokeWidth="6"
+                    animationDuration="1s"
+                ></p-progressSpinner>
             </div>
         }
     </div>

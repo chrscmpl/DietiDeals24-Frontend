@@ -14,11 +14,10 @@ import { AsyncPipe } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { LoadingPlaceholderComponent } from './components/loading-placeholder/loading-placeholder.component';
 import { SmartStickyDirective } from './directives/smart-sticky.directive';
 import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
@@ -26,6 +25,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { filter, take } from 'rxjs';
 import { WarningsService } from './services/warnings.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
     selector: 'dd24-root',
@@ -33,7 +33,6 @@ import { WarningsService } from './services/warnings.service';
     imports: [
         RouterOutlet,
         RouterLink,
-        LoadingPlaceholderComponent,
         AsyncPipe,
         HeaderComponent,
         FooterComponent,
@@ -44,6 +43,7 @@ import { WarningsService } from './services/warnings.service';
         SmartStickyDirective,
         ToastModule,
         ConfirmDialogModule,
+        ProgressSpinnerModule,
     ],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],

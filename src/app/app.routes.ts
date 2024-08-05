@@ -26,6 +26,7 @@ import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 import { TransactionOperation } from './enums/transaction-operation.enum';
 import { getCheckoutInformationResolverFn } from './resolvers/checkout-information.resolver';
+import { AuctionStatus } from './enums/auction-status.enum';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -113,7 +114,7 @@ export const routes: Routes = [
                 resolve: {
                     auction: getAuctionResolverFn({
                         ownAuction: false,
-                        isAuctionActive: true,
+                        requiredStatus: AuctionStatus.active,
                         hasAlreadyBidded: false,
                         useParent: true,
                     }),

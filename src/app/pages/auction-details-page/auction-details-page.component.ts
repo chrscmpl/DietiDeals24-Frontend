@@ -119,13 +119,14 @@ export class AuctionDetailsPageComponent
             ),
         );
 
-        this.subscriptions.push(
-            this.bidService.getOwnActiveBids().subscribe((bids) => {
+        this.bidService
+            .getOwnActiveBids()
+            .pipe(take(1))
+            .subscribe((bids) => {
                 this.hasUserAlreadyBidded = !!bids.find(
                     (bid) => bid.auctionId === this.auction?.id,
                 );
-            }),
-        );
+            });
     }
 
     public ngAfterViewInit(): void {

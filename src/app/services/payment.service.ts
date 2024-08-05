@@ -7,9 +7,9 @@ import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodBuilder } from '../helpers/builders/payment-method-builder';
 import { PaymentMethodType } from '../enums/payment-method-type';
-import { getOwnActiveBidsCacheBuster } from './bid.service';
+import { newBidMade$ } from './bid.service';
 
-const paymentMethodCacheBuster = new Subject<void>();
+const newPaymentMethodAdded$ = new Subject<void>();
 
 @Injectable({
     providedIn: 'root',
@@ -20,11 +20,9 @@ export class PaymentService {
         private readonly http: HttpClient,
     ) {
         this.authentication.isLogged$.subscribe(() =>
-            paymentMethodCacheBuster.next(),
+            newPaymentMethodAdded$.next(),
         );
-        getOwnActiveBidsCacheBuster.subscribe(() =>
-            paymentMethodCacheBuster.next(),
-        );
+        newBidMade$.subscribe(() => newPaymentMethodAdded$.next());
     }
 
     public getPaymentMethods(
@@ -39,7 +37,7 @@ export class PaymentService {
     }
 
     @Cacheable({
-        cacheBusterObserver: paymentMethodCacheBuster.asObservable(),
+        cacheBusterObserver: newPaymentMethodAdded$,
     })
     private retrieveAllPaymentMethods(): Observable<PaymentMethod[]> {
         return this.authentication.isLogged$.pipe(
