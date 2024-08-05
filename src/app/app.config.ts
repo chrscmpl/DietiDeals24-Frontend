@@ -7,8 +7,11 @@ import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authorizationInterceptor } from './interceptors/authorization.interceptor';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShowUIGuard } from './guards/show-ui.guard';
@@ -22,11 +25,17 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 import { CheckoutInformationResolver } from './resolvers/checkout-information.resolver';
+import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthenticationInterceptor,
+            multi: true,
+        },
         provideRouter(routes),
-        provideHttpClient(withInterceptors([authorizationInterceptor])),
+        provideHttpClient(withInterceptorsFromDi()),
         importProvidersFrom([BrowserAnimationsModule]),
         Location,
         LocalDatePipe,

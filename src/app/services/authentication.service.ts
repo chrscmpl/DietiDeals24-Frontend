@@ -72,7 +72,7 @@ export class AuthenticationService {
             })
             .pipe(
                 tap((res: HttpResponse<unknown>) => {
-                    this.extractToken(res);
+                    AuthenticationService.extractToken(res);
                     this.getUserData();
                 }),
             )
@@ -100,7 +100,7 @@ export class AuthenticationService {
             })
             .pipe(
                 tap((res: HttpResponse<unknown>) => {
-                    this.extractToken(res);
+                    AuthenticationService.extractToken(res);
                     this.getUserData();
                 }),
             )
@@ -123,19 +123,6 @@ export class AuthenticationService {
             .subscribe(cb);
     }
 
-    public extractToken(res: HttpResponse<unknown>): void {
-        const token = res.headers.get('X-Auth-Token');
-        if (token) this.authorizationToken = token;
-    }
-
-    private set authorizationToken(token: string) {
-        localStorage.setItem('authorizationToken', token);
-    }
-
-    public get authorizationToken(): string | null {
-        return localStorage.getItem('authorizationToken');
-    }
-
     public logout(): void {
         localStorage.removeItem('authorizationToken');
         this._isLogged = false;
@@ -155,5 +142,22 @@ export class AuthenticationService {
         if (this._initialized) return;
         this._initialized = true;
         this.initializedSubject.next();
+    }
+
+    // These methods need to be static because they are needed in an interceptor
+    // As this service depends on HttpClient, it cannot be injected in the interceptor
+    // as it would create a circular dependency
+
+    public static extractToken(res: HttpResponse<unknown>): void {
+        const token = res.headers.get('X-Auth-Token');
+        if (token) this.authorizationToken = token;
+    }
+
+    private static set authorizationToken(token: string) {
+        localStorage.setItem('authorizationToken', token);
+    }
+
+    public static get authorizationToken(): string | null {
+        return localStorage.getItem('authorizationToken');
     }
 }
