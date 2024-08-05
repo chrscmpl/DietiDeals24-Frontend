@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
+import {
+    ActivatedRoute,
+    NavigationCancel,
+    NavigationEnd,
+    NavigationError,
+    Params,
+    Router,
+} from '@angular/router';
 import {
     Observable,
     auditTime,
@@ -10,6 +17,7 @@ import {
     shareReplay,
     startWith,
     switchMap,
+    take,
 } from 'rxjs';
 import { SearchServiceService } from './search-service.service';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
@@ -60,6 +68,22 @@ export class NavigationService {
         this.currentQuery$ = this.currentLocation$.pipe(
             map((location) => location.query),
         );
+    }
+
+    public executeIfNavigationSuccessful(fn: () => void): void {
+        this.router.events
+            .pipe(
+                filter(
+                    (e) =>
+                        e instanceof NavigationCancel ||
+                        e instanceof NavigationError ||
+                        e instanceof NavigationEnd,
+                ),
+                take(1),
+            )
+            .subscribe((e) => {
+                if (e instanceof NavigationEnd) fn();
+            });
     }
 
     private getCurrentPath(): string[] {
