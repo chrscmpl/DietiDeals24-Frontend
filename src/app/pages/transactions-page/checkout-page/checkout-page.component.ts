@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { take } from 'rxjs';
@@ -70,6 +70,7 @@ export class CheckoutPageComponent implements OnInit {
         public readonly windowService: WindowService,
         private readonly formBuilder: FormBuilder,
         private readonly warning: WarningsService,
+        private readonly changeDetector: ChangeDetectorRef,
     ) {}
 
     public ngOnInit(): void {
@@ -118,6 +119,8 @@ export class CheckoutPageComponent implements OnInit {
                 ).includes(value as PaymentMethodType)
                     ? (value as PaymentMethodType)
                     : null;
+                if (this.newPaymentMethodFormVisible !== null)
+                    this.changeDetector.detectChanges();
             },
         );
     }

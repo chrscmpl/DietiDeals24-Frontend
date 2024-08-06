@@ -1,7 +1,15 @@
+@use "layouts";
+
 .payment-method-form {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
     background-color: var(--component-color);
+    padding: 1rem;
 }
 
 .iban-input {
     width: 40ch;
+}
+
+.payment-method-checkbox-wrapper {
+    @include layouts.flex(row, start, center, 1ch);
 }
