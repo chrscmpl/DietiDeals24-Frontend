@@ -1,0 +1,36 @@
+<div class="payment-method-form" [style]="formStyle">
+    @if (type === PaymentMethodType.creditCard) {
+    } @else if (type === PaymentMethodType.IBAN) {
+        <div class="iban-form" [formGroup]="newMethodGroup">
+            <div class="input">
+                <label for="iban">IBAN</label>
+                <dd24-input
+                    controlName="iban"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'an IBAN is required'
+                        }
+                    ]"
+                >
+                    <input
+                        class="iban-input"
+                        type="text"
+                        pInputText
+                        formControlName="iban"
+                        name="iban"
+                        id="iban"
+                    />
+                </dd24-input>
+            </div>
+        </div>
+    }
+    <div class="payment-method-checkbox-wrapper" [formGroup]="form">
+        <p-checkbox
+            formControlName="save"
+            inputId="save-checkbox"
+            binary="true"
+        ></p-checkbox>
+        <label for="save-checkbox">Save for future deals</label>
+    </div>
+</div>

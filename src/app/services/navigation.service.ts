@@ -41,6 +41,17 @@ export class NavigationService {
         filter((event) => event instanceof NavigationEnd),
     );
 
+    private isCurrentNavigationSuccessful$ = this.router.events.pipe(
+        filter(
+            (e) =>
+                e instanceof NavigationCancel ||
+                e instanceof NavigationError ||
+                e instanceof NavigationEnd,
+        ),
+        take(1),
+        map((e) => e instanceof NavigationEnd),
+    );
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -71,19 +82,15 @@ export class NavigationService {
     }
 
     public executeIfNavigationSuccessful(fn: () => void): void {
-        this.router.events
-            .pipe(
-                filter(
-                    (e) =>
-                        e instanceof NavigationCancel ||
-                        e instanceof NavigationError ||
-                        e instanceof NavigationEnd,
-                ),
-                take(1),
-            )
-            .subscribe((e) => {
-                if (e instanceof NavigationEnd) fn();
-            });
+        this.isCurrentNavigationSuccessful$.subscribe((success) => {
+            if (success) fn();
+        });
+    }
+
+    public executeIfNavigationFailure(fn: () => void): void {
+        this.isCurrentNavigationSuccessful$.subscribe((success) => {
+            if (!success) fn();
+        });
     }
 
     private getCurrentPath(): string[] {

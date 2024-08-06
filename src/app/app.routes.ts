@@ -20,6 +20,7 @@ import { AuctionResolver } from './resolvers/auction.resolver';
 import { ShowUIGuard } from './guards/show-ui.guard';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
+import { AuctionConclusionPageComponent } from './pages/transactions-page/auction-conclusion-page/auction-conclusion-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -129,6 +130,34 @@ export const routes: Routes = [
                         path: '',
                         title: 'Bid',
                         component: BiddingPageComponent,
+                    },
+                    {
+                        path: 'checkout',
+                        title: 'Checkout',
+                        resolve: {
+                            checkoutInformation:
+                                CheckoutInformationResolver.asResolveFn({
+                                    useParent: true,
+                                }),
+                        },
+                        component: CheckoutPageComponent,
+                    },
+                ],
+            },
+            {
+                path: TransactionOperation.conclude,
+                resolve: {
+                    auction: AuctionResolver.asResolveFn({
+                        ownAuction: true,
+                        requiredStatus: AuctionStatus.pending,
+                        useParent: true,
+                    }),
+                },
+                children: [
+                    {
+                        path: '',
+                        title: 'Auction conclusion',
+                        component: AuctionConclusionPageComponent,
                     },
                     {
                         path: 'checkout',

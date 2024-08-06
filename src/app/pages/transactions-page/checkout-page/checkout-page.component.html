@@ -19,11 +19,15 @@
         }}
         method:
     </p>
-    <form class="payment-method-form" [formGroup]="paymentMethodForm">
+    <form
+        class="payment-method-form"
+        [formGroup]="chosenPaymentMethodForm"
+        (ngSubmit)="onSubmit()"
+    >
         @for (savedMethod of savedPaymentMethodOptions; track savedMethod.id) {
             <dd24-payment-method-option
                 class="payment-method-option"
-                [form]="paymentMethodForm"
+                [form]="chosenPaymentMethodForm"
                 controlName="chosenPaymentMethod"
                 [value]="savedMethod"
                 [optionStyle]="{
@@ -37,7 +41,7 @@
             <dd24-payment-method-option
                 [value]="newMethod"
                 class="payment-method-option"
-                [form]="paymentMethodForm"
+                [form]="chosenPaymentMethodForm"
                 controlName="chosenPaymentMethod"
                 [optionStyle]="{
                     paddingLeft: '2rem',
@@ -48,6 +52,23 @@
                             : ''
                 }"
             ></dd24-payment-method-option>
+            @if (newPaymentMethodFormVisible === newMethod) {
+                <dd24-payment-method-form
+                    [type]="newMethod"
+                    [form]="newPaymentMethodFormGroup"
+                    [formStyle]="{
+                        padding: '2rem',
+                        borderBottom: 'var(--border)',
+                        paddingTop: '0'
+                    }"
+                ></dd24-payment-method-form>
+            }
         }
+        <p-button
+            class="checkout-submit-btn"
+            type="submit"
+            label="Confirm and bid"
+            [style]="{ padding: '1rem 2rem' }"
+        ></p-button>
     </form>
 </main>

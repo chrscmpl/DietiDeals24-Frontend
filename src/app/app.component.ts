@@ -27,6 +27,7 @@ import { filter, take } from 'rxjs';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BidService } from './services/bid.service';
+import { NavigationService } from './services/navigation.service';
 
 @Component({
     selector: 'dd24-root',
@@ -64,12 +65,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
         private readonly warnings: WarningsService,
+        private readonly navigation: NavigationService,
         _: BidService, // have it instantiated for caching purposes
     ) {}
 
     public ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
-        this.configureLayout();
+        this.configureVirtualKeyboard();
         this.redirectOnBadInitialRoute();
         this.configurePrimeNG();
         this.themeService.initTheme();
@@ -88,7 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isLoadingRouteIndicator.start();
     }
 
-    private configureLayout(): void {
+    private configureVirtualKeyboard(): void {
         try {
             const navigator: any = window.navigator; // eslint-disable-line @typescript-eslint/no-explicit-any
             navigator.virtualKeyboard.overlaysContent = true;
@@ -105,22 +107,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     private redirectOnBadInitialRoute(): void {
-        this.router.events
-            .pipe(
-                filter(
-                    (e) =>
-                        e instanceof NavigationEnd ||
-                        e instanceof NavigationCancel ||
-                        e instanceof NavigationError,
-                ),
-                take(1),
-            )
-            .subscribe((e) => {
-                if (!(e instanceof NavigationEnd)) {
-                    this.windowService.setUIvisibility(true);
-                    this.router.navigate(['/home']);
-                }
-            });
+        this.navigation.executeIfNavigationFailure(() =>
+            this.router.navigate(['/home']),
+        );
     }
 
     private configurePrimeNG(): void {
