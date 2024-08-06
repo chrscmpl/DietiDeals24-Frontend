@@ -1,7 +1,5 @@
 <main class="checkout-page">
-    @if ((windowService.isMobile$ | async) === false) {
-        <h1 class="checkout-page-title">Checkout</h1>
-    }
+    <h1 class="checkout-page-title">Checkout</h1>
     @if (auction) {
         <p class="checkout-recap">
             You are
@@ -57,12 +55,16 @@
                     [type]="newMethod"
                     [form]="newPaymentMethodFormGroup"
                     [formStyle]="{
+                        paddingTop: '0',
+                        paddingRight: '2rem',
                         paddingLeft: '2rem',
-                        borderBottom: 'var(--border)',
-                        paddingTop: '0'
+                        borderBottom: 'var(--border)'
                     }"
                 ></dd24-payment-method-form>
             }
+        }
+        @if (windowService.isMobile$ | async) {
+            <div class="spacer"></div>
         }
         <p-button
             class="checkout-submit-btn"

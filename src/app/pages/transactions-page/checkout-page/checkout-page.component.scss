@@ -30,10 +30,21 @@
     @include layouts.flex(column, start, stretch);
     margin: 0 -2rem;
     border-top: var(--border);
+    flex-grow: 1;
 }
 
 .checkout-submit-btn {
     align-self: start;
     margin-left: 2rem;
     margin-top: var(--page-items-gap);
+
+    @include viewports.mobile {
+        margin: 0 2rem;
+        align-self: stretch;
+        justify-self: end;
+    }
+}
+
+.spacer {
+    flex-grow: 1;
 }

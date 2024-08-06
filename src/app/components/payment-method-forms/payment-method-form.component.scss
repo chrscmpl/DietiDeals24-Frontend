@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 .payment-method-form {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
@@ -8,6 +9,9 @@
 
 .iban-input {
     width: 40ch;
+    @include viewports.mobile {
+        width: 100%;
+    }
 }
 
 .payment-method-checkbox-wrapper {
