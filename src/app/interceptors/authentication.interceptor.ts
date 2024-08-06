@@ -2,12 +2,13 @@ import {
     HttpEvent,
     HttpHandler,
     HttpInterceptor,
+    HttpInterceptorFn,
     HttpRequest,
     HttpResponse,
 } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
@@ -33,5 +34,10 @@ export class AuthenticationInterceptor implements HttpInterceptor {
                 }
             }),
         );
+    }
+
+    public static asHttpInterceptorFn(): HttpInterceptorFn {
+        return (req, next) =>
+            inject(AuthenticationInterceptor).intercept(req, { handle: next });
     }
 }

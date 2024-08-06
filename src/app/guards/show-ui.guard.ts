@@ -16,10 +16,14 @@ export class ShowUIGuard {
         );
         return true;
     }
+
+    public static asCanActivateFn(value: boolean) {
+        return value ? ShowUIGuard.showUIFnGuard : ShowUIGuard.hideUIFnGuard;
+    }
+
+    private static showUIFnGuard: CanActivateFn = () =>
+        inject(ShowUIGuard).canActivate(true);
+
+    private static hideUIFnGuard: CanActivateFn = () =>
+        inject(ShowUIGuard).canActivate(false);
 }
-
-export const showUIFnGuard: CanActivateFn = () =>
-    inject(ShowUIGuard).canActivate(true);
-
-export const hideUIFnGuard: CanActivateFn = () =>
-    inject(ShowUIGuard).canActivate(false);

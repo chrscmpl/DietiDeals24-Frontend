@@ -6,10 +6,7 @@ import { RegistrationPageComponent } from '../../pages/authentication-page/regis
 import { ForgotPasswordPageComponent } from '../../pages/authentication-page/forgot-password-page/forgot-password-page.component';
 import { AuthenticationPageComponent } from '../../pages/authentication-page/authentication-page.component';
 import { VerifyEmailPageComponent } from '../../pages/authentication-page/verify-email-page/verify-email-page.component';
-import {
-    emailVerificationActivateFnGuard,
-    emailVerificationDeactivateFnGuard,
-} from '../../guards/email-not-verified.guard';
+import { EmailVerificationGuard } from '../../guards/email-verification.guard';
 
 const routes: Routes = [
     {
@@ -40,8 +37,8 @@ const routes: Routes = [
                 path: 'verify-email',
                 title: 'Verify Email',
                 component: VerifyEmailPageComponent,
-                canActivate: [emailVerificationActivateFnGuard],
-                canDeactivate: [emailVerificationDeactivateFnGuard],
+                canActivate: [EmailVerificationGuard.asCanActivateFn()],
+                canDeactivate: [EmailVerificationGuard.asCanDeactivateFn()],
             },
         ],
     },

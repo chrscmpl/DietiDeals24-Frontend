@@ -16,10 +16,16 @@ export class ConfirmReloadGuard {
         );
         return true;
     }
+
+    public static asCanActivateFn(value: boolean) {
+        return value
+            ? ConfirmReloadGuard.confirmReloadFnGuard
+            : ConfirmReloadGuard.dontConfirmReloadFnGuard;
+    }
+
+    private static confirmReloadFnGuard: CanActivateFn = () =>
+        inject(ConfirmReloadGuard).canActivate(true);
+
+    private static dontConfirmReloadFnGuard: CanActivateFn = () =>
+        inject(ConfirmReloadGuard).canActivate(false);
 }
-
-export const confirmReloadFnGuard: CanActivateFn = () =>
-    inject(ConfirmReloadGuard).canActivate(true);
-
-export const dontConfirmReloadFnGuard: CanActivateFn = () =>
-    inject(ConfirmReloadGuard).canActivate(false);

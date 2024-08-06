@@ -21,11 +21,18 @@ export class EmailVerificationGuard
         this.authenticationService.emailToVerify = null;
         return true;
     }
+
+    public static asCanActivateFn() {
+        return EmailVerificationGuard.emailVerificationActivateFnGuard;
+    }
+
+    public static asCanDeactivateFn() {
+        return EmailVerificationGuard.emailVerificationDeactivateFnGuard;
+    }
+
+    private static emailVerificationActivateFnGuard: CanActivateFn = () =>
+        inject(EmailVerificationGuard).canActivate();
+
+    private static emailVerificationDeactivateFnGuard: CanDeactivateFn<unknown> =
+        () => inject(EmailVerificationGuard).canDeactivate();
 }
-
-export const emailVerificationActivateFnGuard: CanActivateFn = () =>
-    inject(EmailVerificationGuard).canActivate();
-
-export const emailVerificationDeactivateFnGuard: CanDeactivateFn<
-    unknown
-> = () => inject(EmailVerificationGuard).canDeactivate();

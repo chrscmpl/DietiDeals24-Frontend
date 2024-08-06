@@ -1,11 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    CanActivateFn,
-    Router,
-    RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { RedirectionService } from '../services/redirection.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { map, skipUntil } from 'rxjs';
@@ -29,10 +23,16 @@ export class AuthenticationGuard {
             }),
         );
     }
+
+    public static asCanActivateFn(authenticate: boolean) {
+        return authenticate
+            ? AuthenticationGuard.authenticationFnGuard
+            : AuthenticationGuard.dontAuthenticateFnGuard;
+    }
+
+    private static authenticationFnGuard: CanActivateFn = (_, s) =>
+        inject(AuthenticationGuard).canActivate(true, s);
+
+    private static dontAuthenticateFnGuard: CanActivateFn = (_, s) =>
+        inject(AuthenticationGuard).canActivate(false, s);
 }
-
-export const authenticationFnGuard: CanActivateFn = (_, s) =>
-    inject(AuthenticationGuard).canActivate(true, s);
-
-export const dontAuthenticateFnGuard: CanActivateFn = (_, s) =>
-    inject(AuthenticationGuard).canActivate(false, s);

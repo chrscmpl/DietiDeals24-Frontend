@@ -7,17 +7,13 @@ import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
-import {
-    HTTP_INTERCEPTORS,
-    provideHttpClient,
-    withInterceptorsFromDi,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShowUIGuard } from './guards/show-ui.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { provideServiceWorker } from '@angular/service-worker';
-import { EmailVerificationGuard } from './guards/email-not-verified.guard';
+import { EmailVerificationGuard } from './guards/email-verification.guard';
 import { MaskedPipe } from './pipes/masked.pipe';
 import { FindCurrencyPipe } from './pipes/find-currency.pipe';
 import { AuctionResolver } from './resolvers/auction.resolver';
@@ -29,13 +25,11 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthenticationInterceptor,
-            multi: true,
-        },
         provideRouter(routes),
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(
+            withInterceptors([AuthenticationInterceptor.asHttpInterceptorFn()]),
+        ),
+        AuthenticationInterceptor,
         importProvidersFrom([BrowserAnimationsModule]),
         Location,
         LocalDatePipe,

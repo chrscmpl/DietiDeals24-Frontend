@@ -12,6 +12,7 @@ import { AuctionKind } from '../enums/auction-kind.enum';
 import { TransactionOperation } from '../enums/transaction-operation.enum';
 import { Auction } from '../models/auction.model';
 import { CheckoutInformation } from '../models/checkout-information.model';
+import { MessageService } from 'primeng/api';
 
 @Injectable()
 export class CheckoutInformationResolver
@@ -20,6 +21,7 @@ export class CheckoutInformationResolver
     public constructor(
         private readonly payment: PaymentService,
         private readonly router: Router,
+        private readonly message: MessageService,
     ) {}
 
     public resolve(
@@ -46,7 +48,7 @@ export class CheckoutInformationResolver
             (!bidAmount && bidAmount !== 0) ||
             requiredCategory === null
         )
-            return throwError(() => new Error('Invalid checkout operation'));
+            return this.throwError();
 
         return this.payment.getPaymentMethods(requiredCategory).pipe(
             catchError(() => of([])),
@@ -78,15 +80,25 @@ export class CheckoutInformationResolver
         }
         return null;
     }
-}
 
-export function getCheckoutInformationResolverFn(options?: {
-    useParent?: boolean;
-}): ResolveFn<CheckoutInformation> {
-    return (route) =>
-        inject(CheckoutInformationResolver).resolve(
-            options?.useParent
-                ? (route.parent as ActivatedRouteSnapshot)
-                : route,
-        );
+    private throwError(): Observable<never> {
+        const messageText = 'Invalid checkout operation';
+        this.message.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: messageText,
+        });
+        return throwError(() => new Error(messageText));
+    }
+
+    public static asResolveFn(options?: {
+        useParent?: boolean;
+    }): ResolveFn<CheckoutInformation> {
+        return (route) =>
+            inject(CheckoutInformationResolver).resolve(
+                options?.useParent
+                    ? (route.parent as ActivatedRouteSnapshot)
+                    : route,
+            );
+    }
 }

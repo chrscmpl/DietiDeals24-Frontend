@@ -12,7 +12,11 @@ export class ShouldSpecifyChildGuard implements CanActivate {
     public canActivate(route: ActivatedRouteSnapshot) {
         return !!route.firstChild;
     }
-}
 
-export const shouldSpecifyChildFnGuard: CanActivateFn = (r) =>
-    inject(ShouldSpecifyChildGuard).canActivate(r);
+    public static asCanActivateFn() {
+        return ShouldSpecifyChildGuard.shouldSpecifyChildFnGuard;
+    }
+
+    private static shouldSpecifyChildFnGuard: CanActivateFn = (r) =>
+        inject(ShouldSpecifyChildGuard).canActivate(r);
+}

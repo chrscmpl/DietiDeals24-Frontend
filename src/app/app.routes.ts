@@ -1,11 +1,5 @@
 import { Routes } from '@angular/router';
 import { AuctionsSearchPageComponent } from './pages/auctions-search-page/auctions-search-page.component';
-
-import { showUIFnGuard, hideUIFnGuard } from './guards/show-ui.guard';
-import {
-    authenticationFnGuard,
-    dontAuthenticateFnGuard,
-} from './guards/authentication.guard';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { YourPageComponent } from './pages/your-page/your-page.component';
 import { CreateAuctionPageComponent } from './pages/create-auction-page/create-auction-page.component';
@@ -15,31 +9,36 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { HelpPageComponent } from './pages/help-page/help-page.component';
 import { NotificationsPageComponent } from './pages/notifications-page/notifications-page.component';
 import { AuctionDetailsPageComponent } from './pages/auction-details-page/auction-details-page.component';
-import { getAuctionResolverFn } from './resolvers/auction.resolver';
-import {
-    confirmReloadFnGuard,
-    dontConfirmReloadFnGuard,
-} from './guards/confirm-reload.guard';
 import { TransactionsPageComponent } from './pages/transactions-page/transactions-page.component';
 import { BiddingPageComponent } from './pages/transactions-page/bidding-page/bidding-page.component';
-import { shouldSpecifyChildFnGuard } from './guards/should-specify-child.guard';
+import { ShouldSpecifyChildGuard } from './guards/should-specify-child.guard';
 import { CheckoutPageComponent } from './pages/transactions-page/checkout-page/checkout-page.component';
 import { TransactionOperation } from './enums/transaction-operation.enum';
-import { getCheckoutInformationResolverFn } from './resolvers/checkout-information.resolver';
 import { AuctionStatus } from './enums/auction-status.enum';
+import { CheckoutInformationResolver } from './resolvers/checkout-information.resolver';
+import { AuctionResolver } from './resolvers/auction.resolver';
+import { ShowUIGuard } from './guards/show-ui.guard';
+import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
+import { AuthenticationGuard } from './guards/authentication.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
         title: 'DietiDeals24',
-        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+        ],
         component: HomePageComponent,
     },
     {
         path: 'auctions',
         title: 'Auctions',
-        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+        ],
         component: AuctionsSearchPageComponent,
     },
     {
@@ -47,9 +46,9 @@ export const routes: Routes = [
         title: 'Your Page',
         component: YourPageComponent,
         canActivate: [
-            showUIFnGuard,
-            dontConfirmReloadFnGuard,
-            authenticationFnGuard,
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+            AuthenticationGuard.asCanActivateFn(true),
         ],
     },
     {
@@ -57,9 +56,9 @@ export const routes: Routes = [
         title: 'Create an Auction',
         component: CreateAuctionPageComponent,
         canActivate: [
-            showUIFnGuard,
-            dontConfirmReloadFnGuard,
-            authenticationFnGuard,
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+            AuthenticationGuard.asCanActivateFn(true),
         ],
     },
     {
@@ -67,24 +66,27 @@ export const routes: Routes = [
         title: 'Notifications',
         component: NotificationsPageComponent,
         canActivate: [
-            showUIFnGuard,
-            dontConfirmReloadFnGuard,
-            authenticationFnGuard,
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+            AuthenticationGuard.asCanActivateFn(true),
         ],
     },
     {
         path: 'help',
         title: 'Frequently Asked Questions',
         component: HelpPageComponent,
-        canActivate: [showUIFnGuard, dontConfirmReloadFnGuard],
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+        ],
     },
     {
         path: 'auth',
         title: 'Authentication',
         canActivate: [
-            dontAuthenticateFnGuard,
-            hideUIFnGuard,
-            confirmReloadFnGuard,
+            AuthenticationGuard.asCanActivateFn(false),
+            ShowUIGuard.asCanActivateFn(false),
+            ConfirmReloadGuard.asCanActivateFn(true),
         ],
 
         loadChildren: () =>
@@ -96,7 +98,7 @@ export const routes: Routes = [
         path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
-        resolve: { auction: getAuctionResolverFn() },
+        resolve: { auction: AuctionResolver.asResolveFn() },
     },
     {
         path: 'auctions/:auction-id',
@@ -106,16 +108,16 @@ export const routes: Routes = [
         path: 'txn/:auction-id',
         component: TransactionsPageComponent,
         canActivate: [
-            authenticationFnGuard,
-            shouldSpecifyChildFnGuard,
-            hideUIFnGuard,
-            /*confirmReloadFnGuard*/
+            AuthenticationGuard.asCanActivateFn(true),
+            ShouldSpecifyChildGuard.asCanActivateFn(),
+            ShowUIGuard.asCanActivateFn(false),
+            // ConfirmReloadGuard.asCanActivateFn(true),
         ],
         children: [
             {
                 path: TransactionOperation.bid,
                 resolve: {
-                    auction: getAuctionResolverFn({
+                    auction: AuctionResolver.asResolveFn({
                         ownAuction: false,
                         requiredStatus: AuctionStatus.active,
                         hasAlreadyBidded: false,
@@ -133,7 +135,7 @@ export const routes: Routes = [
                         title: 'Checkout',
                         resolve: {
                             checkoutInformation:
-                                getCheckoutInformationResolverFn({
+                                CheckoutInformationResolver.asResolveFn({
                                     useParent: true,
                                 }),
                         },

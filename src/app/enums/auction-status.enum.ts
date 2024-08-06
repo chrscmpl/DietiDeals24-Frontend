@@ -3,4 +3,5 @@ export enum AuctionStatus {
     pending = 'pending',
     accepted = 'accepted',
     rejected = 'rejected',
+    aborted = 'aborted',
 }

@@ -179,7 +179,11 @@
                     label="Make a bid"
                     [style]="{ padding: '1rem' }"
                     (onClick)="onBid()"
-                    [disabled]="ownAuction || hasUserAlreadyBidded"
+                    [disabled]="
+                        ownAuction ||
+                        hasUserAlreadyBidded ||
+                        auction.status !== auctionStatus.active
+                    "
                 ></p-button>
             </section>
 

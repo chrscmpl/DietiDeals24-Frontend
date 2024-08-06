@@ -86,7 +86,7 @@ export class AuctionResolver {
     ) {
         if (requiredStatus !== auction.status)
             throw new Error(
-                `Cannot access this auction because it is not ${requiredStatus}`,
+                `Cannot access this auction because it is of status ${auction.status}`,
             );
     }
 
@@ -107,12 +107,12 @@ export class AuctionResolver {
             }),
         );
     }
-}
 
-export function getAuctionResolverFn(
-    options?: AuctionResolverOptions,
-): ResolveFn<Auction> {
-    return (route) => {
-        return inject(AuctionResolver).resolve(route, options);
-    };
+    public static asResolveFn(
+        options?: AuctionResolverOptions,
+    ): ResolveFn<Auction> {
+        return (route) => {
+            return inject(AuctionResolver).resolve(route, options);
+        };
+    }
 }

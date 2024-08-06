@@ -29,6 +29,7 @@ import { UserService } from '../../services/user.service';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuthenticationService } from '../../services/authentication.service';
 import { BidService } from '../../services/bid.service';
+import { AuctionStatus } from '../../enums/auction-status.enum';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -57,6 +58,8 @@ export class AuctionDetailsPageComponent
     private static readonly EXPANDABLE_THRESHOLD = 30;
     private readonly subscriptions: Subscription[] = [];
     public display: boolean = true;
+
+    public readonly auctionStatus = AuctionStatus;
 
     public auction?: Auction;
 
