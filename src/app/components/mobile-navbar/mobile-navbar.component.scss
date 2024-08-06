@@ -16,6 +16,7 @@
 
         .nav-link-icon {
             font-size: 2rem;
+            width: 2ch;
             color: var(--basic-affordances-color);
             cursor: pointer;
 
@@ -27,12 +28,8 @@
         &.nav-entry-active {
             background: radial-gradient(
                 var(--border-color-transparent) 0%,
-                transparent 140%
+                transparent 100%
             );
-
-            .nav-link-icon:not(.create) {
-                color: var(--text-color-3);
-            }
 
             .nav-link-icon {
                 font-weight: 900;
@@ -54,7 +51,6 @@
     .nav-entry-active {
         background-color: var(--border-color-transparent);
         .p-avatar-icon {
-            color: var(--text-color-2);
             font-weight: 900;
         }
     }

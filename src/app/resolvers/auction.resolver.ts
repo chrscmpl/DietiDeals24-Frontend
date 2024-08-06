@@ -8,6 +8,7 @@ import { AuctionStatus } from '../enums/auction-status.enum';
 import { BidService } from '../services/bid.service';
 import { Bid } from '../models/bid.model';
 import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AuctionResolverOptions {
     ownAuction?: boolean;
@@ -58,10 +59,14 @@ export class AuctionResolver {
                 ).pipe(map(() => auction)),
             ),
             catchError((error) => {
+                const message: string =
+                    error instanceof HttpErrorResponse
+                        ? 'We could not find the requested auction'
+                        : error.message;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: error.message ?? 'An error occurred',
+                    detail: message ?? 'An error occurred',
                 });
                 throw error;
             }),
