@@ -65,8 +65,6 @@ export class AuctionDetailsPageComponent
 
     public user?: UserSummary;
 
-    public timeLeft: number = 0;
-
     public currentPictureIndex: number = 0;
 
     public expandable: boolean = false;
@@ -104,7 +102,6 @@ export class AuctionDetailsPageComponent
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
             this.initUser();
-            this.initTimer();
             this.initCarousel();
         });
 
@@ -237,11 +234,6 @@ export class AuctionDetailsPageComponent
                     this.user = user;
                     this.changeDetectorRef.detectChanges();
                 });
-    }
-
-    private initTimer() {
-        if (!this.auction) return;
-        this.timeLeft = this.auction.endTime.getTime() - Date.now();
     }
 
     private initCarousel() {

@@ -18,14 +18,16 @@ import { IntervalPipe } from '../../pipes/interval.pipe';
 })
 export class TimerComponent implements OnInit, OnDestroy {
     public timeAmount: number = 0;
-    @Input({ required: true }) timeLeft: number = 0;
+    @Input({ required: true }) endDate!: Date;
     private timerTimeout!: ReturnType<typeof setTimeout>;
     private timerInterval?: ReturnType<typeof setInterval>;
 
     constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
     public ngOnInit(): void {
-        this.timeAmount = Math.floor(this.timeLeft / 1000);
+        this.timeAmount = Math.floor(
+            (this.endDate.getTime() - Date.now()) / 1000,
+        );
         this.timerTimeout = setTimeout(() => {
             this.timerInterval = setInterval(() => {
                 this.timeAmount -= 60;

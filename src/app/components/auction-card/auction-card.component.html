@@ -46,7 +46,7 @@
                 Time left:
             }
             <dd24-timer
-                [timeLeft]="timeLeft"
+                [endDate]="auction.endTime"
                 style="font-weight: var(--font-weight-bolder)"
             ></dd24-timer>
             @if ((windowService.isMobile$ | async) === false) {

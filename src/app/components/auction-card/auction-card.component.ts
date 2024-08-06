@@ -39,7 +39,6 @@ export class AuctionCardComponent implements OnInit {
     @Output() loaded = new EventEmitter<number>();
     public statuses = Auction.STATUSES;
     public showImagePlaceholder: boolean = false;
-    public timeLeft: number = 0;
 
     constructor(
         public readonly windowService: WindowService,
@@ -48,7 +47,6 @@ export class AuctionCardComponent implements OnInit {
 
     ngOnInit(): void {
         this.loaded.emit();
-        this.timeLeft = this.auction.endTime.getTime() - Date.now();
     }
 
     public onImageError(): void {
