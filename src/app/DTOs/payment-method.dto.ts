@@ -23,6 +23,7 @@ interface AuthorizedCreditCardRegistrationDTO {
 
 interface UnauthorizedCreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
+    ownerName: string;
     cardNumber: string;
     expiryDate: string;
     cvv: string;

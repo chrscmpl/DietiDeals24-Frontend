@@ -1,10 +1,9 @@
-import { ApplicationConfig, enableProdMode, LOCALE_ID } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { LocalDatePipe } from './pipes/local-date.pipe';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, Location, TitleCasePipe } from '@angular/common';
 import { CurrencyPipe } from '@angular/common';
 import { IntervalPipe } from './pipes/interval.pipe';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -29,9 +28,10 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(
             withInterceptors([AuthenticationInterceptor.asHttpInterceptorFn()]),
         ),
-        AuthenticationInterceptor,
         importProvidersFrom([BrowserAnimationsModule]),
         Location,
+        MessageService,
+        ConfirmationService,
         LocalDatePipe,
         OneCharUpperPipe,
         DatePipe,
@@ -40,15 +40,14 @@ export const appConfig: ApplicationConfig = {
         CurrencyPipe,
         MaskedPipe,
         FindCurrencyPipe,
+        AuthenticationInterceptor,
         ShowUIGuard,
         AuthenticationGuard,
         EmailVerificationGuard,
-        AuctionResolver,
-        CheckoutInformationResolver,
         ConfirmReloadGuard,
         ShouldSpecifyChildGuard,
-        MessageService,
-        ConfirmationService,
+        AuctionResolver,
+        CheckoutInformationResolver,
         { provide: LOCALE_ID, useValue: 'en-US' },
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),

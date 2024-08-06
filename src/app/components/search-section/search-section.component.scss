@@ -2,9 +2,10 @@
 @use "viewports";
 
 .search-section {
-    @include layouts.flex(row, start, stretch, 1ch);
+    @include layouts.flex(row, stretch, stretch, 1ch, wrap);
     width: 100%;
     font-size: var(--font-size-large);
+    row-gap: 0.5rem;
 
     @include viewports.mobile {
         justify-content: stretch;
@@ -13,7 +14,7 @@
     .search-inputs-container {
         @include layouts.flex(row, start, stretch);
         font-size: var(--font-size-medium);
-        flex-grow: 1;
+        flex-grow: 1000;
 
         @include viewports.notMobile {
             border: 2px solid var(--outline-color);
@@ -39,6 +40,12 @@
     @include viewports.mobile {
         height: 2.65rem;
         width: 100%;
+    }
+}
+
+@include viewports.notMobile {
+    .search-bar {
+        min-width: 20ch;
     }
 }
 
@@ -153,7 +160,7 @@
         @include viewports.notMobile {
             .p-dropdown,
             .p-dropdown-panel {
-                min-width: 20ch;
+                min-width: 21ch;
             }
         }
     }
@@ -212,8 +219,14 @@
 
     .search-button {
         @include viewports.notMobile {
-            button {
+            flex-grow: 1;
+            .p-button {
                 border-radius: 0;
+                justify-content: center;
+            }
+
+            .p-button-label {
+                flex: 0;
             }
         }
     }
