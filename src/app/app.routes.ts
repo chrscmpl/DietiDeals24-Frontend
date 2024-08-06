@@ -163,6 +163,10 @@ export const routes: Routes = [
     },
     {
         path: '**',
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+        ],
         component: NotFoundPageComponent,
     },
 ];
