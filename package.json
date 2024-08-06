@@ -29,6 +29,7 @@
         "@angular/platform-browser-dynamic": "^17.3.10",
         "@angular/router": "^17.3.10",
         "@angular/service-worker": "^17.3.10",
+        "iban-ts": "^0.4.0",
         "normalize-scss": "^8.0.0",
         "primeicons": "^7.0.0",
         "primeng": "^17.16.0",

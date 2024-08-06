@@ -1,22 +1,26 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PaymentMethodType } from '../../enums/payment-method-type';
 import {
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputComponent } from '../input/input.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { isValid as isValidIBAN } from 'iban-ts';
 
 interface IBANForm {
+    type: FormControl<PaymentMethodType.IBAN | null>;
     iban: FormControl<string | null>;
 }
 
 interface CreditCardForm {
+    type: FormControl<PaymentMethodType.creditCard | null>;
     cardNumber: FormControl<string | null>;
     ownerName: FormControl<string | null>;
     expirationDate: FormControl<string | null>;
@@ -41,7 +45,7 @@ export interface NewPaymentMethodForm {
     templateUrl: './payment-method-form.component.html',
     styleUrl: './payment-method-form.component.scss',
 })
-export class PaymentMethodFormComponent implements OnInit {
+export class PaymentMethodFormComponent implements OnInit, OnDestroy {
     private _type!: PaymentMethodType;
 
     @Input({ required: true }) public set type(value: PaymentMethodType) {
@@ -72,15 +76,25 @@ export class PaymentMethodFormComponent implements OnInit {
             this.form.setControl(
                 'newMethod',
                 this.formBuilder.group<IBANForm>({
-                    iban: new FormControl<string | null>(null, [
-                        Validators.required,
-                    ]),
+                    type: new FormControl<PaymentMethodType.IBAN | null>(
+                        PaymentMethodType.IBAN,
+                    ),
+                    iban: new FormControl<string | null>(null, {
+                        updateOn: 'blur',
+                        validators: [
+                            Validators.required,
+                            this.validateIBAN.bind(this),
+                        ],
+                    }),
                 }),
             );
         } else if (this.type === PaymentMethodType.creditCard) {
             this.form.setControl(
                 'newMethod',
                 this.formBuilder.group<CreditCardForm>({
+                    type: new FormControl<PaymentMethodType.creditCard | null>(
+                        PaymentMethodType.creditCard,
+                    ),
                     cardNumber: new FormControl<string | null>(null, [
                         Validators.required,
                     ]),
@@ -98,7 +112,18 @@ export class PaymentMethodFormComponent implements OnInit {
         }
     }
 
+    public ngOnDestroy(): void {
+        this.form.removeControl('newMethod');
+    }
+
     public get newMethodGroup(): FormGroup {
         return this.form.get('newMethod') as FormGroup;
+    }
+
+    private validateIBAN(
+        ibanControl: FormControl<string | null>,
+    ): ValidationErrors | null {
+        if (!ibanControl.value) return null;
+        return isValidIBAN(ibanControl.value) ? null : { invalidIBAN: true };
     }
 }

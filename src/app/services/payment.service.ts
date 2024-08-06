@@ -8,6 +8,10 @@ import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodBuilder } from '../helpers/builders/payment-method-builder';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
+import {
+    AuthorizedPaymentMethodRegistrationDTO,
+    UnauthorizedPaymentMethodRegistrationDTO,
+} from '../DTOs/payment-method.dto';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -24,6 +28,23 @@ export class PaymentService {
         );
         ActiveBidsCacheBuster$.subscribe(() =>
             paymentMethodsCacheBuster$.next(),
+        );
+    }
+
+    // this method is a mock implementation, this
+    // platform does not actually process payments
+    public authorizePayment(
+        paymentMethod: UnauthorizedPaymentMethodRegistrationDTO,
+    ): Observable<AuthorizedPaymentMethodRegistrationDTO> {
+        return of(
+            paymentMethod.type === PaymentMethodType.IBAN
+                ? paymentMethod
+                : {
+                      type: PaymentMethodType.creditCard,
+                      token: '123456',
+                      cardNumberLastDigits:
+                          paymentMethod?.cardNumber?.slice(-4),
+                  },
         );
     }
 
