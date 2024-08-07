@@ -251,6 +251,12 @@ i {
     align-content: center;
 }
 
+.p-sidebar-left {
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
 .p-overlaypanel-no-padding .p-overlaypanel-content {
     padding: 0;
     border-radius: 8px;
