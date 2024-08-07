@@ -330,7 +330,7 @@ export class RegistrationPageComponent implements OnInit {
         if (!countryControl?.value) {
             if (!control.value) return {};
             return { noCountrySelected: true };
-        }
+        } else if (!control.value) return { required: true };
         return {};
     }
 

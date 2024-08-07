@@ -5,6 +5,7 @@ import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 import { Country } from '../models/location.model';
 import { CountryDTO } from '../DTOs/country.dto';
 import { environment } from '../../environments/environment';
+import { Cacheable } from 'ts-cacheable';
 
 @Injectable({
     providedIn: 'root',
@@ -24,17 +25,24 @@ export class LocationsService {
         .pipe(map(() => this._countries ?? []));
 
     public refreshCountries(cb?: Partial<Observer<Country[]>>): void {
-        this.http
+        this.getCountries().subscribe(cb);
+    }
+
+    @Cacheable()
+    private getCountries(): Observable<Country[]> {
+        return this.http
             .get<CountryDTO[]>(`${environment.backendHost}/countries`)
             .pipe(
                 tap((countries) => {
                     this._countries = countries;
                     this.countriesSubject.next();
                 }),
-            )
-            .subscribe(cb);
+            );
     }
 
+    @Cacheable({
+        maxCacheCount: 4,
+    })
     public getCities(country: Country | string): Observable<string[]> {
         return this.http.get<string[]>(`${environment.backendHost}/cities`, {
             params: {
