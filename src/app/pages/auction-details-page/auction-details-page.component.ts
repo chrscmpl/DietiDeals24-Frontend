@@ -24,8 +24,6 @@ import { ButtonModule } from 'primeng/button';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'primeng/api';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
-import { UserSummary } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuthenticationService } from '../../services/authentication.service';
 import { BidService } from '../../services/bid.service';
@@ -63,8 +61,6 @@ export class AuctionDetailsPageComponent
 
     public auction?: Auction;
 
-    public user?: UserSummary;
-
     public currentPictureIndex: number = 0;
 
     public expandable: boolean = false;
@@ -88,7 +84,6 @@ export class AuctionDetailsPageComponent
 
     constructor(
         private readonly route: ActivatedRoute,
-        private readonly userService: UserService,
         private readonly router: Router,
         public readonly windowService: WindowService,
         private readonly clipboard: Clipboard,
@@ -101,7 +96,6 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
-            this.initUser();
             this.initCarousel();
         });
 
@@ -223,17 +217,6 @@ export class AuctionDetailsPageComponent
                 },
             },
         ]);
-    }
-
-    private initUser() {
-        if (this.auction?.userId)
-            this.userService
-                .getSummary(this.auction.userId)
-                .pipe(take(1))
-                .subscribe((user) => {
-                    this.user = user;
-                    this.changeDetectorRef.detectChanges();
-                });
     }
 
     private initCarousel() {

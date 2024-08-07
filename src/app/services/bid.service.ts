@@ -33,9 +33,7 @@ export class BidService {
         cacheBusterNotifier: ActiveBidsCacheBuster$,
     })
     public createBid(bid: BidCreationDTO): Observable<unknown> {
-        // return this.http.post<unknown>(`${environment.backendHost}/bids`, bid);
-        console.log(bid);
-        return of(null);
+        return this.http.post<unknown>(`${environment.backendHost}/bids`, bid);
     }
 
     @Cacheable({

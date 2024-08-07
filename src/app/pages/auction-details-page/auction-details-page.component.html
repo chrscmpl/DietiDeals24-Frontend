@@ -84,10 +84,10 @@
                     ></ng-container>
                 </div>
                 <h3 class="auction-category">{{ auction.category }}</h3>
-                @if (user) {
+                @if (auction.user) {
                     <dd24-user-preview
                         class="auction-user"
-                        [user]="user"
+                        [user]="auction.user"
                         [country]="auction.location.country"
                         [city]="auction.location.city"
                     ></dd24-user-preview>

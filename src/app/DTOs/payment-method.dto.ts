@@ -21,15 +21,15 @@ interface AuthorizedCreditCardRegistrationDTO {
     token: string;
 }
 
-interface UnauthorizedCreditCardRegistrationDTO {
+export interface UnauthorizedCreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
     ownerName: string;
     cardNumber: string;
-    expiryDate: string;
+    expirationDate: string;
     cvv: string;
 }
 
-interface IBANRegistrationDTO {
+export interface IBANRegistrationDTO {
     type: PaymentMethodType.IBAN;
     iban: string;
 }

@@ -14,19 +14,15 @@ import { InputComponent } from '../input/input.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { isValid as isValidIBAN } from 'iban-ts';
 import { WarningsService } from '../../services/warnings.service';
+import { ToReactiveForm } from '../../typeUtils/ToForm';
+import {
+    IBANRegistrationDTO,
+    UnauthorizedCreditCardRegistrationDTO,
+} from '../../DTOs/payment-method.dto';
 
-interface IBANForm {
-    type: FormControl<PaymentMethodType.IBAN | null>;
-    iban: FormControl<string | null>;
-}
+type IBANForm = ToReactiveForm<IBANRegistrationDTO>;
 
-interface CreditCardForm {
-    type: FormControl<PaymentMethodType.creditCard | null>;
-    cardNumber: FormControl<string | null>;
-    ownerName: FormControl<string | null>;
-    expirationDate: FormControl<string | null>;
-    cvv: FormControl<string | null>;
-}
+type CreditCardForm = ToReactiveForm<UnauthorizedCreditCardRegistrationDTO>;
 
 export interface NewPaymentMethodForm {
     newMethod?: FormGroup<IBANForm> | FormGroup<CreditCardForm>;

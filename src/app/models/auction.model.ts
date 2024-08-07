@@ -7,6 +7,7 @@ import { AuctionKind } from '../enums/auction-kind.enum';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Location } from './location.model';
+import { UserSummary } from './user.model';
 
 type bidValidationError = { min: true } | { max: true };
 
@@ -29,6 +30,9 @@ export abstract class Auction {
     protected _bids: number | null;
     protected _userId: string | null;
     protected _picturesUrls: string[];
+
+    protected _user: UserSummary | null = null;
+    protected _winner: UserSummary | null = null;
 
     constructor(dto: AuctionDTO) {
         this._id = String(dto.id);
@@ -108,6 +112,22 @@ export abstract class Auction {
 
     public get pictureUrl(): string | null {
         return this._picturesUrls[0] ?? null;
+    }
+
+    public get user(): UserSummary | null {
+        return this._user;
+    }
+
+    public set user(user: UserSummary) {
+        this._user = user;
+    }
+
+    public get winner(): UserSummary | null {
+        return this._winner;
+    }
+
+    public set winner(winner: UserSummary) {
+        this._winner = winner;
     }
 
     public abstract get lastBid(): number;

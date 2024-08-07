@@ -99,7 +99,11 @@ export const routes: Routes = [
         path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,
-        resolve: { auction: AuctionResolver.asResolveFn() },
+        resolve: {
+            auction: AuctionResolver.asResolveFn({
+                includeUser: true,
+            }),
+        },
     },
     {
         path: 'auctions/:auction-id',
@@ -151,6 +155,7 @@ export const routes: Routes = [
                         ownAuction: true,
                         requiredStatus: AuctionStatus.pending,
                         useParent: true,
+                        includeWinner: true,
                     }),
                 },
                 children: [

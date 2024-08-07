@@ -9,11 +9,14 @@ import { BidService } from '../services/bid.service';
 import { Bid } from '../models/bid.model';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserService } from '../services/user.service';
 
 export interface AuctionResolverOptions {
     ownAuction?: boolean;
     requiredStatus?: AuctionStatus;
     hasAlreadyBidded?: boolean;
+    includeUser?: boolean;
+    includeWinner?: boolean;
     useParent?: boolean;
 }
 
@@ -24,6 +27,7 @@ export class AuctionResolver {
         private readonly authenticationService: AuthenticationService,
         private readonly bidService: BidService,
         private readonly messageService: MessageService,
+        private readonly userService: UserService,
     ) {}
 
     public resolve(
@@ -57,6 +61,16 @@ export class AuctionResolver {
                       )
                     : of(null)
                 ).pipe(map(() => auction)),
+            ),
+            switchMap((auction) =>
+                options?.includeUser
+                    ? this.auctionWithUser(auction)
+                    : of(auction),
+            ),
+            switchMap((auction) =>
+                options?.includeWinner
+                    ? this.auctionWithWinner(auction)
+                    : of(auction),
             ),
             catchError((error) => {
                 const message: string =
@@ -110,6 +124,20 @@ export class AuctionResolver {
                         `Cannot access this auction because it has ${shouldHaveAlreadyBidded ? 'not ' : ''}already been bidden on by the user`,
                     );
             }),
+        );
+    }
+
+    private auctionWithUser(auction: Auction) {
+        return this.userService.getSummary(auction.userId!).pipe(
+            tap((user) => (auction.user = user)),
+            map(() => auction),
+        );
+    }
+
+    private auctionWithWinner(auction: Auction) {
+        return this.userService.getSummary(auction.winnerId!).pipe(
+            tap((winner) => (auction.winner = winner)),
+            map(() => auction),
         );
     }
 

@@ -1,12 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import {
-    NavigationCancel,
-    NavigationEnd,
-    NavigationError,
-    Router,
-    RouterLink,
-    RouterOutlet,
-} from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingIndicator } from './helpers/loading-indicator';
@@ -23,7 +16,6 @@ import { AuthenticationService } from './services/authentication.service';
 import { NotificationsService } from './services/notifications.service';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { filter, take } from 'rxjs';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BidService } from './services/bid.service';
