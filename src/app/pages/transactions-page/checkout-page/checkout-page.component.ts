@@ -119,15 +119,7 @@ export class CheckoutPageComponent implements OnInit {
         });
 
         this.chosenPaymentMethodForm.controls.chosenPaymentMethod.valueChanges.subscribe(
-            (value) => {
-                this.newPaymentMethodFormVisible = this.isPaymentMethodType(
-                    value,
-                )
-                    ? (value as PaymentMethodType)
-                    : null;
-                if (this.newPaymentMethodFormVisible !== null)
-                    this.changeDetector.detectChanges();
-            },
+            this.onChosenMethodChanges.bind(this),
         );
     }
 
@@ -136,6 +128,18 @@ export class CheckoutPageComponent implements OnInit {
             paymentMethodTypesByCategory.get(
                 this.requiredCategory as PaymentMethodCategory,
             ) ?? [];
+    }
+
+    private onChosenMethodChanges(
+        value: SavedChosenPaymentMethodDTO | PaymentMethodType | null,
+    ) {
+        this.newPaymentMethodFormVisible = this.isPaymentMethodType(value)
+            ? (value as PaymentMethodType)
+            : null;
+        if (this.newPaymentMethodFormVisible !== null) {
+            this.chosenPaymentMethodForm.get('newPaymentMethod')?.enable();
+            this.changeDetector.detectChanges();
+        } else this.chosenPaymentMethodForm.get('newPaymentMethod')?.disable();
     }
 
     public get newPaymentMethodFormGroup(): FormGroup {

@@ -23,6 +23,7 @@ export class InputComponent implements OnInit {
     private control?: AbstractControl | null;
     public error: string = '';
     private errorsManager?: inputErrorMessagesManager;
+    private hasMarkedAsTouched: boolean = false;
 
     constructor(private readonly controlContainer: ControlContainer) {}
 
@@ -53,7 +54,8 @@ export class InputComponent implements OnInit {
         (this.control as any)._markAsTouched = this.control.markAsTouched;
         this.control.markAsTouched = (options) => {
             (this.control as any)._markAsTouched(options);
-            this.onTouched();
+            if (!this.hasMarkedAsTouched) this.onTouched();
+            else this.hasMarkedAsTouched = false;
         };
     }
 
@@ -65,6 +67,7 @@ export class InputComponent implements OnInit {
         setTimeout(() => {
             this?.checkError(true);
             if (this?.control?.valid) {
+                this.hasMarkedAsTouched = true;
                 this.control.markAsUntouched();
             }
         }, 150);

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PaymentMethodType } from '../../enums/payment-method-type';
 import {
     FormBuilder,
@@ -13,6 +13,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputComponent } from '../input/input.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { isValid as isValidIBAN } from 'iban-ts';
+import { WarningsService } from '../../services/warnings.service';
 
 interface IBANForm {
     type: FormControl<PaymentMethodType.IBAN | null>;
@@ -45,7 +46,7 @@ export interface NewPaymentMethodForm {
     templateUrl: './payment-method-form.component.html',
     styleUrl: './payment-method-form.component.scss',
 })
-export class PaymentMethodFormComponent implements OnInit, OnDestroy {
+export class PaymentMethodFormComponent implements OnInit {
     private _type!: PaymentMethodType;
 
     @Input({ required: true }) public set type(value: PaymentMethodType) {
@@ -61,16 +62,17 @@ export class PaymentMethodFormComponent implements OnInit, OnDestroy {
 
     public readonly PaymentMethodType = PaymentMethodType;
 
-    public constructor(private readonly formBuilder: FormBuilder) {}
+    public constructor(
+        private readonly formBuilder: FormBuilder,
+        private readonly warning: WarningsService,
+    ) {}
 
     public ngOnInit(): void {
-        if (this.form.get('save')) this.form.get('save')?.patchValue(false);
-        else {
-            this.form.setControl(
-                'save',
-                new FormControl<boolean | null>(false),
-            );
+        if (this.type === this.form.get('newMethod')?.value?.type) {
+            return;
         }
+
+        this.form.get('save')?.patchValue(false);
 
         if (this.type === PaymentMethodType.IBAN) {
             this.form.setControl(
@@ -88,6 +90,7 @@ export class PaymentMethodFormComponent implements OnInit, OnDestroy {
                     }),
                 }),
             );
+            this.warning.showIBANexample();
         } else if (this.type === PaymentMethodType.creditCard) {
             this.form.setControl(
                 'newMethod',
@@ -110,10 +113,6 @@ export class PaymentMethodFormComponent implements OnInit, OnDestroy {
                 }),
             );
         }
-    }
-
-    public ngOnDestroy(): void {
-        this.form.removeControl('newMethod');
     }
 
     public get newMethodGroup(): FormGroup {
