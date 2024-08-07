@@ -1,4 +1,4 @@
-p-calendar.ng-touched.ng-invalid > .p-calendar > .p-inputtext {
+p-calendar.ng-dirty.ng-invalid > .p-calendar > .p-inputtext {
     @include invalid-input();
 }
 

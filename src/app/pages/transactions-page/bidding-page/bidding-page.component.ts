@@ -82,7 +82,10 @@ export class BiddingPageComponent implements OnInit {
     }
 
     public onSubmit(): void {
-        if (!this.bidForm.valid) return;
+        if (!this.bidForm.valid) {
+            this.bidForm.get('amount')?.markAsDirty();
+            return;
+        }
         this.router.navigate(['checkout'], {
             relativeTo: this.route,
             state: { bidAmount: this.bidForm.controls.amount.value },

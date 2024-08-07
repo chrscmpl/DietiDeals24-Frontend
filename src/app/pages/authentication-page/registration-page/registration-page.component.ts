@@ -31,6 +31,7 @@ import { UserRegistrationDTO } from '../../../DTOs/user.dto';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Country } from '../../../models/location.model';
 import { environment } from '../../../../environments/environment';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -99,7 +100,9 @@ export class RegistrationPageComponent implements OnInit {
 
     private onNextuserData = (): boolean => {
         if (!this.registrationForm.get('userData')?.valid) {
-            this.registrationForm.get('userData')?.markAllAsTouched();
+            reactiveFormsUtils.markAllAsDirty(
+                this.registrationForm.get('userData') as FormGroup,
+            );
             return false;
         }
         return true;
@@ -107,7 +110,9 @@ export class RegistrationPageComponent implements OnInit {
 
     private onNextCredentials = (): boolean => {
         if (!this.registrationForm.get('credentials')?.valid) {
-            this.registrationForm.get('credentials')?.markAllAsTouched();
+            reactiveFormsUtils.markAllAsDirty(
+                this.registrationForm.get('credentials') as FormGroup,
+            );
             return false;
         }
         return true;
@@ -143,12 +148,21 @@ export class RegistrationPageComponent implements OnInit {
 
         this.registrationForm = this.formBuilder.group<registrationForm>({
             userData: this.formBuilder.group<userDataForm>({
-                name: new FormControl(null, [Validators.required]),
-                surname: new FormControl(null, [Validators.required]),
-                birthday: new FormControl(null, [
-                    Validators.required,
-                    this.validateBirthday.bind(this),
-                ]),
+                name: new FormControl(null, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                surname: new FormControl(null, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                birthday: new FormControl(null, {
+                    validators: [
+                        Validators.required,
+                        this.validateBirthday.bind(this),
+                    ],
+                    updateOn: 'submit',
+                }),
                 country: new FormControl(null, {
                     updateOn: 'blur',
                 }),
@@ -158,16 +172,22 @@ export class RegistrationPageComponent implements OnInit {
                 }),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
-                email: new FormControl(null, [
-                    Validators.required,
-                    Validators.email,
-                ]),
-                username: new FormControl(null, [Validators.required]),
-                password: new FormControl(null, [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.pattern(environment.passwordPattern),
-                ]),
+                email: new FormControl(null, {
+                    validators: [Validators.required, Validators.email],
+                    updateOn: 'blur',
+                }),
+                username: new FormControl(null, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                password: new FormControl(null, {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(8),
+                        Validators.pattern(environment.passwordPattern),
+                    ],
+                    updateOn: 'blur',
+                }),
                 confirmPassword: new FormControl(null, {
                     validators: [
                         Validators.required,
@@ -221,7 +241,7 @@ export class RegistrationPageComponent implements OnInit {
     }
 
     private onInvalidForm(): void {
-        this.registrationForm.markAllAsTouched();
+        reactiveFormsUtils.markAllAsDirty(this.registrationForm);
         if (this.registrationForm.get('privacyPolicy')?.invalid)
             this.error = 'You must accept the privacy policy to continue';
     }

@@ -70,7 +70,7 @@
     }
 }
 
-p-checkbox.ng-touched.ng-invalid > .p-checkbox > .p-checkbox-box {
+p-checkbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
     @include invalid-input();
 }
 
@@ -110,6 +110,6 @@ p-checkbox.ng-touched.ng-invalid > .p-checkbox > .p-checkbox-box {
     }
 }
 
-p-tristatecheckbox.ng-touched.ng-invalid > .p-checkbox > .p-checkbox-box {
+p-tristatecheckbox.ng-dirty.ng-invalid > .p-checkbox > .p-checkbox-box {
     @include invalid-input();
 }

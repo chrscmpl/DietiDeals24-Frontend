@@ -18,7 +18,7 @@
         @include focused-input();
     }
 
-    &.ng-touched.ng-invalid {
+    &.ng-dirty.ng-invalid {
         @include invalid-input();
     }
 
@@ -51,7 +51,7 @@
     transition-duration: $transitionDuration;
 }
 
-.p-float-label > .ng-invalid.ng-touched + label {
+.p-float-label > .ng-invalid.ng-dirty + label {
     color: $inputErrorBorderColor;
 }
 

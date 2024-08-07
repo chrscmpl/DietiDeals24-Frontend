@@ -43,6 +43,6 @@
     }
 }
 
-p-togglebutton.ng-touched.ng-invalid > .p-togglebutton.p-button {
+p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
     @include invalid-input();
 }

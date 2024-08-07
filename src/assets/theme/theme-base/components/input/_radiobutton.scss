@@ -58,7 +58,7 @@
     }
 }
 
-p-radiobutton.ng-touched.ng-invalid > .p-radiobutton > .p-radiobutton-box {
+p-radiobutton.ng-dirty.ng-invalid > .p-radiobutton > .p-radiobutton-box {
     @include invalid-input();
 }
 

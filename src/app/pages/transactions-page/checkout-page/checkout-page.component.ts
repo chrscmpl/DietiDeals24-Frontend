@@ -33,6 +33,7 @@ import { ButtonModule } from 'primeng/button';
 import { PaymentService } from '../../../services/payment.service';
 import { MessageService } from 'primeng/api';
 import { BidService } from '../../../services/bid.service';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -156,7 +157,7 @@ export class CheckoutPageComponent implements OnInit {
 
     public onSubmit(): void {
         if (this.chosenPaymentMethodForm.invalid) {
-            this.chosenPaymentMethodForm.markAllAsTouched();
+            reactiveFormsUtils.markAllAsDirty(this.chosenPaymentMethodForm);
             return;
         }
 

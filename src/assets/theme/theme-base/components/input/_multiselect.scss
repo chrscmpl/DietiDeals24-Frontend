@@ -189,6 +189,6 @@
     }
 }
 
-p-multiselect.ng-touched.ng-invalid > .p-multiselect {
+p-multiselect.ng-dirty.ng-invalid > .p-multiselect {
     @include invalid-input();
 }

@@ -49,7 +49,7 @@
     }
 }
 
-p-chips.ng-touched.ng-invalid > .p-chips > .p-inputtext {
+p-chips.ng-dirty.ng-invalid > .p-chips > .p-inputtext {
     @include invalid-input();
 }
 

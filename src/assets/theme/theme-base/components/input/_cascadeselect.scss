@@ -121,7 +121,7 @@
     }
 }
 
-p-cascadeselect.ng-touched.ng-invalid > .p-cascadeselect {
+p-cascadeselect.ng-dirty.ng-invalid > .p-cascadeselect {
     @include invalid-input();
 }
 

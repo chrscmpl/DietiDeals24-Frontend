@@ -1,6 +1,6 @@
 @use "sass:math";
 
-p-inputmask.ng-touched.ng-invalid > .p-inputtext {
+p-inputmask.ng-dirty.ng-invalid > .p-inputtext {
     @include invalid-input();
 }
 

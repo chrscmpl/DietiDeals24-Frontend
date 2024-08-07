@@ -123,7 +123,7 @@
     }
 }
 
-p-autocomplete.ng-touched.ng-invalid > .p-autocomplete > .p-inputtext {
+p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
     @include invalid-input();
 }
 

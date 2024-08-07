@@ -15,6 +15,7 @@ import { MaskedPipe } from '../../../pipes/masked.pipe';
 import { emailVerificationDTO } from '../../../DTOs/user.dto';
 import { RedirectionService } from '../../../services/redirection.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -52,11 +53,14 @@ export class VerifyEmailPageComponent implements OnInit {
             return;
         }
         this.verificationForm = this.formBuilder.group<verificationForm>({
-            code: new FormControl('', [
-                Validators.required,
-                Validators.minLength(5),
-                Validators.maxLength(5),
-            ]),
+            code: new FormControl('', {
+                validators: [
+                    Validators.required,
+                    Validators.minLength(5),
+                    Validators.maxLength(5),
+                ],
+                updateOn: 'submit',
+            }),
             email: new FormControl(this.authentication.emailToVerify, [
                 Validators.required,
             ]),
@@ -68,12 +72,12 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     public onSubmit(): void {
+        this.error = null;
+
         if (this.verificationForm.invalid) {
             this.onInvalidForm();
             return;
         }
-
-        this.error = null;
 
         this.authentication.verifyEmail(
             this.verificationForm.value as emailVerificationDTO,
@@ -91,7 +95,7 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     private onInvalidForm(): void {
-        this.verificationForm.markAllAsTouched();
+        reactiveFormsUtils.markAllAsDirty(this.verificationForm);
     }
 
     private onVerificationSuccess(): void {

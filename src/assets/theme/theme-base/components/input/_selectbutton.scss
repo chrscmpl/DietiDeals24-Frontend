@@ -45,6 +45,6 @@
     }
 }
 
-p-selectbutton.ng-touched.ng-invalid > .p-selectbutton > .p-button {
+p-selectbutton.ng-dirty.ng-invalid > .p-selectbutton > .p-button {
     @include invalid-input();
 }

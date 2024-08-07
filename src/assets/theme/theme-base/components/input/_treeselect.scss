@@ -54,7 +54,7 @@
     }
 }
 
-p-treeselect.ng-invalid.ng-touched > .p-treeselect {
+p-treeselect.ng-invalid.ng-dirty > .p-treeselect {
     @include invalid-input();
 }
 

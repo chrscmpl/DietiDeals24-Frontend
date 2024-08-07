@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -16,6 +16,7 @@ import { DividerModule } from 'primeng/divider';
 import { RedirectionService } from '../../../services/redirection.service';
 import { UserCredentials } from '../../../DTOs/user.dto';
 import { environment } from '../../../../environments/environment';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -37,7 +38,7 @@ interface loginForm {
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, AfterViewInit {
     error: string = '';
     loginForm!: FormGroup<loginForm>;
 
@@ -45,25 +46,48 @@ export class LoginPageComponent implements OnInit {
         private readonly authenticationService: AuthenticationService,
         private readonly redirect: RedirectionService,
         private readonly formBuilder: FormBuilder,
+        private readonly element: ElementRef,
     ) {}
 
     ngOnInit(): void {
         this.loginForm = this.formBuilder.group<loginForm>({
-            email: new FormControl(null, [
-                Validators.required,
-                Validators.email,
-            ]),
-            password: new FormControl(null, [
-                Validators.required,
-                Validators.minLength(8),
-                Validators.pattern(environment.passwordPattern),
-            ]),
+            email: new FormControl(null, {
+                validators: [Validators.required, Validators.email],
+                updateOn: 'blur',
+            }),
+            password: new FormControl(null, {
+                validators: [
+                    Validators.required,
+                    Validators.minLength(8),
+                    Validators.pattern(environment.passwordPattern),
+                ],
+                updateOn: 'blur',
+            }),
         });
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.patchValueFromNativeElement('email', '#email');
+            this.patchValueFromNativeElement('password', '#password');
+        }, 150);
+    }
+
+    private patchValueFromNativeElement(
+        controlName: string,
+        querySelector: string,
+    ): void {
+        const nativeInput = this.element.nativeElement.querySelector(
+            querySelector,
+        ) as HTMLInputElement | null;
+
+        if (nativeInput?.value)
+            this.loginForm.get(controlName)?.patchValue(nativeInput.value);
     }
 
     dd24Login() {
         if (this.loginForm.invalid) {
-            this.loginForm.markAllAsTouched();
+            reactiveFormsUtils.markAllAsDirty(this.loginForm);
             return;
         }
         this.authenticationService.login(

@@ -233,7 +233,7 @@ i {
     }
 }
 
-.ng-touched.ng-invalid .p-inputotp-input {
+.ng-dirty.ng-invalid .p-inputotp-input {
     border: 1px solid var(--error-color);
     outline: none;
 }

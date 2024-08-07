@@ -162,6 +162,6 @@
     }
 }
 
-p-dropdown.ng-touched.ng-invalid > .p-dropdown {
+p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
     @include invalid-input();
 }
