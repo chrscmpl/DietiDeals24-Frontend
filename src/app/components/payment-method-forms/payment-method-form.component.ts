@@ -106,18 +106,18 @@ export class PaymentMethodFormComponent implements OnInit {
                             Validators.minLength(16),
                             Validators.maxLength(16),
                         ],
-                        updateOn: 'submit',
+                        updateOn: 'blur',
                     }),
                     expirationDate: new FormControl<string | null>(null, {
                         validators: [
                             Validators.required,
                             this.validateCardExpirationDate.bind(this),
                         ],
-                        updateOn: 'submit',
+                        updateOn: 'blur',
                     }),
                     cvv: new FormControl<string | null>(null, {
                         validators: [Validators.required],
-                        updateOn: 'submit',
+                        updateOn: 'blur',
                     }),
                 }),
             );

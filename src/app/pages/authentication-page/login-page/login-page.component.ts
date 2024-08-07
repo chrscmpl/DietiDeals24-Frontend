@@ -71,7 +71,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
             this.patchValueFromNativeElement('email', '#email');
             this.patchValueFromNativeElement('password', '#password');
-        }, 150);
+        }, 500);
     }
 
     private patchValueFromNativeElement(

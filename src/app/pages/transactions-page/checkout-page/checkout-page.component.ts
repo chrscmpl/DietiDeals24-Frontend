@@ -240,7 +240,7 @@ export class CheckoutPageComponent implements OnInit {
                     this.message.add({
                         severity: 'error',
                         summary: 'Bid error',
-                        detail: 'Failed to place bid',
+                        detail: 'Failed to place bid, please try again later',
                     }),
             });
     }
