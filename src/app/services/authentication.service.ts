@@ -8,6 +8,7 @@ import {
     catchError,
     filter,
     map,
+    switchMap,
     tap,
     throwError,
     withLatestFrom,
@@ -44,7 +45,8 @@ export class AuthenticationService {
 
     constructor(private readonly http: HttpClient) {
         this.isLoggedSubject.next();
-        if (localStorage.getItem('authorizationToken')) this.getUserData();
+        if (AuthenticationService.authorizationToken)
+            this.getUserDataObservable().subscribe();
         else this.setInitialized();
     }
 
@@ -71,9 +73,9 @@ export class AuthenticationService {
                 observe: 'response',
             })
             .pipe(
-                tap((res: HttpResponse<unknown>) => {
+                switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
-                    this.getUserData();
+                    return this.getUserDataObservable();
                 }),
             )
             .subscribe(cb);
@@ -99,16 +101,16 @@ export class AuthenticationService {
                 observe: 'response',
             })
             .pipe(
-                tap((res: HttpResponse<unknown>) => {
+                switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
-                    this.getUserData();
+                    return this.getUserDataObservable();
                 }),
             )
             .subscribe(cb);
     }
 
-    public getUserData(cb?: Partial<Observer<AuthenticatedUser>>): void {
-        this.http
+    private getUserDataObservable(): Observable<AuthenticatedUser> {
+        return this.http
             .get<AuthenticatedUserDTO>(
                 `${environment.backendHost}/profile/owner-view`,
             )
@@ -119,8 +121,7 @@ export class AuthenticationService {
                     this.setInitialized();
                     return throwError(() => e);
                 }),
-            )
-            .subscribe(cb);
+            );
     }
 
     public logout(): void {

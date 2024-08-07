@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavigationService } from './navigation.service';
 
 @Injectable({
     providedIn: 'root',
@@ -7,7 +8,10 @@ import { Router } from '@angular/router';
 export class RedirectionService {
     private _routeBeforeRedirection: string | null = null;
 
-    constructor(private router: Router) {}
+    constructor(
+        private router: Router,
+        private navigation: NavigationService,
+    ) {}
 
     public get routeBeforeRedirection(): string | null {
         return this._routeBeforeRedirection;
@@ -20,6 +24,9 @@ export class RedirectionService {
     public exitRoute() {
         const redirectRoute = this.routeBeforeRedirection || '/';
         this.routeBeforeRedirection = null;
+        this.navigation.executeIfNavigationFailure(() =>
+            this.router.navigate(['/']),
+        );
         this.router.navigate([redirectRoute]);
     }
 
