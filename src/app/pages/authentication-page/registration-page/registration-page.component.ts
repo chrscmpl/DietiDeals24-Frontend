@@ -32,6 +32,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Country } from '../../../models/location.model';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { MessageService } from 'primeng/api';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -137,6 +138,7 @@ export class RegistrationPageComponent implements OnInit {
         public readonly locationsService: LocationsService,
         private readonly router: Router,
         private readonly authentication: AuthenticationService,
+        private readonly message: MessageService,
     ) {}
 
     ngOnInit(): void {
@@ -255,13 +257,19 @@ export class RegistrationPageComponent implements OnInit {
 
     private onRegisterError(error: HttpErrorResponse): void {
         if (error.status >= 500) {
-            this.error = 'Server error. Please try again later.';
+            this.showErrorToast('Server error', 'Please try again later.');
         } else if (error.status === 409) {
-            this.error = 'Email or username already in use.';
+            this.showErrorToast(
+                'Conflict',
+                'Email or username already in use.',
+            );
         } else if (error.status >= 400) {
-            this.error = 'Invalid data.';
+            this.showErrorToast(
+                'Invalid data',
+                'Please check your data and try again.',
+            );
         } else {
-            this.error = 'An error has occurred. Please try again later.';
+            this.showErrorToast('Error', 'An error has occurred.');
         }
         console.error(error);
     }
@@ -347,5 +355,13 @@ export class RegistrationPageComponent implements OnInit {
             ?.get('password');
         if (control.value === passwordControl?.value) return {};
         return { passwordsDoNotMatch: true };
+    }
+
+    private showErrorToast(header: string, content: string): void {
+        this.message.add({
+            severity: 'error',
+            summary: header,
+            detail: content,
+        });
     }
 }

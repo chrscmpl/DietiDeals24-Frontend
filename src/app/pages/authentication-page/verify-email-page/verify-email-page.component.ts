@@ -16,6 +16,7 @@ import { emailVerificationDTO } from '../../../DTOs/user.dto';
 import { RedirectionService } from '../../../services/redirection.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { MessageService } from 'primeng/api';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -38,13 +39,13 @@ interface verificationForm {
 export class VerifyEmailPageComponent implements OnInit {
     public verificationForm!: FormGroup<verificationForm>;
     public showEmail: boolean = false;
-    public error: string | null = null;
 
     public constructor(
         private readonly location: Location,
         private readonly authentication: AuthenticationService,
         private readonly formBuilder: FormBuilder,
         private readonly redirect: RedirectionService,
+        private readonly message: MessageService,
     ) {}
 
     public ngOnInit(): void {
@@ -72,8 +73,6 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     public onSubmit(): void {
-        this.error = null;
-
         if (this.verificationForm.invalid) {
             this.onInvalidForm();
             return;
@@ -104,10 +103,17 @@ export class VerifyEmailPageComponent implements OnInit {
 
     private onVerificationError(err: HttpErrorResponse): void {
         if (err.status >= 500) {
-            this.error =
-                'There was an error with the server. Please try again later.';
+            this.message.add({
+                severity: 'error',
+                summary: 'Server error',
+                detail: 'Please try again later.',
+            });
         } else if (err.status >= 401) {
-            this.error = 'Invalid code';
+            this.message.add({
+                severity: 'error',
+                summary: 'Invalid code',
+                detail: 'Please check your code and try again.',
+            });
         }
     }
 }

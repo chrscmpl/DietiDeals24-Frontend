@@ -17,6 +17,7 @@ import { RedirectionService } from '../../../services/redirection.service';
 import { UserCredentials } from '../../../DTOs/user.dto';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { MessageService } from 'primeng/api';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -39,7 +40,6 @@ interface loginForm {
     styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit, AfterViewInit {
-    error: string = '';
     loginForm!: FormGroup<loginForm>;
 
     constructor(
@@ -47,6 +47,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         private readonly redirect: RedirectionService,
         private readonly formBuilder: FormBuilder,
         private readonly element: ElementRef,
+        private readonly message: MessageService,
     ) {}
 
     ngOnInit(): void {
@@ -97,15 +98,21 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
                     this.redirect.exitRoute();
                 },
                 error: (err) => {
-                    if (err.status === 401) {
-                        this.error = 'Incorrect email or password';
-                    } else if (err.status >= 500) {
-                        this.error =
-                            "Couldn't reach the server, please try again later";
+                    if (err.status >= 500) {
+                        this.displayError(
+                            'Server error',
+                            'Please try again later',
+                        );
                     } else if (err.status >= 400) {
-                        this.error = 'Invalid credentials';
+                        this.displayError(
+                            'Incorrect email or password',
+                            'Please try again',
+                        );
                     } else {
-                        this.error = 'An error occurred';
+                        this.displayError(
+                            'An error occurred',
+                            'Please try again',
+                        );
                     }
                 },
             },
@@ -114,7 +121,11 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
 
     googleLogin() {}
 
-    clearError() {
-        this.error = '';
+    private displayError(summary: string, detail: string): void {
+        this.message.add({
+            severity: 'error',
+            summary,
+            detail,
+        });
     }
 }
