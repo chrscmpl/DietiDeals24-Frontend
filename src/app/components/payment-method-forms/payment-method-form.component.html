@@ -52,6 +52,9 @@
                         autoClear="false"
                         unmask="true"
                         placeholder="1234-1234-1234-1234"
+                        dd24SetDescendantAttributes
+                        querySelector="input"
+                        [attributes]="{ inputmode: 'numeric' }"
                     />
                 </dd24-input>
             </div>
@@ -84,6 +87,9 @@
                         slotChar="mm/yy"
                         placeholder="mm/yy"
                         [style]="{ width: '10ch' }"
+                        dd24SetDescendantAttributes
+                        querySelector="input"
+                        [attributes]="{ inputmode: 'numeric' }"
                     />
                 </dd24-input>
             </div>
@@ -109,6 +115,9 @@
                         slotChar="___ "
                         placeholder="123"
                         [style]="{ width: '8ch' }"
+                        dd24SetDescendantAttributes
+                        querySelector="input"
+                        [attributes]="{ inputmode: 'numeric' }"
                     />
                 </dd24-input>
             </div>
