@@ -19,6 +19,7 @@ import {
     IBANRegistrationDTO,
     UnauthorizedCreditCardRegistrationDTO,
 } from '../../DTOs/payment-method.dto';
+import { InputMaskModule } from 'primeng/inputmask';
 
 type IBANForm = ToReactiveForm<IBANRegistrationDTO>;
 
@@ -38,6 +39,7 @@ export interface NewPaymentMethodForm {
         InputNumberModule,
         CheckboxModule,
         InputComponent,
+        InputMaskModule,
     ],
     templateUrl: './payment-method-form.component.html',
     styleUrl: './payment-method-form.component.scss',
@@ -94,18 +96,29 @@ export class PaymentMethodFormComponent implements OnInit {
                     type: new FormControl<PaymentMethodType.creditCard | null>(
                         PaymentMethodType.creditCard,
                     ),
-                    cardNumber: new FormControl<string | null>(null, [
-                        Validators.required,
-                    ]),
-                    ownerName: new FormControl<string | null>(null, [
-                        Validators.required,
-                    ]),
-                    expirationDate: new FormControl<string | null>(null, [
-                        Validators.required,
-                    ]),
-                    cvv: new FormControl<string | null>(null, [
-                        Validators.required,
-                    ]),
+                    ownerName: new FormControl<string | null>(null, {
+                        validators: [Validators.required],
+                        updateOn: 'blur',
+                    }),
+                    cardNumber: new FormControl<string | null>(null, {
+                        validators: [
+                            Validators.required,
+                            Validators.minLength(16),
+                            Validators.maxLength(16),
+                        ],
+                        updateOn: 'submit',
+                    }),
+                    expirationDate: new FormControl<string | null>(null, {
+                        validators: [
+                            Validators.required,
+                            this.validateCardExpirationDate.bind(this),
+                        ],
+                        updateOn: 'submit',
+                    }),
+                    cvv: new FormControl<string | null>(null, {
+                        validators: [Validators.required],
+                        updateOn: 'submit',
+                    }),
                 }),
             );
         }
@@ -120,5 +133,23 @@ export class PaymentMethodFormComponent implements OnInit {
     ): ValidationErrors | null {
         if (!ibanControl.value) return null;
         return isValidIBAN(ibanControl.value) ? null : { invalidIBAN: true };
+    }
+
+    private validateCardExpirationDate(
+        control: FormControl<string | null>,
+    ): ValidationErrors | null {
+        if (control.value?.length !== 5) return { invalidExpirationDate: true };
+        const month = Number(control.value.slice(0, 2));
+        const year = Number(control.value.slice(3, 5));
+        const currentYear = new Date().getFullYear() % 100;
+        const currentMonth = new Date().getMonth() + 1;
+        if (isNaN(month) || isNaN(year) || month < 1 || month > 12)
+            return { invalidExpirationDate: true };
+        if (
+            year < currentYear ||
+            (year === currentYear && month < currentMonth)
+        )
+            return { expirationDatePassed: true };
+        return null;
     }
 }

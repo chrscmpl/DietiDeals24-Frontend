@@ -14,6 +14,49 @@
     }
 }
 
+.credit-card-inputs {
+    @include layouts.grid(
+        "owner owner" auto "number number" auto "expiration cvv" auto / 10ch
+            auto,
+        $justify-content: start,
+        $justify-items: start,
+        $align-items: start,
+        $align-content: start,
+        $gap: 1rem
+    );
+    row-gap: 1ch;
+
+    @include viewports.mobile {
+        width: 100%;
+        justify-content: stretch;
+        justify-items: stretch;
+    }
+}
+
+.ownerName-input-wrapper {
+    grid-area: owner;
+}
+
+.cardNumber-input-wrapper {
+    grid-area: number;
+}
+
+.expirationDate-input-wrapper {
+    grid-area: expiration;
+}
+
+.cvv-input-wrapper {
+    grid-area: cvv;
+}
+
 .payment-method-checkbox-wrapper {
     @include layouts.flex(row, start, center, 1ch);
+}
+
+@include viewports.mobile {
+    :host ::ng-deep {
+        .cardNumber-input .p-inputmask {
+            width: 100%;
+        }
+    }
 }

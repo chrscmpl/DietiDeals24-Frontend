@@ -116,7 +116,7 @@ export const routes: Routes = [
             AuthenticationGuard.asCanActivateFn(true),
             ShouldSpecifyChildGuard.asCanActivateFn(),
             ShowUIGuard.asCanActivateFn(false),
-            // ConfirmReloadGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(true),
         ],
         children: [
             {

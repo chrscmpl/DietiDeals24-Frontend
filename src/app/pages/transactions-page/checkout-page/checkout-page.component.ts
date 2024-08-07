@@ -200,7 +200,7 @@ export class CheckoutPageComponent implements OnInit {
                     this.message.add({
                         severity: 'error',
                         summary: 'Authorization error',
-                        detail: 'Payment authorization failed',
+                        detail: 'Payment authorization failed, check that the data is correct',
                     }),
             });
     }

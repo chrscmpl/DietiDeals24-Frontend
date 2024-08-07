@@ -10,8 +10,10 @@ import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
 import {
     AuthorizedPaymentMethodRegistrationDTO,
+    PaymentMethodDTO,
     UnauthorizedPaymentMethodRegistrationDTO,
 } from '../DTOs/payment-method.dto';
+import { environment } from '../../environments/environment';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -67,34 +69,15 @@ export class PaymentService {
             switchMap((isLogged) =>
                 !isLogged
                     ? throwError(() => new Error('User is not authenticated'))
-                    : // : this.http
-                      //       .get<
-                      //           PaymentMethodDTO[]
-                      //       >(`${environment.backendHost}/payment-methods`)
-                      of([
-                          {
-                              id: '1',
-                              type: PaymentMethodType.creditCard,
-                              cardNumberLastDigits: '5678',
-                          },
-                          {
-                              id: '2',
-                              type: PaymentMethodType.IBAN,
-                              iban: 'GB33BUKB20201555555555',
-                          },
-                          {
-                              id: '3',
-                              type: PaymentMethodType.creditCard,
-                              cardNumberLastDigits: '9876',
-                          },
-                          {
-                              id: '4',
-                              type: PaymentMethodType.IBAN,
-                              iban: 'IT60X0542811101000000123456',
-                          },
-                      ]).pipe(
-                          map((dtos) => paymentMethodBuilder.buildArray(dtos)),
-                      ),
+                    : this.http
+                          .get<
+                              PaymentMethodDTO[]
+                          >(`${environment.backendHost}/payment-methods`)
+                          .pipe(
+                              map((dtos) =>
+                                  paymentMethodBuilder.buildArray(dtos),
+                              ),
+                          ),
             ),
         );
     }
