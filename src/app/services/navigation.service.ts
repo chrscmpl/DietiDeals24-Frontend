@@ -28,6 +28,9 @@ type query = Params | AuctionSearchParameters;
     providedIn: 'root',
 })
 export class NavigationService {
+    private _routeBeforeRedirection: string | null = null;
+    private _routeBeforeTransaction: string | null = null;
+
     public currentLocation$: Observable<{
         path: string[];
         query: query;
@@ -91,6 +94,39 @@ export class NavigationService {
         this.isCurrentNavigationSuccessful$.subscribe((success) => {
             if (!success) fn();
         });
+    }
+
+    public navigateToRouteBeforeRedirection() {
+        this.navigateToSavedRoute(this._routeBeforeRedirection);
+        this._routeBeforeRedirection = null;
+    }
+
+    public navigateRedirectingBack(route: string) {
+        this.routeBeforeRedirection = this.router.url;
+        this.router.navigate([route]);
+    }
+
+    public navigateToRouteBeforeTransaction() {
+        this.navigateToSavedRoute(this._routeBeforeTransaction);
+        this._routeBeforeTransaction = null;
+    }
+
+    public set routeBeforeRedirection(route: string | null) {
+        this._routeBeforeRedirection = route;
+    }
+
+    public set routeBeforeTransaction(route: string | null) {
+        this._routeBeforeTransaction = route;
+    }
+
+    public get primaryOutletRoute(): string {
+        return this.router.url.replace(/\(.*?\)/g, '');
+    }
+
+    private navigateToSavedRoute(route: string | null) {
+        route = route || '/';
+        this.executeIfNavigationFailure(() => this.router.navigate(['/']));
+        this.router.navigate([route]);
     }
 
     private getCurrentPath(): string[] {

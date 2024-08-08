@@ -14,9 +14,7 @@
                     class="nav-auth-btn"
                     severity="secondary"
                     (onClick)="
-                        redirectionService.navigateRedirectingBack(
-                            '/auth/login'
-                        )
+                        navigation.navigateRedirectingBack('/auth/login')
                     "
                 >
                     Login
@@ -25,9 +23,7 @@
                     class="nav-auth-btn"
                     severity="secondary"
                     (onClick)="
-                        redirectionService.navigateRedirectingBack(
-                            '/auth/register'
-                        )
+                        navigation.navigateRedirectingBack('/auth/register')
                     "
                 >
                     Register

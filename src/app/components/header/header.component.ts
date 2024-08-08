@@ -7,10 +7,10 @@ import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
 import { LogoComponent } from '../logo/logo.component';
-import { RedirectionService } from '../../services/redirection.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
 import { NotificationsMenuComponent } from '../notifications-menu/notifications-menu.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
     selector: 'dd24-header',
@@ -35,7 +35,7 @@ export class HeaderComponent {
     constructor(
         public readonly authenticationService: AuthenticationService,
         public readonly windowService: WindowService,
-        public readonly redirectionService: RedirectionService,
+        public readonly navigation: NavigationService,
     ) {}
 
     tabs: link[] = mainPages;

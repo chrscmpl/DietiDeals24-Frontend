@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
@@ -34,6 +34,7 @@ import { PaymentService } from '../../../services/payment.service';
 import { MessageService } from 'primeng/api';
 import { BidService } from '../../../services/bid.service';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { NavigationService } from '../../../services/navigation.service';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -82,7 +83,7 @@ export class CheckoutPageComponent implements OnInit {
         private readonly paymentService: PaymentService,
         private readonly message: MessageService,
         private readonly bidService: BidService,
-        private readonly router: Router,
+        private navigation: NavigationService,
     ) {}
 
     public ngOnInit(): void {
@@ -229,7 +230,7 @@ export class CheckoutPageComponent implements OnInit {
             })
             .subscribe({
                 next: () => {
-                    this.router.navigate(['/home']);
+                    this.navigation.navigateToRouteBeforeTransaction();
                     this.message.add({
                         severity: 'success',
                         summary: 'Bid placed',

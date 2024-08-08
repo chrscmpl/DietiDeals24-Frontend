@@ -28,6 +28,7 @@ import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuthenticationService } from '../../services/authentication.service';
 import { BidService } from '../../services/bid.service';
 import { AuctionStatus } from '../../enums/auction-status.enum';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -91,6 +92,7 @@ export class AuctionDetailsPageComponent
         private changeDetectorRef: ChangeDetectorRef,
         private readonly authentication: AuthenticationService,
         private readonly bidService: BidService,
+        private readonly navigation: NavigationService,
     ) {}
 
     public ngOnInit(): void {
@@ -205,6 +207,8 @@ export class AuctionDetailsPageComponent
     }
 
     public onBid(): void {
+        this.navigation.routeBeforeTransaction =
+            this.navigation.primaryOutletRoute;
         this.router.navigate([
             {
                 outlets: {

@@ -13,11 +13,11 @@ import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { InputComponent } from '../../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
-import { RedirectionService } from '../../../services/redirection.service';
 import { UserCredentials } from '../../../DTOs/user.dto';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
+import { NavigationService } from '../../../services/navigation.service';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -44,7 +44,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
 
     constructor(
         private readonly authenticationService: AuthenticationService,
-        private readonly redirect: RedirectionService,
+        private readonly navigation: NavigationService,
         private readonly formBuilder: FormBuilder,
         private readonly element: ElementRef,
         private readonly message: MessageService,
@@ -95,7 +95,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
             this.loginForm.value as UserCredentials,
             {
                 next: () => {
-                    this.redirect.exitRoute();
+                    this.navigation.navigateToRouteBeforeRedirection();
                 },
                 error: (err) => {
                     if (err.status >= 500) {

@@ -13,10 +13,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputComponent } from '../../../components/input/input.component';
 import { MaskedPipe } from '../../../pipes/masked.pipe';
 import { emailVerificationDTO } from '../../../DTOs/user.dto';
-import { RedirectionService } from '../../../services/redirection.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
+import { NavigationService } from '../../../services/navigation.service';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -44,7 +44,7 @@ export class VerifyEmailPageComponent implements OnInit {
         private readonly location: Location,
         private readonly authentication: AuthenticationService,
         private readonly formBuilder: FormBuilder,
-        private readonly redirect: RedirectionService,
+        private readonly navigation: NavigationService,
         private readonly message: MessageService,
     ) {}
 
@@ -98,7 +98,7 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     private onVerificationSuccess(): void {
-        this.redirect.exitRoute();
+        this.navigation.navigateToRouteBeforeRedirection();
     }
 
     private onVerificationError(err: HttpErrorResponse): void {
