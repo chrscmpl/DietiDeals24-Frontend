@@ -21,7 +21,7 @@ import { AuctionsService, RequestKey } from '../../services/auctions.service';
     styleUrl: './auction-list.component.scss',
 })
 export class AuctionListComponent implements OnInit, OnDestroy {
-    private static readonly LOADING_STOP_FALLBACK_DELAY = 5000;
+    private static readonly LOADING_STOP_FALLBACK_DELAY = 10000;
 
     @Input({ required: true }) public set requestKey(value: RequestKey | null) {
         this._requestKey = value;
@@ -117,8 +117,8 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                     });
                 },
                 error: () => {
-                    this.error = true;
                     this.stopLoading();
+                    this.error = true;
                 },
                 complete: () => {
                     this.stopLoading();
@@ -143,11 +143,16 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.loadingIndicator.start();
         this.showEmpty = false;
         setTimeout(() => {
-            if (this.loading) this.stopLoading();
+            if (!this) return;
+            if (this.loading) {
+                this.stopLoading();
+                this.error = true;
+            }
         }, this.loadingIndicator.startDelay + AuctionListComponent.LOADING_STOP_FALLBACK_DELAY);
     }
 
     private stopLoading(): void {
+        this.error = false;
         this.loading = false;
         this.loadingIndicator.stop();
         this.showEmpty = true;
