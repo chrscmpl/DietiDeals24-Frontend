@@ -1,9 +1,19 @@
 <span class="auction-type"
     >{{ ruleSet + " AUCTION" | uppercase }}
-    <a
+    <span
         class="auction-type-link"
-        (click)="onNavigate()"
+        [routerLink]="[
+            '/',
+            {
+                outlets: {
+                    overlay: null,
+                    primary: ['help']
+                }
+            }
+        ]"
+        [fragment]="ruleSet + '-auction'"
+        (click)="stopPropagation($event)"
         tabindex="0"
-        (keypress)="onKeyPress($event)"
-        ><i class="pi pi-info-circle"></i></a
+        (keypress)="stopPropagation($event)"
+        ><i class="pi pi-info-circle"></i></span
 ></span>
