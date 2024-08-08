@@ -79,7 +79,6 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly formBuilder: FormBuilder,
-        private readonly oneCharUpperPipe: OneCharUpperPipe,
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
         private readonly searchService: SearchServiceService,
@@ -97,7 +96,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         this.auctionTypeOptions = this.auctionTypeOptions.concat(
             Object.values(AuctionRuleSet).map((type) => {
                 return {
-                    name: `${this.oneCharUpperPipe.transform(type)} auctions`,
+                    name: `${OneCharUpperPipe.transform(type)} auctions`,
                     value: type as string,
                 };
             }),

@@ -7,7 +7,9 @@ import {
 } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class EmailVerificationGuard
     implements CanActivate, CanDeactivate<unknown>
 {

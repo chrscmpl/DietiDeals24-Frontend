@@ -1,9 +1,10 @@
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { NavigationService } from '../../services/navigation.service';
 import { MenuItem } from 'primeng/api';
 import { catchError, map, Observable, of } from 'rxjs';
+import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 
 const HIDDEN_QUERY_PARAMS = ['keywords'];
 
@@ -15,10 +16,7 @@ const HIDDEN_QUERY_PARAMS = ['keywords'];
     styleUrl: './breadcrumb.component.scss',
 })
 export class BreadcrumbComponent {
-    constructor(
-        public readonly titleCasePipe: TitleCasePipe,
-        public readonly routingUtils: NavigationService,
-    ) {}
+    constructor(public readonly routingUtils: NavigationService) {}
 
     public routes$: Observable<MenuItem[]> =
         this.routingUtils.currentLocation$.pipe(
@@ -43,7 +41,7 @@ export class BreadcrumbComponent {
         return path.map((entry) => {
             url.push(entry);
             return {
-                label: this.titleCasePipe.transform(entry.replace(/-/g, ' ')),
+                label: OneCharUpperPipe.transform(entry.replace(/-/g, ' ')),
                 routerLink: url,
             };
         });
@@ -59,7 +57,7 @@ export class BreadcrumbComponent {
                     !HIDDEN_QUERY_PARAMS.includes(queryParameter[0]),
             )
             .map((queryParameter) => ({
-                label: this.titleCasePipe.transform(queryParameter[1]),
+                label: OneCharUpperPipe.transform(queryParameter[1]),
                 routerLink: url,
                 queryParams: { [queryParameter[0]]: queryParameter[1] },
             }));

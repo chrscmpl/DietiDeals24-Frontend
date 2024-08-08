@@ -22,7 +22,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
-import { LocationsService } from '../../../services/locations.service';
+import { GeographicalLocationsService } from '../../../services/locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -135,7 +135,7 @@ export class RegistrationPageComponent implements OnInit {
 
     constructor(
         private readonly formBuilder: FormBuilder,
-        public readonly locationsService: LocationsService,
+        public readonly locationsService: GeographicalLocationsService,
         private readonly router: Router,
         private readonly authentication: AuthenticationService,
         private readonly message: MessageService,

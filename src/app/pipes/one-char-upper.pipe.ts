@@ -5,7 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true,
 })
 export class OneCharUpperPipe implements PipeTransform {
-    transform(value: string): string {
+    public static transform(value: string): string {
         return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    transform(value: string): string {
+        return OneCharUpperPipe.transform(value);
     }
 }

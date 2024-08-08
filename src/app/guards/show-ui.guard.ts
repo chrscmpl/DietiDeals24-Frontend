@@ -3,7 +3,9 @@ import { WindowService } from '../services/window.service';
 import { Injectable, inject } from '@angular/core';
 import { NavigationService } from '../services/navigation.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class ShowUIGuard {
     constructor(
         private windowService: WindowService,

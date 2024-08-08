@@ -6,7 +6,7 @@ import {
 import { AuctionKind } from '../enums/auction-kind.enum';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
-import { Location } from './location.model';
+import { GeographicalLocation } from './location.model';
 import { UserSummary } from './user.model';
 
 type bidValidationError = { min: true } | { max: true };
@@ -17,7 +17,7 @@ export abstract class Auction {
     protected _id: string;
     protected _title: string;
     protected _conditions: string | null;
-    protected _location: Location;
+    protected _location: GeographicalLocation;
     protected _endTime: Date;
     protected _status: AuctionStatus;
     protected _currency: string;
@@ -66,7 +66,7 @@ export abstract class Auction {
         return this._conditions;
     }
 
-    public get location(): Location {
+    public get location(): GeographicalLocation {
         return this._location;
     }
 

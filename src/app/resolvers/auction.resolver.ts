@@ -20,7 +20,9 @@ export interface AuctionResolverOptions {
     useParent?: boolean;
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuctionResolver {
     constructor(
         private readonly auctionsService: AuctionsService,

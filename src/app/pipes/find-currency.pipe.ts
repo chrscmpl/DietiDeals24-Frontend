@@ -1,12 +1,15 @@
 import { CurrencyPipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'findCurrency',
     standalone: true,
 })
 export class FindCurrencyPipe implements PipeTransform {
-    constructor(private readonly currencyPipe: CurrencyPipe) {}
+    private readonly currencyPipe: CurrencyPipe;
+    constructor(@Inject(LOCALE_ID) public readonly locale: string) {
+        this.currencyPipe = new CurrencyPipe(locale);
+    }
 
     transform(value: string): string {
         return value.replace(

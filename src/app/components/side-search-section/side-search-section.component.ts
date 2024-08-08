@@ -57,7 +57,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
             map((categories) => {
                 return Object.entries(categories).map(([key, value]) => {
                     return {
-                        label: this.oneCharUpperPipe.transform(key),
+                        label: OneCharUpperPipe.transform(key),
                         items: value.map((category) => {
                             return {
                                 label: category,
@@ -73,7 +73,6 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         private readonly categoriesService: CategoriesService,
         private readonly formBuilder: FormBuilder,
         private readonly searchService: SearchServiceService,
-        private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
     public ngOnInit(): void {

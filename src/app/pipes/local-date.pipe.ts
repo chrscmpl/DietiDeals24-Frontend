@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 @Pipe({
@@ -6,7 +6,10 @@ import { DatePipe } from '@angular/common';
     standalone: true,
 })
 export class LocalDatePipe implements PipeTransform {
-    constructor(private datePipe: DatePipe) {}
+    private datePipe: DatePipe;
+    constructor(@Inject(LOCALE_ID) public readonly locale: string) {
+        this.datePipe = new DatePipe(locale);
+    }
     transform(value: string | number | Date): string | null {
         const date = new Date(value);
         const dayDifference = this.dayDifference(date);

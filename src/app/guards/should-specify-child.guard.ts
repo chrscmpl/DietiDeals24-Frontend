@@ -5,7 +5,9 @@ import {
     CanActivateFn,
 } from '@angular/router';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class ShouldSpecifyChildGuard implements CanActivate {
     constructor() {}
 

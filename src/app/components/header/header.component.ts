@@ -22,7 +22,6 @@ import { NavigationService } from '../../services/navigation.service';
         TitleCasePipe,
         AsyncPipe,
         ButtonModule,
-        TitleCasePipe,
         LogoComponent,
         BreadcrumbComponent,
         UserMenuComponent,

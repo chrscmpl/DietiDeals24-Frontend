@@ -11,7 +11,9 @@ import { environment } from '../../environments/environment';
 import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthenticationInterceptor implements HttpInterceptor {
     public intercept(request: HttpRequest<unknown>, next: HttpHandler) {
         if (!request.url.startsWith(environment.backendHost)) {

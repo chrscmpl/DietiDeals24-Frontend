@@ -10,7 +10,7 @@ import { Cacheable } from 'ts-cacheable';
 @Injectable({
     providedIn: 'root',
 })
-export class LocationsService {
+export class GeographicalLocationsService {
     constructor(private readonly http: HttpClient) {}
 
     private countriesSubject = new ReplaySubject<void>(1);

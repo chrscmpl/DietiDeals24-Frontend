@@ -1,5 +1,5 @@
 import { AuthenticatedUserDTO, UserSummaryDTO } from '../DTOs/user.dto';
-import { Location } from './location.model';
+import { GeographicalLocation } from './location.model';
 
 export interface userLink {
     name: string;
@@ -94,7 +94,7 @@ export class UserSummary {
     private _id: string;
     private _username: string;
     private _profilePictureUrl: string | null;
-    private _location: Location;
+    private _location: GeographicalLocation;
 
     public constructor(dto: UserSummaryDTO) {
         this._id = dto.id;
@@ -115,7 +115,7 @@ export class UserSummary {
         return this._profilePictureUrl;
     }
 
-    public get location(): Location {
+    public get location(): GeographicalLocation {
         return this._location;
     }
 }

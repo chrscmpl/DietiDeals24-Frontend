@@ -4,7 +4,9 @@ import { AuthenticationService } from '../services/authentication.service';
 import { map, skipUntil } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class AuthenticationGuard {
     constructor(
         private router: Router,

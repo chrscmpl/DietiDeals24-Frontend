@@ -14,7 +14,9 @@ import { Auction } from '../models/auction.model';
 import { CheckoutInformation } from '../models/checkout-information.model';
 import { MessageService } from 'primeng/api';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class CheckoutInformationResolver
     implements Resolve<CheckoutInformation>
 {

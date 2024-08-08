@@ -3,7 +3,9 @@ import { CanActivateFn } from '@angular/router';
 import { WindowService } from '../services/window.service';
 import { NavigationService } from '../services/navigation.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class ConfirmReloadGuard {
     constructor(
         private readonly windowService: WindowService,
