@@ -8,7 +8,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { debounceTime, Subscription, take } from 'rxjs';
+import { combineLatest, debounceTime, Subscription, take } from 'rxjs';
+import { FAQ } from '../../models/faq.model';
 
 @Component({
     selector: 'dd24-help-page',
@@ -37,11 +38,17 @@ export class HelpPageComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        this.route.data.pipe(take(1)).subscribe((data) => {
-            this.faqMenuItems = this.faqArrayToMenuItems(data['faq']);
+        combineLatest([this.route.data, this.route.fragment])
+            .pipe(take(1))
+            .subscribe(([data, fragment]) => {
+                console.log(fragment);
+                this.faqMenuItems = this.faqArrayToMenuItems(
+                    data['faq'],
+                    fragment,
+                );
 
-            this.filteredFaqMenuItems = this.faqMenuItems;
-        });
+                this.filteredFaqMenuItems = this.faqMenuItems;
+            });
 
         this.subscriptions.push(
             this.filterControl.valueChanges
@@ -50,14 +57,18 @@ export class HelpPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    private faqArrayToMenuItems(arr: { q: string; a: string }[]): MenuItem[] {
-        return arr.map((faq: { q: string; a: string }) => ({
-            label: faq.q,
+    private faqArrayToMenuItems(
+        arr: FAQ[],
+        fragment: string | null,
+    ): MenuItem[] {
+        return arr.map((faq: FAQ) => ({
+            label: faq.question,
             items: [
                 {
-                    label: faq.a,
+                    label: faq.answer,
                 },
             ],
+            expanded: fragment === faq.fragment,
         }));
     }
 
