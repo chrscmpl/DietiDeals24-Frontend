@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { combineLatest, debounceTime, Subscription, take } from 'rxjs';
 import { FAQ } from '../../models/faq.model';
+import { WindowService } from '../../services/window.service';
 
 @Component({
     selector: 'dd24-help-page',
@@ -35,19 +36,22 @@ export class HelpPageComponent implements OnInit, OnDestroy {
     public constructor(
         private readonly route: ActivatedRoute,
         public readonly location: Location,
+        private readonly viewPortScroller: ViewportScroller,
+        private readonly windowService: WindowService,
     ) {}
 
     public ngOnInit(): void {
         combineLatest([this.route.data, this.route.fragment])
             .pipe(take(1))
             .subscribe(([data, fragment]) => {
-                console.log(fragment);
                 this.faqMenuItems = this.faqArrayToMenuItems(
                     data['faq'],
                     fragment,
                 );
 
                 this.filteredFaqMenuItems = this.faqMenuItems;
+
+                if (fragment) this.scrollToFaqItem(fragment);
             });
 
         this.subscriptions.push(
@@ -69,6 +73,7 @@ export class HelpPageComponent implements OnInit, OnDestroy {
                 },
             ],
             expanded: fragment === faq.fragment,
+            id: faq.fragment,
         }));
     }
 
@@ -81,6 +86,16 @@ export class HelpPageComponent implements OnInit, OnDestroy {
                           .toLowerCase()
                           .includes(filter.toLowerCase()),
                   );
+    }
+
+    private scrollToFaqItem(fragment: string): void {
+        this.windowService.setSmoothScrolling(true);
+        setTimeout(() => {
+            this.viewPortScroller.scrollToAnchor(`${fragment}_header`);
+            setTimeout(() => {
+                this.windowService.setSmoothScrolling(false);
+            }, 1000);
+        }, 100);
     }
 
     public ngOnDestroy(): void {

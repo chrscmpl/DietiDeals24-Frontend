@@ -3,7 +3,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingIndicator } from './helpers/loading-indicator';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
@@ -58,6 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly notifications: NotificationsService,
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
+        private readonly viewportScroller: ViewportScroller,
         _: BidService, // have it instantiated for caching purposes
     ) {}
 
@@ -76,6 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public onMainRouterOutletActivate(): void {
         this.isLoadingRouteIndicator.stop();
+        this.viewportScroller.scrollToPosition([0, 0]);
     }
 
     public onMainRouterOutletDeactivate(): void {

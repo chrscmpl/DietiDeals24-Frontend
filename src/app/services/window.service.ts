@@ -18,11 +18,13 @@ import {
     providedIn: 'root',
 })
 export class WindowService {
+    private styles!: HTMLStyleElement;
     private readonly matchMobile =
         this.mediaMatcher.matchMedia('(max-width: 768px)');
 
     constructor(private readonly mediaMatcher: MediaMatcher) {
         this.UIhiddenSUbject.next(true);
+        this.initStyles();
     }
 
     public isSidebarVisible = false;
@@ -33,6 +35,11 @@ export class WindowService {
 
     public setUIvisibility(isVisible: boolean): void {
         this.UIhiddenSUbject.next(!isVisible);
+    }
+
+    public setSmoothScrolling(value: boolean): void {
+        if (value) document.documentElement.classList.add('dd24-smooth-scroll');
+        else document.documentElement.classList.remove('dd24-smooth-scroll');
     }
 
     public isMobile$: Observable<boolean> = fromEvent<MediaQueryListEvent>(
@@ -68,5 +75,12 @@ export class WindowService {
         } else {
             if (window.onbeforeunload !== null) window.onbeforeunload = null;
         }
+    }
+
+    private initStyles(): void {
+        this.styles = document.createElement('style');
+        this.styles.innerHTML =
+            '.dd24-smooth-scroll {scroll-behavior: smooth;}';
+        document.head.appendChild(this.styles);
     }
 }

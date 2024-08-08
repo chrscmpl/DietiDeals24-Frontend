@@ -317,6 +317,14 @@ i {
         padding: 0.4rem 0;
     }
 
+    .p-panelmenu-heade,
+    .p-panelmenu-header-action,
+    .p-panelmenu-header-content {
+        box-shadow: none;
+        outline: none;
+        border: none;
+    }
+
     .p-panelmenu-header-action,
     .p-menuitem-link {
         background: none;
