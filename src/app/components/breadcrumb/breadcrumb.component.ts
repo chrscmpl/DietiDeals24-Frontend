@@ -16,7 +16,10 @@ const HIDDEN_QUERY_PARAMS = ['keywords'];
     styleUrl: './breadcrumb.component.scss',
 })
 export class BreadcrumbComponent {
-    constructor(public readonly routingUtils: NavigationService) {}
+    constructor(
+        public readonly routingUtils: NavigationService,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
+    ) {}
 
     public routes$: Observable<MenuItem[]> =
         this.routingUtils.currentLocation$.pipe(
@@ -41,7 +44,9 @@ export class BreadcrumbComponent {
         return path.map((entry) => {
             url.push(entry);
             return {
-                label: OneCharUpperPipe.transform(entry.replace(/-/g, ' ')),
+                label: this.oneCharUpperPipe.transform(
+                    entry.replace(/-/g, ' '),
+                ),
                 routerLink: url,
             };
         });
@@ -57,7 +62,7 @@ export class BreadcrumbComponent {
                     !HIDDEN_QUERY_PARAMS.includes(queryParameter[0]),
             )
             .map((queryParameter) => ({
-                label: OneCharUpperPipe.transform(queryParameter[1]),
+                label: this.oneCharUpperPipe.transform(queryParameter[1]),
                 routerLink: url,
                 queryParams: { [queryParameter[0]]: queryParameter[1] },
             }));

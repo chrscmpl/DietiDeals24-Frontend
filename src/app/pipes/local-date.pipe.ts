@@ -7,10 +7,12 @@ import { DatePipe } from '@angular/common';
 })
 export class LocalDatePipe implements PipeTransform {
     private datePipe: DatePipe;
-    constructor(@Inject(LOCALE_ID) public readonly locale: string) {
+
+    public constructor(@Inject(LOCALE_ID) public readonly locale: string) {
         this.datePipe = new DatePipe(locale);
     }
-    transform(value: string | number | Date): string | null {
+
+    public transform(value: string | number | Date): string | null {
         const date = new Date(value);
         const dayDifference = this.dayDifference(date);
         if (dayDifference < 0) {

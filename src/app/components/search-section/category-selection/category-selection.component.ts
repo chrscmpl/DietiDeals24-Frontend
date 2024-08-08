@@ -74,7 +74,10 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     public currentTab?: MenuItem;
 
-    constructor(private readonly categoriesService: CategoriesService) {}
+    constructor(
+        private readonly categoriesService: CategoriesService,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
+    ) {}
 
     ngOnInit(): void {
         this.categoriesService.categories$.subscribe((categories) => {
@@ -104,7 +107,7 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
                     macroCategory: -1,
                 });
                 tabs.push({
-                    label: OneCharUpperPipe.transform(key),
+                    label: this.oneCharUpperPipe.transform(key),
                     command: () => (this.selectedMacroCategory = index),
                 });
             });
@@ -140,7 +143,7 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
 
     private stringToOption(str: string, macroCategory: number): option {
         return {
-            name: OneCharUpperPipe.transform(str),
+            name: this.oneCharUpperPipe.transform(str),
             value: str,
             macroCategory: macroCategory,
         };

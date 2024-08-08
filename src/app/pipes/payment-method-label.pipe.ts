@@ -6,7 +6,7 @@ import { PaymentMethodType } from '../enums/payment-method-type';
     standalone: true,
 })
 export class PaymentMethodLabelPipe implements PipeTransform {
-    transform(value: PaymentMethodType): string {
+    public transform(value: PaymentMethodType): string {
         switch (value) {
             case PaymentMethodType.creditCard:
                 return 'credit card';

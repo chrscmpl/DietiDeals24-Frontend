@@ -23,7 +23,7 @@ interface Interval {
     standalone: true,
 })
 export class IntervalPipe implements PipeTransform {
-    transform(value: number, precision: string = 'seconds'): string {
+    public transform(value: number, precision: string = 'seconds'): string {
         const precisionValue: Precision =
             precision in Precision
                 ? Precision[precision as keyof typeof Precision]

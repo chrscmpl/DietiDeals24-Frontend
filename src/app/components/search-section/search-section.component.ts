@@ -83,6 +83,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         private readonly categoriesService: CategoriesService,
         private readonly searchService: SearchServiceService,
         public readonly windowService: WindowService,
+        private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
     public ngOnInit(): void {
@@ -96,7 +97,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         this.auctionTypeOptions = this.auctionTypeOptions.concat(
             Object.values(AuctionRuleSet).map((type) => {
                 return {
-                    name: `${OneCharUpperPipe.transform(type)} auctions`,
+                    name: `${this.oneCharUpperPipe.transform(type)} auctions`,
                     value: type as string,
                 };
             }),

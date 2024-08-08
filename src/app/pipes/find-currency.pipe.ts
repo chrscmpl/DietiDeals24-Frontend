@@ -7,11 +7,11 @@ import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 })
 export class FindCurrencyPipe implements PipeTransform {
     private readonly currencyPipe: CurrencyPipe;
-    constructor(@Inject(LOCALE_ID) public readonly locale: string) {
+    public constructor(@Inject(LOCALE_ID) public readonly locale: string) {
         this.currencyPipe = new CurrencyPipe(locale);
     }
 
-    transform(value: string): string {
+    public transform(value: string): string {
         return value.replace(
             /CURRENCY{([^}|]+)\|([^}]+)}/g,
             (_, amount, currency) =>

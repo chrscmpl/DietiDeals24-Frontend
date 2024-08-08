@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search-section/search-section.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { link, mainPages } from '../../helpers/links';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
@@ -19,7 +19,6 @@ import { NavigationService } from '../../services/navigation.service';
         SearchSectionComponent,
         RouterLink,
         RouterLinkActive,
-        TitleCasePipe,
         AsyncPipe,
         ButtonModule,
         LogoComponent,

@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideServiceWorker } from '@angular/service-worker';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
+import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom([BrowserAnimationsModule]),
         MessageService,
         ConfirmationService,
+        OneCharUpperPipe,
         { provide: LOCALE_ID, useValue: 'en-US' },
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),

@@ -6,7 +6,7 @@ import { AuctionKind } from '../enums/auction-kind.enum';
     standalone: true,
 })
 export class AuctionKindPipe implements PipeTransform {
-    transform(value: AuctionKind, option: 'bid' | 'create'): string {
+    public transform(value: AuctionKind, option: 'bid' | 'create'): string {
         if (
             (option === 'bid' && value === AuctionKind.buying) ||
             (option === 'create' && value === AuctionKind.selling)
