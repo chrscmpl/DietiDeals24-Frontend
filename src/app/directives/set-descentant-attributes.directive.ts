@@ -1,24 +1,41 @@
-import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    Input,
+    Renderer2,
+} from '@angular/core';
 
 @Directive({
-    selector: '[dd24SetDescendantAttributes]',
+    selector: '[dd24DescendantsAttributes]',
     standalone: true,
 })
-export class SetDescendantAttributesDirective implements AfterViewInit {
-    @Input({ required: true }) querySelector!: string;
+export class DescendantsAttributesDirective implements AfterViewInit {
+    @Input({ required: true }) dd24DescendantsAttributes!: {
+        selectors: string[];
+        attributes: {
+            [key: string]: string;
+        };
+    }[];
 
-    @Input({ required: true }) attributes!: {
-        [key: string]: string;
-    };
+    constructor(
+        private readonly element: ElementRef,
+        private readonly renderer: Renderer2,
+    ) {}
 
-    constructor(private readonly element: ElementRef) {}
-
-    ngAfterViewInit(): void {
-        const input = this.element.nativeElement.querySelector(
-            this.querySelector,
-        );
-        if (!input) return;
-        for (const entry of Object.entries(this.attributes))
-            input.setAttribute(entry[0], entry[1]);
+    public ngAfterViewInit(): void {
+        for (const entry of this.dd24DescendantsAttributes) {
+            const descendants: HTMLElement[] =
+                this.element.nativeElement.querySelectorAll(...entry.selectors);
+            for (const descendant of descendants) {
+                for (const attribute of Object.entries(entry.attributes)) {
+                    this.renderer.setAttribute(
+                        descendant,
+                        attribute[0],
+                        attribute[1],
+                    );
+                }
+            }
+        }
     }
 }

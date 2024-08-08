@@ -20,7 +20,7 @@ import {
     UnauthorizedCreditCardRegistrationDTO,
 } from '../../DTOs/payment-method.dto';
 import { InputMaskModule } from 'primeng/inputmask';
-import { SetDescendantAttributesDirective } from '../../directives/set-descentant-attributes.directive';
+import { DescendantsAttributesDirective } from '../../directives/set-descentant-attributes.directive';
 
 type IBANForm = ToReactiveForm<IBANRegistrationDTO>;
 
@@ -41,7 +41,7 @@ export interface NewPaymentMethodForm {
         CheckboxModule,
         InputComponent,
         InputMaskModule,
-        SetDescendantAttributesDirective,
+        DescendantsAttributesDirective,
     ],
     templateUrl: './payment-method-form.component.html',
     styleUrl: './payment-method-form.component.scss',
