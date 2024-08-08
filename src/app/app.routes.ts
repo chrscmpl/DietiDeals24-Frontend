@@ -21,6 +21,7 @@ import { ShowUIGuard } from './guards/show-ui.guard';
 import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AuctionConclusionPageComponent } from './pages/transactions-page/auction-conclusion-page/auction-conclusion-page.component';
+import { FAQResolver } from './resolvers/faq.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -80,6 +81,7 @@ export const routes: Routes = [
             ShowUIGuard.asCanActivateFn(true),
             ConfirmReloadGuard.asCanActivateFn(false),
         ],
+        resolve: { faq: FAQResolver.asResolveFn() },
     },
     {
         path: 'auth',

@@ -31,7 +31,10 @@
     <p-divider class="side-search-divider" [style]="{ margin: 0 }"></p-divider>
     <section class="side-search-category-section">
         <h4 class="side-search-header">Categories</h4>
-        <p-panelMenu [model]="(categoryItems$ | async) ?? []">
+        <p-panelMenu
+            class="dd24-panelmenu dd24-menu-small"
+            [model]="(categoryItems$ | async) ?? []"
+        >
             <ng-template pTemplate="item" let-item>
                 <a
                     class="side-search-category-item"

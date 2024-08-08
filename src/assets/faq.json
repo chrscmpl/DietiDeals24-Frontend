@@ -1,0 +1,70 @@
+[
+    {
+        "q": "What is DietiDeals24?",
+        "a": "DietiDeals24 is an online auction platform in which users can make deals, selling or buying products or services. Users can create auctions of different types, and with different rules, and with the different roles of seller or buyer. Users can also participate in auctions created by others, making bids to either buy or sell the specified item or service, depending on the type of the auction. In reality, this platform is a student project and not a real auction platform, so no real transactions are made."
+    },
+    {
+        "q": "How do I participate on the platform?",
+        "a": "Users can create their own auctions or navigate through the existing ones on the platform. Auctions can be searched through keywords, which will filter auctions by their titles and descriptions. Auctions can also be filtered by their type and by the category of the product or service. The search results will by default be shown by relevance, but can also be sorted by the time left to the end of the auctions."
+    },
+    {
+        "q": "How do I create an auction?",
+        "a": "When creating an auction, users must first specify its rule set and category, among the ones present on the platform. They must then provide a title for the auction, an end date, and possibly other parameters depending on the type of the auction (e.g. minimum bid, maximum starting bid). In case the auction is for a product, and not a service, the conditions of the offered or requested product must also be provided. Users can also choose to provide a description for the auction or to add up to four pictures."
+    },
+    {
+        "q": "How do I make a bid?",
+        "a": "Bids can be made simply by opening the page of an auction, clicking the “Make a bid” button and specifying a price to either buy or sell the product or service, depending on the type of the auction. You will be required to specify an amount and a fake payment method, which won't be used for anything, as the transaction won't be real."
+    },
+    {
+        "q": "What happens at the end of an auction?",
+        "a": "When an auction ends, the creator of said auction gets 3 days to decide whether to accept or reject the winning bid. In case of rejection, the deal is canceled and the bidder is notified. In case of acceptance, the auctioneer will have to specify a fake payment method, which won't be used for anything, as the transaction won't be real."
+    },
+    {
+        "q": "How do I know about the current state of my active bids and auctions?",
+        "a": "Users can view at any time the current state of their active bids and auctions in their personal page. Note that in case of an auction conclusion, the auction creator is notified, and that bidders are notified in case they lose an auction, if the auction they participated in is ended prematurely, or in case they win and their bid is accepted or rejected by the auction creator. Notifications are stored and visible by clicking on the specific icon on top of the search bar."
+    },
+    {
+        "q": "What is a reverse auction?",
+        "a": "A reverse auction is a type of auction in which a user specifies his interest in a given product or service (specifying a maximum starting price) and other users can make a sell proposal. Sellers compete downwards with each other trying to secure the deal bidding the lowest and therefore more convenient price."
+    },
+    {
+        "q": "What is a silent auction?",
+        "a": "A silent auction is a type of auction in which a user announces his desire to sell a given product or service (specifying a minimum price) and other users can make an offer visible only to the seller. Every buyer only sees his own offer and therefore the offer itself cannot be influenced by anything but the price the buyer is inclined to pay for the given item."
+    },
+    {
+        "q": "Can I make more than one bid for a reverse auction?",
+        "a": "In a reverse auction users compete with each other for who will be able to offer the lowest price, it is therefore common for the same user to make more than one bid in case the previous is surpassed by another. An user cannot directly override his own bid with a better one."
+    },
+    {
+        "q": "Can I make more than one bid in a silent auction?",
+        "a": "In a silent auction users are supposed to only make one bid with the price they are willing to pay for the product or service they want to buy, since there is no way for users to know about other bids, competitions with other users on the best price is impossible."
+    },
+    {
+        "q": "Can I cancel an active auction?",
+        "a": "The creator of an auction can always decide to end it prematurely without accepting any offer and without giving any explanation, in that case every user gets notified of the premature end of the auction. "
+    },
+    {
+        "q": "Can I cancel a bid?",
+        "a": "A bid can never be canceled after it’s made. Bids must be thought through carefully before being made and should only be done if the price can be fully paid without delays."
+    },
+    {
+        "q": "Is my account information publicly visible to others?",
+        "a": "It is possible for anyone to view the profile of the creators of the auctions they stumble upon, and it is also possible to view the profile of the winning bidder at the end of an auction. The information publicly visible to others is your username, your bio, your location, and any link you added to your profile. Your email, name, surname, and birthday are completely private."
+    },
+    {
+        "q": "Is my activity on the platform publicly visible to others?",
+        "a": "It is possible for anyone to view the profile of the creators of the auctions they stumble upon, and it is also possible to view the profile of the winning bidder at the end of an auction. What is shown in your profile apart from your public information (username, bio, location, links), are your active auctions, all of your past winning bids, and all of your past auctions which concluded with you accepting an offer. What is NOT shown instead are your current bids on any active auction."
+    },
+    {
+        "q": "What is privately visible to me on my personal page?",
+        "a": "Your personal page will show you your public information, as well as the status of your active bids, your active auctions, and also your history, which includes any winning or losing bids you made, and any of your past auctions which ended with the acceptance or rejection of the winning bid."
+    },
+    {
+        "q": "What happens in case of uncooperative behaviour?",
+        "a": "In case an user fails to uphold his end of a deal, the affected user can report said behaviour to the platform DietiDeals24 to the email address dietideals24.support@gmail.com. This can be done before 30 days since the conclusion of the auction have passed. A user found guilty of uncooperative behaviour might be removed from the platform DietiDeals24."
+    },
+    {
+        "q": "I have received strange emails from DietiDeals24",
+        "a": "Please make sure to only interact with emails sent from the official email addresses of DietiDeals24 which are dietideals24@gmail.com and dietideals24.support@gmail.com. DietiDeals24 will never ask for your password or any other private information directly through these channels."
+    }
+]

@@ -68,23 +68,4 @@ label {
         font-size: var(--font-size-small);
         color: var(--text-color-2);
     }
-
-    .p-panelmenu-panel {
-        border: none;
-        margin: 0;
-        padding: 0.4rem 0;
-    }
-
-    .p-panelmenu-header-action,
-    .p-menuitem-link {
-        background: none;
-        padding: 0;
-    }
-
-    .p-panelmenu-header-content,
-    .p-panelmenu-content,
-    .p-menuitem-content {
-        border: none;
-        background: none;
-    }
 }

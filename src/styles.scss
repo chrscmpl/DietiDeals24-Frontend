@@ -309,3 +309,52 @@ i {
     white-space: wrap;
     line-height: normal;
 }
+
+.dd24-panelmenu {
+    .p-panelmenu-panel {
+        border: none;
+        margin: 0;
+        padding: 0.4rem 0;
+    }
+
+    .p-panelmenu-header-action,
+    .p-menuitem-link {
+        background: none;
+        padding: 0;
+    }
+
+    .p-panelmenu-header-content,
+    .p-panelmenu-content,
+    .p-menuitem-content {
+        border: none;
+        background: none;
+    }
+
+    .p-menuitem {
+        margin-left: calc(16px + 0.5rem);
+    }
+
+    &:not(.dd24-menu-small) {
+        .p-menuitem-text {
+            font-size: var(--font-size-medium);
+            line-height: var(--line-height-medium);
+        }
+
+        .p-panelmenu-header-content .p-menuitem-text {
+            font-size: var(--font-size-large);
+        }
+
+        .p-submenu-icon {
+            height: var(--font-size-large);
+            width: var(--font-size-large);
+        }
+
+        .p-panelmenu-panel {
+            padding: 1rem 0;
+        }
+
+        .p-menuitem {
+            margin-left: calc(var(--font-size-large) + 0.5rem);
+        }
+    }
+}
