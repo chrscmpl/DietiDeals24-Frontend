@@ -289,10 +289,10 @@
                 >
                     <div class="privacy-policy-preview-mask"></div>
                     <div class="privacy-policy-preview-top">
-                        <span>Privacy Policy</span>
+                        <span>Terms of Service</span>
                         <i class="pi pi-arrow-right"></i>
                     </div>
-                    <span>{{ environment.privacyPolicy }}</span>
+                    <span>{{ tos }}</span>
                 </div>
                 <div class="privacy-policy-checkbox-container">
                     <p-checkbox
@@ -302,8 +302,8 @@
                         class="privacy-policy-checkbox"
                     />
                     <label for="accept"
-                        >I have read and accept the terms of the above privacy
-                        policy</label
+                        >I have read and accept the terms of the above terms of
+                        service</label
                     >
                 </div>
             </div>
@@ -319,13 +319,13 @@
     </form>
     <p-dialog
         class="privacy-policy-dialog custom-dialog"
-        header="Privacy Policy"
+        header="Terms of Service"
         resizable="false"
         draggable="false"
         modal="true"
         [(visible)]="privacyPolicyDialogVisible"
         dismissableMask="true"
     >
-        <span>{{ environment.privacyPolicy }}</span>
+        <span>{{ tos }}</span>
     </p-dialog>
 </div>

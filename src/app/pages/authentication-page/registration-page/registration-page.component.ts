@@ -33,6 +33,8 @@ import { Country } from '../../../models/location.model';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
+import { AssetsService } from '../../../services/assets.service';
+import { take } from 'rxjs';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -95,6 +97,8 @@ export class RegistrationPageComponent implements OnInit {
 
     public privacyPolicyDialogVisible: boolean = false;
 
+    public tos: string = '';
+
     public get environment(): typeof environment {
         return environment;
     }
@@ -139,14 +143,22 @@ export class RegistrationPageComponent implements OnInit {
         private readonly router: Router,
         private readonly authentication: AuthenticationService,
         private readonly message: MessageService,
+        public readonly assets: AssetsService,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.maxBirthdayDate.setFullYear(
             this.maxBirthdayDate.getFullYear() - 18,
         );
 
         this.locationsService.refreshCountries();
+
+        this.assets
+            .getPlainText('tos.txt')
+            .pipe(take(1))
+            .subscribe((tos) => {
+                this.tos = tos;
+            });
 
         this.registrationForm = this.formBuilder.group<registrationForm>({
             userData: this.formBuilder.group<userDataForm>({
