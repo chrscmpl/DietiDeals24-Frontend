@@ -15,7 +15,6 @@
         padding: 0.4rem;
 
         .nav-link-icon {
-            @include layouts.center;
             font-size: 2rem;
             width: 2ch;
             color: var(--basic-affordances-color);

@@ -74,6 +74,8 @@ export class CheckoutPageComponent implements OnInit {
 
     public newPaymentMethodFormVisible?: null | PaymentMethodType = null;
 
+    public error: string = '';
+
     constructor(
         private readonly route: ActivatedRoute,
         public readonly windowService: WindowService,
@@ -135,6 +137,7 @@ export class CheckoutPageComponent implements OnInit {
     private onChosenMethodChanges(
         value: SavedChosenPaymentMethodDTO | PaymentMethodType | null,
     ) {
+        if (this.error) this.error = '';
         this.newPaymentMethodFormVisible = this.isPaymentMethodType(value)
             ? (value as PaymentMethodType)
             : null;
@@ -159,6 +162,10 @@ export class CheckoutPageComponent implements OnInit {
     public onSubmit(): void {
         if (this.chosenPaymentMethodForm.invalid) {
             reactiveFormsUtils.markAllAsDirty(this.chosenPaymentMethodForm);
+            if (
+                this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.invalid
+            )
+                this.error = 'Please select a payment method';
             return;
         }
 

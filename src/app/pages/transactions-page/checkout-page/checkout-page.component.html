@@ -63,6 +63,9 @@
                 ></dd24-payment-method-form>
             }
         }
+        @if (error) {
+            <p class="error">{{ error }}</p>
+        }
         @if (windowService.isMobile$ | async) {
             <div class="spacer"></div>
         }
