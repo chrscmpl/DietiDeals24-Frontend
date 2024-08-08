@@ -153,6 +153,10 @@ i {
     text-align: center;
 }
 
+::placeholder {
+    opacity: 0.5;
+}
+
 .link {
     color: var(--links-color);
 }
