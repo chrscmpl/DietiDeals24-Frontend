@@ -35,6 +35,8 @@ import { MessageService } from 'primeng/api';
 import { BidService } from '../../../services/bid.service';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { NavigationService } from '../../../services/navigation.service';
+import { AuctioneerService } from '../../../services/auctioneer.service';
+import { AuctionConclusionOptions } from '../../../enums/auction-conclusion-options.enum';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -85,7 +87,8 @@ export class CheckoutPageComponent implements OnInit {
         private readonly paymentService: PaymentService,
         private readonly message: MessageService,
         private readonly bidService: BidService,
-        private navigation: NavigationService,
+        private readonly auctioneerService: AuctioneerService,
+        private readonly navigation: NavigationService,
     ) {}
 
     public ngOnInit(): void {
@@ -257,5 +260,28 @@ export class CheckoutPageComponent implements OnInit {
         paymentMethod:
             | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
             | { newPaymentMethod: NewChosenPaymentMethodDTO },
-    ): void {}
+    ): void {
+        this.auctioneerService
+            .concludeAuction({
+                choice: AuctionConclusionOptions.accept,
+                auctionId: this.auction.id,
+                ...paymentMethod,
+            })
+            .subscribe({
+                next: () => {
+                    this.navigation.navigateToRouteBeforeTransaction();
+                    this.message.add({
+                        severity: 'success',
+                        summary: 'Bid accepted',
+                        detail: 'You have accepted the winning bid',
+                    });
+                },
+                error: () =>
+                    this.message.add({
+                        severity: 'error',
+                        summary: 'Bid acceptance error',
+                        detail: 'Failed to accept the bid, please try again later',
+                    }),
+            });
+    }
 }

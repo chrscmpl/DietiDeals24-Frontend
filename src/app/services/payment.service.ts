@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { map, Observable, of, Subject, switchMap, throwError } from 'rxjs';
+import {
+    map,
+    merge,
+    Observable,
+    of,
+    Subject,
+    switchMap,
+    throwError,
+} from 'rxjs';
 import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
 import { Cacheable } from 'ts-cacheable';
@@ -14,6 +22,7 @@ import {
     UnauthorizedPaymentMethodRegistrationDTO,
 } from '../DTOs/payment-method.dto';
 import { environment } from '../../environments/environment';
+import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -25,12 +34,11 @@ export class PaymentService {
         private readonly authentication: AuthenticationService,
         private readonly http: HttpClient,
     ) {
-        this.authentication.isLogged$.subscribe(() =>
-            paymentMethodsCacheBuster$.next(),
-        );
-        ActiveBidsCacheBuster$.subscribe(() =>
-            paymentMethodsCacheBuster$.next(),
-        );
+        merge([
+            this.authentication.isLogged$,
+            ActiveBidsCacheBuster$,
+            OwnActiveAuctionsCacheBuster$,
+        ]).subscribe(() => paymentMethodsCacheBuster$.next());
     }
 
     // this method is a mock implementation, this
