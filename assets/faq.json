@@ -25,12 +25,12 @@
     },
     {
         "question": "What is a reverse auction?",
-        "answer": "A reverse auction is a type of auction in which a user specifies his interest in a given product or service (specifying a maximum starting price) and other users can make a sell proposal. Sellers compete downwards with each other trying to secure the deal bidding the lowest and therefore more convenient price.",
+        "answer": "A reverse auction is a type of auction in which a user specifies their interest in a given product or service (specifying a maximum starting price) and other users can make a sell proposal. Sellers compete downwards with each other trying to secure the deal bidding the lowest and therefore more convenient price.",
         "fragment": "reverse-auction"
     },
     {
         "question": "What is a silent auction?",
-        "answer": "A silent auction is a type of auction in which a user announces his desire to sell a given product or service (specifying a minimum price) and other users can make an offer visible only to the seller. Every buyer only sees his own offer and therefore the offer itself cannot be influenced by anything but the price the buyer is inclined to pay for the given item.",
+        "answer": "A silent auction is a type of auction in which a user announces their desire to sell a given product or service (specifying a minimum price) and other users can make an offer visible only to the seller. Every buyer only sees his own offer and therefore the offer itself cannot be influenced by anything but the price the buyer is inclined to pay for the given item.",
         "fragment": "silent-auction"
     },
     {
@@ -39,7 +39,7 @@
     },
     {
         "question": "Can I make more than one bid in a silent auction?",
-        "answer": "In a silent auction users are supposed to only make one bid with the price they are willing to pay for the product or service they want to buy, since there is no way for users to know about other bids, competitions with other users on the best price is impossible."
+        "answer": "In a silent auction users are supposed to only make one bid with the price they are willing to pay for the product or service they want to buy. Since there is no way for users to know about other bids, competitions with other users on the best price is impossible."
     },
     {
         "question": "Can I cancel an active auction?",
