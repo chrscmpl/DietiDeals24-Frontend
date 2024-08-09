@@ -77,6 +77,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            @include viewports.mobile {
+                line-height: normal;
+            }
         }
 
         .auction-card-secondary-line {
@@ -90,6 +94,7 @@
         padding: 0.2rem 1rem;
         @include viewports.mobile {
             padding: 1rem;
+            padding-bottom: 0.2rem;
         }
     }
 
@@ -124,5 +129,18 @@
             font-size: var(--font-size-medium);
             color: var(--text-color-3);
         }
+    }
+}
+
+@include viewports.mobile {
+    .auction-card-time-left,
+    .auction-card-secondary-line,
+    .auction-card-title {
+        line-height: normal;
+        display: block;
+        width: calc(var(--card-height) / -2 + 96svw - 3rem);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 }

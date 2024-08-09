@@ -158,7 +158,10 @@
                     <span>Time left: </span>
                     <dd24-timer
                         [endDate]="auction.endTime"
-                        style="font-weight: var(--font-weight-bolder)"
+                        style="
+                            font-weight: var(--font-weight-bolder);
+                            line-height: normal;
+                        "
                     ></dd24-timer>
                     <span class="auction-end-date"
                         >Until {{ auction.endTime | localDate }}</span
