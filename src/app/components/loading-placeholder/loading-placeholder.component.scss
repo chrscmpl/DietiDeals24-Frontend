@@ -1,9 +1,0 @@
-@use "layouts";
-
-.loading-placeholder {
-    width: 100%;
-    @include layouts.flex(column, center, stretch, 2rem);
-    .spinner {
-        align-self: center;
-    }
-}
