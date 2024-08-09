@@ -52,6 +52,11 @@
                 </button>
             </span>
         </div>
-        <p-button class="submit-btn" label="verify" type="submit"></p-button>
+        <p-button
+            class="submit-btn"
+            label="verify"
+            type="submit"
+            [loading]="submissionLoading"
+        ></p-button>
     </form>
 </div>

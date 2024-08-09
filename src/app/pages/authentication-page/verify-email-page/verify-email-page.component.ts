@@ -39,6 +39,7 @@ interface verificationForm {
 export class VerifyEmailPageComponent implements OnInit {
     public verificationForm!: FormGroup<verificationForm>;
     public showEmail: boolean = false;
+    public submissionLoading: boolean = false;
 
     public constructor(
         private readonly location: Location,
@@ -78,6 +79,8 @@ export class VerifyEmailPageComponent implements OnInit {
             return;
         }
 
+        this.submissionLoading = true;
+
         this.authentication.verifyEmail(
             this.verificationForm.value as emailVerificationDTO,
             {
@@ -102,6 +105,7 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     private onVerificationError(err: HttpErrorResponse): void {
+        this.submissionLoading = false;
         if (err.status >= 500) {
             this.message.add({
                 severity: 'error',

@@ -78,6 +78,8 @@ export class CheckoutPageComponent implements OnInit {
 
     public error: string = '';
 
+    public submissionLoading: boolean = false;
+
     constructor(
         private readonly route: ActivatedRoute,
         public readonly windowService: WindowService,
@@ -185,6 +187,7 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private startTransaction() {
+        this.submissionLoading = true;
         if (
             this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
@@ -220,12 +223,14 @@ export class CheckoutPageComponent implements OnInit {
                             newMethod: paymentMethod,
                         },
                     }),
-                error: () =>
+                error: () => {
+                    this.submissionLoading = false;
                     this.message.add({
                         severity: 'error',
                         summary: 'Authorization error',
                         detail: 'Payment authorization failed, check that the data is correct',
-                    }),
+                    });
+                },
             });
     }
 
@@ -260,12 +265,14 @@ export class CheckoutPageComponent implements OnInit {
                         detail: 'Your bid has been placed successfully',
                     });
                 },
-                error: () =>
+                error: () => {
+                    this.submissionLoading = false;
                     this.message.add({
                         severity: 'error',
                         summary: 'Bid error',
                         detail: 'Failed to place bid, please try again later',
-                    }),
+                    });
+                },
             });
     }
 
@@ -289,12 +296,14 @@ export class CheckoutPageComponent implements OnInit {
                         detail: 'You have accepted the winning bid',
                     });
                 },
-                error: () =>
+                error: () => {
+                    this.submissionLoading = false;
                     this.message.add({
                         severity: 'error',
                         summary: 'Bid acceptance error',
                         detail: 'Failed to accept the bid, please try again later',
-                    }),
+                    });
+                },
             });
     }
 }

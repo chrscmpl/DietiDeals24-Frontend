@@ -315,6 +315,7 @@
             class="next-btn"
             [label]="activeStep !== 2 ? 'Next' : 'Register'"
             type="submit"
+            [loading]="submissionLoading"
         ></p-button>
     </form>
     <p-dialog

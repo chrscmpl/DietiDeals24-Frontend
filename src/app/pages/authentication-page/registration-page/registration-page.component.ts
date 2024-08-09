@@ -137,6 +137,8 @@ export class RegistrationPageComponent implements OnInit {
         },
     ];
 
+    public submissionLoading: boolean = false;
+
     constructor(
         private readonly formBuilder: FormBuilder,
         public readonly locationsService: GeographicalLocationsService,
@@ -239,6 +241,8 @@ export class RegistrationPageComponent implements OnInit {
             return;
         }
 
+        this.submissionLoading = true;
+
         this.error = '';
 
         const newUser = {
@@ -268,6 +272,7 @@ export class RegistrationPageComponent implements OnInit {
     }
 
     private onRegisterError(error: HttpErrorResponse): void {
+        this.submissionLoading = false;
         if (error.status >= 500) {
             this.showErrorToast('Server error', 'Please try again later.');
         } else if (error.status === 409) {

@@ -76,6 +76,11 @@
         <a routerLink="../forgot-password" class="link forgot-password">
             forgot your password?
         </a>
-        <p-button label="Login" type="submit" class="login-submit"></p-button>
+        <p-button
+            label="Login"
+            type="submit"
+            class="login-submit"
+            [loading]="submissionLoading"
+        ></p-button>
     </form>
 </div>

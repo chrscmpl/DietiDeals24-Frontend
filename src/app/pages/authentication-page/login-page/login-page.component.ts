@@ -40,7 +40,9 @@ interface loginForm {
     styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent implements OnInit, AfterViewInit {
-    loginForm!: FormGroup<loginForm>;
+    public loginForm!: FormGroup<loginForm>;
+
+    public submissionLoading: boolean = false;
 
     constructor(
         private readonly authenticationService: AuthenticationService,
@@ -91,6 +93,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
             reactiveFormsUtils.markAllAsDirty(this.loginForm);
             return;
         }
+        this.submissionLoading = true;
         this.authenticationService.login(
             this.loginForm.value as UserCredentials,
             {
@@ -98,6 +101,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
                     this.navigation.navigateToRouteBeforeRedirection();
                 },
                 error: (err) => {
+                    this.submissionLoading = false;
                     if (err.status >= 500) {
                         this.displayError(
                             'Server error',
