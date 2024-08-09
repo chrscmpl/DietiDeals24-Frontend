@@ -138,7 +138,7 @@
 
     .carousel-item-wrapper {
         @include layouts.grid(
-            $template: 1fr / 1fr auto,
+            $template: 1fr / 1fr minmax(0, 30svw),
             $justify-content: center,
             $justify-items: center,
             $align-content: stretch,
@@ -162,7 +162,7 @@
         @include layouts.center;
         font-size: var(--font-size-medium);
         color: white;
-        width: 33%;
+        width: 10ch;
         justify-self: end;
         align-self: stretch;
         text-align: end;
@@ -177,6 +177,9 @@
     }
 
     .carousel-item-button {
+        max-height: 100%;
+        max-width: min(100%, 30svw);
+        overflow: hidden;
         grid-area: 1/2;
         align-self: stretch;
         justify-self: end;

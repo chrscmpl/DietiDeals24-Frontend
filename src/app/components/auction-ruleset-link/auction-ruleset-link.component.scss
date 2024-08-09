@@ -5,6 +5,8 @@
     font-size: var(--font-size-large);
     color: var(--accent-color-2);
     font-weight: var(--font-weight-bolder);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .auction-type-link {

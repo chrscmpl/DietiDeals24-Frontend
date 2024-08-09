@@ -1,18 +1,18 @@
 <nav class="mobile-navbar">
     <a class="nav-entry" routerLink="/home" routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon pi pi-home"></i
+        ><i class="nav-link-icon medium-icon pi pi-home"></i
     ></a>
     <a
         class="nav-entry"
         routerLink="/auctions"
         routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon pi pi-search"></i
+        ><i class="nav-link-icon medium-icon pi pi-search"></i
     ></a>
     <a
         class="nav-entry"
         routerLink="/create-auction"
         routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon create pi pi-plus-circle"></i
+        ><i class="nav-link-icon medium-icon create pi pi-plus-circle"></i
     ></a>
 
     @if (authenticationService.isLogged$ | async) {
@@ -21,7 +21,7 @@
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
             ><i
-                class="nav-link-icon pi pi-inbox"
+                class="nav-link-icon medium-icon pi pi-inbox"
                 pBadge
                 [value]="
                     (notificationsService.unreadNotificationsCount$ | async) ??
@@ -38,7 +38,7 @@
             class="nav-entry"
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
-            ><i class="nav-link-icon pi pi-inbox"></i
+            ><i class="nav-link-icon medium-icon pi pi-inbox"></i
         ></a>
     }
     <p-avatar

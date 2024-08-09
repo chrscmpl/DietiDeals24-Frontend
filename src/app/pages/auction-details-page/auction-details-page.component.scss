@@ -34,7 +34,6 @@
 }
 
 .auction-details-navbar-icon {
-    font-size: 2rem;
     color: var(--basic-affordances-color);
 }
 
@@ -287,6 +286,10 @@
 .carousel-icon {
     font-size: 2rem;
     color: white;
+
+    @include viewports.mobile {
+        font-size: var(--mobile-icon-size);
+    }
 }
 
 :host ::ng-deep {
@@ -364,6 +367,17 @@
             background-color: rgba(0, 0, 0, 0.5);
             --p-focus-ring-color: rgba(255, 255, 255, 0.5);
             z-index: 100000;
+
+            @include viewports.mobile {
+                height: calc(var(--mobile-icon-size) * 1.4);
+                width: calc(var(--mobile-icon-size) * 1.4);
+            }
+        }
+
+        .p-carousel-prev-icon,
+        .p-carousel-next-icon {
+            display: flex;
+            align-items: center;
         }
 
         .p-carousel-next:enabled:hover,

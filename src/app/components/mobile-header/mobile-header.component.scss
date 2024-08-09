@@ -13,7 +13,6 @@
     }
 
     i {
-        font-size: 2rem;
         color: var(--basic-affordances-color);
     }
 
@@ -28,7 +27,7 @@
     }
 
     .logo {
-        height: 2rem;
+        height: var(--mobile-icon-size);
         width: fit-content;
         display: block;
     }

@@ -15,7 +15,6 @@
         padding: 0.4rem;
 
         .nav-link-icon {
-            font-size: 2rem;
             color: var(--basic-affordances-color);
             cursor: pointer;
 
@@ -30,7 +29,7 @@
                 transparent 100%
             );
 
-            .nav-link-icon {
+            .nav-link-icon:not(.create) {
                 text-shadow: var(--active-icon-shadow);
             }
         }
@@ -42,7 +41,7 @@
         background: transparent;
         .p-avatar-icon {
             color: var(--basic-affordances-color);
-            font-size: 2rem;
+            font-size: var(--mobile-icon-size);
             border-radius: 0;
             overflow: visible;
         }
