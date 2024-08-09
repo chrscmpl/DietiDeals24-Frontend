@@ -49,12 +49,12 @@
         border-radius: var(--border-radius-large);
         border: var(--border);
         height: var(--card-height);
+
         .create-auction-banner-img-container {
-            @include layouts.flex(row, end, stretch);
-            flex-grow: 1;
             border-right: none;
-            background: url("/assets/create-auction-banner.webp") center / cover;
+
             .create-auction-banner-text {
+                justify-self: end;
                 @include layouts.center;
                 width: 12ch;
                 padding: 1ch;
@@ -86,11 +86,10 @@
 
         height: calc(var(--card-height) * 0.75);
         .your-page-banner-img-container {
-            @include layouts.flex(row, end, end);
-            flex-grow: 1;
             border-bottom: none;
-            background: url("/assets/your-page-banner.webp") center / cover;
             .your-page-banner-text {
+                align-self: end;
+                justify-self: end;
                 @include layouts.center;
                 padding: 0.5ch;
                 color: white;
@@ -110,6 +109,22 @@
     .trending-auctions {
         @include layouts.flex(column, start, stretch, 0.5em);
     }
+}
+
+.banner-img-container {
+    @include layouts.grid(1fr/1fr);
+    flex-grow: 1;
+
+    > * {
+        grid-area: 1/1;
+    }
+}
+
+.banner-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 @include viewports.mobile {
