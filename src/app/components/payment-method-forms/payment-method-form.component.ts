@@ -130,6 +130,13 @@ export class PaymentMethodFormComponent implements OnInit {
         return this.form.get('newMethod') as FormGroup;
     }
 
+    public toggleSave(e: KeyboardEvent): void {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        e.stopPropagation();
+        this.form.get('save')?.patchValue(!this.form.get('save')?.value);
+    }
+
     private validateIBAN(
         ibanControl: FormControl<string | null>,
     ): ValidationErrors | null {

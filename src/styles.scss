@@ -190,7 +190,7 @@ i {
     font-weight: var(--font-weight-bolder);
 }
 
-.p-dialog {
+.p-dialog:not(.p-confirm-dialog) {
     border-radius: var(--border-radius-large);
     .p-dialog-header {
         border-top-left-radius: var(--border-radius-large);
@@ -200,6 +200,10 @@ i {
         border-bottom-left-radius: var(--border-radius-large);
         border-bottom-right-radius: var(--border-radius-large);
     }
+}
+
+.p-confirm-dialog-message {
+    margin: 0;
 }
 
 .p-divider::before {

@@ -167,6 +167,7 @@
             formControlName="save"
             inputId="save-checkbox"
             binary="true"
+            (keypress)="toggleSave($event)"
         ></p-checkbox>
         <label for="save-checkbox">Save for future deals</label>
     </div>

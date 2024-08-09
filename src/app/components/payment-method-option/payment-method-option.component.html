@@ -11,6 +11,7 @@
         class="payment-method-radio"
         [value]="optionValue"
         [formControlName]="controlName"
+        tabindex="-1"
     ></p-radioButton>
     @if (isSavedPaymentMethod()) {
         <span class="payment-method-label"

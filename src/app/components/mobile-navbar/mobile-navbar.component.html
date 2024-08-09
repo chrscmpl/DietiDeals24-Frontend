@@ -14,27 +14,7 @@
         routerLinkActive="nav-entry-active"
         ><i class="nav-link-icon create pi pi-plus-circle"></i
     ></a>
-    <p-avatar
-        class="avatar nav-entry"
-        [icon]="
-            (profilePicture$ | async) !== null && !showImagePlaceholder
-                ? ''
-                : 'pi pi-user'
-        "
-        [shape]="
-            (profilePicture$ | async) !== null && !showImagePlaceholder
-                ? 'circle'
-                : 'square'
-        "
-        [image]="
-            showImagePlaceholder
-                ? undefined
-                : (profilePicture$ | async) ?? undefined
-        "
-        (onImageError)="onImageError()"
-        routerLink="/your-page"
-        routerLinkActive="nav-entry-active"
-    />
+
     @if (authenticationService.isLogged$ | async) {
         <a
             class="nav-entry"
@@ -61,4 +41,25 @@
             ><i class="nav-link-icon pi pi-inbox"></i
         ></a>
     }
+    <p-avatar
+        class="avatar nav-entry"
+        [icon]="
+            (profilePicture$ | async) !== null && !showImagePlaceholder
+                ? ''
+                : 'pi pi-user'
+        "
+        [shape]="
+            (profilePicture$ | async) !== null && !showImagePlaceholder
+                ? 'circle'
+                : 'square'
+        "
+        [image]="
+            showImagePlaceholder
+                ? undefined
+                : (profilePicture$ | async) ?? undefined
+        "
+        (onImageError)="onImageError()"
+        routerLink="/your-page"
+        routerLinkActive="nav-entry-active"
+    />
 </nav>

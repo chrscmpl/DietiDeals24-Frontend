@@ -31,7 +31,7 @@ import {
 } from '../../../components/payment-method-forms/payment-method-form.component';
 import { ButtonModule } from 'primeng/button';
 import { PaymentService } from '../../../services/payment.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { BidService } from '../../../services/bid.service';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { NavigationService } from '../../../services/navigation.service';
@@ -89,6 +89,7 @@ export class CheckoutPageComponent implements OnInit {
         private readonly bidService: BidService,
         private readonly auctioneerService: AuctioneerService,
         private readonly navigation: NavigationService,
+        private readonly confirmation: ConfirmationService,
     ) {}
 
     public ngOnInit(): void {
@@ -172,6 +173,18 @@ export class CheckoutPageComponent implements OnInit {
             return;
         }
 
+        this.confirmation.confirm({
+            header: 'Are you sure?',
+            message:
+                this.operation === TransactionOperation.bid
+                    ? "You won't be able to cancel your bid later"
+                    : "You won't be able to undo this action later",
+            acceptButtonStyleClass: 'p-button-danger',
+            accept: this.startTransaction.bind(this),
+        });
+    }
+
+    private startTransaction() {
         if (
             this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
