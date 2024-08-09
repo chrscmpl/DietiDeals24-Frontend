@@ -31,7 +31,7 @@
             );
 
             .nav-link-icon {
-                font-weight: 900;
+                text-shadow: var(--active-icon-shadow);
             }
         }
     }
@@ -50,7 +50,11 @@
     .nav-entry-active {
         background-color: var(--border-color-transparent);
         .p-avatar-icon {
-            font-weight: 900;
+            text-shadow: var(--active-icon-shadow);
         }
+    }
+
+    .p-badge {
+        text-shadow: none;
     }
 }
