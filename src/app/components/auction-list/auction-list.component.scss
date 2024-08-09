@@ -18,6 +18,7 @@
         @include layouts.flex(column, center, center, 1rem);
         font-weight: var(--font-weight-bolder);
         color: var(--text-color-3);
+        text-align: center;
     }
 
     .no-results,

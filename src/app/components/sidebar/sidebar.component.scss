@@ -12,18 +12,18 @@
         }
 
         .p-sidebar-header {
-            padding: 0.2rem 0.4rem;
+            padding: 10px 4%;
         }
 
         .p-sidebar-close {
             margin: 0;
-            width: 3rem;
-            height: 3rem;
+            width: fit-content;
+            height: fit-content;
         }
 
         .p-sidebar-close-icon {
             i {
-                font-size: 2rem;
+                font-size: var(--mobile-icon-size);
             }
         }
 

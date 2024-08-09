@@ -28,7 +28,7 @@
 .auction-details-navbar {
     grid-area: nav;
     @include layouts.flex(row, space-between, center);
-    padding: 0.5rem 1rem;
+    padding: 10px 4%;
     background-color: var(--component-color);
     border-bottom: var(--border);
 }
@@ -68,6 +68,10 @@
     width: calc(100% + var(--auction-details-padding) * 2);
     margin: calc(var(--auction-details-padding) * -1);
     margin-bottom: 0;
+
+    @include viewports.mobile {
+        height: min(12rem, 20svh);
+    }
 }
 
 .auction-image-carousel {
@@ -110,6 +114,10 @@
 .auction-image-placeholder-icon {
     color: var(--border-color);
     font-size: 15rem;
+
+    @include viewports.mobile {
+        font-size: 7rem;
+    }
 }
 
 .auction-category,

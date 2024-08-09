@@ -15,7 +15,8 @@
                     alt: 'Your page banner',
                     message: 'See how your auctions are currently doing.',
                     buttonLabel: 'View your page',
-                    link: '/your-page'
+                    link: '/your-page',
+                    wide: true
                 }
             ]"
             [numVisible]="1"
@@ -27,6 +28,7 @@
                 <div class="carousel-item-wrapper">
                     <img
                         class="carousel-image"
+                        [class.full-width]="item.wide"
                         [src]="item.imageUrl"
                         [alt]="item.alt"
                     />

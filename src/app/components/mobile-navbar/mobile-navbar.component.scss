@@ -2,7 +2,7 @@
 
 .mobile-navbar {
     @include layouts.flex(row, space-between, center);
-    padding: 0.5rem 1.5rem;
+    padding: 10px 4%;
     width: 100%;
     border-top: var(--border);
     background-color: var(--component-color);
@@ -12,7 +12,6 @@
         aspect-ratio: 1/1;
         @include layouts.center;
         text-decoration: none;
-        padding: 0.4rem;
 
         .nav-link-icon {
             color: var(--basic-affordances-color);
