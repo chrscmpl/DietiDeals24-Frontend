@@ -1,1 +1,0 @@
-var t={isProd:!0,backendHost:"http://localhost:8080",disableWarnings:!1,passwordPattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,passwordMediumPattern:"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})",passwordStrongPattern:"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})"};export{t as a};
