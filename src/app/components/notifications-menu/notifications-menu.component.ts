@@ -14,7 +14,7 @@ import { NotificationsService } from '../../services/notifications.service';
 import { ButtonModule } from 'primeng/button';
 import { NotificationsListComponent } from './notifications-list/notifications-list.component';
 import { RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { fromEvent, Observable, Subscription, throttleTime } from 'rxjs';
 
 @Component({
     selector: 'dd24-notifications-menu',
@@ -35,12 +35,15 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
     @ViewChild('panel') private panel!: OverlayPanel;
 
     private subscriptions: Subscription[] = [];
+    private scrollListenerSubscription: Subscription | null = null;
+
+    private readonly scroll$: Observable<Event> = fromEvent(window, 'scroll', {
+        passive: true,
+    }).pipe(throttleTime(100));
 
     private static readonly SCROLL_THRESHOLD: number = 30;
 
     private windowScrollTopWhenShown: number = 0;
-
-    private removeScrollListener: () => void = () => {};
 
     public extraButtonsVisible: boolean = false;
 
@@ -59,7 +62,7 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
-        this.removeScrollListener();
+        this.scrollListenerSubscription?.unsubscribe();
     }
 
     public toggle(event: Event): void {
@@ -84,17 +87,15 @@ export class NotificationsMenuComponent implements AfterViewInit, OnDestroy {
         this.notificationsService.lockRefresh(true);
         this.windowScrollTopWhenShown = this.getWindowScrollTop();
 
-        this.removeScrollListener();
-        this.removeScrollListener = this.renderer.listen(
-            'window',
-            'scroll',
+        this.scrollListenerSubscription?.unsubscribe();
+        this.scrollListenerSubscription = this.scroll$.subscribe(
             this.onWindowScroll.bind(this),
         );
     }
 
     private onHide() {
         this.notificationsService.lockRefresh(false);
-        this.removeScrollListener();
+        this.scrollListenerSubscription?.unsubscribe();
         this.extraButtonsVisible = false;
     }
 
