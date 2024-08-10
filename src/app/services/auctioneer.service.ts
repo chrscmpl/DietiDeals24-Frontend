@@ -1,13 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { catchError, map, Observable, of, Subject } from 'rxjs';
+import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { environment } from '../../environments/environment';
 import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { AuctionConclusionDTO } from '../DTOs/auction-conclusion.dto';
+import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
+import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
+import { BidRejectionException } from '../exceptions/bid-rejection.exception';
 
 export const OwnActiveAuctionsCacheBuster$ = new Subject<void>();
 
@@ -34,10 +37,21 @@ export class AuctioneerService {
     public concludeAuction(
         conclusionOptions: AuctionConclusionDTO,
     ): Observable<unknown> {
-        return this.http.post<unknown>(
-            `${environment.backendHost}/conclude`,
-            conclusionOptions,
-        );
+        return this.http
+            .post<unknown>(
+                `${environment.backendHost}/conclude`,
+                conclusionOptions,
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() =>
+                        conclusionOptions.choice ===
+                        AuctionConclusionOptions.accept
+                            ? new BidAcceptanceException(e)
+                            : new BidRejectionException(e),
+                    ),
+                ),
+            );
     }
 
     @Cacheable({

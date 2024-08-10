@@ -251,7 +251,7 @@ export class CheckoutPageComponent implements OnInit {
             | { newPaymentMethod: NewChosenPaymentMethodDTO },
     ): void {
         this.bidService
-            .createBid({
+            .placeBid({
                 auctionId: this.auction.id,
                 amount: this.bidAmount,
                 ...paymentMethod,

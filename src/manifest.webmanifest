@@ -1,8 +1,9 @@
 {
     "name": "DietiDeals24",
-    "short_name": "DietiDeals24",
-    "theme_color": "#1976d2",
-    "background_color": "#fafafa",
+    "short_name": "DD24",
+    "lang": "en-US",
+    "theme_color": "#2D7074",
+    "background_color": "#f8FAFC",
     "display": "standalone",
     "scope": "./",
     "start_url": "./",

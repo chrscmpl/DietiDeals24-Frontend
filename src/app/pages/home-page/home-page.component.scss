@@ -112,7 +112,7 @@
 }
 
 .banner-img-container {
-    @include layouts.grid(1fr/1fr);
+    @include layouts.grid("." 1fr / 1fr);
     flex-grow: 1;
 
     > * {

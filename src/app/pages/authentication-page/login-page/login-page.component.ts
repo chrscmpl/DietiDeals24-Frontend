@@ -18,6 +18,8 @@ import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
+import { LoginException } from '../../../exceptions/login.exception';
+import { GetUserDataException } from '../../../exceptions/get-user-data.exception';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -100,14 +102,14 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
                 next: () => {
                     this.navigation.navigateToRouteBeforeRedirection();
                 },
-                error: (err) => {
+                error: (e: LoginException | GetUserDataException) => {
                     this.submissionLoading = false;
-                    if (err.status >= 500) {
+                    if (e.error.status >= 500) {
                         this.displayError(
                             'Server error',
                             'Please try again later',
                         );
-                    } else if (err.status >= 400) {
+                    } else if (e.error.status >= 400) {
                         this.displayError(
                             'Incorrect email or password',
                             'Please try again',

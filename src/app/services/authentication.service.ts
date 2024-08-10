@@ -20,6 +20,10 @@ import {
     emailVerificationDTO,
 } from '../DTOs/user.dto';
 import { environment } from '../../environments/environment';
+import { LoginException } from '../exceptions/login.exception';
+import { GetUserDataException } from '../exceptions/get-user-data.exception';
+import { RegistrationException } from '../exceptions/registration.exception';
+import { EmailVerificationException } from '../exceptions/email-verification.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -73,6 +77,7 @@ export class AuthenticationService {
                 observe: 'response',
             })
             .pipe(
+                catchError((e) => throwError(() => new LoginException(e))),
                 switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
                     return this.getUserDataObservable();
@@ -89,6 +94,11 @@ export class AuthenticationService {
             .post(`${environment.backendHost}/register/init`, newUser, {
                 responseType: 'text',
             })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new RegistrationException(e)),
+                ),
+            )
             .subscribe(cb);
     }
 
@@ -101,6 +111,9 @@ export class AuthenticationService {
                 observe: 'response',
             })
             .pipe(
+                catchError((e) =>
+                    throwError(() => new EmailVerificationException(e)),
+                ),
                 switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
                     return this.getUserDataObservable();
@@ -119,7 +132,7 @@ export class AuthenticationService {
                 tap(this.setLoggedUser.bind(this)),
                 catchError((e) => {
                     this.setInitialized();
-                    return throwError(() => e);
+                    return throwError(() => new GetUserDataException(e));
                 }),
             );
     }

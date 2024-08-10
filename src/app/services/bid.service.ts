@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Bid } from '../models/bid.model';
-import { catchError, map, Observable, of, Subject } from 'rxjs';
+import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
 import { BidCreationDTO, BidDTO } from '../DTOs/bid.dto';
 import { environment } from '../../environments/environment';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { AuthenticationService } from './authentication.service';
+import { BidPlacementException } from '../exceptions/bid-placement.exception';
 
 export const ActiveBidsCacheBuster$ = new Subject<void>();
 
@@ -32,8 +33,14 @@ export class BidService {
     @CacheBuster({
         cacheBusterNotifier: ActiveBidsCacheBuster$,
     })
-    public createBid(bid: BidCreationDTO): Observable<unknown> {
-        return this.http.post<unknown>(`${environment.backendHost}/bids`, bid);
+    public placeBid(bid: BidCreationDTO): Observable<unknown> {
+        return this.http
+            .post<unknown>(`${environment.backendHost}/bids`, bid)
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new BidPlacementException(e)),
+                ),
+            );
     }
 
     @Cacheable({

@@ -13,10 +13,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputComponent } from '../../../components/input/input.component';
 import { MaskedPipe } from '../../../pipes/masked.pipe';
 import { emailVerificationDTO } from '../../../DTOs/user.dto';
-import { HttpErrorResponse } from '@angular/common/http';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
+import { EmailVerificationException } from '../../../exceptions/email-verification.exception';
+import { GetUserDataException } from '../../../exceptions/get-user-data.exception';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -104,15 +105,17 @@ export class VerifyEmailPageComponent implements OnInit {
         this.navigation.navigateToRouteBeforeRedirection();
     }
 
-    private onVerificationError(err: HttpErrorResponse): void {
+    private onVerificationError(
+        e: EmailVerificationException | GetUserDataException,
+    ): void {
         this.submissionLoading = false;
-        if (err.status >= 500) {
+        if (e.error.status >= 500) {
             this.message.add({
                 severity: 'error',
                 summary: 'Server error',
                 detail: 'Please try again later.',
             });
-        } else if (err.status >= 401) {
+        } else if (e.error.status >= 401) {
             this.message.add({
                 severity: 'error',
                 summary: 'Invalid code',

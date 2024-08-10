@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import {
+    catchError,
     map,
     merge,
     Observable,
@@ -23,6 +24,7 @@ import {
 } from '../DTOs/payment-method.dto';
 import { environment } from '../../environments/environment';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
+import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -46,7 +48,7 @@ export class PaymentService {
     public authorizePayment(
         paymentMethod: UnauthorizedPaymentMethodRegistrationDTO,
     ): Observable<AuthorizedPaymentMethodRegistrationDTO> {
-        return of(
+        return of<AuthorizedPaymentMethodRegistrationDTO>(
             paymentMethod.type === PaymentMethodType.IBAN
                 ? paymentMethod
                 : {
@@ -55,6 +57,10 @@ export class PaymentService {
                       cardNumberLastDigits:
                           paymentMethod?.cardNumber?.slice(-4),
                   },
+        ).pipe(
+            catchError((e) =>
+                throwError(() => new PaymentAuthorizationException(e)),
+            ),
         );
     }
 

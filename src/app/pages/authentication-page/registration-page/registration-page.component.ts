@@ -28,13 +28,13 @@ import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserRegistrationDTO } from '../../../DTOs/user.dto';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Country } from '../../../models/location.model';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { AssetsService } from '../../../services/assets.service';
 import { take } from 'rxjs';
+import { RegistrationException } from '../../../exceptions/registration.exception';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -271,16 +271,16 @@ export class RegistrationPageComponent implements OnInit {
         this.router.navigate(['auth/verify-email']);
     }
 
-    private onRegisterError(error: HttpErrorResponse): void {
+    private onRegisterError(e: RegistrationException): void {
         this.submissionLoading = false;
-        if (error.status >= 500) {
+        if (e.error.status >= 500) {
             this.showErrorToast('Server error', 'Please try again later.');
-        } else if (error.status === 409) {
+        } else if (e.error.status === 409) {
             this.showErrorToast(
                 'Conflict',
                 'Email or username already in use.',
             );
-        } else if (error.status >= 400) {
+        } else if (e.error.status >= 400) {
             this.showErrorToast(
                 'Invalid data',
                 'Please check your data and try again.',
@@ -288,7 +288,7 @@ export class RegistrationPageComponent implements OnInit {
         } else {
             this.showErrorToast('Error', 'An error has occurred.');
         }
-        console.error(error);
+        console.error(e.error);
     }
 
     public onKeyPressed(event: KeyboardEvent): void {
