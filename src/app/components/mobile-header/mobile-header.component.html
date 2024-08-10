@@ -8,7 +8,9 @@
             <i class="pi pi-bars medium-icon"></i>
         </button>
         @if ((title$ | async) !== "DietiDeals24") {
-            <h1 class="title" [class.long]="longTitle">{{ title$ | async }}</h1>
+            <h1 class="title wk-nowrap">
+                {{ title$ | async }}
+            </h1>
         } @else {
             <dd24-logo class="logo"></dd24-logo>
             <div class="spacer"></div>

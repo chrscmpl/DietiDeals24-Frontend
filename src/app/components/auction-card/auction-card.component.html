@@ -18,8 +18,8 @@
         }
     </div>
     <div class="auction-card-title-container">
-        <span class="auction-card-title">{{ auction.title }}</span>
-        <span class="auction-card-secondary-line">
+        <span class="auction-card-title wk-nowrap">{{ auction.title }}</span>
+        <span class="auction-card-secondary-line wk-nowrap">
             from {{ auction.location.country }}, {{ auction.location.city }}
             @if (auction.conditions) {
                 | {{ auction.conditions }}
@@ -41,7 +41,7 @@
             }
         </span>
 
-        <span class="auction-card-time-left">
+        <span class="auction-card-time-left wk-nowrap">
             @if ((windowService.isMobile$ | async) === false) {
                 Time left:
             }

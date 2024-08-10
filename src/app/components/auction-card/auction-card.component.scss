@@ -36,23 +36,23 @@
             border: var(--border);
             margin-left: 1rem;
         }
+    }
 
-        .auction-card-image {
-            object-fit: cover;
-            max-width: 100%;
-            max-height: 100%;
-        }
+    .auction-card-image {
+        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+    }
 
-        .auction-card-missing-image {
-            @include layouts.flex(row, center, center);
-            height: 100%;
-            width: 100%;
-            font-size: 8rem;
-            color: var(--border-color);
+    .auction-card-missing-image {
+        @include layouts.flex(row, center, center);
+        height: 100%;
+        width: 100%;
+        font-size: 8rem;
+        color: var(--border-color);
 
-            @include viewports.mobile {
-                font-size: 3rem;
-            }
+        @include viewports.mobile {
+            font-size: 3rem;
         }
     }
 
@@ -67,26 +67,21 @@
             padding: 0 1rem;
             justify-content: center;
         }
+    }
 
-        .auction-card-title {
-            font-size: var(--font-size-large);
-            font-weight: var(--font-weight-bolder);
-            line-height: var(--line-height-large);
+    .auction-card-title {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bolder);
+        line-height: var(--line-height-large);
 
-            max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            @include viewports.mobile {
-                line-height: normal;
-            }
+        @include viewports.mobile {
+            line-height: normal;
         }
+    }
 
-        .auction-card-secondary-line {
-            font-size: var(--font-size-medium);
-            color: var(--text-color-3);
-        }
+    .auction-card-secondary-line {
+        font-size: var(--font-size-medium);
+        color: var(--text-color-3);
     }
 
     #{&}-auction-type {
@@ -110,37 +105,36 @@
         @include viewports.mobile {
             padding: 0 1rem;
         }
+    }
 
-        .auction-card-sum {
-            font-weight: var(--font-weight-bolder);
-            font-size: var(--font-size-large);
-            line-height: var(--line-height-large);
-            @include viewports.mobile {
-                font-size: var(--font-size-medium);
-                line-height: var(--line-height-medium);
+    .auction-card-sum {
+        font-weight: var(--font-weight-bolder);
+        font-size: var(--font-size-large);
+        line-height: var(--line-height-large);
+        @include viewports.mobile {
+            font-size: var(--font-size-medium);
+            line-height: var(--line-height-medium);
 
-                .auction-card-sum-amount {
-                    color: var(--accent-color-2);
-                    font-weight: var(--font-weight-bolder);
-                }
+            .auction-card-sum-amount {
+                color: var(--accent-color-2);
+                font-weight: var(--font-weight-bolder);
             }
         }
-        .auction-card-time-left {
-            font-size: var(--font-size-medium);
-            color: var(--text-color-3);
-        }
     }
-}
+    .auction-card-time-left {
+        font-size: var(--font-size-medium);
+        color: var(--text-color-3);
+    }
 
-@include viewports.mobile {
     .auction-card-time-left,
     .auction-card-secondary-line,
     .auction-card-title {
-        line-height: normal;
-        display: block;
-        width: calc(var(--card-height) / -2 + 96svw - 3rem);
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+    }
+    @include viewports.mobile {
+        .auction-card-time-left,
+        .auction-card-secondary-line {
+            -webkit-line-clamp: 1;
+        }
     }
 }

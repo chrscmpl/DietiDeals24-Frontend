@@ -167,6 +167,16 @@ body {
     color: var(--error-color);
 }
 
+.wk-nowrap {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    -webkit-line-clamp: 1;
+}
+
 i {
     line-height: normal;
     text-align: center;

@@ -19,9 +19,9 @@
     .title {
         font-size: var(--font-size-large);
         flex: 1;
-        line-height: calc(var(--font-size-large) * 0.8);
+        line-height: normal;
 
-        &.long {
+        &.title-long {
             font-size: var(--font-size-medium);
         }
     }
