@@ -50,6 +50,10 @@
 
 .bidding-page-submit-btn {
     grid-area: btn;
+
+    @include viewports.mobile {
+        margin-top: var(--page-items-gap);
+    }
 }
 
 :host ::ng-deep {

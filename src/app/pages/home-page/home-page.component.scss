@@ -182,7 +182,7 @@
 
     .carousel-item-button {
         max-height: 100%;
-        max-width: min(100%, 30svw);
+        width: 30svw;
         overflow: hidden;
         grid-area: 1/2;
         align-self: stretch;
@@ -203,7 +203,10 @@
     .trending-category-button button {
         @include layouts.flex(row, center, center);
         word-wrap: break-word;
-        padding: 0.3em;
+    }
+
+    .p-button {
+        padding: 1ch;
     }
 
     .trending-category-loading-button button:hover {
