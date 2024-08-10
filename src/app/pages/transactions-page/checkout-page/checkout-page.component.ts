@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
-import { take } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { WindowService } from '../../../services/window.service';
 import { PaymentMethodOptionComponent } from '../../../components/payment-method-option/payment-method-option.component';
 import {
-    NewChosenPaymentMethodDTO,
+    ChosenPaymentMethodDTO,
     SavedChosenPaymentMethodDTO,
     UnauthorizedPaymentMethodRegistrationDTO,
 } from '../../../DTOs/payment-method.dto';
@@ -37,6 +37,9 @@ import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { NavigationService } from '../../../services/navigation.service';
 import { AuctioneerService } from '../../../services/auctioneer.service';
 import { AuctionConclusionOptions } from '../../../enums/auction-conclusion-options.enum';
+import { PaymentAuthorizationException } from '../../../exceptions/payment-authorization.exception';
+import { BidPlacementException } from '../../../exceptions/bid-placement.exception';
+import { BidAcceptanceException } from '../../../exceptions/bid-acceptance.exception';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<
@@ -165,6 +168,28 @@ export class CheckoutPageComponent implements OnInit {
         );
     }
 
+    private getSavedPaymentMethod() {
+        return {
+            savedPaymentMethod: this.chosenPaymentMethodForm.get(
+                'chosenPaymentMethod',
+            )?.value as SavedChosenPaymentMethodDTO,
+        };
+    }
+
+    private getNewPaymentMethod() {
+        return this.chosenPaymentMethodForm
+            .get('newPaymentMethod')
+            ?.get('newMethod')
+            ?.value as UnauthorizedPaymentMethodRegistrationDTO;
+    }
+
+    private getSave(): boolean {
+        return (
+            this.chosenPaymentMethodForm.get('newPaymentMethod')?.get('save')
+                ?.value ?? false
+        );
+    }
+
     public onSubmit(): void {
         if (this.chosenPaymentMethodForm.invalid) {
             reactiveFormsUtils.markAllAsDirty(this.chosenPaymentMethodForm);
@@ -182,128 +207,81 @@ export class CheckoutPageComponent implements OnInit {
                     ? "You won't be able to cancel your bid later"
                     : "You won't be able to undo this action later",
             acceptButtonStyleClass: 'p-button-danger',
-            accept: this.startTransaction.bind(this),
+            accept: this.startOperation.bind(this),
         });
     }
 
-    private startTransaction() {
+    private startOperation() {
         this.submissionLoading = true;
-        if (
+        this.getPaymentMethod$()
+            .pipe(switchMap(this.performOperation$.bind(this)))
+            .subscribe({
+                next: this.onOperationSuccess.bind(this),
+                error: this.onOperationError.bind(this),
+            });
+    }
+
+    private getPaymentMethod$(): Observable<ChosenPaymentMethodDTO> {
+        return (
             this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
             )
-        ) {
-            this.authorizePaymentAndPerformOperation();
-            return;
-        }
+                ? of(this.getSavedPaymentMethod())
+                : this.paymentService
+                      .authorizePayment(this.getNewPaymentMethod())
+                      .pipe(
+                          map((newPaymentMethod) => ({
+                              newPaymentMethod,
+                              save: this.getSave(),
+                          })),
+                      )
+        ) as Observable<ChosenPaymentMethodDTO>;
+    }
 
-        this.performOperation({
-            savedPaymentMethod: this.chosenPaymentMethodForm.get(
-                'chosenPaymentMethod',
-            )?.value as SavedChosenPaymentMethodDTO,
+    private performOperation$(
+        paymentMethod: ChosenPaymentMethodDTO,
+    ): Observable<unknown> {
+        return this.operation === TransactionOperation.bid
+            ? this.bidService.placeBid({
+                  auctionId: this.auction.id,
+                  amount: this.bidAmount,
+                  ...paymentMethod,
+              })
+            : this.auctioneerService.concludeAuction({
+                  choice: AuctionConclusionOptions.accept,
+                  auctionId: this.auction.id,
+                  ...paymentMethod,
+              });
+    }
+
+    private onOperationSuccess() {
+        this.navigation.navigateToRouteBeforeTransaction();
+        this.message.add({
+            severity: 'success',
+            summary: 'Success',
+            detail:
+                this.operation === TransactionOperation.bid
+                    ? 'Your bid has been placed successfully'
+                    : 'You have accepted the winning bid',
         });
     }
 
-    private authorizePaymentAndPerformOperation() {
-        this.paymentService
-            .authorizePayment(
-                this.chosenPaymentMethodForm
-                    .get('newPaymentMethod')
-                    ?.get('newMethod')
-                    ?.value as UnauthorizedPaymentMethodRegistrationDTO,
-            )
-            .subscribe({
-                next: (paymentMethod) =>
-                    this.performOperation({
-                        newPaymentMethod: {
-                            save:
-                                this.chosenPaymentMethodForm
-                                    .get('newPaymentMethod')
-                                    ?.get('save')?.value ?? false,
-                            newMethod: paymentMethod,
-                        },
-                    }),
-                error: () => {
-                    this.submissionLoading = false;
-                    this.message.add({
-                        severity: 'error',
-                        summary: 'Authorization error',
-                        detail: 'Payment authorization failed, check that the data is correct',
-                    });
-                },
-            });
-    }
-
-    private performOperation(
-        paymentMethod:
-            | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
-            | { newPaymentMethod: NewChosenPaymentMethodDTO },
-    ): void {
-        if (this.operation === TransactionOperation.bid)
-            this.createBid(paymentMethod);
-        else if (this.operation === TransactionOperation.conclude)
-            this.concludeAuction(paymentMethod);
-    }
-
-    private createBid(
-        paymentMethod:
-            | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
-            | { newPaymentMethod: NewChosenPaymentMethodDTO },
-    ): void {
-        this.bidService
-            .placeBid({
-                auctionId: this.auction.id,
-                amount: this.bidAmount,
-                ...paymentMethod,
-            })
-            .subscribe({
-                next: () => {
-                    this.navigation.navigateToRouteBeforeTransaction();
-                    this.message.add({
-                        severity: 'success',
-                        summary: 'Bid placed',
-                        detail: 'Your bid has been placed successfully',
-                    });
-                },
-                error: () => {
-                    this.submissionLoading = false;
-                    this.message.add({
-                        severity: 'error',
-                        summary: 'Bid error',
-                        detail: 'Failed to place bid, please try again later',
-                    });
-                },
-            });
-    }
-
-    private concludeAuction(
-        paymentMethod:
-            | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
-            | { newPaymentMethod: NewChosenPaymentMethodDTO },
-    ): void {
-        this.auctioneerService
-            .concludeAuction({
-                choice: AuctionConclusionOptions.accept,
-                auctionId: this.auction.id,
-                ...paymentMethod,
-            })
-            .subscribe({
-                next: () => {
-                    this.navigation.navigateToRouteBeforeTransaction();
-                    this.message.add({
-                        severity: 'success',
-                        summary: 'Bid accepted',
-                        detail: 'You have accepted the winning bid',
-                    });
-                },
-                error: () => {
-                    this.submissionLoading = false;
-                    this.message.add({
-                        severity: 'error',
-                        summary: 'Bid acceptance error',
-                        detail: 'Failed to accept the bid, please try again later',
-                    });
-                },
-            });
+    private onOperationError(
+        e:
+            | PaymentAuthorizationException
+            | BidPlacementException
+            | BidAcceptanceException,
+    ) {
+        this.submissionLoading = false;
+        this.message.add({
+            severity: 'error',
+            summary: 'There was a problem',
+            detail:
+                e instanceof PaymentAuthorizationException
+                    ? 'Payment authorization failed, check that the data is correct'
+                    : e instanceof BidPlacementException
+                      ? 'Failed to place bid, please try again later'
+                      : 'Failed to accept the bid, please try again later',
+        });
     }
 }

@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Bid } from '../models/bid.model';
 import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
-import { BidCreationDTO, BidDTO } from '../DTOs/bid.dto';
+import { BidCreationDTO } from '../DTOs/bid.dto';
 import { environment } from '../../environments/environment';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { AuthenticationService } from './authentication.service';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
+import { AuctionDTO } from '../DTOs/auction.dto';
+import { auctionBuilder } from '../helpers/builders/auction-builder';
+import { Auction } from '../models/auction.model';
 
 export const ActiveBidsCacheBuster$ = new Subject<void>();
 
@@ -46,11 +48,11 @@ export class BidService {
     @Cacheable({
         cacheBusterObserver: ActiveBidsCacheBuster$,
     })
-    public getOwnActiveBids(): Observable<Bid[]> {
+    public getOwnActiveBids(): Observable<Auction[]> {
         return this.http
-            .get<BidDTO[]>(`${environment.backendHost}/bids/active`)
+            .get<AuctionDTO[]>(`${environment.backendHost}/bids/active`)
             .pipe(
-                map((dtos) => dtos.map((bidDTO) => new Bid(bidDTO))),
+                map((dtos) => auctionBuilder.buildArray(dtos)),
                 catchError(() => of([])),
             );
     }

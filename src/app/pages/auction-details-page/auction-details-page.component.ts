@@ -120,7 +120,7 @@ export class AuctionDetailsPageComponent
             .pipe(take(1))
             .subscribe((bids) => {
                 this.hasUserAlreadyBidded = !!bids.find(
-                    (bid) => bid.auctionId === this.auction?.id,
+                    (bid) => bid.id === this.auction?.id,
                 );
             });
     }

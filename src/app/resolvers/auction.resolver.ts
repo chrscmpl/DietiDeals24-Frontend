@@ -6,7 +6,6 @@ import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { BidService } from '../services/bid.service';
-import { Bid } from '../models/bid.model';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
@@ -117,9 +116,9 @@ export class AuctionResolver {
     ): Observable<unknown> {
         return this.bidService.getOwnActiveBids().pipe(
             catchError(() => of([])),
-            tap((bids: Bid[]) => {
+            tap((bids: Auction[]) => {
                 const hasAlreadyBidded = !!bids.find(
-                    (bid) => bid.auctionId === auction.id,
+                    (bid) => bid.id === auction.id,
                 );
                 if (shouldHaveAlreadyBidded !== hasAlreadyBidded)
                     throw new Error(
