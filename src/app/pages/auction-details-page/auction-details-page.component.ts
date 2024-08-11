@@ -12,12 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { filter, Subscription, take } from 'rxjs';
 import { WindowService } from '../../services/window.service';
-import {
-    AsyncPipe,
-    CurrencyPipe,
-    Location,
-    NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
 import { Auction } from '../../models/auction.model';
 import { UserPreviewComponent } from '../../components/user-preview/user-preview.component';
 import { DividerModule } from 'primeng/divider';
@@ -98,7 +93,6 @@ export class AuctionDetailsPageComponent
         private readonly authentication: AuthenticationService,
         private readonly bidService: BidService,
         private readonly navigation: NavigationService,
-        private readonly location: Location,
     ) {}
 
     public ngOnInit(): void {
@@ -129,8 +123,6 @@ export class AuctionDetailsPageComponent
                     (bid) => bid.id === this.auction?.id,
                 );
             });
-
-        this.location.replaceState(this.location.path().split('?')[0]);
     }
 
     public ngAfterViewInit(): void {

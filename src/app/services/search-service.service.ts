@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Categories, CategoriesService } from './categories.service';
 import { Location } from '@angular/common';
-import {
-    ActivatedRoute,
-    NavigationEnd,
-    Params,
-    Router,
-    Event,
-} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import {
     distinctUntilChanged,
     filter,
@@ -17,12 +11,11 @@ import {
     startWith,
     switchMap,
     take,
-    tap,
     withLatestFrom,
 } from 'rxjs';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Nullable } from '../typeUtils/nullable';
-import { cloneTruthy } from '../helpers/clone-truthy';
+import { utils } from '../helpers/utils';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { SearchPolicy } from '../enums/search-policy.enum';
 
@@ -43,11 +36,6 @@ export class SearchService {
         private readonly router: Router,
     ) {
         this.validatedSearchParameters$ = this.router.events.pipe(
-            tap((event: Event) => {
-                if (event instanceof NavigationEnd) {
-                    console.log('NavigationEnd event:', event);
-                }
-            }),
             filter(
                 (event) =>
                     event instanceof NavigationEnd &&
@@ -64,7 +52,7 @@ export class SearchService {
                     categories,
                 );
 
-                this.lastSearchParameters = cloneTruthy(validatedParams);
+                this.lastSearchParameters = utils.cloneTruthy(validatedParams);
 
                 this.location.replaceState(
                     this.location.path().split('?')[0],
@@ -74,6 +62,7 @@ export class SearchService {
                 return this.lastSearchParameters;
             }),
             startWith(this.lastSearchParameters),
+            distinctUntilChanged(utils.compareOwnProperties),
             shareReplay(1),
         );
         this.validatedSearchParameters$.subscribe();

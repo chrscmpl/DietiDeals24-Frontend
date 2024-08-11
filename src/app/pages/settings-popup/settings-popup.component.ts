@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ThemeSettingsComponent } from './theme-settings/theme-settings.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { WindowService } from '../../services/window.service';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'dd24-settings-popup',
@@ -20,7 +20,7 @@ import { AsyncPipe, Location } from '@angular/common';
     templateUrl: './settings-popup.component.html',
     styleUrl: './settings-popup.component.scss',
 })
-export class SettingsPopupComponent implements OnInit {
+export class SettingsPopupComponent {
     public display: boolean = true;
 
     public tabs: MenuItem[] = [
@@ -36,12 +36,7 @@ export class SettingsPopupComponent implements OnInit {
     constructor(
         private readonly router: Router,
         public readonly windowService: WindowService,
-        private readonly location: Location,
     ) {}
-
-    public ngOnInit(): void {
-        this.location.replaceState(this.location.path().split('?')[0]);
-    }
 
     public onClose(): void {
         this.router.navigate([{ outlets: { overlay: null } }], {
