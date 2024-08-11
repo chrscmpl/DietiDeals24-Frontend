@@ -17,14 +17,14 @@
         }
 
         &::before {
-            content: '';
+            content: "";
             background-color: transparent;
             transition: $formElementTransition;
             position: absolute;
-            left: .25rem;
-            top: .25rem;
-            width: calc(100% - .5rem);
-            height: calc(100% - .5rem);
+            left: 0.25rem;
+            top: 0.25rem;
+            width: calc(100% - 0.5rem);
+            height: calc(100% - 0.5rem);
             border-radius: 4px;
         }
     }
@@ -34,7 +34,9 @@
             &::before {
                 background: $shade000;
                 border-color: $shade000;
-                box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04);
+                box-shadow:
+                    0px 1px 2px 0px rgba(0, 0, 0, 0.02),
+                    0px 1px 2px 0px rgba(0, 0, 0, 0.04);
             }
         }
     }
@@ -43,25 +45,30 @@
         .p-button-label {
             background: $shade000;
             border-color: $shade000;
-            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04);
-            border-radius:4px;
+            box-shadow:
+                0px 1px 2px 0px rgba(0, 0, 0, 0.02),
+                0px 1px 2px 0px rgba(0, 0, 0, 0.04);
+            border-radius: 4px;
         }
 
         &:has(.p-button-icon) {
             .p-button-icon {
                 margin-right: 0;
                 background: $shade000;
-                box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.02), -2px 2px 2px 0px rgba(0, 0, 0, 0.04);
+                box-shadow:
+                    2px 2px 2px 0px rgba(0, 0, 0, 0.02),
+                    -2px 2px 2px 0px rgba(0, 0, 0, 0.04);
                 border: none;
                 border-radius: 4px 0px 0px 4px;
             }
-            
+
             .p-button-label {
                 background: $shade000;
-                box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.02), 2px 2px 2px 0px rgba(0, 0, 0, 0.04);
+                box-shadow:
+                    2px 2px 2px 0px rgba(0, 0, 0, 0.02),
+                    2px 2px 2px 0px rgba(0, 0, 0, 0.04);
                 border-radius: 0px 4px 4px 0px;
             }
-            
         }
     }
 
