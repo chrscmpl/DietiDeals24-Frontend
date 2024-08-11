@@ -4,13 +4,13 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { combineLatest, debounceTime, Subscription, take } from 'rxjs';
 import { FAQ } from '../../models/faq.model';
 import { WindowService } from '../../services/window.service';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @Component({
     selector: 'dd24-help-page',
@@ -18,10 +18,10 @@ import { WindowService } from '../../services/window.service';
     imports: [
         PanelMenuModule,
         ButtonModule,
-        InputGroupModule,
-        InputGroupAddonModule,
         InputTextModule,
         ReactiveFormsModule,
+        IconFieldModule,
+        InputIconModule,
     ],
     templateUrl: './help-page.component.html',
     styleUrl: './help-page.component.scss',

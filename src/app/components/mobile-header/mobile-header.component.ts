@@ -36,14 +36,28 @@ export class MobileHeaderComponent {
 
     private adjustTitleSize() {
         this.zone.runOutsideAngular(() => {
+            const title = this.getTitle();
+            if (title) this.setLongTitle(title, false);
             setTimeout(() => {
-                const title =
-                    this.element.nativeElement.querySelector('.title');
-                if (!title) return;
-                if (title.clientHeight < title.scrollHeight)
-                    this.renderer.addClass(title, 'title-long');
-                else this.renderer.removeClass(title, 'title-long');
+                const title = this.getTitle();
+                if (title)
+                    this.setLongTitle(
+                        title,
+                        title.clientHeight < title.scrollHeight,
+                    );
             }, 50);
         });
+    }
+
+    private getTitle() {
+        return this.element.nativeElement.querySelector('.title');
+    }
+
+    private setLongTitle(title: HTMLElement, isLong: boolean) {
+        if (isLong) {
+            this.renderer.addClass(title, 'title-long');
+        } else {
+            this.renderer.removeClass(title, 'title-long');
+        }
     }
 }

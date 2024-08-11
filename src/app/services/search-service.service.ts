@@ -32,10 +32,14 @@ export class SearchServiceService {
         private readonly location: Location,
     ) {
         this.validatedSearchParameters$ = this.route.queryParams.pipe(
+            filter(
+                () =>
+                    this.location.path().startsWith('/auctions') &&
+                    !/\([^:]+:[^)]+\)/.test(this.location.path()),
+            ),
             withLatestFrom(
                 this.categoriesService.categories$.pipe(startWith({})),
             ),
-            filter(() => this.location.path().startsWith('/auctions')),
             map(([params, categories]) => {
                 const validatedParams = this.getValidatedParams(
                     params,

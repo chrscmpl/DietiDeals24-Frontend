@@ -5,20 +5,15 @@
         icon="pi pi-chevron-left"
         (onClick)="location.back()"
     ></p-button>
-    <p-inputGroup class="faq-filter">
-        <p-inputGroupAddon
-            class="faq-filter-icon"
-            [style]="{ display: 'flex' }"
-        >
-            <i class="pi pi-search"></i>
-        </p-inputGroupAddon>
+    <p-iconField iconPosition="left" class="faq-filter">
+        <p-inputIcon styleClass="pi pi-search" />
         <input
             class="faq-filter-input"
             pInputText
             placeholder="What do you want to know?"
             [formControl]="filterControl"
         />
-    </p-inputGroup>
+    </p-iconField>
     <p-panelMenu
         class="dd24-panelmenu"
         [model]="filteredFaqMenuItems"

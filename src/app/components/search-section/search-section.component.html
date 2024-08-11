@@ -15,17 +15,24 @@
 >
     <div class="search-inputs-container">
         <div class="search-bar-wrapper">
-            <p-inputGroup class="search-bar">
-                <p-inputGroupAddon>
-                    <i class="pi pi-search"></i>
-                </p-inputGroupAddon>
+            <p-iconField
+                iconPosition="left"
+                class="search-bar"
+                [style]="{
+                    display: 'flex',
+                    width: '100%',
+                    alignItems: 'center'
+                }"
+            >
+                <p-inputIcon styleClass="pi pi-search" />
                 <input
                     #keywordsInput
+                    class="search-bar-input"
                     pInputText
                     placeholder="What are you looking for?"
                     formControlName="keywords"
                 />
-            </p-inputGroup>
+            </p-iconField>
             @if (windowService.isMobile$ | async) {
                 <!-- <ng-container *ngTemplateOutlet="searchButton"></ng-container> -->
                 <button

@@ -49,6 +49,11 @@
     }
 }
 
+.search-bar-input {
+    flex-grow: 1;
+    width: 100%;
+}
+
 .auction-type-selection,
 .category-selection {
     @include viewports.mobile {
@@ -142,17 +147,11 @@
             input {
                 border: none;
                 outline: none;
-                padding-left: 0;
                 box-shadow: none;
             }
-
-            .p-inputgroup-addon {
-                border: none;
-                outline: none;
-                padding: 0;
-                color: var(--basic-affordances-color);
-                background: var(--inputs-background);
-            }
+        }
+        .p-icon-field {
+            width: 100%;
         }
     }
 

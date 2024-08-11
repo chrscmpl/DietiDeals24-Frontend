@@ -13,8 +13,8 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { DropdownModule } from 'primeng/dropdown';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
@@ -49,8 +49,8 @@ interface option {
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
-        InputGroupModule,
-        InputGroupAddonModule,
+        IconFieldModule,
+        InputIconModule,
         DropdownModule,
         OneCharUpperPipe,
         CategorySelectionComponent,

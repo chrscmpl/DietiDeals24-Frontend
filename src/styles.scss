@@ -93,7 +93,9 @@ body {
     min-height: 100svh;
     @media (prefers-color-scheme: dark) {
         background-color: black;
+        background-color: var(--background-color);
     }
+    background-color: var(--background-color);
 }
 
 .dd24-main-page {
