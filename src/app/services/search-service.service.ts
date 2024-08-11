@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Categories, CategoriesService } from './categories.service';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Params } from '@angular/router';
+import {
+    ActivatedRoute,
+    NavigationEnd,
+    Params,
+    Router,
+    Event,
+} from '@angular/router';
 import {
     filter,
     map,
     Observable,
     shareReplay,
     startWith,
+    switchMap,
+    take,
+    tap,
     withLatestFrom,
 } from 'rxjs';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
@@ -30,13 +39,15 @@ export class SearchServiceService {
         private readonly categoriesService: CategoriesService,
         private readonly route: ActivatedRoute,
         private readonly location: Location,
+        private readonly router: Router,
     ) {
-        this.validatedSearchParameters$ = this.route.queryParams.pipe(
+        this.validatedSearchParameters$ = this.router.events.pipe(
             filter(
-                () =>
-                    this.location.path().startsWith('/auctions') &&
-                    !/\([^:]+:[^)]+\)/.test(this.location.path()),
+                (event) =>
+                    event instanceof NavigationEnd &&
+                    /^\/auctions(\?.*)?$/.test(event.urlAfterRedirects),
             ),
+            switchMap(() => this.route.queryParams.pipe(take(1))),
             withLatestFrom(
                 this.categoriesService.categories$.pipe(startWith({})),
             ),
