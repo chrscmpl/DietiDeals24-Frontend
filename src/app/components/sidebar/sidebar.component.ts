@@ -45,6 +45,7 @@ export class SidebarComponent implements OnInit {
                             },
                         },
                     ],
+                    queryParamsHandling: 'merge',
                     command: () => this.hideSidebar(),
                 },
             ],

@@ -10,7 +10,7 @@ import { AsyncPipe } from '@angular/common';
 import { AuctionsService } from '../../services/auctions.service';
 import { WindowService } from '../../services/window.service';
 import { SideSearchSectionComponent } from '../../components/side-search-section/side-search-section.component';
-import { SearchServiceService } from '../../services/search-service.service';
+import { SearchService } from '../../services/search-service.service';
 import {
     combineLatest,
     debounceTime,
@@ -53,7 +53,7 @@ export class AuctionsSearchPageComponent
     );
 
     constructor(
-        private readonly searchService: SearchServiceService,
+        private readonly searchService: SearchService,
         private readonly auctionsService: AuctionsService,
         public readonly windowService: WindowService,
     ) {}

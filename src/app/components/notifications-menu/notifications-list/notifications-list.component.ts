@@ -64,7 +64,9 @@ export class NotificationsListComponent implements AfterViewInit {
         this.read.emit(notification);
         if (!notification.read)
             this.notificationsService.markAsRead(notification);
-        this.router.navigate(notification.link);
+        this.router.navigate(notification.link, {
+            queryParamsHandling: 'merge',
+        });
     }
 
     public onNotificationLoaded(notification: DisplayableNotification) {

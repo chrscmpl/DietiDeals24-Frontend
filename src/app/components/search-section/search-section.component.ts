@@ -23,12 +23,12 @@ import { Nullable } from '../../typeUtils/nullable';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { CategoriesService } from '../../services/categories.service';
 import { filter, Subscription, take } from 'rxjs';
-import { SearchServiceService } from '../../services/search-service.service';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { WindowService } from '../../services/window.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SearchPolicy } from '../../enums/search-policy.enum';
 import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
+import { SearchService } from '../../services/search-service.service';
 
 interface searchForm {
     keywords: FormControl<string | null>;
@@ -81,7 +81,7 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         private readonly formBuilder: FormBuilder,
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
-        private readonly searchService: SearchServiceService,
+        private readonly searchService: SearchService,
         public readonly windowService: WindowService,
         private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}

@@ -11,7 +11,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { map, Observable, Subscription, take } from 'rxjs';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchChangeEvent, InputSwitchModule } from 'primeng/inputswitch';
-import { SearchServiceService } from '../../services/search-service.service';
+import { SearchService } from '../../services/search-service.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
@@ -72,7 +72,7 @@ export class SideSearchSectionComponent implements OnInit, OnDestroy {
         private readonly router: Router,
         private readonly categoriesService: CategoriesService,
         private readonly formBuilder: FormBuilder,
-        private readonly searchService: SearchServiceService,
+        private readonly searchService: SearchService,
         private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 

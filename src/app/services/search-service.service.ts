@@ -9,6 +9,7 @@ import {
     Event,
 } from '@angular/router';
 import {
+    distinctUntilChanged,
     filter,
     map,
     Observable,
@@ -28,7 +29,7 @@ import { SearchPolicy } from '../enums/search-policy.enum';
 @Injectable({
     providedIn: 'root',
 })
-export class SearchServiceService {
+export class SearchService {
     public readonly validatedSearchParameters$: Observable<
         Readonly<AuctionSearchParameters>
     >;
@@ -42,12 +43,18 @@ export class SearchServiceService {
         private readonly router: Router,
     ) {
         this.validatedSearchParameters$ = this.router.events.pipe(
+            tap((event: Event) => {
+                if (event instanceof NavigationEnd) {
+                    console.log('NavigationEnd event:', event);
+                }
+            }),
             filter(
                 (event) =>
                     event instanceof NavigationEnd &&
                     /^\/auctions(\?.*)?$/.test(event.urlAfterRedirects),
             ),
             switchMap(() => this.route.queryParams.pipe(take(1))),
+            distinctUntilChanged(),
             withLatestFrom(
                 this.categoriesService.categories$.pipe(startWith({})),
             ),
@@ -69,6 +76,7 @@ export class SearchServiceService {
             startWith(this.lastSearchParameters),
             shareReplay(1),
         );
+        this.validatedSearchParameters$.subscribe();
     }
 
     private getValidatedParams(

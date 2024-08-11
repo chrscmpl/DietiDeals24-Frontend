@@ -19,7 +19,7 @@ import {
     switchMap,
     take,
 } from 'rxjs';
-import { SearchServiceService } from './search-service.service';
+import { SearchService } from './search-service.service';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 
 type query = Params | AuctionSearchParameters;
@@ -40,9 +40,9 @@ export class NavigationService {
 
     public currentQuery$: Observable<query>;
 
-    public navigationEnd$ = this.router.events.pipe(
+    public navigationEnd$: Observable<NavigationEnd> = this.router.events.pipe(
         filter((event) => event instanceof NavigationEnd),
-    );
+    ) as Observable<NavigationEnd>;
 
     private isCurrentNavigationSuccessful$ = this.router.events.pipe(
         filter(
@@ -58,7 +58,7 @@ export class NavigationService {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private searchService: SearchServiceService,
+        private searchService: SearchService,
     ) {
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),

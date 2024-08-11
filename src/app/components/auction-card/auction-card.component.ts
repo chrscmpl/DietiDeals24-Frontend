@@ -63,7 +63,10 @@ export class AuctionCardComponent implements OnInit {
                     },
                 },
             ],
-            { skipLocationChange: this.skipLocationChange },
+            {
+                skipLocationChange: this.skipLocationChange,
+                queryParamsHandling: 'merge',
+            },
         );
     }
 
