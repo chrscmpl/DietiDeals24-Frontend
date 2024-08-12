@@ -11,4 +11,23 @@
 .create-auction-form {
     @include layouts.flex(column, start, stretch);
     padding: 0 3rem;
+    flex: 1;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.create-auction-submit-btn {
+    align-self: center;
+    margin-top: 1rem;
+    min-width: 30ch;
+    max-width: 100%;
+}
+
+.create-auction-step-header {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-large);
+    margin-bottom: 1rem;
 }

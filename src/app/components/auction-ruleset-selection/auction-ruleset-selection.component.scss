@@ -1,24 +1,24 @@
 @use "layouts";
 
 .ruleset-item {
-    @include layouts.flex(row, start, center);
+    @include layouts.flex(row, start, center, 0.5rem);
     cursor: pointer;
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     user-select: none;
-}
-
-.ruleset-item-chevron {
-    margin-right: 0.5rem;
+    margin-left: calc(var(--font-size-large) * -1);
+    margin-right: calc(var(--font-size-large) * -1);
 }
 
 .ruleset-item-radio {
     display: inline;
+    align-self: stretch;
 }
 
 .ruleset-description {
-    margin-left: calc(var(--font-size-large) * -1);
-    margin-right: calc(var(--font-size-large) * -1);
+    margin-left: calc(var(--font-size-large) * -2);
+    margin-right: calc(var(--font-size-large) * -2);
+    margin-top: 0.3rem;
     display: block;
 }
 
@@ -35,6 +35,18 @@
         }
     }
 
+    .p-menuitem[aria-expanded="true"] {
+        .ruleset-item-chevron {
+            transform: rotate(90deg);
+        }
+    }
+
+    .p-panelmenu-header,
+    .p-panelmenu-header-content,
+    .p-menuitem-content {
+        width: fit-content;
+    }
+
     .p-panelmenu-panel {
         padding: 0 !important;
     }
@@ -45,7 +57,7 @@
 
     .p-panelmenu-header-content {
         @include layouts.flex(row, start, center);
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0;
         font-size: var(--font-size-large);
         font-weight: var(--font-weight-bolder);
         color: var(--text-color-3);
@@ -63,6 +75,10 @@
         padding: 0;
     }
 
+    .p-icon-wrapper {
+        display: none;
+    }
+
     .p-menuitem-link {
         padding: 0;
     }
@@ -70,6 +86,7 @@
     .p-menuitem-text {
         font-size: var(--font-size-large);
         font-weight: var(--font-weight-bolder);
+        cursor: default;
     }
 
     .p-submenu-icon {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, NgZone } from '@angular/core';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { MenuItem } from 'primeng/api';
 import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
@@ -34,11 +34,17 @@ export class AuctionRulesetSelectionComponent {
         value: RulesetDescription[],
     ) {
         this.initRulesetsMenuItems(value);
+        this.removeEventListenersFromTopMenuItems();
     }
 
     public sellRulesetsMenuItems: MenuItem[] = [];
 
     public buyRulesetsMenuItems: MenuItem[] = [];
+
+    public constructor(
+        private readonly zone: NgZone,
+        private readonly element: ElementRef,
+    ) {}
 
     private initRulesetsMenuItems(rulesets: RulesetDescription[]): void {
         const { success: sellRulesets, failure: buyRulesets } =
@@ -82,5 +88,23 @@ export class AuctionRulesetSelectionComponent {
                 })),
             },
         ];
+    }
+
+    private removeEventListenersFromTopMenuItems(): void {
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                if (!this) return;
+                const topMenuItems: HTMLElement[] =
+                    this.element.nativeElement.querySelectorAll(
+                        '#sell-menu_header, #buy-menu_header',
+                    );
+                topMenuItems.forEach((item) => {
+                    item.parentElement?.replaceChild(
+                        item.cloneNode(true),
+                        item,
+                    );
+                });
+            }, 50);
+        });
     }
 }

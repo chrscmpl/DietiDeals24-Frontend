@@ -37,6 +37,8 @@ export class RadioToggleButtonComponent implements OnInit, OnDestroy {
 
     public control!: FormControl;
     public checked: boolean = false;
+    @Input() public buttonStyle: { [key: string]: string | number | boolean } =
+        {};
 
     public ngOnInit(): void {
         this.setControl();

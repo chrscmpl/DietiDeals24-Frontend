@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     Step,
     StepperComponent,
 } from '../../components/stepper/stepper.component';
 import {
-    Form,
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
+    Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { AuctionRulesetSelectionComponent } from '../../components/auction-ruleset-selection/auction-ruleset-selection.component';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
+import { ButtonModule } from 'primeng/button';
 
 interface auctionCreationForm {
     ruleset: FormControl<AuctionRuleSet | null>;
@@ -26,12 +27,14 @@ interface auctionCreationForm {
     imports: [
         StepperComponent,
         ReactiveFormsModule,
+        ButtonModule,
         AuctionRulesetSelectionComponent,
     ],
     templateUrl: './create-auction-page.component.html',
     styleUrl: './create-auction-page.component.scss',
 })
-export class CreateAuctionPageComponent implements OnInit {
+export class CreateAuctionPageComponent implements OnInit, OnDestroy {
+    private readonly subscriptions: Subscription[] = [];
     public activeStep: number = 0;
 
     public form!: FormGroup<auctionCreationForm>;
@@ -39,6 +42,7 @@ export class CreateAuctionPageComponent implements OnInit {
     public steps: Step[] = [
         {
             title: 'Type',
+            nextCallback: this.onNextRuleset.bind(this),
         },
         {
             title: 'Category',
@@ -63,10 +67,34 @@ export class CreateAuctionPageComponent implements OnInit {
 
     public ngOnInit(): void {
         this.form = this.formBuilder.group({
-            ruleset: this.formBuilder.control<AuctionRuleSet | null>(null),
+            ruleset: this.formBuilder.control<AuctionRuleSet | null>(null, [
+                Validators.required,
+            ]),
         });
+
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
         });
+
+        this.subscriptions.push(
+            this.form.get('ruleset')!.valueChanges.subscribe(() => {
+                if (this.form.get('ruleset')?.valid) {
+                    this.next();
+                }
+            }),
+        );
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+
+    public next(): void {
+        if (this.steps[this.activeStep]?.nextCallback?.() !== false)
+            this.activeStep++;
+    }
+
+    private onNextRuleset(): boolean {
+        return this.form.get('ruleset')?.valid ?? false;
     }
 }
