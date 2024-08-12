@@ -5,9 +5,10 @@
     padding: var(--page-items-gap);
     border-radius: var(--border-radius-large) 2rem;
     border: var(--border);
+    flex: 1;
 }
 
 .create-auction-form {
-    @include layouts.flex(column, start, start);
+    @include layouts.flex(column, start, stretch);
     padding: 0 3rem;
 }

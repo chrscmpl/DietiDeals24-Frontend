@@ -1,0 +1,39 @@
+<ng-template #rulesetsOptions let-rulesetsMenuItems="rulesetsMenuItems">
+    <p-panelMenu class="dd24-panelmenu" [model]="rulesetsMenuItems">
+        <ng-template pTemplate="item" let-item>
+            @if (item.id) {
+                <span class="ruleset-item">
+                    <i class="ruleset-item-chevron pi pi-chevron-right"></i>
+                    <span class="ruleset-item-label"
+                        >{{ item.label | oneCharUpper }} auction</span
+                    >
+                    <dd24-radio-toggle-button
+                        class="ruleset-item-radio"
+                        label="select"
+                        [value]="item.label"
+                        [form]="form"
+                        [controlName]="controlName"
+                    ></dd24-radio-toggle-button>
+                </span>
+            } @else {
+                <span class="ruleset-description">{{ item.label }}</span>
+            }
+        </ng-template>
+    </p-panelMenu>
+</ng-template>
+
+<div class="ruleset-selection">
+    <ng-container
+        *ngTemplateOutlet="
+            rulesetsOptions;
+            context: { rulesetsMenuItems: sellRulesetsMenuItems }
+        "
+    ></ng-container>
+    <p-divider></p-divider>
+    <ng-container
+        *ngTemplateOutlet="
+            rulesetsOptions;
+            context: { rulesetsMenuItems: buyRulesetsMenuItems }
+        "
+    ></ng-container>
+</div>

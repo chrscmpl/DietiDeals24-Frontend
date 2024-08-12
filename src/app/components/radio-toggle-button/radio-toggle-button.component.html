@@ -1,8 +1,21 @@
-<p-toggleButton
-    [(ngModel)]="checked"
-    [onLabel]="checkedLabel || label"
-    [offLabel]="uncheckedLabel || label"
-    (onChange)="onChange($event)"
-    [disabled]="checked"
-    [style]="{ opacity: 1, width: '100%', height: '100%' }"
-></p-toggleButton>
+<div
+    class="radio-toggle-button"
+    (click)="stopPropagation($event)"
+    tabindex="0"
+    (keypress)="stopPropagation($event)"
+>
+    <!-- <div [formGroup="form" [style]="{ display: 'none' }">
+        <p-radioButton
+            [value]="value"
+            [formControlName]="controlName"
+        ></p-radioButton>
+    </div> -->
+    <p-toggleButton
+        [(ngModel)]="checked"
+        [onLabel]="checkedLabel || label"
+        [offLabel]="uncheckedLabel || label"
+        (onChange)="onChange($event)"
+        [disabled]="checked"
+        [style]="{ opacity: 1, width: '100%', height: '100%' }"
+    ></p-toggleButton>
+</div>
