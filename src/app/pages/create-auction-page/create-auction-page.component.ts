@@ -11,7 +11,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { filter, Subscription, take } from 'rxjs';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { AuctionRulesetSelectionComponent } from '../../components/auction-ruleset-selection/auction-ruleset-selection.component';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
@@ -35,9 +35,12 @@ interface auctionCreationForm {
 })
 export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
+
     public activeStep: number = 0;
 
     public form!: FormGroup<auctionCreationForm>;
+
+    public error: string = '';
 
     public steps: Step[] = [
         {
@@ -77,11 +80,19 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         });
 
         this.subscriptions.push(
-            this.form.get('ruleset')!.valueChanges.subscribe(() => {
-                if (this.form.get('ruleset')?.valid) {
-                    this.next();
-                }
+            this.form.valueChanges.subscribe(() => {
+                this.error = '';
             }),
+        );
+
+        this.subscriptions.push(
+            this.form
+                .get('ruleset')!
+                .valueChanges.pipe(
+                    filter(() => this.form.get('ruleset')?.valid ?? false),
+                    take(1),
+                )
+                .subscribe(this.next.bind(this)),
         );
     }
 
@@ -95,6 +106,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onNextRuleset(): boolean {
-        return this.form.get('ruleset')?.valid ?? false;
+        if (this.form.get('ruleset')?.valid) return true;
+        this.error = 'Please select a ruleset';
+        return false;
     }
 }

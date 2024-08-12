@@ -18,9 +18,14 @@
     flex: 1;
 }
 
-.create-auction-submit-btn {
+.error {
     align-self: center;
     margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.create-auction-submit-btn {
+    align-self: center;
     min-width: 30ch;
     max-width: 100%;
 }
