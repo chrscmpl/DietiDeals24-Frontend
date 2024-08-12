@@ -11,6 +11,8 @@ $primaryTextColor: #ffffff;
 $secondaryColor: #37587e;
 $secondaryTextColor: #ffffff;
 
+$borderRadius: 8px;
+
 $shade000: #ffffff;
 $shade50: #f8fafc;
 $shade100: #f1f5f9;
@@ -39,7 +41,26 @@ $secondaryButtonTextActiveColor: $textColor;
 $secondaryButtonActiveBorderColor: #aeb4ba;
 $secondaryButtonFocusShadow: none;
 
-$borderRadius: 8px;
+$toggleButtonBg: none;
+$toggleButtonBorder: 2px solid $primaryColor;
+$toggleButtonTextColor: $primaryColor;
+$toggleButtonIconColor: $primaryColor;
+$toggleButtonHoverBg: rgba($primaryColor, 0.1);
+$toggleButtonHoverBorderColor: $primaryDarkerColor;
+$toggleButtonTextHoverColor: $primaryColor;
+$toggleButtonIconHoverColor: $primaryTextColor;
+$toggleButtonActiveBg: $primaryColor;
+$toggleButtonActiveBorderColor: $primaryColor;
+$toggleButtonTextActiveColor: $primaryTextColor;
+$toggleButtonIconActiveColor: $primaryTextColor;
+$toggleButtonActiveHoverBg: $primaryDarkerColor;
+$toggleButtonActiveHoverBorderColor: $primaryDarkerColor;
+$toggleButtonTextActiveHoverColor: $primaryTextColor;
+$toggleButtonIconActiveHoverColor: $primaryTextColor;
+
+.p-togglebutton.p-highlight .p-button-label {
+    background: none;
+}
 
 @import "./_variables";
 @import "../fonts/fonts";
