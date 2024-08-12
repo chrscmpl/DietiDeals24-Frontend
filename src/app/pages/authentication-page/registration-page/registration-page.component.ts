@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import {
     Step,
@@ -82,6 +82,8 @@ interface registrationForm {
     styleUrl: './registration-page.component.scss',
 })
 export class RegistrationPageComponent implements OnInit {
+    @ViewChild(StepperComponent) public stepper!: StepperComponent;
+
     public registrationForm!: FormGroup<registrationForm>;
     public activeStep: number = 0;
     public error: string = '';
@@ -222,8 +224,7 @@ export class RegistrationPageComponent implements OnInit {
     }
 
     public next(): void {
-        if (this.steps[this.activeStep]?.nextCallback?.() !== false)
-            this.activeStep++;
+        this.stepper.nextStep();
     }
 
     public onSubmit(): void {

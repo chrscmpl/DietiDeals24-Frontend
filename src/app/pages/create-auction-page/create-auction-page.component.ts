@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
     Step,
     StepperComponent,
@@ -35,6 +35,7 @@ interface auctionCreationForm {
 })
 export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
+    @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
     public activeStep: number = 0;
 
@@ -101,8 +102,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     public next(): void {
-        if (this.steps[this.activeStep]?.nextCallback?.() !== false)
-            this.activeStep++;
+        this.stepper.nextStep();
     }
 
     private onNextRuleset(): boolean {
