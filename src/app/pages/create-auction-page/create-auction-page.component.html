@@ -1,1 +1,36 @@
-<main class="create-auction-page dd24-main-page"></main>
+<ng-template #rulesetsOptions let-rulesetsMenuItems="rulesetsMenuItems">
+    <p-panelMenu class="dd24-panelmenu" [model]="rulesetsMenuItems">
+        <ng-template pTemplate="item" let-item>
+            @if (item.id) {
+                <span>AHAH {{ item.label }} </span>
+            } @else {
+                <span>{{ item.label }}</span>
+            }
+        </ng-template>
+    </p-panelMenu>
+</ng-template>
+
+<main class="create-auction-page dd24-main-page">
+    <div class="create-auction-form-wrapper">
+        <dd24-stepper
+            [steps]="steps"
+            [(activeStep)]="activeStep"
+        ></dd24-stepper>
+        <form class="create-auction-form">
+            @if (activeStep === 0) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        rulesetsOptions;
+                        context: { rulesetsMenuItems: sellRulesetsMenuItems }
+                    "
+                ></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        rulesetsOptions;
+                        context: { rulesetsMenuItems: buyRulesetsMenuItems }
+                    "
+                ></ng-container>
+            }
+        </form>
+    </div>
+</main>

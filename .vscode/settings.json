@@ -13,5 +13,6 @@
             "source.fixAll.eslint": "always"
         },
         "editor.formatOnSave": false
-    }
+    },
+    "cSpell.words": ["Ruleset", "Rulesets"]
 }

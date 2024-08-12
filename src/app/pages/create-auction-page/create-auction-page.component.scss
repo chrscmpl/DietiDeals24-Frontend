@@ -1,0 +1,13 @@
+@use "layouts";
+
+.create-auction-form-wrapper {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+    padding: var(--page-items-gap);
+    border-radius: var(--border-radius-large) 2rem;
+    border: var(--border);
+}
+
+.create-auction-form {
+    @include layouts.flex(column, start, start);
+    padding: 0 3rem;
+}

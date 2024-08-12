@@ -22,6 +22,7 @@ import { ConfirmReloadGuard } from './guards/confirm-reload.guard';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AuctionConclusionPageComponent } from './pages/transactions-page/auction-conclusion-page/auction-conclusion-page.component';
 import { FAQResolver } from './resolvers/faq.resolver';
+import { RulesetDescriptionResolver } from './resolvers/ruleset-description.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -62,6 +63,7 @@ export const routes: Routes = [
             ConfirmReloadGuard.asCanActivateFn(false),
             AuthenticationGuard.asCanActivateFn(true),
         ],
+        resolve: { rulesets: RulesetDescriptionResolver.asResolveFn() },
     },
     {
         path: 'notifications',

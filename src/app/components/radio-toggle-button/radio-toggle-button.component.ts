@@ -18,7 +18,9 @@ export class RadioToggleButtonComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
 
     @Input({ required: true }) public value!: any;
-    @Input({ required: true }) public label!: string;
+    @Input() public label: string = '';
+    @Input() public checkedLabel: string = '';
+    @Input() public uncheckedLabel: string = '';
     @Input() public formControl?: FormControl;
     @Input() public formGroup?: FormGroup;
     @Input() public formControlName?: string;

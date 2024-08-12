@@ -126,11 +126,11 @@ export class RegistrationPageComponent implements OnInit {
     public steps: Step[] = [
         {
             title: 'Your data',
-            nextCallback: this.onNextuserData,
+            nextCallback: this.onNextuserData.bind(this),
         },
         {
             title: 'Your credentials',
-            nextCallback: this.onNextCredentials,
+            nextCallback: this.onNextCredentials.bind(this),
         },
         {
             title: 'Privacy policy',

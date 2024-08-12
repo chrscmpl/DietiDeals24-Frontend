@@ -29,6 +29,21 @@ class Utils {
 
         return true;
     }
+
+    public splitArray<T>(
+        array: T[],
+        condition: (elem: T) => boolean,
+    ): { success: T[]; failure: T[] } {
+        const failure: T[] = [];
+
+        const success = array.filter((elem) => {
+            if (condition(elem)) return true;
+            failure.push(elem);
+            return false;
+        });
+
+        return { success, failure };
+    }
 }
 
 export const utils = new Utils();
