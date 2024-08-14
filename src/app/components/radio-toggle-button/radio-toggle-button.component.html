@@ -1,5 +1,6 @@
 <div
     class="radio-toggle-button"
+    [class.radio-toggle-button-error]="control.invalid && control.dirty"
     (click)="stopPropagation($event)"
     tabindex="0"
     (keypress)="stopPropagation($event)"

@@ -46,11 +46,7 @@ export interface SavedChosenPaymentMethodDTO {
     id: string;
 }
 
-export interface NewChosenPaymentMethodDTO {
-    save: boolean;
-    newMethod: AuthorizedPaymentMethodRegistrationDTO;
-}
-
 export type ChosenPaymentMethodDTO =
     | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
-    | { newPaymentMethod: NewChosenPaymentMethodDTO };
+    | { paymentMethodToBeSaved: AuthorizedPaymentMethodRegistrationDTO }
+    | { oneTimeUsePaymentMethod: AuthorizedPaymentMethodRegistrationDTO };

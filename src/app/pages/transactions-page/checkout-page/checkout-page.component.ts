@@ -223,17 +223,19 @@ export class CheckoutPageComponent implements OnInit {
 
     private getPaymentMethod$(): Observable<ChosenPaymentMethodDTO> {
         return (
-            this.isPaymentMethodType(
+            !this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
             )
                 ? of(this.getSavedPaymentMethod())
                 : this.paymentService
                       .authorizePayment(this.getNewPaymentMethod())
                       .pipe(
-                          map((newPaymentMethod) => ({
-                              newPaymentMethod,
-                              save: this.getSave(),
-                          })),
+                          map((newPaymentMethod) => {
+                              const key = this.getSave()
+                                  ? 'paymentMethodToBeSaved'
+                                  : 'oneTimeUsePaymentMethod';
+                              return { [key]: newPaymentMethod };
+                          }),
                       )
         ) as Observable<ChosenPaymentMethodDTO>;
     }

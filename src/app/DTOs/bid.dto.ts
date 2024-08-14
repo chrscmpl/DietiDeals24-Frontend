@@ -1,5 +1,5 @@
 import {
-    NewChosenPaymentMethodDTO,
+    AuthorizedPaymentMethodRegistrationDTO,
     SavedChosenPaymentMethodDTO,
 } from './payment-method.dto';
 
@@ -18,5 +18,10 @@ export type BidCreationDTO =
     | {
           auctionId: string;
           amount: number;
-          newPaymentMethod: NewChosenPaymentMethodDTO;
+          paymentMethodToBeSaved: AuthorizedPaymentMethodRegistrationDTO;
+      }
+    | {
+          auctionId: string;
+          amount: number;
+          oneTimeUsePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
       };

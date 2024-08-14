@@ -1,6 +1,6 @@
 import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import {
-    NewChosenPaymentMethodDTO,
+    AuthorizedPaymentMethodRegistrationDTO,
     SavedChosenPaymentMethodDTO,
 } from './payment-method.dto';
 
@@ -17,5 +17,10 @@ export type AuctionConclusionDTO =
     | {
           auctionId: string;
           choice: AuctionConclusionOptions.accept;
-          newPaymentMethod: NewChosenPaymentMethodDTO;
+          paymentMethodToBeSaved: AuthorizedPaymentMethodRegistrationDTO;
+      }
+    | {
+          auctionId: string;
+          choice: AuctionConclusionOptions.accept;
+          oneTimeUsePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
       };

@@ -66,7 +66,11 @@ export class RadioToggleButtonComponent implements OnInit, OnDestroy {
     }
 
     public onChange(e: ToggleButtonChangeEvent): void {
-        if (e.checked) this.control.setValue(this.value);
+        if (e.checked) {
+            this.control.setValue(this.value);
+            this.control.markAsDirty();
+            this.control.markAsTouched();
+        }
     }
 
     public stopPropagation(e: Event): void {

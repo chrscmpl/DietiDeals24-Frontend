@@ -82,7 +82,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.form.valueChanges.subscribe(() => {
-                this.error = '';
+                if (this.error) this.error = '';
             }),
         );
 
@@ -106,7 +106,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onNextRuleset(): boolean {
-        if (this.form.get('ruleset')?.valid) return true;
+        const rulesetControl = this.form.get('ruleset');
+        if (rulesetControl?.valid) return true;
+        rulesetControl!.markAsDirty();
         this.error = 'Please select a ruleset';
         return false;
     }

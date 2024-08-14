@@ -1,6 +1,13 @@
 .radio-toggle-button,
-:host ::ng-deep .p-button {
-    opacity: 1;
-    width: 100%;
-    height: 100%;
+:host ::ng-deep {
+    .p-button {
+        opacity: 1;
+        width: 100%;
+        height: 100%;
+    }
+    .radio-toggle-button-error .p-button {
+        border-color: var(--error-color);
+        color: var(--error-color);
+        background: none;
+    }
 }
