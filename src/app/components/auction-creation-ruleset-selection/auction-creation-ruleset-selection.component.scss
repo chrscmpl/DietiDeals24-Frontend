@@ -7,7 +7,6 @@
     font-weight: var(--font-weight-bolder);
     user-select: none;
     margin-left: calc(var(--font-size-large) * -1);
-    margin-right: calc(var(--font-size-large) * -1);
 }
 
 .ruleset-item-radio {
@@ -17,7 +16,6 @@
 
 .ruleset-description {
     margin-left: calc(var(--font-size-large) * -2);
-    margin-right: calc(var(--font-size-large) * -2);
     margin-top: 0.3rem;
     display: block;
 }
@@ -50,10 +48,6 @@
     .p-panelmenu-panel {
         padding: 0 !important;
     }
-
-    // .p-menuitem-content:has(.ruleset-item) .p-submenu-list > * {
-    //     margin: 0.5rem !important;
-    // }
 
     .p-panelmenu-header-content {
         @include layouts.flex(row, start, center);

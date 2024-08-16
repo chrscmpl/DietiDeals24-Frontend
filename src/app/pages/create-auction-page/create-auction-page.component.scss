@@ -1,4 +1,11 @@
 @use "layouts";
+@use "viewports";
+
+.create-auction-page {
+    @include viewports.mobile {
+        padding: 0;
+    }
+}
 
 .create-auction-form-wrapper {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
@@ -6,6 +13,12 @@
     border-radius: var(--border-radius-large) 2rem;
     border: var(--border);
     flex: 1;
+
+    @include viewports.mobile {
+        padding: 0 2% 2rem 2%;
+        border-radius: 0;
+        border: none;
+    }
 }
 
 .create-auction-form {

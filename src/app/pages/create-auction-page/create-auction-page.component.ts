@@ -13,12 +13,13 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { filter, Subscription, take } from 'rxjs';
 import { RulesetDescription } from '../../models/ruleset-description.model';
-import { AuctionRulesetSelectionComponent } from '../../components/auction-ruleset-selection/auction-ruleset-selection.component';
+import { AuctionCreationRulesetSelectionComponent } from '../../components/auction-creation-ruleset-selection/auction-creation-ruleset-selection.component';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { ButtonModule } from 'primeng/button';
 
 interface auctionCreationForm {
     ruleset: FormControl<AuctionRuleSet | null>;
+    category: FormControl<string | null>;
 }
 
 @Component({
@@ -28,7 +29,7 @@ interface auctionCreationForm {
         StepperComponent,
         ReactiveFormsModule,
         ButtonModule,
-        AuctionRulesetSelectionComponent,
+        AuctionCreationRulesetSelectionComponent,
     ],
     templateUrl: './create-auction-page.component.html',
     styleUrl: './create-auction-page.component.scss',
@@ -74,6 +75,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             ruleset: this.formBuilder.control<AuctionRuleSet | null>(null, [
                 Validators.required,
             ]),
+            category: this.formBuilder.control<string | null>(null, [
+                Validators.required,
+            ]),
         });
 
         this.route.data.pipe(take(1)).subscribe((data) => {
@@ -86,15 +90,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             }),
         );
 
-        this.subscriptions.push(
-            this.form
-                .get('ruleset')!
-                .valueChanges.pipe(
-                    filter(() => this.form.get('ruleset')?.valid ?? false),
-                    take(1),
-                )
-                .subscribe(this.next.bind(this)),
-        );
+        this.nextOnFirstChange(this.form.controls.ruleset);
+        this.nextOnFirstChange(this.form.controls.category);
     }
 
     public ngOnDestroy(): void {
@@ -111,5 +108,16 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         rulesetControl!.markAsDirty();
         this.error = 'Please select a ruleset';
         return false;
+    }
+
+    private nextOnFirstChange(control: FormControl): void {
+        this.subscriptions.push(
+            control.valueChanges
+                .pipe(
+                    filter(() => control.valid),
+                    take(1),
+                )
+                .subscribe(this.next.bind(this)),
+        );
     }
 }

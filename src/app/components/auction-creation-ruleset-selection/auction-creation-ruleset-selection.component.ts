@@ -12,7 +12,7 @@ import { DividerModule } from 'primeng/divider';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 
 @Component({
-    selector: 'dd24-auction-ruleset-selection',
+    selector: 'dd24-auction-creation-ruleset-selection',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -23,10 +23,10 @@ import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
         OneCharUpperPipe,
         RadioToggleButtonComponent,
     ],
-    templateUrl: './auction-ruleset-selection.component.html',
-    styleUrl: './auction-ruleset-selection.component.scss',
+    templateUrl: './auction-creation-ruleset-selection.component.html',
+    styleUrl: './auction-creation-ruleset-selection.component.scss',
 })
-export class AuctionRulesetSelectionComponent {
+export class AuctionCreationRulesetSelectionComponent {
     @Input({ required: true }) public form!: FormGroup;
     @Input({ required: true }) public controlName!: string;
 
