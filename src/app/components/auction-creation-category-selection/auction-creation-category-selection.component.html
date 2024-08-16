@@ -1,10 +1,10 @@
 <div class="auction-creation-category-selection">
     <input
+        #filterInput
         pInputText
         type="text"
         [placeholder]="placeholder | oneCharUpper"
-        [formControl]="filterControl"
-        (blur)="onInputBlur()"
+        [formControl]="control"
     />
 
     @if (interacted) {

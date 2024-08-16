@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import {
     ControlContainer,
     FormControl,
@@ -7,7 +18,7 @@ import {
 import { CategoriesService } from '../../services/categories.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioToggleButtonComponent } from '../radio-toggle-button/radio-toggle-button.component';
-import { debounceTime, filter } from 'rxjs';
+import { debounceTime, filter, fromEvent, map, Subscription, take } from 'rxjs';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 
 @Component({
@@ -22,14 +33,17 @@ import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
     templateUrl: './auction-creation-category-selection.component.html',
     styleUrl: './auction-creation-category-selection.component.scss',
 })
-export class AuctionCreationCategorySelectionComponent implements OnInit {
+export class AuctionCreationCategorySelectionComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    private readonly subscriptions: Subscription[] = [];
     @Input({ required: true }) public controlName!: string;
 
     @Output() public selected = new EventEmitter<void>();
 
-    private control!: FormControl;
+    @ViewChild('filterInput') public filterInput!: ElementRef;
 
-    public filterControl: FormControl = new FormControl<string>('');
+    public control!: FormControl;
 
     public interacted: boolean = false;
 
@@ -42,58 +56,58 @@ export class AuctionCreationCategorySelectionComponent implements OnInit {
     public constructor(
         private readonly controlContainer: ControlContainer,
         private readonly categoriesService: CategoriesService,
+        private readonly changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     public ngOnInit(): void {
         this.setControl();
 
-        this.categoriesService.categories$.subscribe((categories) => {
-            this.macroCategories = Object.keys(categories);
-            this.categories = Object.values(categories)
-                .flat()
-                .map((value, index) => ({ value, index }));
+        this.categoriesService.categories$
+            .pipe(take(1))
+            .subscribe((categories) => {
+                this.macroCategories = Object.keys(categories);
+                this.categories = Object.values(categories)
+                    .flat()
+                    .map((value, index) => ({ value, index }));
 
-            this.placeholder = this.categories
-                .slice(0, 3)
-                .map((category) => category.value)
-                .join(', ')
-                .toLowerCase();
+                this.placeholder = this.categories
+                    .slice(0, 3)
+                    .map((category) => category.value)
+                    .join(', ')
+                    .toLowerCase();
 
-            if (this.control.value) {
-                this.filterControl.setValue(this.control.value);
-                this.interacted = true;
-                this.filterCategories(this.control.value);
-            }
-        });
-
-        this.filterControl.valueChanges
-            .pipe(
-                debounceTime(500),
-                filter((value) => value.length > 1),
-            )
-            .subscribe(this.onFilter.bind(this));
+                if (this.control.value) {
+                    this.interacted = true;
+                    this.control.markAsDirty();
+                    this.filterCategories(this.control.value);
+                }
+            });
     }
 
-    public onInputBlur() {
-        if (!this.filterControl.value) return;
-        const categoriesOptions = this.categories
-            .map((val) => val.value)
-            .concat(this.macroCategories);
-        const categoryIndex = categoriesOptions.findIndex(
-            (category) =>
-                category.toLowerCase() ===
-                this.filterControl.value.toLowerCase(),
+    public ngAfterViewInit(): void {
+        this.subscriptions.push(
+            fromEvent<InputEvent>(this.filterInput.nativeElement, 'input', {
+                passive: true,
+            })
+                .pipe(
+                    debounceTime(500),
+                    map((event) => (event.target as HTMLInputElement).value),
+                    filter((value) => value.length > 1),
+                )
+                .subscribe(this.onFilter.bind(this)),
         );
-        if (categoryIndex !== -1)
-            this.control.setValue(categoriesOptions[categoryIndex]);
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
     private onFilter(value: string): void {
         if (!this.interacted) this.interacted = true;
-        this.control.setValue(null);
         this.control.markAsPristine();
         this.control.markAsUntouched();
         this.filterCategories(value);
+        this.changeDetectorRef.detectChanges();
     }
 
     private filterCategories(value: string): void {

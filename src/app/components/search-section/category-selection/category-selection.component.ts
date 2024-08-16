@@ -79,7 +79,7 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
         private readonly oneCharUpperPipe: OneCharUpperPipe,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.categoriesService.categories$.subscribe((categories) => {
             let macroCategoryIndex = 1;
             const tabs: MenuItem[] = [];

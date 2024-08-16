@@ -4,10 +4,12 @@ import {
     StepperComponent,
 } from '../../components/stepper/stepper.component';
 import {
+    AbstractControl,
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -17,6 +19,10 @@ import { AuctionCreationRulesetSelectionComponent } from '../../components/aucti
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { ButtonModule } from 'primeng/button';
 import { AuctionCreationCategorySelectionComponent } from '../../components/auction-creation-category-selection/auction-creation-category-selection.component';
+import {
+    Categories,
+    CategoriesService,
+} from '../../services/categories.service';
 
 interface auctionCreationForm {
     ruleset: FormControl<AuctionRuleSet | null>;
@@ -40,7 +46,18 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
     @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
-    public activeStep: number = 0;
+    private _activeStep: number = 0;
+
+    public lastReachedStep: number = 0;
+
+    public get activeStep(): number {
+        return this._activeStep;
+    }
+
+    public set activeStep(value: number) {
+        this._activeStep = value;
+        if (value > this.lastReachedStep) this.lastReachedStep = value;
+    }
 
     public form!: FormGroup<auctionCreationForm>;
 
@@ -57,13 +74,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Category',
-            nextCallback: () => {
-                this.automaticNextCategory = false;
-                return this.checkNext(
+            nextCallback: () =>
+                this.checkNext(
                     this.form.controls.category,
                     'Please select a valid category',
-                );
-            },
+                ),
         },
         {
             title: 'Details',
@@ -77,12 +92,13 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     ];
 
     public rulesets: RulesetDescription[] = [];
-
-    private automaticNextCategory: boolean = true;
+    private categories: Categories = {};
+    private lastValidCategory: string | null = null;
 
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly formBuilder: FormBuilder,
+        private readonly categoriesService: CategoriesService,
     ) {}
 
     public ngOnInit(): void {
@@ -90,14 +106,21 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             ruleset: this.formBuilder.control<AuctionRuleSet | null>(null, [
                 Validators.required,
             ]),
-            category: this.formBuilder.control<string | null>(null, [
-                Validators.required,
-            ]),
+            category: this.formBuilder.control<string | null>(null, {
+                validators: [this.validateCategory.bind(this)],
+                updateOn: 'submit',
+            }),
         });
 
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
         });
+
+        this.categoriesService.categories$
+            .pipe(take(1))
+            .subscribe((categories) => {
+                this.categories = categories;
+            });
 
         this.subscriptions.push(
             this.form.valueChanges.subscribe(() => {
@@ -134,9 +157,32 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    public onCategorySelected(): void {
-        if (this.automaticNextCategory) {
-            this.automaticNextCategory = false;
+    private validateCategory(
+        control: AbstractControl<string | null>,
+    ): ValidationErrors | null {
+        if (!control.value) return { required: true };
+        if (control.value === this.lastValidCategory) return null;
+
+        const categories = Object.values(this.categories)
+            .flat()
+            .concat(Object.keys(this.categories));
+
+        const index = categories.findIndex(
+            (category) =>
+                category.toLowerCase() ===
+                this.form.controls.category.value!.toLowerCase(),
+        );
+
+        if (index === -1) return { invalid: true };
+
+        this.lastValidCategory = categories[index];
+        control.setValue(this.lastValidCategory);
+
+        return null;
+    }
+
+    public nextIfFirstTime(step: number): void {
+        if (this.lastReachedStep === step) {
             this.next();
         }
     }
