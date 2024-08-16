@@ -14,10 +14,17 @@
                     What type of auction do you want to create?
                 </h2>
                 <dd24-auction-creation-ruleset-selection
-                    [form]="form"
                     controlName="ruleset"
                     [rulesets]="rulesets"
-                ></dd24-auction-creation-ruleset-selection>
+                />
+            } @else if (activeStep === 1) {
+                <h2 class="create-auction-step-header">
+                    Choose a category for your auction
+                </h2>
+                <dd24-auction-creation-category-selection
+                    controlName="category"
+                    (selected)="onCategorySelected()"
+                />
             }
             <div class="spacer"></div>
             <p class="error">{{ error }}</p>

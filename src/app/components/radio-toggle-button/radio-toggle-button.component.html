@@ -5,18 +5,12 @@
     tabindex="0"
     (keypress)="stopPropagation($event)"
 >
-    <!-- <div [formGroup="form" [style]="{ display: 'none' }">
-        <p-radioButton
-            [value]="value"
-            [formControlName]="controlName"
-        ></p-radioButton>
-    </div> -->
     <p-toggleButton
-        [(ngModel)]="checked"
+        [(ngModel)]="isChecked"
         [onLabel]="checkedLabel || label"
         [offLabel]="uncheckedLabel || label"
-        (onChange)="onChange($event)"
-        [disabled]="checked"
+        [disabled]="isChecked"
         [style]="buttonStyle"
+        (onChange)="onChange($event)"
     ></p-toggleButton>
 </div>

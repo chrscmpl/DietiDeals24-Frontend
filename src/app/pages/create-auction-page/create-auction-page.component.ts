@@ -16,6 +16,7 @@ import { RulesetDescription } from '../../models/ruleset-description.model';
 import { AuctionCreationRulesetSelectionComponent } from '../../components/auction-creation-ruleset-selection/auction-creation-ruleset-selection.component';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { ButtonModule } from 'primeng/button';
+import { AuctionCreationCategorySelectionComponent } from '../../components/auction-creation-category-selection/auction-creation-category-selection.component';
 
 interface auctionCreationForm {
     ruleset: FormControl<AuctionRuleSet | null>;
@@ -30,6 +31,7 @@ interface auctionCreationForm {
         ReactiveFormsModule,
         ButtonModule,
         AuctionCreationRulesetSelectionComponent,
+        AuctionCreationCategorySelectionComponent,
     ],
     templateUrl: './create-auction-page.component.html',
     styleUrl: './create-auction-page.component.scss',
@@ -47,10 +49,21 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public steps: Step[] = [
         {
             title: 'Type',
-            nextCallback: this.onNextRuleset.bind(this),
+            nextCallback: () =>
+                this.checkNext(
+                    this.form.controls.ruleset,
+                    'Please select a ruleset',
+                ),
         },
         {
             title: 'Category',
+            nextCallback: () => {
+                this.automaticNextCategory = false;
+                return this.checkNext(
+                    this.form.controls.category,
+                    'Please select a valid category',
+                );
+            },
         },
         {
             title: 'Details',
@@ -64,6 +77,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     ];
 
     public rulesets: RulesetDescription[] = [];
+
+    private automaticNextCategory: boolean = true;
 
     public constructor(
         private readonly route: ActivatedRoute,
@@ -90,8 +105,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             }),
         );
 
-        this.nextOnFirstChange(this.form.controls.ruleset);
-        this.nextOnFirstChange(this.form.controls.category);
+        this.onFirstChange(this.form.controls.ruleset, this.next.bind(this));
     }
 
     public ngOnDestroy(): void {
@@ -102,22 +116,28 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.stepper.nextStep();
     }
 
-    private onNextRuleset(): boolean {
-        const rulesetControl = this.form.get('ruleset');
-        if (rulesetControl?.valid) return true;
-        rulesetControl!.markAsDirty();
-        this.error = 'Please select a ruleset';
+    private checkNext(control: FormControl, error: string): boolean {
+        if (control.valid) return true;
+        control.markAsDirty();
+        this.error = error;
         return false;
     }
 
-    private nextOnFirstChange(control: FormControl): void {
+    private onFirstChange(control: FormControl, cb: () => unknown): void {
         this.subscriptions.push(
             control.valueChanges
                 .pipe(
                     filter(() => control.valid),
                     take(1),
                 )
-                .subscribe(this.next.bind(this)),
+                .subscribe(cb),
         );
+    }
+
+    public onCategorySelected(): void {
+        if (this.automaticNextCategory) {
+            this.automaticNextCategory = false;
+            this.next();
+        }
     }
 }

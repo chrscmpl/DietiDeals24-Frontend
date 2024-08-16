@@ -1,1 +1,30 @@
-<p>auction-creation-category-selection works!</p>
+<div class="auction-creation-category-selection">
+    <input
+        pInputText
+        type="text"
+        [placeholder]="placeholder | oneCharUpper"
+        [formControl]="filterControl"
+        (blur)="onInputBlur()"
+    />
+
+    @if (interacted) {
+        <div class="category-btns-container">
+            @for (category of filteredCategories; track category.index) {
+                <dd24-radio-toggle-button
+                    [value]="category.value"
+                    [label]="category.value | oneCharUpper"
+                    [controlName]="controlName"
+                    (checked)="emitSelected()"
+                ></dd24-radio-toggle-button>
+            }
+            @for (macroCategory of macroCategories; track $index) {
+                <dd24-radio-toggle-button
+                    [value]="macroCategory"
+                    [label]="'Other (' + (macroCategory | oneCharUpper) + ')'"
+                    [controlName]="controlName"
+                    (checked)="emitSelected()"
+                ></dd24-radio-toggle-button>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,9 @@
+@use "layouts";
+
+.auction-creation-category-selection {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+}
+
+.category-btns-container {
+    @include layouts.flex(row, start, center, 2ch, wrap);
+}

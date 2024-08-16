@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
 import { AuctionKind } from '../../enums/auction-kind.enum';
 import { utils } from '../../helpers/utils';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RadioToggleButtonComponent } from '../radio-toggle-button/radio-toggle-button.component';
@@ -27,9 +27,7 @@ import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
     styleUrl: './auction-creation-ruleset-selection.component.scss',
 })
 export class AuctionCreationRulesetSelectionComponent {
-    @Input({ required: true }) public form!: FormGroup;
     @Input({ required: true }) public controlName!: string;
-
     @Input({ required: true }) public set rulesets(
         value: RulesetDescription[],
     ) {
