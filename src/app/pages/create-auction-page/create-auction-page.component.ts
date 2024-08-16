@@ -23,6 +23,7 @@ import {
     Categories,
     CategoriesService,
 } from '../../services/categories.service';
+import { WindowService } from '../../services/window.service';
 
 interface auctionCreationForm {
     ruleset: FormControl<AuctionRuleSet | null>;
@@ -99,9 +100,16 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         private readonly route: ActivatedRoute,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
+        private readonly windowService: WindowService,
     ) {}
 
     public ngOnInit(): void {
+        this.subscriptions.push(
+            this.windowService.isMobile$.subscribe((isMobile) =>
+                this.windowService.setUIvisibility(!isMobile),
+            ),
+        );
+
         this.form = this.formBuilder.group({
             ruleset: this.formBuilder.control<AuctionRuleSet | null>(null, [
                 Validators.required,

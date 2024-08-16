@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 .auction-creation-category-selection {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
@@ -6,4 +7,10 @@
 
 .category-btns-container {
     @include layouts.flex(row, start, center, 2ch, wrap);
+
+    @include viewports.mobile {
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+    }
 }

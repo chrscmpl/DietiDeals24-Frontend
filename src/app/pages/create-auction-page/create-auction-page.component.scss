@@ -25,6 +25,10 @@
     @include layouts.flex(column, start, stretch);
     padding: 0 3rem;
     flex: 1;
+
+    @include viewports.mobile {
+        padding: 0;
+    }
 }
 
 .spacer {
@@ -48,4 +52,9 @@
     font-weight: var(--font-weight-regular);
     line-height: var(--line-height-large);
     margin-bottom: 1rem;
+
+    @include viewports.mobile {
+        padding: 0 3rem;
+        text-align: center;
+    }
 }

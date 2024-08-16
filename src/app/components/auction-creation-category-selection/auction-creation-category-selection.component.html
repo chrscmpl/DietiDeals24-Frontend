@@ -11,6 +11,7 @@
         <div class="category-btns-container">
             @for (category of filteredCategories; track category.index) {
                 <dd24-radio-toggle-button
+                    class="category-btn"
                     [value]="category.value"
                     [label]="category.value | oneCharUpper"
                     [controlName]="controlName"
@@ -19,6 +20,7 @@
             }
             @for (macroCategory of macroCategories; track $index) {
                 <dd24-radio-toggle-button
+                    class="category-btn"
                     [value]="macroCategory"
                     [label]="'Other (' + (macroCategory | oneCharUpper) + ')'"
                     [controlName]="controlName"
