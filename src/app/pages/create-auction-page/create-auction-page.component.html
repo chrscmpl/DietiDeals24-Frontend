@@ -25,6 +25,41 @@
                     controlName="category"
                     (selected)="nextIfFirstTime(1)"
                 />
+            } @else if (activeStep === 2) {
+                <div class="details-inputs" formGroupName="details">
+                    <div class="details-input-wrapper">
+                        <label class="details-input-label" for="title"
+                            >Title*</label
+                        >
+                        <span class="details-input-chars"
+                            >{{
+                                form.controls.details.controls.title.value
+                                    ?.length ?? 0
+                            }}/{{ environment.auctionTitleMaxLength }}</span
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="title"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'a title is required'
+                                }
+                            ]"
+                        >
+                            <input
+                                class="p-fluid"
+                                type="text"
+                                pInputText
+                                formControlName="title"
+                                name="title"
+                                placeholder="Choose a title for your auction"
+                                id="title"
+                                [maxlength]="environment.auctionTitleMaxLength"
+                            />
+                        </dd24-input>
+                    </div>
+                </div>
             }
             <div class="spacer"></div>
             <p class="error">{{ error }}</p>

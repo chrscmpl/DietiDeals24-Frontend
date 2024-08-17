@@ -58,3 +58,21 @@
         text-align: center;
     }
 }
+
+.details-input-wrapper {
+    @include layouts.grid("label chars" auto "input input" 1fr);
+}
+
+.details-input-label {
+    grid-area: label;
+    justify-self: start;
+}
+
+.details-input-chars {
+    grid-area: chars;
+    justify-self: end;
+}
+
+.details-input {
+    grid-area: input;
+}

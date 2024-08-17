@@ -79,4 +79,19 @@ export class CategoriesService {
             )
             .subscribe(cb);
     }
+
+    public getMacroCategory(category: string): string | null {
+        if (!this.categories) return null;
+        return (
+            Object.keys(this.categories).find(
+                (key) =>
+                    category === key ||
+                    this.categories![key].includes(category),
+            ) ?? null
+        );
+    }
+
+    public isProduct(category: string): boolean {
+        return this.getMacroCategory(category)?.toLowerCase() === 'products';
+    }
 }
