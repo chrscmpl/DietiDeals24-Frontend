@@ -21,7 +21,7 @@ export enum NotificationType {
     BID_REJECTED = 'bid-rejected',
 }
 
-export class Notification implements DisplayableNotification {
+export abstract class Notification implements DisplayableNotification {
     private _id: string;
     private _type: NotificationType;
     private _read: boolean;
@@ -57,17 +57,11 @@ export class Notification implements DisplayableNotification {
         return this._auction;
     }
 
-    public get heading(): string {
-        return '';
-    }
+    public abstract get heading(): string;
 
-    public get message(): string {
-        return '';
-    }
+    public abstract get message(): string;
 
-    public get link(): routerLinkType {
-        return [];
-    }
+    public abstract get link(): routerLinkType;
 }
 
 class AuctionOverNotification extends Notification {
@@ -170,7 +164,7 @@ class WinningBidNotification extends Notification {
     }
 
     public override get message(): string {
-        return `Your bid of CURRENCY{${this.auction?.lastBid}|${this.auction?.currency}} won`;
+        return `Your bid${this.auction?.winningBid === null || !this.auction?.currency ? '' : ` of CURRENCY{${this.auction?.winningBid}|${this.auction?.currency}}`} won`;
     }
 
     public override get link(): routerLinkType {
@@ -188,7 +182,7 @@ class BidRejectedNotification extends Notification {
     }
 
     public override get message(): string {
-        return `Your bid of CURRENCY{${this.auction?.lastBid}|${this.auction?.currency}} has been rejected`;
+        return `Your bid${this.auction?.winningBid === null || !this.auction?.currency ? '' : ` of CURRENCY{${this.auction?.winningBid}|${this.auction?.currency}}`} has been rejected`;
     }
 
     public override get link(): routerLinkType {

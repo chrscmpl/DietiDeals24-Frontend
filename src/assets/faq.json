@@ -24,18 +24,9 @@
         "answer": "Users can view at any time the current state of their active bids and auctions in their personal page. Note that in case of an auction conclusion, the auction creator is notified, and that bidders are notified in case they lose an auction, if the auction they participated in is ended prematurely, or in case they win and their bid is accepted or rejected by the auction creator. Notifications are stored and visible by clicking on the specific icon on top of the search bar."
     },
     {
-        "question": "What is a reverse auction?",
-        "answer": "A reverse auction is a type of auction in which a user specifies their interest in a given product or service (specifying a maximum starting price) and other users can make a sell proposal. Sellers compete downwards with each other trying to secure the deal bidding the lowest and therefore more convenient price.",
-        "fragment": "reverse-auction"
-    },
-    {
-        "question": "What is a silent auction?",
-        "answer": "A silent auction is a type of auction in which a user announces their desire to sell a given product or service (specifying a minimum price) and other users can make an offer visible only to the seller. Every buyer only sees his own offer and therefore the offer itself cannot be influenced by anything but the price the buyer is inclined to pay for the given item.",
-        "fragment": "silent-auction"
-    },
-    {
         "question": "Can I make more than one bid for a reverse auction?",
-        "answer": "In a reverse auction users compete with each other for who will be able to offer the lowest price, it is therefore common for the same user to make more than one bid in case the previous is surpassed by another. An user cannot directly override his own bid with a better one."
+        "answer": "In a reverse auction users compete with each other for who will be able to offer the lowest price, it is therefore common for the same user to make more than one bid in case the previous is surpassed by another. An user cannot directly override his own bid with a better one.",
+        "insertRulesets": true
     },
     {
         "question": "Can I make more than one bid in a silent auction?",

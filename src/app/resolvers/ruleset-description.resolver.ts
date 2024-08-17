@@ -14,17 +14,7 @@ export class RulesetDescriptionResolver
     public constructor(private readonly assets: AssetsService) {}
 
     public resolve(): Observable<RulesetDescription[]> {
-        return this.assets.getJsonArray('faq.json').pipe(
-            map(
-                (faqs: FAQ[]) =>
-                    faqs
-                        .filter((faq) => faq.fragment?.endsWith('auction'))
-                        .map((faq) => ({
-                            ruleset: faq.fragment!.replace('-auction', ''),
-                            description: faq.answer,
-                        })) as RulesetDescription[],
-            ),
-        );
+        return this.assets.getJsonArray('rulesets.json');
     }
 
     public static asResolveFn(): ResolveFn<RulesetDescription[]> {

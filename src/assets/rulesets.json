@@ -1,0 +1,10 @@
+[
+    {
+        "ruleset": "reverse",
+        "description": "A reverse auction is a type of auction in which a user specifies their interest in a given product or service (specifying a maximum starting price) and other users can make a sell proposal. Sellers compete downwards with each other trying to secure the deal bidding the lowest and therefore more convenient price."
+    },
+    {
+        "ruleset": "silent",
+        "description": "A silent auction is a type of auction in which a user announces their desire to sell a given product or service (specifying a minimum price) and other users can make an offer visible only to the seller. Every buyer only sees his own offer and therefore the offer itself cannot be influenced by anything but the price the buyer is inclined to pay for the given item."
+    }
+]
