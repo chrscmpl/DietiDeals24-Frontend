@@ -48,7 +48,7 @@
                             ]"
                         >
                             <input
-                                class="p-fluid"
+                                class="p-fluid details-input-input"
                                 type="text"
                                 pInputText
                                 formControlName="title"
@@ -57,6 +57,66 @@
                                 id="title"
                                 [maxlength]="environment.auctionTitleMaxLength"
                             />
+                        </dd24-input>
+                    </div>
+                    @if (isProduct) {
+                        <div class="details-input-wrapper">
+                            <label class="details-input-label" for="conditions"
+                                >Conditions*</label
+                            >
+
+                            <dd24-input
+                                class="details-input"
+                                controlName="conditions"
+                                [errorMessages]="[
+                                    {
+                                        validation: 'required',
+                                        message:
+                                            'product conditions are required'
+                                    }
+                                ]"
+                            >
+                                <p-dropdown
+                                    class="p-fluid"
+                                    formControlName="conditions"
+                                    name="conditions"
+                                    placeholder="What conditions is the product in?"
+                                    inputId="conditions"
+                                    [options]="conditionsOptions"
+                                />
+                            </dd24-input>
+                        </div>
+                    }
+                    <div class="details-input-wrapper">
+                        <label class="details-input-label" for="description"
+                            >Description</label
+                        >
+                        <span class="details-input-chars"
+                            >{{
+                                form.controls.details.controls.description.value
+                                    ?.length ?? 0
+                            }}/{{
+                                environment.auctionDescriptionMaxLength
+                            }}</span
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="description"
+                        >
+                            <textarea
+                                pInputTextarea
+                                class="p-fluid details-input-input"
+                                type="text"
+                                pInputText
+                                formControlName="description"
+                                name="description"
+                                placeholder="Write a captivating description and list all relevant details"
+                                id="description"
+                                [maxlength]="
+                                    environment.auctionDescriptionMaxLength
+                                "
+                                autoResize="true"
+                            ></textarea>
                         </dd24-input>
                     </div>
                 </div>

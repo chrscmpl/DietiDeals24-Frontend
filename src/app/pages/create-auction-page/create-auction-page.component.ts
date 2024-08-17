@@ -30,6 +30,10 @@ import { InputComponent } from '../../components/input/input.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { reactiveFormsUtils } from '../../helpers/reactive-forms-utils';
 import { environment } from '../../../environments/environment';
+import { ProductConditions } from '../../enums/product-conditions.enum';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 interface auctionCreationDetailsForm {
     title: FormControl<string | null>;
@@ -58,6 +62,9 @@ interface auctionCreationForm {
         AuctionCreationCategorySelectionComponent,
         InputComponent,
         InputTextModule,
+        AutoCompleteModule,
+        DropdownModule,
+        InputTextareaModule,
     ],
     templateUrl: './create-auction-page.component.html',
     styleUrl: './create-auction-page.component.scss',
@@ -120,9 +127,10 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public rulesets: RulesetDescription[] = [];
     private categories: Categories = {};
     private lastValidCategory: string | null = null;
+    public conditionsOptions: string[] = Object.values(ProductConditions);
 
-    private isSellingAuction: boolean = false;
-    private isProduct: boolean = false;
+    public isSellingAuction: boolean = false;
+    public isProduct: boolean = false;
 
     public constructor(
         private readonly route: ActivatedRoute,
@@ -177,7 +185,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                     validators: [Validators.required],
                 }),
                 conditions: this.formBuilder.control<string | null>(null, {
-                    validators: [Validators.required],
+                    validators: [this.validateConditions.bind(this)],
                 }),
                 description: this.formBuilder.control<string | null>(null),
                 country: this.formBuilder.control<string | null>(null, {
@@ -225,6 +233,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.isProduct = this.categoriesService.isProduct(
             this.form.controls.category.value!,
         );
+        if (!this.isProduct)
+            this.form.controls.details.controls.conditions.setValue(null);
         this.form.controls.details.markAsPristine();
     }
 
@@ -261,6 +271,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         control.setValue(this.lastValidCategory);
 
         return null;
+    }
+
+    private validateConditions(
+        control: AbstractControl<string | null>,
+    ): ValidationErrors | null {
+        return !this.isProduct || control.value ? null : { required: true };
     }
 
     public nextIfFirstTime(step: number): void {

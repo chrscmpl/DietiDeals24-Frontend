@@ -59,6 +59,10 @@
     }
 }
 
+.details-inputs {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+}
+
 .details-input-wrapper {
     @include layouts.grid("label chars" auto "input input" 1fr);
 }
@@ -76,3 +80,9 @@
 .details-input {
     grid-area: input;
 }
+
+// .details-input-input,
+// .details-input-label,
+// .details-input-chars {
+//     font-size: var(--font-size-large);
+// }
