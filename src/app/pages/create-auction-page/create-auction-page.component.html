@@ -59,7 +59,7 @@
                             />
                         </dd24-input>
                     </div>
-                    @if (isProduct) {
+                    @if (auctioneerService.isAuctionCreationCategoryAProduct) {
                         <div class="details-input-wrapper">
                             <label class="details-input-label" for="conditions"
                                 >Conditions*</label
@@ -304,7 +304,9 @@
                             <span
                                 class="auction-preview-details-info-secondary"
                             >
-                                @if (isProduct) {
+                                @if (
+                                    auctioneerService.isAuctionCreationCategoryAProduct
+                                ) {
                                     <span
                                         >{{
                                             form.controls.details.controls

@@ -12,24 +12,17 @@ import {
 } from '../../components/stepper/stepper.component';
 import {
     AbstractControl,
-    FormBuilder,
     FormControl,
-    FormGroup,
     ReactiveFormsModule,
-    ValidationErrors,
-    Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Subscription, take } from 'rxjs';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { AuctionCreationRulesetSelectionComponent } from '../../components/auction-creation-ruleset-selection/auction-creation-ruleset-selection.component';
-import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
+
 import { ButtonModule } from 'primeng/button';
 import { AuctionCreationCategorySelectionComponent } from '../../components/auction-creation-category-selection/auction-creation-category-selection.component';
-import {
-    Categories,
-    CategoriesService,
-} from '../../services/categories.service';
+import { CategoriesService } from '../../services/categories.service';
 import { WindowService } from '../../services/window.service';
 import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
 import { AuctionKind } from '../../enums/auction-kind.enum';
@@ -53,20 +46,11 @@ import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.p
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
 import { AuctionRulesetInformationPipe } from '../../pipes/auction-ruleset-information.pipe';
 import { CalendarModule } from 'primeng/calendar';
-import { ToReactiveForm } from '../../typeUtils/ToForm';
-import { AuctionCreationData } from '../../models/auction-creation-data.model';
 import { DividerModule } from 'primeng/divider';
 import { AuctionRuleSetLinkComponent } from '../../components/auction-ruleset-link/auction-ruleset-link.component';
 import { TimerComponent } from '../../components/timer/timer.component';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
-
-type auctionCreationDetailsForm = ToReactiveForm<
-    AuctionCreationData['details']
->;
-
-type auctionCreationForm = ToReactiveForm<
-    Omit<AuctionCreationData, 'details'>
-> & { details: FormGroup<auctionCreationDetailsForm> };
+import { AuctioneerService } from '../../services/auctioneer.service';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -118,7 +102,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         if (value > this.lastReachedStep) this.lastReachedStep = value;
     }
 
-    public form!: FormGroup<auctionCreationForm>;
+    public form = this.auctioneerService.auctionCreationForm;
 
     public error: string = '';
 
@@ -143,9 +127,15 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Details',
+            // nextCallback: () =>
+            //     this.checkNext(
+            //         this.form.controls.details,
+            //         '',
+            //         this.onNextDetails.bind(this),
+            //     ),
             nextCallback: () =>
                 this.checkNext(
-                    this.form.controls.details,
+                    this.form.controls.category,
                     '',
                     this.onNextDetails.bind(this),
                 ),
@@ -159,13 +149,10 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     ];
 
     public rulesets: RulesetDescription[] = [];
-    private categories: Categories = {};
-    private lastValidCategory: string | null = null;
     public conditionsOptions: string[] = Object.values(ProductConditions);
 
     public isSellingAuction: boolean = false;
     public isMacroCategory: boolean = false;
-    public isProduct: boolean = false;
 
     public filteredCountries: Country[] = [];
 
@@ -185,7 +172,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
-        private readonly formBuilder: FormBuilder,
+        public readonly auctioneerService: AuctioneerService,
         private readonly categoriesService: CategoriesService,
         public readonly windowService: WindowService,
         private readonly locationsService: GeographicalLocationsService,
@@ -193,24 +180,29 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
+        this.advanceUntilValid([
+            this.form.controls.ruleset,
+            this.form.controls.category,
+            this.form.controls.details,
+            this.form.controls.pictures,
+        ]);
+
         this.subscriptions.push(
             this.windowService.isMobile$.subscribe((isMobile) =>
                 this.windowService.setUIvisibility(!isMobile),
             ),
         );
 
-        this.initForm();
+        this.subscriptions.push(
+            this.form.controls.details.controls.country.valueChanges.subscribe(
+                () => this.getCities(),
+            ),
+        );
 
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
             this.currencyCodes = data['currencyCodes'];
         });
-
-        this.categoriesService.categories$
-            .pipe(take(1))
-            .subscribe((categories) => {
-                this.categories = categories;
-            });
 
         this.subscriptions.push(
             this.form.valueChanges.subscribe(() => {
@@ -225,67 +217,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
-    }
-
-    private initForm(): void {
-        this.form = this.formBuilder.group({
-            ruleset: this.formBuilder.control<AuctionRuleSet | null>(null, [
-                Validators.required,
-            ]),
-            category: this.formBuilder.control<string | null>(null, {
-                validators: [this.validateCategory.bind(this)],
-                updateOn: 'submit',
-            }),
-            details: this.formBuilder.group<auctionCreationDetailsForm>({
-                title: this.formBuilder.control<string | null>(null, {
-                    validators: [Validators.required],
-                }),
-                conditions: this.formBuilder.control<string | null>(null, {
-                    validators: [this.validateConditions.bind(this)],
-                }),
-                description: this.formBuilder.control<string | null>(null),
-                country: this.formBuilder.control<string | null>(null, {
-                    validators: [Validators.required],
-                }),
-                city: this.formBuilder.control<string | null>(null, {
-                    validators: [Validators.required],
-                }),
-                startingBid: this.formBuilder.control<number | null>(null, {
-                    validators: [Validators.required],
-                }),
-                currency: this.formBuilder.control<string | null>(
-                    // getLocaleCurrencyCode(this.locale) ??
-                    'EUR',
-                    {
-                        validators: [Validators.required],
-                    },
-                ),
-                endTime: this.formBuilder.control<Date | null>(null, {
-                    validators: [Validators.required],
-                }),
-            }),
-            pictures: this.formBuilder.control<string[] | null>([]),
-        });
-
-        this.form.controls.details.controls.city.disable();
-
-        this.subscriptions.push(
-            this.form.controls.details.controls.country.valueChanges.subscribe(
-                (v) => {
-                    const cityControl =
-                        this.form.controls.details.controls.city;
-
-                    cityControl.setValue(null);
-                    cityControl.markAsUntouched();
-                    cityControl.markAsPristine();
-
-                    if (v) {
-                        cityControl.enable();
-                        this.getCities();
-                    } else cityControl.disable();
-                },
-            ),
-        );
     }
 
     public showPreview(): void {
@@ -309,6 +240,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public next(): void {
         this.stepper.nextStep();
+    }
+
+    private advanceUntilValid(controls: AbstractControl[]): void {
+        let i = 0;
+        while (i < controls.length && controls[i].valid) i++;
+        this.activeStep = i;
     }
 
     private checkNext(
@@ -335,10 +272,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private onNextCategory() {
         const category: string = this.form.controls.category.value!;
 
-        this.isProduct = this.categoriesService.isProduct(category);
+        this.auctioneerService.isAuctionCreationCategoryAProduct =
+            this.categoriesService.isProduct(category);
         this.isMacroCategory = this.categoriesService.isMacroCategory(category);
 
-        if (!this.isProduct)
+        if (!this.auctioneerService.isAuctionCreationCategoryAProduct)
             this.form.controls.details.controls.conditions.setValue(null);
 
         reactiveFormsUtils.markAllAsPristine(this.form.controls.details);
@@ -364,36 +302,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 )
                 .subscribe(cb),
         );
-    }
-
-    private validateCategory(
-        control: AbstractControl<string | null>,
-    ): ValidationErrors | null {
-        if (!control.value) return { required: true };
-        if (control.value === this.lastValidCategory) return null;
-
-        const categories = Object.values(this.categories)
-            .flat()
-            .concat(Object.keys(this.categories));
-
-        const index = categories.findIndex(
-            (category) =>
-                category.toLowerCase() ===
-                this.form.controls.category.value!.toLowerCase(),
-        );
-
-        if (index === -1) return { invalid: true };
-
-        this.lastValidCategory = categories[index];
-        control.setValue(this.lastValidCategory);
-
-        return null;
-    }
-
-    private validateConditions(
-        control: AbstractControl<string | null>,
-    ): ValidationErrors | null {
-        return !this.isProduct || control.value ? null : { required: true };
     }
 
     public nextIfFirstTime(step: number): void {
