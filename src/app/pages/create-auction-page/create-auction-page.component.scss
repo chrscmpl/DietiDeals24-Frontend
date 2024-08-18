@@ -81,6 +81,20 @@
     grid-area: input;
 }
 
+.currency-dropdown {
+    width: fit-content;
+    flex: 0;
+}
+
+:host ::ng-deep {
+    .currency-dropdown {
+        .p-dropdown-trigger {
+            padding: 0.75rem;
+            width: fit-content;
+        }
+    }
+}
+
 // .details-input-input,
 // .details-input-label,
 // .details-input-chars {

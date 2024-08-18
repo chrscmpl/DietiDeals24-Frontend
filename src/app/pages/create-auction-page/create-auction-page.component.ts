@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    Inject,
+    LOCALE_ID,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import {
     Step,
     StepperComponent,
@@ -31,9 +38,21 @@ import { InputTextModule } from 'primeng/inputtext';
 import { reactiveFormsUtils } from '../../helpers/reactive-forms-utils';
 import { environment } from '../../../environments/environment';
 import { ProductConditions } from '../../enums/product-conditions.enum';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import {
+    AutoCompleteCompleteEvent,
+    AutoCompleteModule,
+} from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { Country } from '../../models/location.model';
+import { GeographicalLocationsService } from '../../services/locations.service';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { AsyncPipe, getLocaleCurrencyCode } from '@angular/common';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
+import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
+import { AuctionRulesetInformationPipe } from '../../pipes/auction-ruleset-information.pipe';
 
 interface auctionCreationDetailsForm {
     title: FormControl<string | null>;
@@ -42,6 +61,7 @@ interface auctionCreationDetailsForm {
     country: FormControl<string | null>;
     city: FormControl<string | null>;
     startingBid: FormControl<number | null>;
+    currency: FormControl<string | null>;
     endDate: FormControl<string | null>;
 }
 
@@ -65,6 +85,12 @@ interface auctionCreationForm {
         AutoCompleteModule,
         DropdownModule,
         InputTextareaModule,
+        InputGroupModule,
+        InputNumberModule,
+        CurrencyDecimalDigitsPipe,
+        CurrencySymbolPipe,
+        AuctionRulesetInformationPipe,
+        AsyncPipe,
     ],
     templateUrl: './create-auction-page.component.html',
     styleUrl: './create-auction-page.component.scss',
@@ -132,11 +158,20 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public isSellingAuction: boolean = false;
     public isProduct: boolean = false;
 
+    public filteredCountries: Country[] = [];
+
+    private cities: string[] = [];
+    public filteredCities: string[] = [];
+
+    public currencyCodes: string[] = ['EUR'];
+
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
-        private readonly windowService: WindowService,
+        public readonly windowService: WindowService,
+        private readonly locationsService: GeographicalLocationsService,
+        @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
     public ngOnInit(): void {
@@ -150,6 +185,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
+            this.currencyCodes = data['currencyCodes'];
         });
 
         this.categoriesService.categories$
@@ -163,6 +199,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 if (this.error) this.error = '';
             }),
         );
+
+        this.locationsService.refreshCountries();
 
         this.onFirstChange(this.form.controls.ruleset, this.next.bind(this));
     }
@@ -197,11 +235,38 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 startingBid: this.formBuilder.control<number | null>(null, {
                     validators: [Validators.required],
                 }),
+                currency: this.formBuilder.control<string | null>(
+                    // getLocaleCurrencyCode(this.locale) ??
+                    'EUR',
+                    {
+                        validators: [Validators.required],
+                    },
+                ),
                 endDate: this.formBuilder.control<string | null>(null, {
                     validators: [Validators.required],
                 }),
             }),
         });
+
+        this.form.controls.details.controls.city.disable();
+
+        this.subscriptions.push(
+            this.form.controls.details.controls.country.valueChanges.subscribe(
+                (v) => {
+                    const cityControl =
+                        this.form.controls.details.controls.city;
+
+                    cityControl.setValue(null);
+                    cityControl.markAsUntouched();
+                    cityControl.markAsPristine();
+
+                    if (v) {
+                        cityControl.enable();
+                        this.getCities();
+                    } else cityControl.disable();
+                },
+            ),
+        );
     }
 
     public next(): void {
@@ -235,7 +300,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         );
         if (!this.isProduct)
             this.form.controls.details.controls.conditions.setValue(null);
-        this.form.controls.details.markAsPristine();
+        reactiveFormsUtils.markAllAsPristine(this.form.controls.details);
     }
 
     private onFirstChange(control: FormControl, cb: () => unknown): void {
@@ -283,5 +348,34 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         if (this.lastReachedStep === step) {
             this.next();
         }
+    }
+
+    private getCities(): void {
+        const countryControl = this.form.controls.details.controls.country;
+        if (countryControl.valid && countryControl.value) {
+            this.locationsService
+                .getCities(countryControl.value)
+                .subscribe((cities) => {
+                    this.cities = cities;
+                });
+        }
+    }
+
+    public completeCountries(event: AutoCompleteCompleteEvent): void {
+        this.filteredCountries =
+            this.locationsService.countries?.filter((country) =>
+                country.name.toLowerCase().includes(event.query.toLowerCase()),
+            ) ?? [];
+    }
+
+    public completeCities(event: AutoCompleteCompleteEvent): void {
+        if (event.query.length < 2) {
+            if (this.filteredCities.length > 2) this.filteredCities = [];
+            return;
+        }
+
+        this.filteredCities = this.cities.filter((city) =>
+            city.toLowerCase().includes(event.query.toLowerCase()),
+        );
     }
 }

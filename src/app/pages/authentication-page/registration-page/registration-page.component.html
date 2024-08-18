@@ -124,13 +124,19 @@
                             [minLength]="2"
                             (completeMethod)="completeCountries($event)"
                             inputId="country"
-                            (onBlur)="clearCity()"
                         >
                         </p-autoComplete>
                     </dd24-input>
                 </div>
                 <div class="input">
-                    <label for="city">City</label>
+                    <label
+                        for="city"
+                        [class.p-disabled]="
+                            registrationForm.controls.userData.controls.city
+                                .disabled
+                        "
+                        >City</label
+                    >
                     <dd24-input
                         controlName="city"
                         [errorMessages]="[
@@ -155,7 +161,6 @@
                             [suggestions]="filteredCities"
                             [forceSelection]="true"
                             (completeMethod)="completeCities($event)"
-                            (onFocus)="getCities()"
                             inputId="city"
                         ></p-autoComplete>
                     </dd24-input>

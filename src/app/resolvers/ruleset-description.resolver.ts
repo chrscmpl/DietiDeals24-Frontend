@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Resolve, ResolveFn } from '@angular/router';
 import { AssetsService } from '../services/assets.service';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { RulesetDescription } from '../models/ruleset-description.model';
-import { FAQ } from '../models/faq.model';
 
 @Injectable({
     providedIn: 'root',

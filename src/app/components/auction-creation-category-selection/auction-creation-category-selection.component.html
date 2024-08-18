@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/no-autofocus -->
 <div class="auction-creation-category-selection">
     <input
         #filterInput
@@ -5,6 +6,7 @@
         type="text"
         [placeholder]="placeholder | oneCharUpper"
         [formControl]="control"
+        autofocus
     />
 
     @if (interacted) {

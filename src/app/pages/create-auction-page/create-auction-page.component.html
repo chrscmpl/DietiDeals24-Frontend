@@ -119,6 +119,125 @@
                             ></textarea>
                         </dd24-input>
                     </div>
+                    <div class="details-input-wrapper">
+                        <label class="details-input-label" for="country"
+                            >Country*</label
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="country"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'a country is required'
+                                }
+                            ]"
+                        >
+                            <p-autoComplete
+                                class="p-fluid details-input-input"
+                                formControlName="country"
+                                name="country"
+                                emptyMessage="No countries found"
+                                [suggestions]="filteredCountries"
+                                optionLabel="name"
+                                optionValue="code"
+                                [forceSelection]="true"
+                                [minLength]="2"
+                                (completeMethod)="completeCountries($event)"
+                                inputId="country"
+                            >
+                            </p-autoComplete>
+                        </dd24-input>
+                    </div>
+                    <div class="details-input-wrapper">
+                        <label
+                            class="details-input-label"
+                            for="city"
+                            [class.p-disabled]="
+                                form.controls.details.controls.city.disabled
+                            "
+                            >City*</label
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="city"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'a city is required'
+                                }
+                            ]"
+                        >
+                            <p-autoComplete
+                                class="p-fluid details-input-input"
+                                formControlName="city"
+                                name="city"
+                                emptyMessage="No cities found"
+                                [suggestions]="filteredCities"
+                                [forceSelection]="true"
+                                (completeMethod)="completeCities($event)"
+                                inputId="city"
+                            ></p-autoComplete>
+                        </dd24-input>
+                    </div>
+                    <div class="details-input-wrapper">
+                        <label class="details-input-label" for="startingBid"
+                            >{{
+                                form.controls.ruleset.value ?? ""
+                                    | auctionRulesetInformation: "startingBid"
+                            }}*</label
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="startingBid"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'a starting bid amount is required'
+                                }
+                            ]"
+                        >
+                            <p-inputGroup>
+                                <p-dropdown
+                                    class="currency-dropdown"
+                                    name="currency"
+                                    id="currency"
+                                    formControlName="currency"
+                                    [options]="currencyCodes"
+                                    [style]="{
+                                        width: 'fit-content',
+                                        borderTopRightRadius: 0,
+                                        borderBottomRightRadius: 0
+                                    }"
+                                >
+                                    <ng-template
+                                        pTemplate="selectedItem"
+                                        let-item
+                                    >
+                                        {{ item | currencySymbol }}
+                                    </ng-template>
+                                </p-dropdown>
+                                <p-inputNumber
+                                    formControlName="startingBid"
+                                    class="p-fluid details-input-input"
+                                    name="startingBid"
+                                    id="startingBid"
+                                    min="0"
+                                    maxlength="9"
+                                    showButtons="false"
+                                    [locale]="locale"
+                                    [maxFractionDigits]="
+                                        form.controls.details.controls.currency
+                                            .value ?? '' | currencyDecimalDigits
+                                    "
+                                    [inputStyle]="{
+                                        borderTopLeftRadius: 0,
+                                        borderBottomLeftRadius: 0
+                                    }"
+                                ></p-inputNumber>
+                            </p-inputGroup>
+                        </dd24-input>
+                    </div>
                 </div>
             }
             <div class="spacer"></div>

@@ -45,12 +45,12 @@
                 <p-inputGroup>
                     <p-inputGroupAddon
                         [style]="
-                            (this.windowService.isMobile$ | async)
+                            (windowService.isMobile$ | async)
                                 ? { fontSize: '1.8em' }
                                 : {}
                         "
                     >
-                        {{ currencySymbol }}
+                        {{ auction.currency | currencySymbol }}
                     </p-inputGroupAddon>
                     <p-inputNumber
                         #amountInput

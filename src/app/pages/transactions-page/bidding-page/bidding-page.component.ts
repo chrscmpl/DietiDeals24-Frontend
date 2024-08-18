@@ -23,6 +23,7 @@ import { WindowService } from '../../../services/window.service';
 import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
 import { CurrencyDecimalDigitsPipe } from '../../../pipes/currency-decimal-digits.pipe';
 import { PaymentService } from '../../../services/payment.service';
+import { CurrencySymbolPipe } from '../../../pipes/currency-symbol.pipe';
 
 interface BidForm {
     amount: FormControl<number | null>;
@@ -45,6 +46,7 @@ interface BidForm {
         AsyncPipe,
         AuctionKindPipe,
         CurrencyDecimalDigitsPipe,
+        CurrencySymbolPipe,
     ],
     templateUrl: './bidding-page.component.html',
     styleUrl: './bidding-page.component.scss',
@@ -93,10 +95,5 @@ export class BiddingPageComponent implements OnInit {
             relativeTo: this.route,
             state: { bidAmount: this.bidForm.controls.amount.value },
         });
-    }
-
-    public get currencySymbol(): string {
-        if (!this.auction) return '';
-        return getCurrencySymbol(this.auction?.currency, 'narrow');
     }
 }

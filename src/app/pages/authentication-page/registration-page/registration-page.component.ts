@@ -151,6 +151,8 @@ export class RegistrationPageComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
+        this.initForm();
+
         this.maxBirthdayDate.setFullYear(
             this.maxBirthdayDate.getFullYear() - 18,
         );
@@ -164,6 +166,10 @@ export class RegistrationPageComponent implements OnInit {
                 this.tos = tos;
             });
 
+        this.handleCityControl();
+    }
+
+    private initForm(): void {
         this.registrationForm = this.formBuilder.group<registrationForm>({
             userData: this.formBuilder.group<userDataForm>({
                 name: new FormControl(null, {
@@ -181,12 +187,9 @@ export class RegistrationPageComponent implements OnInit {
                     ],
                     updateOn: 'submit',
                 }),
-                country: new FormControl(null, {
-                    updateOn: 'blur',
-                }),
+                country: new FormControl(null),
                 city: new FormControl(null, {
                     validators: this.validateCity.bind(this),
-                    updateOn: 'blur',
                 }),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
@@ -221,6 +224,26 @@ export class RegistrationPageComponent implements OnInit {
                 }),
             }),
         });
+
+        this.registrationForm.controls.userData.controls.city.disable();
+    }
+
+    private handleCityControl(): void {
+        this.registrationForm.controls.userData.controls.country.valueChanges.subscribe(
+            (v) => {
+                const cityControl =
+                    this.registrationForm.controls.userData.controls.city;
+
+                cityControl.setValue(null);
+                cityControl.markAsUntouched();
+                cityControl.markAsPristine();
+
+                if (v) {
+                    cityControl.enable();
+                    this.getCities();
+                } else cityControl.disable();
+            },
+        );
     }
 
     public next(): void {
@@ -296,16 +319,12 @@ export class RegistrationPageComponent implements OnInit {
         if (event.key === 'Enter') this.onSubmit();
     }
 
-    public getCities(): void {
-        const countryControl = this.registrationForm
-            .get('userData')
-            ?.get('country');
-        if (countryControl?.valid && countryControl?.value) {
+    private getCities(): void {
+        const countryControl =
+            this.registrationForm.controls.userData.controls.country;
+        if (countryControl.valid && countryControl.value) {
             this.locationsService
-                .getCities(
-                    this.registrationForm.get('userData')?.get('country')
-                        ?.value as string,
-                )
+                .getCities(countryControl.value)
                 .subscribe((cities) => {
                     this.cities = cities;
                 });
@@ -327,10 +346,6 @@ export class RegistrationPageComponent implements OnInit {
         this.filteredCities = this.cities.filter((city) =>
             city.toLowerCase().includes(event.query.toLowerCase()),
         );
-    }
-
-    public clearCity(): void {
-        this.registrationForm.get('userData')?.get('city')?.setValue(null);
     }
 
     public setDialogVisibility(e: Event): void {
