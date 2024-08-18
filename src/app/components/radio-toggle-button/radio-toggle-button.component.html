@@ -2,7 +2,7 @@
     class="radio-toggle-button"
     [class.radio-toggle-button-error]="control.invalid && control.dirty"
     (click)="stopPropagation($event)"
-    tabindex="0"
+    tabindex="-1"
     (keypress)="stopPropagation($event)"
 >
     <p-toggleButton

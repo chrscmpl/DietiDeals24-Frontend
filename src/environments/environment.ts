@@ -8,4 +8,5 @@ export const environment = {
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})',
     auctionTitleMaxLength: 100,
     auctionDescriptionMaxLength: 3000,
+    auctionMaxDuration: 30 * 24 * 60 * 60 * 1000,
 };

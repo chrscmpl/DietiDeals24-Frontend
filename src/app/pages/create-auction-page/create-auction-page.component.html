@@ -238,6 +238,51 @@
                             </p-inputGroup>
                         </dd24-input>
                     </div>
+                    <div class="details-input">
+                        <label class="details-input-label" for="endDate"
+                            >End date*</label
+                        >
+                        <dd24-input
+                            class="details-input"
+                            controlName="endDate"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'a end date is required'
+                                },
+                                {
+                                    validation: 'max',
+                                    message:
+                                        'this date is too far in the future'
+                                },
+                                {
+                                    validation: 'min',
+                                    message:
+                                        'the end date cannot be in the past'
+                                },
+                                {
+                                    validation: 'pattern',
+                                    message: 'this is not a valid date'
+                                }
+                            ]"
+                        >
+                            <p-calendar
+                                class="p-fluid details-input-input"
+                                formControlName="endDate"
+                                name="endDate"
+                                [showIcon]="true"
+                                iconDisplay="input"
+                                placeholder="dd/mm/yyyy hh:mm"
+                                dateFormat="dd/mm/yy"
+                                inputId="endDate"
+                                [minDate]="minEndDate"
+                                [maxDate]="maxEndDate"
+                                [defaultDate]="defaultEndDate"
+                                [showTime]="true"
+                                hourFormat="24"
+                            />
+                        </dd24-input>
+                    </div>
                 </div>
             }
             <div class="spacer"></div>

@@ -47,12 +47,12 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Country } from '../../models/location.model';
 import { GeographicalLocationsService } from '../../services/locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { AsyncPipe, getLocaleCurrencyCode } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
 import { AuctionRulesetInformationPipe } from '../../pipes/auction-ruleset-information.pipe';
+import { CalendarModule } from 'primeng/calendar';
 
 interface auctionCreationDetailsForm {
     title: FormControl<string | null>;
@@ -87,6 +87,7 @@ interface auctionCreationForm {
         InputTextareaModule,
         InputGroupModule,
         InputNumberModule,
+        CalendarModule,
         CurrencyDecimalDigitsPipe,
         CurrencySymbolPipe,
         AuctionRulesetInformationPipe,
@@ -164,6 +165,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public filteredCities: string[] = [];
 
     public currencyCodes: string[] = ['EUR'];
+
+    public minEndDate: Date = new Date();
+    public maxEndDate: Date = this.getFutureDate(
+        environment.auctionMaxDuration,
+    );
+    public defaultEndDate: Date = this.getFutureDate(7 * 24 * 60 * 60 * 1000);
 
     public constructor(
         private readonly route: ActivatedRoute,
@@ -377,5 +384,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.filteredCities = this.cities.filter((city) =>
             city.toLowerCase().includes(event.query.toLowerCase()),
         );
+    }
+
+    private getFutureDate(milliseconds: number): Date {
+        const date = new Date();
+        date.setTime(date.getTime() + milliseconds);
+        return date;
     }
 }
