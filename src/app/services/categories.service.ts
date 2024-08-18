@@ -91,6 +91,10 @@ export class CategoriesService {
         );
     }
 
+    public isMacroCategory(category: string): boolean {
+        return Object.keys(this.categories ?? {}).includes(category);
+    }
+
     public isProduct(category: string): boolean {
         return this.getMacroCategory(category)?.toLowerCase() === 'products';
     }

@@ -83,7 +83,13 @@
                         "
                     ></ng-container>
                 </div>
-                <h3 class="auction-category">{{ auction.category }}</h3>
+                <h3 class="auction-category">
+                    {{
+                        isMacroCategory
+                            ? "Other (" + auction.category + ")"
+                            : auction.category
+                    }}
+                </h3>
                 @if (auction.user) {
                     <dd24-user-preview
                         class="auction-user"
@@ -203,14 +209,16 @@
                         ></i>
                     </button>
 
-                    <button
-                        class="auction-details-navbar-btn"
-                        (click)="onShare()"
-                    >
-                        <i
-                            class="auction-details-navbar-icon medium-icon pi pi-share-alt"
-                        ></i>
-                    </button>
+                    @if (!disableShare) {
+                        <button
+                            class="auction-details-navbar-btn"
+                            (click)="onShare()"
+                        >
+                            <i
+                                class="auction-details-navbar-icon medium-icon pi pi-share-alt"
+                            ></i>
+                        </button>
+                    }
                 </nav>
             }
         </div>

@@ -285,7 +285,11 @@
                     </div>
                 </div>
             } @else if (activeStep === 4) {
-                <p-button label="View final result" (onClick)="showPreview()">
+                <p-button
+                    label="View final result"
+                    outlined="true"
+                    (onClick)="showPreview()"
+                >
                 </p-button>
             }
             <div class="spacer"></div>
@@ -293,7 +297,11 @@
             <p-button
                 class="create-auction-submit-btn"
                 type="submit"
-                [label]="activeStep < steps.length - 1 ? 'Next' : 'Create'"
+                [label]="
+                    activeStep < steps.length - 1
+                        ? 'Next'
+                        : 'Create your auction'
+                "
             ></p-button>
         </form>
     </div>

@@ -27,13 +27,13 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
             return throwError(() => new Error('No auction preview data found'));
 
         const auction = auctionBuilder.buildSingle({
+            ...auctionPreviewData.details,
             id: '',
             userId: this.authentication.loggedUser?.id ?? '',
             type: auctionPreviewData.ruleset,
             category: auctionPreviewData.category,
             status: AuctionStatus.active,
             picturesUrls: auctionPreviewData.pictures,
-            ...auctionPreviewData.details,
         });
 
         if (this.authentication.loggedUser)

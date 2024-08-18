@@ -150,6 +150,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public conditionsOptions: string[] = Object.values(ProductConditions);
 
     public isSellingAuction: boolean = false;
+    public isMacroCategory: boolean = false;
     public isProduct: boolean = false;
 
     public filteredCountries: Country[] = [];
@@ -316,11 +317,14 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onNextCategory() {
-        this.isProduct = this.categoriesService.isProduct(
-            this.form.controls.category.value!,
-        );
+        const category: string = this.form.controls.category.value!;
+
+        this.isProduct = this.categoriesService.isProduct(category);
+        this.isMacroCategory = this.categoriesService.isMacroCategory(category);
+
         if (!this.isProduct)
             this.form.controls.details.controls.conditions.setValue(null);
+
         reactiveFormsUtils.markAllAsPristine(this.form.controls.details);
     }
 

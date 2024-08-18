@@ -29,6 +29,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { BidService } from '../../services/bid.service';
 import { AuctionStatus } from '../../enums/auction-status.enum';
 import { NavigationService } from '../../services/navigation.service';
+import { CategoriesService } from '../../services/categories.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -82,6 +83,8 @@ export class AuctionDetailsPageComponent
 
     public disableShare: boolean = false;
 
+    public isMacroCategory: boolean = false;
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -95,12 +98,16 @@ export class AuctionDetailsPageComponent
         private readonly authentication: AuthenticationService,
         private readonly bidService: BidService,
         private readonly navigation: NavigationService,
+        private readonly categoriesService: CategoriesService,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
             this.initCarousel();
+            this.isMacroCategory = this.categoriesService.isMacroCategory(
+                this.auction?.category ?? '',
+            );
         });
 
         this.route.url.pipe(take(1)).subscribe((url) => {
