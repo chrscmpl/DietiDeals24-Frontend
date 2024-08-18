@@ -127,15 +127,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Details',
-            // nextCallback: () =>
-            //     this.checkNext(
-            //         this.form.controls.details,
-            //         '',
-            //         this.onNextDetails.bind(this),
-            //     ),
             nextCallback: () =>
                 this.checkNext(
-                    this.form.controls.category,
+                    this.form.controls.details,
                     '',
                     this.onNextDetails.bind(this),
                 ),
@@ -153,6 +147,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public isSellingAuction: boolean = false;
     public isMacroCategory: boolean = false;
+    public isProduct: boolean = false;
 
     public filteredCountries: Country[] = [];
 
@@ -161,11 +156,13 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public currencyCodes: string[] = ['EUR'];
 
-    public minEndTime: Date = new Date();
+    public minEndTime: Date = this.getFutureDate(
+        environment.auctionMinDuration,
+    );
     public maxEndTime: Date = this.getFutureDate(
         environment.auctionMaxDuration,
     );
-    public defaultEndTime: Date = this.getFutureDate(7 * 24 * 60 * 60 * 1000);
+    public defaultEndTime: Date = this.minEndTime;
 
     public countryInternationalName: string = '';
 
@@ -180,12 +177,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        this.advanceUntilValid([
-            this.form.controls.ruleset,
-            this.form.controls.category,
-            this.form.controls.details,
-            this.form.controls.pictures,
-        ]);
+        this.initPageState();
 
         this.subscriptions.push(
             this.windowService.isMobile$.subscribe((isMobile) =>
@@ -195,7 +187,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.form.controls.details.controls.country.valueChanges.subscribe(
-                () => this.getCities(),
+                (v) => {
+                    if (v) this.getCities();
+                },
             ),
         );
 
@@ -217,6 +211,23 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
+    }
+
+    private initPageState(): void {
+        if (this.form.controls.ruleset.valid) this.onNextRuleset();
+
+        if (this.form.controls.category.valid) this.onNextCategory();
+
+        if (this.form.controls.details.valid) this.onNextDetails();
+
+        if (this.form.controls.details.controls.country.valid) this.getCities();
+
+        this.advanceWhileTrue([
+            this.form.controls.ruleset.valid,
+            this.form.controls.category.valid,
+            this.form.controls.details.valid,
+            !!this.form.controls.pictures.value?.length,
+        ]);
     }
 
     public showPreview(): void {
@@ -242,9 +253,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.stepper.nextStep();
     }
 
-    private advanceUntilValid(controls: AbstractControl[]): void {
+    private advanceWhileTrue(conditions: boolean[]): void {
         let i = 0;
-        while (i < controls.length && controls[i].valid) i++;
+        while (i < conditions.length && conditions[i]) i++;
         this.activeStep = i;
     }
 
@@ -272,11 +283,10 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private onNextCategory() {
         const category: string = this.form.controls.category.value!;
 
-        this.auctioneerService.isAuctionCreationCategoryAProduct =
-            this.categoriesService.isProduct(category);
+        this.isProduct = this.categoriesService.isProduct(category);
         this.isMacroCategory = this.categoriesService.isMacroCategory(category);
 
-        if (!this.auctioneerService.isAuctionCreationCategoryAProduct)
+        if (!this.isProduct)
             this.form.controls.details.controls.conditions.setValue(null);
 
         reactiveFormsUtils.markAllAsPristine(this.form.controls.details);

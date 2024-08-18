@@ -104,14 +104,11 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
+            this.disableShare = !this.auction?.id;
             this.initCarousel();
             this.isMacroCategory = this.categoriesService.isMacroCategory(
                 this.auction?.category ?? '',
             );
-        });
-
-        this.route.url.pipe(take(1)).subscribe((url) => {
-            this.disableShare = url[0].path === 'auction-preview';
         });
 
         this.subscriptions.push(

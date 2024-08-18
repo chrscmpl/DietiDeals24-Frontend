@@ -59,7 +59,7 @@
                             />
                         </dd24-input>
                     </div>
-                    @if (auctioneerService.isAuctionCreationCategoryAProduct) {
+                    @if (isProduct) {
                         <div class="details-input-wrapper">
                             <label class="details-input-label" for="conditions"
                                 >Conditions*</label
@@ -304,9 +304,7 @@
                             <span
                                 class="auction-preview-details-info-secondary"
                             >
-                                @if (
-                                    auctioneerService.isAuctionCreationCategoryAProduct
-                                ) {
+                                @if (isProduct) {
                                     <span
                                         >{{
                                             form.controls.details.controls
@@ -365,8 +363,8 @@
                         <span class="auction-preview-endTime">
                             Ends
                             {{
-                                form.controls.details.controls.endTime.value!.getTime()
-                                    | localDate
+                                form.controls.details.controls.endTime.value?.getTime() ??
+                                    0 | localDate
                             }}
                             (lasts
                             <dd24-timer

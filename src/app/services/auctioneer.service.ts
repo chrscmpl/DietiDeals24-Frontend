@@ -39,7 +39,7 @@ export const OwnActiveAuctionsCacheBuster$ = new Subject<void>();
 export class AuctioneerService {
     private categories!: Categories;
     private lastValidCategory: string | null = null;
-    public isAuctionCreationCategoryAProduct: boolean = false;
+    private isAuctionCreationCategoryAProduct: boolean | null = null;
 
     public readonly auctionCreationForm: FormGroup<auctionCreationForm> =
         this.formBuilder.group<auctionCreationForm>({
@@ -113,6 +113,18 @@ export class AuctioneerService {
                 } else cityControl.disable();
             },
         );
+
+        this.auctionCreationForm.controls.category.valueChanges.subscribe(
+            () => {
+                this.isAuctionCreationCategoryAProduct = null;
+            },
+        );
+    }
+
+    public resetAuctionCreation(): void {
+        this.auctionCreationForm.reset();
+        this.auctionCreationForm.controls.details.controls.city.disable();
+        this.isAuctionCreationCategoryAProduct = null;
     }
 
     private validateCategory(
@@ -141,6 +153,14 @@ export class AuctioneerService {
     private validateConditions(
         control: AbstractControl<string | null>,
     ): ValidationErrors | null {
+        if (this.isAuctionCreationCategoryAProduct === null)
+            this.isAuctionCreationCategoryAProduct = this.auctionCreationForm
+                ?.controls?.category?.value
+                ? this.categoriesService.isProduct(
+                      this.auctionCreationForm.controls.category.value,
+                  )
+                : false;
+
         return !this.isAuctionCreationCategoryAProduct || control.value
             ? null
             : { required: true };
