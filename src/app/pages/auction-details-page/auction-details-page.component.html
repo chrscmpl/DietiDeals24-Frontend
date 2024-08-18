@@ -128,13 +128,15 @@
                         severity="secondary"
                         (click)="onClose()"
                     ></p-button>
-                    <p-button
-                        class="overlay-btn share-btn"
-                        icon="pi pi-share-alt"
-                        [rounded]="true"
-                        severity="secondary"
-                        (click)="onShare()"
-                    ></p-button>
+                    @if (!disableShare) {
+                        <p-button
+                            class="overlay-btn share-btn"
+                            icon="pi pi-share-alt"
+                            [rounded]="true"
+                            severity="secondary"
+                            (click)="onShare()"
+                        ></p-button>
+                    }
                 }
             </div>
 

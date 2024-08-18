@@ -24,6 +24,7 @@ import { AuctionConclusionPageComponent } from './pages/transactions-page/auctio
 import { FAQResolver } from './resolvers/faq.resolver';
 import { RulesetDescriptionResolver } from './resolvers/ruleset-description.resolver';
 import { CurrencyCodesResolver } from './resolvers/currency-codes.resolver';
+import { AuctionPreviewResolver } from './resolvers/auction-preview.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -116,6 +117,14 @@ export const routes: Routes = [
     {
         path: 'auctions/:auction-id',
         redirectTo: '/home(overlay:auctions/:auction-id)',
+    },
+    {
+        path: 'auction-preview',
+        outlet: 'overlay',
+        component: AuctionDetailsPageComponent,
+        resolve: {
+            auction: AuctionPreviewResolver.asResolveFn(),
+        },
     },
     {
         path: 'txn/:auction-id',

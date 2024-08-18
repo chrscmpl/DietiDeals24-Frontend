@@ -239,12 +239,12 @@
                         </dd24-input>
                     </div>
                     <div class="details-input">
-                        <label class="details-input-label" for="endDate"
+                        <label class="details-input-label" for="endTime"
                             >End date*</label
                         >
                         <dd24-input
                             class="details-input"
-                            controlName="endDate"
+                            controlName="endTime"
                             [errorMessages]="[
                                 {
                                     validation: 'required',
@@ -268,22 +268,25 @@
                         >
                             <p-calendar
                                 class="p-fluid details-input-input"
-                                formControlName="endDate"
-                                name="endDate"
+                                formControlName="endTime"
+                                name="endTime"
                                 [showIcon]="true"
                                 iconDisplay="input"
                                 placeholder="dd/mm/yyyy hh:mm"
                                 dateFormat="dd/mm/yy"
-                                inputId="endDate"
-                                [minDate]="minEndDate"
-                                [maxDate]="maxEndDate"
-                                [defaultDate]="defaultEndDate"
+                                inputId="endTime"
+                                [minDate]="minEndTime"
+                                [maxDate]="maxEndTime"
+                                [defaultDate]="defaultEndTime"
                                 [showTime]="true"
                                 hourFormat="24"
                             />
                         </dd24-input>
                     </div>
                 </div>
+            } @else if (activeStep === 4) {
+                <p-button label="View final result" (onClick)="showPreview()">
+                </p-button>
             }
             <div class="spacer"></div>
             <p class="error">{{ error }}</p>

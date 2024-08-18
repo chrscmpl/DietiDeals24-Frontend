@@ -19,7 +19,7 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, Subscription, take } from 'rxjs';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { AuctionCreationRulesetSelectionComponent } from '../../components/auction-creation-ruleset-selection/auction-creation-ruleset-selection.component';
@@ -47,29 +47,22 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Country } from '../../models/location.model';
 import { GeographicalLocationsService } from '../../services/locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
-import { AsyncPipe, getLocaleCurrencyCode } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
 import { AuctionRulesetInformationPipe } from '../../pipes/auction-ruleset-information.pipe';
 import { CalendarModule } from 'primeng/calendar';
+import { ToReactiveForm } from '../../typeUtils/ToForm';
+import { AuctionCreationData } from '../../models/auction-creation-data.model';
 
-interface auctionCreationDetailsForm {
-    title: FormControl<string | null>;
-    conditions: FormControl<string | null>;
-    description: FormControl<string | null>;
-    country: FormControl<string | null>;
-    city: FormControl<string | null>;
-    startingBid: FormControl<number | null>;
-    currency: FormControl<string | null>;
-    endDate: FormControl<string | null>;
-}
+type auctionCreationDetailsForm = ToReactiveForm<
+    AuctionCreationData['details']
+>;
 
-interface auctionCreationForm {
-    ruleset: FormControl<AuctionRuleSet | null>;
-    category: FormControl<string | null>;
-    details: FormGroup<auctionCreationDetailsForm>;
-}
+type auctionCreationForm = ToReactiveForm<
+    Omit<AuctionCreationData, 'details'>
+> & { details: FormGroup<auctionCreationDetailsForm> };
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -141,7 +134,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Details',
-            nextCallback: () => this.checkNext(this.form.controls.details),
+            // nextCallback: () => this.checkNext(this.form.controls.details),
         },
         {
             title: 'Pictures',
@@ -166,14 +159,15 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public currencyCodes: string[] = ['EUR'];
 
-    public minEndDate: Date = new Date();
-    public maxEndDate: Date = this.getFutureDate(
+    public minEndTime: Date = new Date();
+    public maxEndTime: Date = this.getFutureDate(
         environment.auctionMaxDuration,
     );
-    public defaultEndDate: Date = this.getFutureDate(7 * 24 * 60 * 60 * 1000);
+    public defaultEndTime: Date = this.getFutureDate(7 * 24 * 60 * 60 * 1000);
 
     public constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
         public readonly windowService: WindowService,
@@ -249,10 +243,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                         validators: [Validators.required],
                     },
                 ),
-                endDate: this.formBuilder.control<string | null>(null, {
+                endTime: this.formBuilder.control<string | null>(null, {
                     validators: [Validators.required],
                 }),
             }),
+            pictures: this.formBuilder.control<string[] | null>([]),
         });
 
         this.form.controls.details.controls.city.disable();
@@ -273,6 +268,25 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                     } else cityControl.disable();
                 },
             ),
+        );
+    }
+
+    public showPreview(): void {
+        this.router.navigate(
+            [
+                '',
+                {
+                    outlets: {
+                        overlay: ['auction-preview'],
+                    },
+                },
+            ],
+            {
+                skipLocationChange: true,
+                state: {
+                    auctionPreviewData: this.form.value,
+                },
+            },
         );
     }
 

@@ -80,6 +80,8 @@ export class AuctionDetailsPageComponent
 
     public imageCarouselPage: number = 0;
 
+    public disableShare: boolean = false;
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -99,6 +101,10 @@ export class AuctionDetailsPageComponent
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
             this.initCarousel();
+        });
+
+        this.route.url.pipe(take(1)).subscribe((url) => {
+            this.disableShare = url[0].path === 'auction-preview';
         });
 
         this.subscriptions.push(

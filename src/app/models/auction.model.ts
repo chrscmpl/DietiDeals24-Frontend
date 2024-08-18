@@ -149,7 +149,7 @@ export class SilentAuction extends Auction {
     protected _minimumBid: number;
     constructor(dto: SilentAuctionDTO) {
         super(dto);
-        this._minimumBid = dto.minimumBid;
+        this._minimumBid = dto.minimumBid ?? dto.startingBid ?? dto.lastBid;
     }
 
     public get minimumBid(): number {
@@ -195,8 +195,9 @@ export class ReverseAuction extends Auction {
 
     constructor(dto: ReverseAuctionDTO) {
         super(dto);
-        this._maximumStartingBid = dto.maximumBid;
-        this._lowestBid = dto.lowestBidSoFar ?? dto.maximumBid;
+        this._maximumStartingBid =
+            dto.maximumBid ?? dto.startingBid ?? dto.lastBid;
+        this._lowestBid = dto.lowestBidSoFar ?? this._maximumStartingBid;
         if (this._winningBid === null && this.status !== AuctionStatus.active)
             this._winningBid = this._lowestBid;
     }

@@ -14,13 +14,16 @@ export interface AuctionDTO {
     currency: string;
 
     winningBid?: number | null;
-    winnerId: string | null;
+    winnerId?: string | null;
 
     category?: string | null;
     description?: string | null;
     numberOfBids?: number | null;
     userId?: string | null;
     picturesUrls?: string[] | null;
+
+    startingBid?: number | null;
+    lastBid?: number | null;
 }
 
 export interface SilentAuctionDTO extends AuctionDTO {
