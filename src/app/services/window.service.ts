@@ -31,7 +31,9 @@ export class WindowService {
 
     private UIhiddenSUbject = new ReplaySubject<boolean>();
 
-    public UIhidden$ = this.UIhiddenSUbject.asObservable();
+    public UIhidden$ = this.UIhiddenSUbject.asObservable().pipe(
+        distinctUntilChanged(),
+    );
 
     public setUIvisibility(isVisible: boolean): void {
         this.UIhiddenSUbject.next(!isVisible);

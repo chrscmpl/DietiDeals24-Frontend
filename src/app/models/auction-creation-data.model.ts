@@ -11,7 +11,7 @@ export interface AuctionCreationData {
         city: string;
         startingBid: number;
         currency: string;
-        endTime: string;
+        endTime: Date;
     };
     pictures: string[];
 }

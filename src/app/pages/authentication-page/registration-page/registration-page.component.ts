@@ -22,7 +22,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
-import { GeographicalLocationsService } from '../../../services/locations.service';
+import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';

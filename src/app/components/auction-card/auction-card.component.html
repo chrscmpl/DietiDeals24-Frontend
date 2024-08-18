@@ -20,10 +20,10 @@
     <div class="auction-card-title-container">
         <span class="auction-card-title wk-nowrap">{{ auction.title }}</span>
         <span class="auction-card-secondary-line wk-nowrap">
-            from {{ auction.location.country }}, {{ auction.location.city }}
             @if (auction.conditions) {
-                | {{ auction.conditions }}
+                {{ auction.conditions }} |
             }
+            from {{ auction.location.city }}, {{ auction.location.country }}
         </span>
     </div>
     <dd24-auction-ruleset-link

@@ -13,11 +13,13 @@
     border-radius: var(--border-radius-large) 2rem;
     border: var(--border);
     flex: 1;
+    background-color: var(--component-color);
 
     @include viewports.mobile {
         padding: 0 2% 2rem 2%;
         border-radius: 0;
         border: none;
+        background: none;
     }
 }
 
@@ -84,6 +86,58 @@
 .currency-dropdown {
     width: fit-content;
     flex: 0;
+}
+
+.auction-review {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+}
+
+.auction-review-details {
+    @include layouts.grid(
+        $template: "pictures info" 15rem / 15rem 1fr,
+        $gap: 1rem
+    );
+}
+
+.auction-review-details-pictures {
+    grid-area: pictures;
+    background-color: black;
+}
+
+.auction-review-details-info {
+    grid-area: info;
+    @include layouts.flex(column, space-between, start);
+    overflow: hidden;
+}
+
+.auction-preview-category,
+.auction-preview-title,
+.auction-preview-startingBid {
+    font-size: var(--font-size-large);
+    line-height: var(--line-height-large);
+    font-weight: var(--font-weight-bolder);
+}
+
+.auction-preview-category {
+    align-self: end;
+    color: var(--text-color-3);
+}
+
+.auction-preview-description {
+    position: relative;
+}
+
+.auction-preview-description-mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 30%, var(--component-color) 95%);
+}
+
+.auction-preview-logistics {
+    @include layouts.flex(column, start, stretch, 0.5rem);
 }
 
 :host ::ng-deep {

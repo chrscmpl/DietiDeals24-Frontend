@@ -45,9 +45,9 @@ import {
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Country } from '../../models/location.model';
-import { GeographicalLocationsService } from '../../services/locations.service';
+import { GeographicalLocationsService } from '../../services/geographical-locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
@@ -55,6 +55,10 @@ import { AuctionRulesetInformationPipe } from '../../pipes/auction-ruleset-infor
 import { CalendarModule } from 'primeng/calendar';
 import { ToReactiveForm } from '../../typeUtils/ToForm';
 import { AuctionCreationData } from '../../models/auction-creation-data.model';
+import { DividerModule } from 'primeng/divider';
+import { AuctionRuleSetLinkComponent } from '../../components/auction-ruleset-link/auction-ruleset-link.component';
+import { TimerComponent } from '../../components/timer/timer.component';
+import { LocalDatePipe } from '../../pipes/local-date.pipe';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -73,7 +77,9 @@ type auctionCreationForm = ToReactiveForm<
         ButtonModule,
         AuctionCreationRulesetSelectionComponent,
         AuctionCreationCategorySelectionComponent,
+        TimerComponent,
         InputComponent,
+        AuctionRuleSetLinkComponent,
         InputTextModule,
         AutoCompleteModule,
         DropdownModule,
@@ -81,9 +87,12 @@ type auctionCreationForm = ToReactiveForm<
         InputGroupModule,
         InputNumberModule,
         CalendarModule,
+        DividerModule,
         CurrencyDecimalDigitsPipe,
         CurrencySymbolPipe,
+        CurrencyPipe,
         AuctionRulesetInformationPipe,
+        LocalDatePipe,
         AsyncPipe,
     ],
     templateUrl: './create-auction-page.component.html',
@@ -134,7 +143,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Details',
-            // nextCallback: () => this.checkNext(this.form.controls.details),
+            nextCallback: () =>
+                this.checkNext(
+                    this.form.controls.details,
+                    '',
+                    this.onNextDetails.bind(this),
+                ),
         },
         {
             title: 'Pictures',
@@ -165,6 +179,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         environment.auctionMaxDuration,
     );
     public defaultEndTime: Date = this.getFutureDate(7 * 24 * 60 * 60 * 1000);
+
+    public countryInternationalName: string = '';
 
     public constructor(
         private readonly route: ActivatedRoute,
@@ -244,7 +260,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                         validators: [Validators.required],
                     },
                 ),
-                endTime: this.formBuilder.control<string | null>(null, {
+                endTime: this.formBuilder.control<Date | null>(null, {
                     validators: [Validators.required],
                 }),
             }),
@@ -326,6 +342,17 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             this.form.controls.details.controls.conditions.setValue(null);
 
         reactiveFormsUtils.markAllAsPristine(this.form.controls.details);
+    }
+
+    private onNextDetails() {
+        this.countryInternationalName =
+            this.locationsService.countries?.find(
+                (country) =>
+                    country.code ===
+                    this.form.controls.details.controls.country.value,
+            )?.name ??
+            this.form.controls.details.controls.country.value ??
+            '';
     }
 
     private onFirstChange(control: FormControl, cb: () => unknown): void {

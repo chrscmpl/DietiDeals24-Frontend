@@ -26,6 +26,11 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
         if (!auctionPreviewData || !auctionPreviewData.details)
             return throwError(() => new Error('No auction preview data found'));
 
+        const endTime = auctionPreviewData.details.endTime.toISOString();
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        delete (auctionPreviewData.details as any).endTime;
+
         const auction = auctionBuilder.buildSingle({
             ...auctionPreviewData.details,
             id: '',
@@ -34,6 +39,7 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
             category: auctionPreviewData.category,
             status: AuctionStatus.active,
             picturesUrls: auctionPreviewData.pictures,
+            endTime,
         });
 
         if (this.authentication.loggedUser)

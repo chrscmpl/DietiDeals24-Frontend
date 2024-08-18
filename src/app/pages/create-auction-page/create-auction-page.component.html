@@ -285,12 +285,99 @@
                     </div>
                 </div>
             } @else if (activeStep === 4) {
-                <p-button
-                    label="View final result"
-                    outlined="true"
-                    (onClick)="showPreview()"
-                >
-                </p-button>
+                <div class="auction-review">
+                    <div class="auction-review-details">
+                        <div class="auction-review-details-pictures"></div>
+                        <div class="auction-review-details-info">
+                            <span class="auction-preview-category">
+                                {{
+                                    isMacroCategory
+                                        ? "Other (" +
+                                          form.controls.category.value +
+                                          ")"
+                                        : form.controls.category.value
+                                }}
+                            </span>
+                            <span class="auction-preview-title">{{
+                                form.controls.details.controls.title.value
+                            }}</span>
+                            <span
+                                class="auction-preview-details-info-secondary"
+                            >
+                                @if (isProduct) {
+                                    <span
+                                        >{{
+                                            form.controls.details.controls
+                                                .conditions.value
+                                        }}
+                                        |
+                                    </span>
+                                }
+                                <span
+                                    >from
+                                    {{
+                                        form.controls.details.controls.city
+                                            .value +
+                                            ", " +
+                                            countryInternationalName
+                                    }}
+                                </span>
+                            </span>
+                            <span
+                                class="auction-preview-description wk-nowrap wk-lc-2"
+                            >
+                                <div
+                                    class="auction-preview-description-mask"
+                                ></div>
+                                {{
+                                    form.controls.details.controls.description
+                                        .value
+                                }}</span
+                            >
+                            <p-button
+                                label="View final result"
+                                outlined="true"
+                                (onClick)="showPreview()"
+                            >
+                            </p-button>
+                        </div>
+                    </div>
+                    <p-divider />
+                    <div class="auction-preview-logistics">
+                        <dd24-auction-ruleset-link
+                            [ruleSet]="form.controls.ruleset.value!"
+                        ></dd24-auction-ruleset-link>
+                        <span class="auction-preview-startingBid">
+                            {{
+                                form.controls.ruleset.value ?? ""
+                                    | auctionRulesetInformation: "startingBid"
+                            }}:
+                            {{
+                                form.controls.details.controls.startingBid
+                                    .value ?? 0
+                                    | currency
+                                        : form.controls.details.controls
+                                              .currency.value ?? ""
+                            }}
+                        </span>
+                        <span class="auction-preview-endTime">
+                            Ends
+                            {{
+                                form.controls.details.controls.endTime.value!.getTime()
+                                    | localDate
+                            }}
+                            (lasts
+                            <dd24-timer
+                                [endDate]="
+                                    form.controls.details.controls.endTime
+                                        .value!
+                                "
+                                style="font-weight: var(--font-weight-bolder)"
+                            ></dd24-timer
+                            >)
+                        </span>
+                    </div>
+                </div>
             }
             <div class="spacer"></div>
             <p class="error">{{ error }}</p>

@@ -132,7 +132,9 @@ export class NotificationsService {
         this.request.editableElements.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
         this.http
-            .delete(`${environment.backendHost}/notifications`)
+            .delete(
+                `${environment.backendHost}/notifications/mark-all-as-eliminated`,
+            )
             .subscribe();
     }
 
