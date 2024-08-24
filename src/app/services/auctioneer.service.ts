@@ -22,6 +22,7 @@ import {
 } from '@angular/forms';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Categories, CategoriesService } from './categories.service';
+import { UploadedFile } from '../models/uploaded-file.model';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -78,7 +79,7 @@ export class AuctioneerService {
                     validators: [Validators.required],
                 }),
             }),
-            pictures: this.formBuilder.control<string[] | null>([]),
+            pictures: this.formBuilder.control<UploadedFile[] | null>([]),
         });
 
     constructor(

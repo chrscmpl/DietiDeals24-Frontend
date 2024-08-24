@@ -1,4 +1,5 @@
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
+import { UploadedFile } from './uploaded-file.model';
 
 export interface AuctionCreationData {
     ruleset: AuctionRuleSet;
@@ -13,5 +14,5 @@ export interface AuctionCreationData {
         currency: string;
         endTime: Date;
     };
-    pictures: string[];
+    pictures: UploadedFile[];
 }

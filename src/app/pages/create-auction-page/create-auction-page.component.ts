@@ -131,7 +131,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             title: 'Details',
             nextCallback: () =>
                 this.checkNext(
-                    this.form.controls.details,
+                    //this.form.controls.details,
+                    this.form.controls.category,
                     '',
                     this.onNextDetails.bind(this),
                 ),

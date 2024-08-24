@@ -1,4 +1,5 @@
 <p-fileUpload
+    #fileUpload
     [accept]="accept"
     [maxFileSize]="maxSize"
     [fileLimit]="maxFiles"
@@ -7,6 +8,8 @@
     chooseLabel="Add"
     customUpload="true"
     (uploadHandler)="onUpload($event)"
+    (onRemove)="onRemove($event)"
+    (onClear)="onClear()"
 >
     <ng-template pTemplate="empty">
         <div class="drag-and-drop-message">

@@ -38,7 +38,7 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
             type: auctionPreviewData.ruleset,
             category: auctionPreviewData.category,
             status: AuctionStatus.active,
-            picturesUrls: auctionPreviewData.pictures,
+            picturesUrls: auctionPreviewData.pictures.map((p) => p.url),
             endTime,
         });
 
