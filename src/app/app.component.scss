@@ -4,7 +4,7 @@
 .app {
     @include layouts.grid("header" auto "main" 1fr "footer" auto / 1fr);
     width: 100%;
-    min-height: 100svh;
+    min-height: 100dvh;
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     background-color: var(--background-color);
@@ -56,6 +56,10 @@
             padding: 1em 2%;
         }
     }
+}
+
+.app-mobile {
+    min-height: calc(100dvh + 1px);
 }
 
 .hidden {

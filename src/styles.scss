@@ -10,9 +10,15 @@
         padding: 0;
         box-sizing: border-box;
     }
+
     button {
         background: none;
         border: none;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
     }
 }
 

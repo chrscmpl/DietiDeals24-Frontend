@@ -284,6 +284,12 @@
                         </dd24-input>
                     </div>
                 </div>
+            } @else if (activeStep === 3) {
+                <dd24-pictures-uploader
+                    controlName="pictures"
+                    [maxPictures]="environment.auctionMaxPictures"
+                    [maxSize]="environment.auctionMaxPictureSize"
+                />
             } @else if (activeStep === 4) {
                 <div class="auction-review">
                     <div class="auction-review-details">

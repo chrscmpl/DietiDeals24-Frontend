@@ -10,4 +10,6 @@ export const environment = {
     auctionDescriptionMaxLength: 3000,
     auctionMaxDuration: 30 * 24 * 60 * 60 * 1000,
     auctionMinDuration: 1 * 24 * 60 * 60 * 1000,
+    auctionMaxPictures: 4,
+    auctionMaxPictureSize: 5 * 1024 * 1024,
 };

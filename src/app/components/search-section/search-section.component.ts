@@ -153,6 +153,10 @@ export class SearchSectionComponent implements OnInit, OnDestroy {
         this.router.navigate(['/auctions'], {
             queryParams: params,
         });
+
+        this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
+            if (isMobile) this.keywordsInput.nativeElement.blur();
+        });
     }
 
     public submitIfMobile() {

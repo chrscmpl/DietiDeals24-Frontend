@@ -51,6 +51,7 @@ import { AuctionRuleSetLinkComponent } from '../../components/auction-ruleset-li
 import { TimerComponent } from '../../components/timer/timer.component';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
+import { PicturesUploaderComponent } from '../../components/pictures-uploader/pictures-uploader.component';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -61,6 +62,7 @@ import { AuctioneerService } from '../../services/auctioneer.service';
         ButtonModule,
         AuctionCreationRulesetSelectionComponent,
         AuctionCreationCategorySelectionComponent,
+        PicturesUploaderComponent,
         TimerComponent,
         InputComponent,
         AuctionRuleSetLinkComponent,
