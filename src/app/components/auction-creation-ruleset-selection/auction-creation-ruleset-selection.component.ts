@@ -3,13 +3,13 @@ import { RulesetDescription } from '../../models/ruleset-description.model';
 import { MenuItem } from 'primeng/api';
 import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
 import { AuctionKind } from '../../enums/auction-kind.enum';
-import { utils } from '../../helpers/utils';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RadioToggleButtonComponent } from '../radio-toggle-button/radio-toggle-button.component';
 import { DividerModule } from 'primeng/divider';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
+import { partition } from 'lodash-es';
 
 @Component({
     selector: 'dd24-auction-creation-ruleset-selection',
@@ -45,14 +45,13 @@ export class AuctionCreationRulesetSelectionComponent {
     ) {}
 
     private initRulesetsMenuItems(rulesets: RulesetDescription[]): void {
-        const { success: sellRulesets, failure: buyRulesets } =
-            utils.splitArray<RulesetDescription>(
-                rulesets,
-                (rs) =>
-                    auctionRuleSetsByKind
-                        .get(AuctionKind.selling)
-                        ?.includes(rs.ruleset) ?? false,
-            );
+        const [sellRulesets, buyRulesets] = partition(
+            rulesets,
+            (rs) =>
+                auctionRuleSetsByKind
+                    .get(AuctionKind.selling)
+                    ?.includes(rs.ruleset) ?? false,
+        );
         this.sellRulesetsMenuItems = this.rulesetsToMenuItems(
             '"I want to sell"',
             'sell-menu',

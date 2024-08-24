@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { UploadService } from '../../services/upload.service';
 import { take } from 'rxjs';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { last } from 'lodash-es';
 
 @Component({
     selector: 'dd24-pictures-uploader',
@@ -18,8 +19,6 @@ export class PicturesUploaderComponent implements OnInit {
 
     public control!: FormControl<string[] | null>;
 
-    public uploadUrl: string | null = null;
-
     public constructor(
         private readonly controlContainer: ControlContainer,
         private readonly upload: UploadService,
@@ -30,16 +29,11 @@ export class PicturesUploaderComponent implements OnInit {
         if (this.control.value === null) this.control.setValue([]);
 
         if (this.control.value?.length !== this.maxSize)
-            this.getNextUploadUrl();
+            this.upload.prepareNextUploadUrl();
     }
 
-    private getNextUploadUrl(): void {
-        this.upload
-            .getUploadUrl()
-            .pipe(take(1))
-            .subscribe((url) => {
-                this.uploadUrl = url;
-            });
+    public onUpload(event: FileUploadHandlerEvent): void {
+        console.log(last(event.files));
     }
 
     private setControl(): void {

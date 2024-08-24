@@ -1,1 +1,17 @@
-<p-fileUpload></p-fileUpload>
+<p-fileUpload
+    accept="image/*"
+    [maxFileSize]="maxSize"
+    [fileLimit]="maxPictures"
+    multiple="true"
+    auto="true"
+    chooseLabel="Add"
+    customUpload="true"
+    (uploadHandler)="onUpload($event)"
+>
+    <ng-template pTemplate="empty">
+        <div class="drag-and-drop-message">
+            <i class="drag-and-drop-icon pi pi-cloud-upload"></i>
+            <p class="drag-and-drop-text">Drag and drop your pictures here</p>
+        </div>
+    </ng-template>
+</p-fileUpload>

@@ -15,9 +15,9 @@ import {
 } from 'rxjs';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Nullable } from '../typeUtils/nullable';
-import { utils } from '../helpers/utils';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { SearchPolicy } from '../enums/search-policy.enum';
+import { isEqual, isNil, omitBy } from 'lodash-es';
 
 @Injectable({
     providedIn: 'root',
@@ -52,7 +52,7 @@ export class SearchService {
                     categories,
                 );
 
-                this.lastSearchParameters = utils.cloneTruthy(validatedParams);
+                this.lastSearchParameters = omitBy(validatedParams, isNil);
 
                 this.location.replaceState(
                     this.location.path().split('?')[0],
@@ -62,7 +62,7 @@ export class SearchService {
                 return this.lastSearchParameters;
             }),
             startWith(this.lastSearchParameters),
-            distinctUntilChanged(utils.compareOwnProperties),
+            distinctUntilChanged(isEqual),
             shareReplay(1),
         );
         this.validatedSearchParameters$.subscribe();

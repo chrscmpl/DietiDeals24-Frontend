@@ -62,7 +62,7 @@ export const routes: Routes = [
         component: CreateAuctionPageComponent,
         canActivate: [
             ShowUIGuard.asCanActivateFn(true),
-            ConfirmReloadGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
             AuthenticationGuard.asCanActivateFn(true),
         ],
         resolve: {

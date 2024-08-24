@@ -1,15 +1,45 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable, Observer, of, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UploadService {
+    private nextUploadUrl: string | null = null;
+
     constructor(private readonly http: HttpClient) {}
 
-    public getUploadUrl(): Observable<string> {
-        return this.http.get<string>(`${environment.backendHost}/upload-url`);
+    public prepareNextUploadUrl(cb?: Partial<Observer<string>>): void {
+        this.getNextUploadUrl().subscribe(cb);
+    }
+
+    public upload(file: File, cb?: Partial<Observer<string>>): void {
+        forkJoin([this.getNextUploadUrl(), this.compressFile(file)])
+            .pipe(take(1))
+            .subscribe({
+                next: ([url, compressedFile]) => {
+                    const formData = new FormData();
+                    formData.append('file', compressedFile);
+                    this.http
+                        .put(url, formData)
+                        .pipe(map(() => url))
+                        .subscribe(cb);
+                },
+                error: cb?.error,
+            });
+    }
+
+    private getNextUploadUrl(): Observable<string> {
+        return this.nextUploadUrl
+            ? of(this.nextUploadUrl)
+            : this.http
+                  .get<string>(`${environment.backendHost}/upload-url`)
+                  .pipe(tap((url) => (this.nextUploadUrl = url)));
+    }
+
+    private compressFile(file: File): Observable<File> {
+        return of(file);
     }
 }
