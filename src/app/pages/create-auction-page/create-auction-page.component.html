@@ -7,7 +7,7 @@
         <form
             class="create-auction-form"
             [formGroup]="form"
-            (ngSubmit)="next()"
+            (ngSubmit)="onSubmit()"
         >
             @if (activeStep === 0) {
                 <h2 class="create-auction-step-header">

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { UploadService } from '../../services/upload.service';
 import {
@@ -11,6 +11,7 @@ import { last } from 'lodash-es';
 import { UploadedFile } from '../../models/uploaded-file.model';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { BehaviorSubject, filter, take } from 'rxjs';
 
 @Component({
     selector: 'dd24-uploader',
@@ -19,7 +20,7 @@ import { MessageService } from 'primeng/api';
     templateUrl: './uploader.component.html',
     styleUrl: './uploader.component.scss',
 })
-export class UploaderComponent implements OnInit {
+export class UploaderComponent implements OnInit, OnDestroy {
     @ViewChild('fileUpload') public fileUploadComponent!: FileUpload;
 
     @Input({ required: true }) public controlName!: string;
@@ -30,6 +31,13 @@ export class UploaderComponent implements OnInit {
         'Drag and drop your files here';
 
     public control!: FormControl<UploadedFile[] | null>;
+
+    private fileUploading$ = new BehaviorSubject<boolean>(false);
+
+    private fileNotUploading$ = this.fileUploading$.pipe(
+        filter((v) => !v),
+        take(1),
+    );
 
     public constructor(
         private readonly controlContainer: ControlContainer,
@@ -45,6 +53,10 @@ export class UploaderComponent implements OnInit {
             this.uploader.prepareNextUploadUrl();
     }
 
+    public ngOnDestroy(): void {
+        this.fileUploading$.complete();
+    }
+
     public onUpload(event: FileUploadHandlerEvent): void {
         const file = last(event.files);
         if (!file) return;
@@ -52,45 +64,60 @@ export class UploaderComponent implements OnInit {
         const control = this.control;
         const uploader = this.uploader;
         const message = this.message;
-        uploader.upload(file, {
-            next: (url) => {
-                control.setValue([
-                    ...(control.value ?? []),
-                    { name: file.name, size: file.size, type: file.type, url },
-                ]);
-                if (control.value?.length !== this?.maxFiles)
-                    uploader.prepareNextUploadUrl();
-            },
-            error: () => {
-                this?.fileUploadComponent?.remove(
-                    new Event('click'),
-                    event.files.length - 1,
-                );
-                message.add({
-                    severity: 'error',
-                    summary: 'Upload failed',
-                    detail: 'An error occurred while uploading the file',
-                });
-            },
+
+        this.fileNotUploading$.subscribe(() => {
+            this.fileUploading$.next(true);
+            uploader.upload(file, {
+                next: (url) => {
+                    control.setValue([
+                        ...(control.value ?? []),
+                        {
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url,
+                        },
+                    ]);
+                    if (control.value?.length !== this?.maxFiles)
+                        uploader.prepareNextUploadUrl();
+                    this?.fileUploading$.next(false);
+                },
+                error: () => {
+                    this?.fileUploadComponent?.remove(
+                        new Event('click'),
+                        event.files.length - 1,
+                    );
+                    message.add({
+                        severity: 'error',
+                        summary: 'Upload failed',
+                        detail: 'An error occurred while uploading the file',
+                    });
+                    this?.fileUploading$.next(false);
+                },
+            });
         });
     }
 
     public onRemove(event: FileRemoveEvent): void {
-        const file: UploadedFile | undefined = this.control.value?.find(
-            (f) => f.name === event.file.name,
-        );
+        this.fileNotUploading$.subscribe(() => {
+            const file: UploadedFile | undefined = this.control.value?.find(
+                (f) => f.name === event.file.name,
+            );
 
-        if (!file) return;
+            if (!file) return;
 
-        this.removeFile(file);
+            this.removeFile(file);
+        });
     }
 
     public onClear(): void {
-        const files = this.control.value;
-        if (!files) return;
-        for (const file of files) {
-            this.removeFile(file);
-        }
+        this.fileNotUploading$.subscribe(() => {
+            const files = this.control.value;
+            if (!files) return;
+            for (const file of files) {
+                this.removeFile(file);
+            }
+        });
     }
 
     private removeFile(file: UploadedFile): void {

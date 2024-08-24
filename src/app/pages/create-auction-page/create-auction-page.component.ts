@@ -52,6 +52,8 @@ import { TimerComponent } from '../../components/timer/timer.component';
 import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
 import { UploaderComponent } from '../../components/uploader/uploader.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { AuctionCreationData } from '../../models/auction-creation-data.model';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -131,14 +133,14 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             title: 'Details',
             nextCallback: () =>
                 this.checkNext(
-                    //this.form.controls.details,
-                    this.form.controls.category,
+                    this.form.controls.details,
                     '',
                     this.onNextDetails.bind(this),
                 ),
         },
         {
             title: 'Pictures',
+            nextCallback: this.checkNextPictures.bind(this),
         },
         {
             title: 'Review',
@@ -169,6 +171,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public countryInternationalName: string = '';
 
+    private acceptedProgressingWithNoPictures: boolean = false;
+
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
@@ -176,6 +180,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         private readonly categoriesService: CategoriesService,
         public readonly windowService: WindowService,
         private readonly locationsService: GeographicalLocationsService,
+        private readonly confirmationService: ConfirmationService,
+        private readonly message: MessageService,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -252,8 +258,40 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    public next(): void {
+    private next(): void {
         this.stepper.nextStep();
+    }
+
+    public onSubmit(): void {
+        if (this.activeStep < this.steps.length - 1) this.next();
+        else this.onAuctionCreation();
+    }
+
+    private onAuctionCreation(): void {
+        this.auctioneerService.createAuction(
+            this.form.value as AuctionCreationData,
+            {
+                next: this.onAuctionCreationSuccess.bind(this),
+                error: this.onAuctionCreationError.bind(this),
+            },
+        );
+    }
+
+    private onAuctionCreationSuccess(): void {
+        this.message.add({
+            severity: 'success',
+            summary: 'Auction created',
+            detail: 'The auction was successfully created, you can find it in your personal page',
+        });
+        this.router.navigate(['']);
+    }
+
+    private onAuctionCreationError(): void {
+        this.message.add({
+            severity: 'error',
+            summary: 'Auction creation failed',
+            detail: 'An error occurred while creating the auction, try again later',
+        });
     }
 
     private advanceWhileTrue(conditions: boolean[]): void {
@@ -304,6 +342,32 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             )?.name ??
             this.form.controls.details.controls.country.value ??
             '';
+    }
+
+    private checkNextPictures(): boolean {
+        if (
+            this.form.controls.pictures.value?.length ||
+            this.acceptedProgressingWithNoPictures
+        )
+            return true;
+        else
+            this.confirmationService.confirm({
+                header: 'No pictures',
+                message:
+                    'Auctions with at least one picture are more likely to receive bids. Are you sure you want to continue without adding pictures?',
+                accept: () => {
+                    this.acceptedProgressingWithNoPictures = true;
+                    this.next();
+                },
+                acceptLabel: 'Continue',
+                rejectLabel: 'Add pictures',
+                defaultFocus: 'reject',
+                acceptButtonStyleClass: 'p-button-outlined',
+                rejectIcon: 'pi pi-image',
+                acceptIcon: 'pi pi-arrow-right',
+            });
+
+        return false;
     }
 
     private onFirstChange(control: FormControl, cb: () => unknown): void {

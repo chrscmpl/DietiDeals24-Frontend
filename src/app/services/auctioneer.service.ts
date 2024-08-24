@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
+import {
+    catchError,
+    map,
+    Observable,
+    Observer,
+    of,
+    Subject,
+    throwError,
+} from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
 import { AuctionDTO } from '../DTOs/auction.dto';
@@ -23,6 +31,7 @@ import {
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Categories, CategoriesService } from './categories.service';
 import { UploadedFile } from '../models/uploaded-file.model';
+import { AuctionCreationException } from '../exceptions/auction-creation.exception';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -165,6 +174,31 @@ export class AuctioneerService {
         return !this.isAuctionCreationCategoryAProduct || control.value
             ? null
             : { required: true };
+    }
+
+    public createAuction(
+        auction: AuctionCreationData,
+        cb?: Partial<Observer<unknown>>,
+    ): void {
+        this.createAuctionObservable(auction).subscribe(cb);
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
+    })
+    private createAuctionObservable(
+        auction: AuctionCreationData,
+    ): Observable<unknown> {
+        return this.http
+            .post(`${environment.backendHost}/auctions`, {
+                ...auction,
+                pictures: auction.pictures.map((p) => p.url),
+            })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new AuctionCreationException(e)),
+                ),
+            );
     }
 
     public refreshOwnActiveAuctions(): void {

@@ -255,6 +255,19 @@ i {
     }
 }
 
+.p-confirm-dialog {
+    width: min(45rem, 100svw);
+}
+
+.p-confirm-dialog-accept,
+.p-confirm-dialog-reject {
+    gap: 1ch;
+
+    .p-icon {
+        margin: 0;
+    }
+}
+
 .p-confirm-dialog-message {
     margin: 0;
 }
