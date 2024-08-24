@@ -285,10 +285,12 @@
                     </div>
                 </div>
             } @else if (activeStep === 3) {
-                <dd24-pictures-uploader
+                <dd24-uploader
                     controlName="pictures"
-                    [maxPictures]="environment.auctionMaxPictures"
+                    accept="image/*"
+                    [maxFiles]="environment.auctionMaxPictures"
                     [maxSize]="environment.auctionMaxPictureSize"
+                    dragAndDropMessage="Drag and drop your pictures here"
                 />
             } @else if (activeStep === 4) {
                 <div class="auction-review">

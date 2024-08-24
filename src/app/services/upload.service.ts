@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable, Observer, of, take, tap } from 'rxjs';
+import { forkJoin, from, map, Observable, Observer, of, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import imageCompression from 'browser-image-compression';
 
 @Injectable({
     providedIn: 'root',
@@ -40,6 +41,13 @@ export class UploadService {
     }
 
     private compressFile(file: File): Observable<File> {
-        return of(file);
+        return file.type.startsWith('image/')
+            ? from(
+                  imageCompression(file, {
+                      useWebWorker: true,
+                      fileType: 'image/webp',
+                  }),
+              )
+            : of(file);
     }
 }
