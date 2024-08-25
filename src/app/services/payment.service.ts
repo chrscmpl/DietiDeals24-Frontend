@@ -88,7 +88,7 @@ export class PaymentService {
                     : this.http
                           .get<
                               PaymentMethodDTO[]
-                          >(`${environment.backendHost}/payment-methods`)
+                          >(`${environment.backendHost}/payments/methods`)
                           .pipe(
                               map((dtos) =>
                                   paymentMethodBuilder.buildArray(dtos),
