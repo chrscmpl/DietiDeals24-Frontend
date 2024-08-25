@@ -97,6 +97,10 @@
         $template: "pictures info" 15rem / 15rem 1fr,
         $gap: 1rem
     );
+
+    @include viewports.mobile {
+        @include layouts.flex(column, start, stretch, var(--page-items-gap));
+    }
 }
 
 .auction-review-details-pictures {
@@ -109,6 +113,14 @@
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
     }
+
+    @include viewports.mobile {
+        border: none;
+        border-radius: 0;
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        height: calc(24vw);
+    }
 }
 
 .auction-review-picture {
@@ -117,6 +129,10 @@
     height: 100%;
     object-fit: cover;
     border-radius: var(--border-radius-large);
+
+    @include viewports.mobile {
+        border-radius: 0;
+    }
 }
 
 .auction-preview-no-pictures-icon {
@@ -140,12 +156,18 @@
 }
 
 .auction-preview-category {
-    align-self: end;
     color: var(--text-color-3);
+
+    @include viewports.notMobile {
+        align-self: end;
+    }
 }
 
 .auction-preview-description {
     position: relative;
+    @include viewports.mobile {
+        margin-bottom: 1rem;
+    }
 }
 
 .auction-preview-description-mask {
@@ -155,6 +177,10 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(transparent 30%, var(--component-color) 95%);
+
+    @include viewports.mobile {
+        display: none;
+    }
 }
 
 .auction-preview-logistics {
@@ -168,10 +194,10 @@
             width: fit-content;
         }
     }
-}
 
-// .details-input-input,
-// .details-input-label,
-// .details-input-chars {
-//     font-size: var(--font-size-large);
-// }
+    @include viewports.mobile {
+        .p-divider {
+            margin: 0;
+        }
+    }
+}

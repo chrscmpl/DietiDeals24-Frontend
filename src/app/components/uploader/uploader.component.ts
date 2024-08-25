@@ -7,7 +7,7 @@ import {
     FileUploadHandlerEvent,
     FileUploadModule,
 } from 'primeng/fileupload';
-import { last } from 'lodash-es';
+import { compact, last } from 'lodash-es';
 import { UploadedFile } from '../../models/uploaded-file.model';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
@@ -63,37 +63,53 @@ export class UploaderComponent implements OnInit, OnDestroy {
     }
 
     public onUpload(event: FileUploadHandlerEvent): void {
-        const file = last(event.files);
-        if (!file) return;
-
         const control = this.control;
         const uploader = this.uploader;
         const message = this.message;
 
         this.fileNotUploading$.subscribe(() => {
+            const files = event.files.filter(
+                (f) => !control.value?.some((v) => v.file.name === f.name),
+            );
+
+            if (!files.length) return;
+
             this.fileUploading$.next(true);
-            uploader.upload(file, {
-                next: (uploadedFile) => {
-                    control.setValue([...(control.value ?? []), uploadedFile]);
-                    if (control.value?.length !== this?.maxFiles)
-                        uploader.prepareNextUploadUrl();
-                    if (this) {
-                        this.fileUploading$.next(false);
-                    }
-                },
-                error: () => {
-                    this?.fileUploadComponent?.remove(
-                        new Event('click'),
-                        event.files.length - 1,
-                    );
-                    message.add({
-                        severity: 'error',
-                        summary: 'Upload failed',
-                        detail: 'An error occurred while uploading the file',
-                    });
-                    this?.fileUploading$.next(false);
-                },
-            });
+            let filesToUpload: number = files.length;
+
+            for (const file of files)
+                uploader.upload(file, {
+                    next: (uploadedFile) => {
+                        const fileIndex = event.files.lastIndexOf(file);
+                        control.setValue([
+                            ...(control.value?.slice(0, fileIndex) ?? []),
+                            uploadedFile,
+                            ...(control.value?.slice(fileIndex) ?? []),
+                        ]);
+
+                        if (--filesToUpload === 0) {
+                            this.control.setValue(compact(this.control.value));
+                            if (control.value?.length !== this?.maxFiles)
+                                uploader.prepareNextUploadUrl();
+                            this?.fileUploading$.next(false);
+                        }
+                    },
+                    error: () => {
+                        this?.fileUploadComponent?.remove(
+                            new Event('click'),
+                            event.files.findIndex((f) => f.name === file.name),
+                        );
+                        message.add({
+                            severity: 'error',
+                            summary: 'Upload failed',
+                            detail: 'An error occurred while uploading the file',
+                        });
+                        if (this && --filesToUpload === 0) {
+                            this.control.setValue(compact(this.control.value));
+                            this.fileUploading$.next(false);
+                        }
+                    },
+                });
         });
     }
 

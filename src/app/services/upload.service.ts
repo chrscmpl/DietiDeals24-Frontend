@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, from, map, Observable, Observer, of, take, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+
 import imageCompression from 'browser-image-compression';
 import { UploadedFile } from '../models/uploaded-file.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -22,6 +23,7 @@ export class UploadService {
             .pipe(take(1))
             .subscribe({
                 next: ([url, compressedFile]) => {
+                    this.nextUploadUrl = null;
                     const formData = new FormData();
                     formData.append('file', compressedFile);
                     this.http

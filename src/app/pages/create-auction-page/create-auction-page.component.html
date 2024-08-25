@@ -295,25 +295,30 @@
             } @else if (activeStep === 4) {
                 <div class="auction-review">
                     <div class="auction-review-details">
-                        <div
-                            class="auction-review-details-pictures"
-                            [class.empty]="!previewPictureUrls.length"
-                        >
-                            @for (
-                                previewUrl of previewPictureUrls;
-                                track previewUrl
-                            ) {
-                                <img
-                                    class="auction-review-picture"
-                                    [src]="previewUrl"
-                                    alt="Auction review picture"
-                                />
-                            } @empty {
-                                <i
-                                    class="auction-preview-no-pictures-icon pi pi-image"
-                                ></i>
-                            }
-                        </div>
+                        @if (
+                            previewPictureUrls.length ||
+                            (windowService.isMobile$ | async) === false
+                        ) {
+                            <div
+                                class="auction-review-details-pictures"
+                                [class.empty]="!previewPictureUrls.length"
+                            >
+                                @for (
+                                    previewUrl of previewPictureUrls;
+                                    track previewUrl
+                                ) {
+                                    <img
+                                        class="auction-review-picture"
+                                        [src]="previewUrl"
+                                        alt="Auction review picture"
+                                    />
+                                } @empty {
+                                    <i
+                                        class="auction-preview-no-pictures-icon pi pi-image"
+                                    ></i>
+                                }
+                            </div>
+                        }
                         <div class="auction-review-details-info">
                             <span class="auction-preview-category">
                                 {{
@@ -350,7 +355,12 @@
                                 </span>
                             </span>
                             <span
-                                class="auction-preview-description wk-nowrap wk-lc-2"
+                                [class]="
+                                    'auction-preview-description' +
+                                    ((windowService.isMobile$ | async)
+                                        ? ''
+                                        : ' wk-nowrap wk-lc-2')
+                                "
                             >
                                 <div
                                     class="auction-preview-description-mask"
@@ -406,6 +416,7 @@
                 </div>
             }
             <div class="spacer"></div>
+
             <p class="error">{{ error }}</p>
             <p-button
                 class="create-auction-submit-btn"
