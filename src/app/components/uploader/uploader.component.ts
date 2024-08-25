@@ -75,10 +75,12 @@ export class UploaderComponent implements OnInit, OnDestroy {
             uploader.upload(file, {
                 next: (uploadedFile) => {
                     control.setValue([...(control.value ?? []), uploadedFile]);
-                    this.files = control.value!.map((f) => f.file);
                     if (control.value?.length !== this?.maxFiles)
                         uploader.prepareNextUploadUrl();
-                    this?.fileUploading$.next(false);
+                    if (this) {
+                        this.files = control.value!.map((f) => f.file);
+                        this.fileUploading$.next(false);
+                    }
                 },
                 error: () => {
                     this?.fileUploadComponent?.remove(
