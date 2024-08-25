@@ -21,9 +21,9 @@ export class UploadService {
         forkJoin([this.getNextUploadUrl(), this.compressFile(file)])
             .pipe(take(1))
             .subscribe({
-                next: ([url, file]) => {
+                next: ([url, compressedFile]) => {
                     const formData = new FormData();
-                    formData.append('file', file);
+                    formData.append('file', compressedFile);
                     this.http
                         .put(url, formData)
                         .pipe(

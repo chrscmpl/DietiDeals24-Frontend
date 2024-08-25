@@ -78,7 +78,6 @@ export class UploaderComponent implements OnInit, OnDestroy {
                     if (control.value?.length !== this?.maxFiles)
                         uploader.prepareNextUploadUrl();
                     if (this) {
-                        this.files = control.value!.map((f) => f.file);
                         this.fileUploading$.next(false);
                     }
                 },
