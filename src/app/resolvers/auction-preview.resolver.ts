@@ -7,6 +7,7 @@ import { AuctionCreationData } from '../models/auction-creation-data.model';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserSummary } from '../models/user.model';
+import { defaults } from 'lodash-es';
 
 @Injectable({
     providedIn: 'root',
@@ -28,21 +29,22 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
 
         const endTime = auctionPreviewData.details.endTime.toISOString();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        delete (auctionPreviewData.details as any).endTime;
-
-        const auction = auctionBuilder.buildSingle({
-            ...auctionPreviewData.details,
-            id: '',
-            userId: this.authentication.loggedUser?.id ?? '',
-            type: auctionPreviewData.ruleset,
-            category: auctionPreviewData.category,
-            status: AuctionStatus.active,
-            picturesUrls: auctionPreviewData.pictures.map((p) =>
-                URL.createObjectURL(p.file),
+        const auction = auctionBuilder.buildSingle(
+            defaults(
+                { endTime },
+                {
+                    ...auctionPreviewData.details,
+                    id: '',
+                    userId: this.authentication.loggedUser?.id ?? '',
+                    type: auctionPreviewData.ruleset,
+                    category: auctionPreviewData.category,
+                    status: AuctionStatus.active,
+                    picturesUrls: auctionPreviewData.pictures.map((p) =>
+                        URL.createObjectURL(p.file),
+                    ),
+                },
             ),
-            endTime,
-        });
+        );
 
         if (this.authentication.loggedUser)
             auction.user = new UserSummary({

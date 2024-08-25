@@ -120,13 +120,14 @@ export class UploaderComponent implements OnInit, OnDestroy {
     }
 
     private removeFile(file: UploadedFile): void {
-        this.http
-            .delete(file.url)
-            .subscribe(() =>
-                this.control.setValue(
-                    this.control.value?.filter((f) => f !== file) ?? [],
-                ),
-            );
+        const control = this.control;
+        const removeFileCb = () =>
+            control.setValue(control.value?.filter((f) => f !== file) ?? []);
+
+        this.http.delete(file.url).subscribe({
+            next: removeFileCb,
+            error: removeFileCb,
+        });
     }
 
     private setControl(): void {
