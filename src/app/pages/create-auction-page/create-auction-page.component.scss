@@ -100,8 +100,29 @@
 }
 
 .auction-review-details-pictures {
+    @include layouts.grid($template: ". ." 1fr ". ." 1fr /1fr 1fr, $gap: 1%);
     grid-area: pictures;
-    background-color: black;
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+
+    &.empty {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+    }
+}
+
+.auction-review-picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-large);
+}
+
+.auction-preview-no-pictures-icon {
+    @include layouts.center;
+    font-size: 8rem;
+    color: var(--border-color);
 }
 
 .auction-review-details-info {

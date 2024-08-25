@@ -174,6 +174,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private acceptedProgressingWithNoPictures: boolean = false;
 
+    public previewPictureUrls: string[] = [];
+
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
@@ -200,6 +202,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 (v) => {
                     if (v) this.getCities();
                 },
+            ),
+        );
+
+        this.subscriptions.push(
+            this.form.controls.pictures.valueChanges.subscribe(
+                this.updatePreviewPictureUrls.bind(this),
             ),
         );
 
@@ -231,6 +239,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         if (this.form.controls.details.valid) this.onNextDetails();
 
         if (this.form.controls.details.controls.country.valid) this.getCities();
+
+        this.updatePreviewPictureUrls();
 
         this.advanceWhileTrue([
             this.form.controls.ruleset.valid,
@@ -429,5 +439,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             ...omit(this.form.value, ['details', 'pictures']),
             pictures: this.form.value.pictures?.map((file) => file.url) ?? [],
         } as AuctionCreationDTO;
+    }
+
+    private updatePreviewPictureUrls(): void {
+        this.previewPictureUrls =
+            this.form.controls.pictures.value?.map((file) =>
+                URL.createObjectURL(file.file),
+            ) ?? [];
     }
 }

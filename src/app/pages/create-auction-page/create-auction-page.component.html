@@ -295,7 +295,25 @@
             } @else if (activeStep === 4) {
                 <div class="auction-review">
                     <div class="auction-review-details">
-                        <div class="auction-review-details-pictures"></div>
+                        <div
+                            class="auction-review-details-pictures"
+                            [class.empty]="!previewPictureUrls.length"
+                        >
+                            @for (
+                                previewUrl of previewPictureUrls;
+                                track previewUrl
+                            ) {
+                                <img
+                                    class="auction-review-picture"
+                                    [src]="previewUrl"
+                                    alt="Auction review picture"
+                                />
+                            } @empty {
+                                <i
+                                    class="auction-preview-no-pictures-icon pi pi-image"
+                                ></i>
+                            }
+                        </div>
                         <div class="auction-review-details-info">
                             <span class="auction-preview-category">
                                 {{
