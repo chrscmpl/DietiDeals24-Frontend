@@ -50,12 +50,14 @@ export class PaymentService {
     ): Observable<AuthorizedPaymentMethodRegistrationDTO> {
         return of<AuthorizedPaymentMethodRegistrationDTO>(
             paymentMethod.type === PaymentMethodType.IBAN
-                ? paymentMethod
+                ? {
+                      type: PaymentMethodType.IBAN,
+                      ibanString: paymentMethod.iban,
+                  }
                 : {
                       type: PaymentMethodType.creditCard,
-                      token: '123456',
-                      cardNumberLastDigits:
-                          paymentMethod?.cardNumber?.slice(-4),
+                      paymentProcessorToken: '123456',
+                      last4digits: paymentMethod?.cardNumber?.slice(-4),
                   },
         ).pipe(
             catchError((e) =>

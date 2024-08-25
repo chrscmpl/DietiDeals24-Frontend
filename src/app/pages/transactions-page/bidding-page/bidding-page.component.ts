@@ -17,7 +17,7 @@ import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 import { FindCurrencyPipe } from '../../../pipes/find-currency.pipe';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { AsyncPipe, CurrencyPipe, getCurrencySymbol } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../../services/window.service';
 import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';

@@ -15,12 +15,6 @@ export interface IBANDTO extends PaymentMethodDTO {
     iban: string;
 }
 
-interface AuthorizedCreditCardRegistrationDTO {
-    type: PaymentMethodType.creditCard;
-    cardNumberLastDigits: string;
-    token: string;
-}
-
 export interface UnauthorizedCreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
     ownerName: string;
@@ -29,24 +23,31 @@ export interface UnauthorizedCreditCardRegistrationDTO {
     cvv: string;
 }
 
-export interface IBANRegistrationDTO {
+interface AuthorizedCreditCardRegistrationDTO {
+    type: PaymentMethodType.creditCard;
+    last4digits: string;
+    paymentProcessorToken: string;
+}
+
+export interface UnauthorizedIBANRegistrationDTO {
     type: PaymentMethodType.IBAN;
     iban: string;
 }
 
+interface AuthorizedIBANRegistrationDTO {
+    type: PaymentMethodType.IBAN;
+    ibanString: string;
+}
+
 export type AuthorizedPaymentMethodRegistrationDTO =
     | AuthorizedCreditCardRegistrationDTO
-    | IBANRegistrationDTO;
+    | AuthorizedIBANRegistrationDTO;
 
 export type UnauthorizedPaymentMethodRegistrationDTO =
     | UnauthorizedCreditCardRegistrationDTO
-    | IBANRegistrationDTO;
-
-export interface SavedChosenPaymentMethodDTO {
-    id: string;
-}
+    | UnauthorizedIBANRegistrationDTO;
 
 export type ChosenPaymentMethodDTO =
-    | { savedPaymentMethod: SavedChosenPaymentMethodDTO }
+    | { paymentMethodId: string }
     | { paymentMethodToBeSaved: AuthorizedPaymentMethodRegistrationDTO }
-    | { oneTimeUsePaymentMethod: AuthorizedPaymentMethodRegistrationDTO };
+    | { OneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO };

@@ -16,13 +16,13 @@ import { isValid as isValidIBAN } from 'iban-ts';
 import { WarningsService } from '../../services/warnings.service';
 import { ToReactiveForm } from '../../typeUtils/ToForm';
 import {
-    IBANRegistrationDTO,
     UnauthorizedCreditCardRegistrationDTO,
+    UnauthorizedIBANRegistrationDTO,
 } from '../../DTOs/payment-method.dto';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DescendantsAttributesDirective } from '../../directives/set-descentant-attributes.directive';
 
-type IBANForm = ToReactiveForm<IBANRegistrationDTO>;
+type IBANForm = ToReactiveForm<UnauthorizedIBANRegistrationDTO>;
 
 type CreditCardForm = ToReactiveForm<UnauthorizedCreditCardRegistrationDTO>;
 

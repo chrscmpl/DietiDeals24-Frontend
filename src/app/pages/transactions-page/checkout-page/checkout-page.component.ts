@@ -7,7 +7,6 @@ import { WindowService } from '../../../services/window.service';
 import { PaymentMethodOptionComponent } from '../../../components/payment-method-option/payment-method-option.component';
 import {
     ChosenPaymentMethodDTO,
-    SavedChosenPaymentMethodDTO,
     UnauthorizedPaymentMethodRegistrationDTO,
 } from '../../../DTOs/payment-method.dto';
 import {
@@ -42,9 +41,7 @@ import { BidPlacementException } from '../../../exceptions/bid-placement.excepti
 import { BidAcceptanceException } from '../../../exceptions/bid-acceptance.exception';
 
 interface PaymentMethodForm {
-    chosenPaymentMethod: FormControl<
-        SavedChosenPaymentMethodDTO | PaymentMethodType | null
-    >;
+    chosenPaymentMethod: FormControl<{ id: string } | PaymentMethodType | null>;
     newPaymentMethod: FormGroup<NewPaymentMethodForm>;
 }
 
@@ -124,7 +121,7 @@ export class CheckoutPageComponent implements OnInit {
     private initForm(): void {
         this.chosenPaymentMethodForm = this.formBuilder.group({
             chosenPaymentMethod: new FormControl<
-                SavedChosenPaymentMethodDTO | PaymentMethodType | null
+                { id: string } | PaymentMethodType | null
             >(null, Validators.required),
             newPaymentMethod: this.formBuilder.group({
                 save: new FormControl<boolean | null>(false),
@@ -144,7 +141,7 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private onChosenMethodChanges(
-        value: SavedChosenPaymentMethodDTO | PaymentMethodType | null,
+        value: { id: string } | PaymentMethodType | null,
     ) {
         if (this.error) this.error = '';
         this.newPaymentMethodFormVisible = this.isPaymentMethodType(value)
@@ -170,9 +167,10 @@ export class CheckoutPageComponent implements OnInit {
 
     private getSavedPaymentMethod() {
         return {
-            savedPaymentMethod: this.chosenPaymentMethodForm.get(
-                'chosenPaymentMethod',
-            )?.value as SavedChosenPaymentMethodDTO,
+            paymentMethodId: (
+                this.chosenPaymentMethodForm.get('chosenPaymentMethod')
+                    ?.value as { id: string }
+            ).id,
         };
     }
 
@@ -233,7 +231,7 @@ export class CheckoutPageComponent implements OnInit {
                           map((newPaymentMethod) => {
                               const key = this.getSave()
                                   ? 'paymentMethodToBeSaved'
-                                  : 'oneTimeUsePaymentMethod';
+                                  : 'OneTimePaymentMethod';
                               return { [key]: newPaymentMethod };
                           }),
                       )
@@ -246,7 +244,7 @@ export class CheckoutPageComponent implements OnInit {
         return this.operation === TransactionOperation.bid
             ? this.bidService.placeBid({
                   auctionId: this.auction.id,
-                  amount: this.bidAmount,
+                  bidAmount: this.bidAmount,
                   ...paymentMethod,
               })
             : this.auctioneerService.concludeAuction({

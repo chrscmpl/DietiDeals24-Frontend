@@ -37,7 +37,7 @@ export class BidService {
     })
     public placeBid(bid: BidCreationDTO): Observable<unknown> {
         return this.http
-            .post<unknown>(`${environment.backendHost}/bids`, bid)
+            .post<unknown>(`${environment.backendHost}/bids/new`, bid)
             .pipe(
                 catchError((e) =>
                     throwError(() => new BidPlacementException(e)),

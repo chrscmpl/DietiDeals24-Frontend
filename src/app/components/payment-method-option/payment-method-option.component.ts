@@ -7,7 +7,6 @@ import { PaymentMethodType } from '../../enums/payment-method-type';
 import { PaymentMethodLabelPipe } from '../../pipes/payment-method-label.pipe';
 import { WindowService } from '../../services/window.service';
 import { AsyncPipe } from '@angular/common';
-import { SavedChosenPaymentMethodDTO } from '../../DTOs/payment-method.dto';
 
 @Component({
     selector: 'dd24-payment-method-option',
@@ -31,7 +30,7 @@ export class PaymentMethodOptionComponent implements OnInit {
     @Input() public optionStyle: { [key: string]: string | number | boolean } =
         {};
 
-    public optionValue!: SavedChosenPaymentMethodDTO | PaymentMethodType;
+    public optionValue!: { id: string } | PaymentMethodType;
 
     constructor(public readonly windowService: WindowService) {}
 
