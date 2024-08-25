@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, from, map, Observable, Observer, of, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import imageCompression from 'browser-image-compression';
+import { UploadedFile } from '../models/uploaded-file.model';
 
 @Injectable({
     providedIn: 'root',
@@ -16,16 +17,21 @@ export class UploadService {
         this.getNextUploadUrl().subscribe(cb);
     }
 
-    public upload(file: File, cb?: Partial<Observer<string>>): void {
+    public upload(file: File, cb?: Partial<Observer<UploadedFile>>): void {
         forkJoin([this.getNextUploadUrl(), this.compressFile(file)])
             .pipe(take(1))
             .subscribe({
-                next: ([url, compressedFile]) => {
+                next: ([url, file]) => {
                     const formData = new FormData();
-                    formData.append('file', compressedFile);
+                    formData.append('file', file);
                     this.http
                         .put(url, formData)
-                        .pipe(map(() => url))
+                        .pipe(
+                            map(() => ({
+                                url,
+                                file,
+                            })),
+                        )
                         .subscribe(cb);
                 },
                 error: cb?.error,

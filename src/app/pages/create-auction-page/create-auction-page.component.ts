@@ -53,7 +53,8 @@ import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
 import { UploaderComponent } from '../../components/uploader/uploader.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AuctionCreationData } from '../../models/auction-creation-data.model';
+import { AuctionCreationDTO } from '../../DTOs/auction.dto';
+import { omit } from 'lodash-es';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -133,7 +134,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             title: 'Details',
             nextCallback: () =>
                 this.checkNext(
-                    this.form.controls.details,
+                    this.form.controls.category,
                     '',
                     this.onNextDetails.bind(this),
                 ),
@@ -268,22 +269,21 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onAuctionCreation(): void {
-        this.auctioneerService.createAuction(
-            this.form.value as AuctionCreationData,
-            {
-                next: this.onAuctionCreationSuccess.bind(this),
-                error: this.onAuctionCreationError.bind(this),
-            },
-        );
+        this.auctioneerService.createAuction(this.getFormDTOValue(), {
+            next: this.onAuctionCreationSuccess.bind(this),
+            error: this.onAuctionCreationError.bind(this),
+        });
     }
 
     private onAuctionCreationSuccess(): void {
-        this.message.add({
-            severity: 'success',
-            summary: 'Auction created',
-            detail: 'The auction was successfully created, you can find it in your personal page',
+        this.router.navigate(['']).then(() => {
+            this.message.add({
+                severity: 'success',
+                summary: 'Auction created',
+                detail: 'The auction was successfully created, you can find it in your personal page',
+            });
+            this.auctioneerService.resetAuctionCreation();
         });
-        this.router.navigate(['']);
     }
 
     private onAuctionCreationError(): void {
@@ -420,5 +420,14 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         const date = new Date();
         date.setTime(date.getTime() + milliseconds);
         return date;
+    }
+
+    private getFormDTOValue(): AuctionCreationDTO {
+        if (!this.form.valid) throw new Error('Form is invalid');
+        return {
+            ...this.form.value.details,
+            ...omit(this.form.value, ['details', 'pictures']),
+            pictures: this.form.value.pictures?.map((file) => file.url) ?? [],
+        } as AuctionCreationDTO;
     }
 }

@@ -68,16 +68,8 @@ export class UploaderComponent implements OnInit, OnDestroy {
         this.fileNotUploading$.subscribe(() => {
             this.fileUploading$.next(true);
             uploader.upload(file, {
-                next: (url) => {
-                    control.setValue([
-                        ...(control.value ?? []),
-                        {
-                            name: file.name,
-                            size: file.size,
-                            type: file.type,
-                            url,
-                        },
-                    ]);
+                next: (uploadedFile) => {
+                    control.setValue([...(control.value ?? []), uploadedFile]);
                     if (control.value?.length !== this?.maxFiles)
                         uploader.prepareNextUploadUrl();
                     this?.fileUploading$.next(false);
@@ -101,7 +93,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
     public onRemove(event: FileRemoveEvent): void {
         this.fileNotUploading$.subscribe(() => {
             const file: UploadedFile | undefined = this.control.value?.find(
-                (f) => f.name === event.file.name,
+                (f) => f.file.name === event.file.name,
             );
 
             if (!file) return;

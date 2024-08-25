@@ -1,5 +1,6 @@
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
+import { AuctionCreationData } from '../models/auction-creation-data.model';
 
 export interface AuctionDTO {
     id: string;
@@ -36,3 +37,9 @@ export interface ReverseAuctionDTO extends AuctionDTO {
     maximumBid: number;
     lowestBidSoFar: number;
 }
+
+export type AuctionCreationDTO = Omit<
+    AuctionCreationData,
+    'details' | 'pictures'
+> &
+    AuctionCreationData['details'] & { pictures: string[] };

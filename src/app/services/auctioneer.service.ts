@@ -12,7 +12,7 @@ import {
 } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
-import { AuctionDTO } from '../DTOs/auction.dto';
+import { AuctionCreationDTO, AuctionDTO } from '../DTOs/auction.dto';
 import { environment } from '../../environments/environment';
 import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { AuctionConclusionDTO } from '../DTOs/auction-conclusion.dto';
@@ -177,7 +177,7 @@ export class AuctioneerService {
     }
 
     public createAuction(
-        auction: AuctionCreationData,
+        auction: AuctionCreationDTO,
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.createAuctionObservable(auction).subscribe(cb);
@@ -187,13 +187,10 @@ export class AuctioneerService {
         cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
     })
     private createAuctionObservable(
-        auction: AuctionCreationData,
+        auction: AuctionCreationDTO,
     ): Observable<unknown> {
         return this.http
-            .post(`${environment.backendHost}/auctions`, {
-                ...auction,
-                pictures: auction.pictures.map((p) => p.url),
-            })
+            .post(`${environment.backendHost}/auctions`, auction)
             .pipe(
                 catchError((e) =>
                     throwError(() => new AuctionCreationException(e)),
