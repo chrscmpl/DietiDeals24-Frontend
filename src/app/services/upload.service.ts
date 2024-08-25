@@ -47,13 +47,27 @@ export class UploadService {
     }
 
     private compressFile(file: File): Observable<File> {
-        return file.type.startsWith('image/')
-            ? from(
-                  imageCompression(file, {
-                      useWebWorker: true,
-                      fileType: 'image/webp',
-                  }),
-              )
-            : of(file);
+        if (!file.type.startsWith('image/')) return of(file);
+
+        return this.compressImage(file);
+    }
+
+    private compressImage(file: File): Observable<File> {
+        return from(
+            imageCompression(file, {
+                useWebWorker: true,
+                fileType: 'image/webp',
+            }),
+        ).pipe(
+            map((file) => {
+                const newName =
+                    file.name.substring(0, file.name.lastIndexOf('.')) +
+                    '.webp';
+
+                return new File([file], newName, {
+                    type: 'image/webp',
+                });
+            }),
+        );
     }
 }
