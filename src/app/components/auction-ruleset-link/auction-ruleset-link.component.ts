@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class AuctionRuleSetLinkComponent {
     @Input({ required: true })
-    ruleSet!: AuctionRuleSet;
+    ruleset!: AuctionRuleSet;
 
     constructor() {}
 

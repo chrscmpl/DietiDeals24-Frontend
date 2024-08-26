@@ -140,7 +140,7 @@ export abstract class Auction {
 
     public abstract get lastBidDescription(): string;
 
-    public abstract get ruleSet(): AuctionRuleSet;
+    public abstract get ruleset(): AuctionRuleSet;
 
     public abstract get kind(): AuctionKind;
 
@@ -182,7 +182,7 @@ export class SilentAuction extends Auction {
         return this._highestBid ? 'highest bid' : 'minimum bid';
     }
 
-    public override get ruleSet(): AuctionRuleSet {
+    public override get ruleset(): AuctionRuleSet {
         return AuctionRuleSet.silent;
     }
 
@@ -246,7 +246,7 @@ export class ReverseAuction extends Auction {
             : 'lowest bid';
     }
 
-    public override get ruleSet(): AuctionRuleSet {
+    public override get ruleset(): AuctionRuleSet {
         return AuctionRuleSet.reverse;
     }
 

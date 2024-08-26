@@ -1,5 +1,5 @@
 <span class="auction-type"
-    >{{ ruleSet + " AUCTION" | uppercase }}
+    >{{ ruleset + " AUCTION" | uppercase }}
     <span
         class="auction-type-link"
         [routerLink]="[
@@ -11,7 +11,7 @@
                 }
             }
         ]"
-        [fragment]="ruleSet + '-auction'"
+        [fragment]="ruleset + '-auction'"
         (click)="stopPropagation($event)"
         tabindex="0"
         (keypress)="stopPropagation($event)"

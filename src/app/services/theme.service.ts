@@ -4,6 +4,7 @@ import {
     ReplaySubject,
     Subject,
     distinctUntilChanged,
+    fromEvent,
     map,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -51,6 +52,21 @@ export class ThemeService {
         this.themeLink = this.renderer.createElement('link');
         this.renderer.setAttribute(this.themeLink, 'rel', 'stylesheet');
         this.renderer.setAttribute(this.themeLink, 'type', 'text/css');
+
+        fromEvent(this.themeLink, 'load', { passive: true }).subscribe(() => {
+            this.themeLoadingSubject.next(false);
+            this.themeFirstLoadedSubject.next(true);
+
+            document.head
+                .querySelector('meta[name="theme-color"]')
+                ?.setAttribute(
+                    'content',
+                    getComputedStyle(document.documentElement).getPropertyValue(
+                        '--background-color',
+                    ),
+                );
+        });
+
         this.listenForPreferredColorScheme();
     }
 
@@ -88,12 +104,11 @@ export class ThemeService {
     }
 
     private setThemeWithoutSaving(theme: theme): void {
-        this.updateThemeLoading();
-        this.renderer.setAttribute(
-            this.themeLink,
-            'href',
-            `./theme-${theme}.css`,
-        );
+        const href = `./theme-${theme}.css`;
+        if (href === this.themeLink.getAttribute('href')) return;
+
+        this.themeLoadingSubject.next(true);
+        this.renderer.setAttribute(this.themeLink, 'href', href);
         if (!this.alreadyInitialized) {
             this.renderer.appendChild(document.head, this.themeLink);
             this.alreadyInitialized = true;
@@ -116,15 +131,6 @@ export class ThemeService {
                 this.preferredColorScheme = newTheme;
                 this.setThemeWithoutSaving(newTheme);
             }
-        });
-    }
-
-    private updateThemeLoading(): void {
-        this.themeLoadingSubject.next(true);
-        const listener = this.renderer.listen(this.themeLink, 'load', () => {
-            this.themeLoadingSubject.next(false);
-            this.themeFirstLoadedSubject.next(true);
-            listener();
         });
     }
 }
