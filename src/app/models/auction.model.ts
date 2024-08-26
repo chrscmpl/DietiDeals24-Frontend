@@ -179,7 +179,7 @@ export class SilentAuction extends Auction {
     }
 
     public override get lastBidDescription(): string {
-        return 'minimum bid';
+        return this._highestBid ? 'highest bid' : 'minimum bid';
     }
 
     public override get ruleSet(): AuctionRuleSet {
