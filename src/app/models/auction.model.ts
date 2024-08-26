@@ -32,6 +32,8 @@ export abstract class Auction {
     protected _user: UserSummary | null = null;
     protected _lastBidder: UserSummary | null = null;
 
+    protected _isOver: boolean;
+
     constructor(dto: AuctionDTO) {
         this._id = String(dto.id);
         this._title = dto.title;
@@ -47,6 +49,7 @@ export abstract class Auction {
         this._lastBidderId = String(dto.lastBidderId) ?? null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
+        this._isOver = this._status !== Auction.STATUSES.active;
     }
 
     public get id(): string {
@@ -162,14 +165,16 @@ export class SilentAuction extends Auction {
     }
 
     public override get lastBid(): number {
-        return this._minimumBid;
+        return this._highestBid ?? this._minimumBid;
     }
 
     public override get winningBid(): number | null {
-        return this._highestBid ?? null;
+        if (!this._isOver) return null;
+        return this._highestBid;
     }
 
     public override get winnerId(): string | null {
+        if (!this._isOver) return null;
         return this._lastBidderId;
     }
 
@@ -226,10 +231,12 @@ export class ReverseAuction extends Auction {
     }
 
     public override get winningBid(): number | null {
+        if (!this._isOver) return null;
         return this._lowestBid;
     }
 
     public override get winnerId(): string | null {
+        if (!this._isOver) return null;
         return this._lastBidderId;
     }
 
