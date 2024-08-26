@@ -56,15 +56,7 @@ export class ThemeService {
         fromEvent(this.themeLink, 'load', { passive: true }).subscribe(() => {
             this.themeLoadingSubject.next(false);
             this.themeFirstLoadedSubject.next(true);
-
-            document.head
-                .querySelector('meta[name="theme-color"]')
-                ?.setAttribute(
-                    'content',
-                    getComputedStyle(document.documentElement).getPropertyValue(
-                        '--background-color',
-                    ),
-                );
+            this.updateThemeColor();
         });
 
         this.listenForPreferredColorScheme();
@@ -132,5 +124,16 @@ export class ThemeService {
                 this.setThemeWithoutSaving(newTheme);
             }
         });
+    }
+
+    private updateThemeColor(): void {
+        const themeColor = getComputedStyle(
+            document.documentElement,
+        ).getPropertyValue('--component-color');
+
+        if (themeColor)
+            document.head
+                .querySelector('meta[name="theme-color"]')
+                ?.setAttribute('content', themeColor);
     }
 }
