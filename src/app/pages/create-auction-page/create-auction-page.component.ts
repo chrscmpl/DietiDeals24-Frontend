@@ -101,7 +101,10 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     public set activeStep(value: number) {
-        this.auctioneerService.auctionCreationActiveStep = value;
+        if (value !== this.auctioneerService.auctionCreationActiveStep) {
+            this.error = '';
+            this.auctioneerService.auctionCreationActiveStep = value;
+        }
     }
 
     public get lastReachedStep(): number {
