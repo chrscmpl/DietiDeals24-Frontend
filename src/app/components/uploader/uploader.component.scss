@@ -59,6 +59,7 @@
 
         .p-fileupload-buttonbar {
             @include layouts.center;
+            padding-bottom: 0;
         }
 
         .p-fileupload-content {

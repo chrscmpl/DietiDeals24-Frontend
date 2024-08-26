@@ -1,5 +1,6 @@
 import {
     Component,
+    ElementRef,
     Inject,
     LOCALE_ID,
     OnDestroy,
@@ -94,22 +95,23 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
-    private _activeStep: number = 0;
-
-    public lastReachedStep: number = 0;
-
     public get activeStep(): number {
-        return this._activeStep;
+        return this.auctioneerService.auctionCreationActiveStep;
     }
 
     public set activeStep(value: number) {
-        this._activeStep = value;
-        if (value > this.lastReachedStep) this.lastReachedStep = value;
+        this.auctioneerService.auctionCreationActiveStep = value;
+    }
+
+    public get lastReachedStep(): number {
+        return this.auctioneerService.auctionCreationLastReachedStep;
     }
 
     public form = this.auctioneerService.auctionCreationForm;
 
     public error: string = '';
+
+    public submissionLoading: boolean = false;
 
     public steps: Step[] = [
         {
@@ -185,6 +187,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         private readonly locationsService: GeographicalLocationsService,
         private readonly confirmationService: ConfirmationService,
         private readonly message: MessageService,
+        private readonly element: ElementRef,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -241,13 +244,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         if (this.form.controls.details.controls.country.valid) this.getCities();
 
         this.updatePreviewPictureUrls();
-
-        this.advanceWhileTrue([
-            this.form.controls.ruleset.valid,
-            this.form.controls.category.valid,
-            this.form.controls.details.valid,
-            !!this.form.controls.pictures.value?.length,
-        ]);
     }
 
     public showPreview(): void {
@@ -279,6 +275,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onAuctionCreation(): void {
+        this.submissionLoading = true;
         this.auctioneerService.createAuction(this.getFormDTOValue(), {
             next: this.onAuctionCreationSuccess.bind(this),
             error: this.onAuctionCreationError.bind(this),
@@ -286,6 +283,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onAuctionCreationSuccess(): void {
+        this.submissionLoading = false;
         this.router.navigate(['']).then(() => {
             this.message.add({
                 severity: 'success',
@@ -297,17 +295,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     }
 
     private onAuctionCreationError(): void {
+        this.submissionLoading = false;
         this.message.add({
             severity: 'error',
             summary: 'Auction creation failed',
             detail: 'An error occurred while creating the auction, try again later',
         });
-    }
-
-    private advanceWhileTrue(conditions: boolean[]): void {
-        let i = 0;
-        while (i < conditions.length && conditions[i]) i++;
-        this.activeStep = i;
     }
 
     private checkNext(
@@ -368,6 +361,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 accept: () => {
                     this.acceptedProgressingWithNoPictures = true;
                     this.next();
+                },
+                reject: () => {
+                    this.element.nativeElement
+                        .querySelector('.p-fileupload-choose')
+                        ?.click?.();
                 },
                 acceptLabel: 'Continue',
                 rejectLabel: 'Add pictures',

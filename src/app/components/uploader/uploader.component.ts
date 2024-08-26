@@ -7,7 +7,7 @@ import {
     FileUploadHandlerEvent,
     FileUploadModule,
 } from 'primeng/fileupload';
-import { compact, last } from 'lodash-es';
+import { compact } from 'lodash-es';
 import { UploadedFile } from '../../models/uploaded-file.model';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';

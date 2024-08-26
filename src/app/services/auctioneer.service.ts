@@ -47,6 +47,23 @@ export const OwnActiveAuctionsCacheBuster$ = new Subject<void>();
     providedIn: 'root',
 })
 export class AuctioneerService {
+    private _auctionCreationActiveStep: number = 0;
+    private _auctionCreationLastReachedStep: number = 0;
+
+    public get auctionCreationLastReachedStep(): number {
+        return this._auctionCreationLastReachedStep;
+    }
+
+    public get auctionCreationActiveStep(): number {
+        return this._auctionCreationActiveStep;
+    }
+
+    public set auctionCreationActiveStep(value: number) {
+        this._auctionCreationActiveStep = value;
+        if (value > this.auctionCreationLastReachedStep)
+            this._auctionCreationLastReachedStep = value;
+    }
+
     private categories!: Categories;
     private lastValidCategory: string | null = null;
     private isAuctionCreationCategoryAProduct: boolean | null = null;
@@ -135,6 +152,8 @@ export class AuctioneerService {
         this.auctionCreationForm.reset();
         this.auctionCreationForm.controls.details.controls.city.disable();
         this.isAuctionCreationCategoryAProduct = null;
+        this._auctionCreationActiveStep = 0;
+        this._auctionCreationLastReachedStep = 0;
     }
 
     private validateCategory(
