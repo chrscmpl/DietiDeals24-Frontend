@@ -22,17 +22,15 @@ export abstract class Auction {
     protected _status: AuctionStatus;
     protected _currency: string;
 
-    protected _winningBid: number | null;
-    protected _winnerId: string | null;
-
     protected _category: string | null;
     protected _description: string | null;
     protected _bids: number | null;
     protected _userId: string | null;
+    protected _lastBidderId: string | null;
     protected _picturesUrls: string[];
 
     protected _user: UserSummary | null = null;
-    protected _winner: UserSummary | null = null;
+    protected _lastBidder: UserSummary | null = null;
 
     constructor(dto: AuctionDTO) {
         this._id = String(dto.id);
@@ -42,14 +40,11 @@ export abstract class Auction {
         this._endTime = new Date(dto.endTime);
         this._status = dto.status;
         this._currency = dto.currency;
-
-        this._winningBid = dto.winningBid ?? null;
-        this._winnerId = dto.winnerId ?? null;
-
         this._category = dto.category ?? null;
         this._description = dto.description ?? null;
         this._bids = dto.numberOfBids ?? null;
         this._userId = String(dto.userId) ?? null;
+        this._lastBidderId = String(dto.lastBidderId) ?? null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
     }
@@ -82,14 +77,6 @@ export abstract class Auction {
         return this._currency;
     }
 
-    public get winningBid(): number | null {
-        return this._winningBid;
-    }
-
-    public get winnerId(): string | null {
-        return this._winnerId;
-    }
-
     public get category(): string | null {
         return this._category;
     }
@@ -104,6 +91,10 @@ export abstract class Auction {
 
     public get userId(): string | null {
         return this._userId;
+    }
+
+    public get lastBidderId(): string | null {
+        return this._lastBidderId;
     }
 
     public get picturesUrls(): string[] {
@@ -122,13 +113,25 @@ export abstract class Auction {
         this._user = user;
     }
 
+    public get lastBidder(): UserSummary | null {
+        return this._lastBidder;
+    }
+
+    public set lastBidder(winner: UserSummary) {
+        this._lastBidder = winner;
+    }
+
     public get winner(): UserSummary | null {
-        return this._winner;
+        return this._lastBidder;
     }
 
     public set winner(winner: UserSummary) {
-        this._winner = winner;
+        this._lastBidder = winner;
     }
+
+    public abstract get winningBid(): number | null;
+
+    public abstract get winnerId(): string | null;
 
     public abstract get lastBid(): number;
 
@@ -147,9 +150,11 @@ export abstract class Auction {
 
 export class SilentAuction extends Auction {
     protected _minimumBid: number;
+    protected _highestBid: number | null = null;
     constructor(dto: SilentAuctionDTO) {
         super(dto);
         this._minimumBid = dto.minimumBid ?? dto.startingBid ?? dto.lastBid;
+        this._highestBid = dto.highestBidSoFar ?? null;
     }
 
     public get minimumBid(): number {
@@ -158,6 +163,14 @@ export class SilentAuction extends Auction {
 
     public override get lastBid(): number {
         return this._minimumBid;
+    }
+
+    public override get winningBid(): number | null {
+        return this._highestBid ?? null;
+    }
+
+    public override get winnerId(): string | null {
+        return this._lastBidderId;
     }
 
     public override get lastBidDescription(): string {
@@ -198,8 +211,6 @@ export class ReverseAuction extends Auction {
         this._maximumStartingBid =
             dto.maximumBid ?? dto.startingBid ?? dto.lastBid;
         this._lowestBid = dto.lowestBidSoFar ?? this._maximumStartingBid;
-        if (this._winningBid === null && this.status !== AuctionStatus.active)
-            this._winningBid = this._lowestBid;
     }
 
     public get maximumStartingBid(): number {
@@ -212,6 +223,14 @@ export class ReverseAuction extends Auction {
 
     public override get lastBid(): number {
         return this._lowestBid;
+    }
+
+    public override get winningBid(): number | null {
+        return this._lowestBid;
+    }
+
+    public override get winnerId(): string | null {
+        return this._lastBidderId;
     }
 
     public override get lastBidDescription(): string {

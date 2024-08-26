@@ -14,13 +14,11 @@ export interface AuctionDTO {
     pictureUrl?: string | null;
     currency: string;
 
-    winningBid?: number | null;
-    winnerId?: string | null;
-
     category?: string | null;
     description?: string | null;
     numberOfBids?: number | null;
     userId?: string | null;
+    lastBidderId?: string | null;
     picturesUrls?: string[] | null;
 
     startingBid?: number | null;
@@ -30,6 +28,7 @@ export interface AuctionDTO {
 export interface SilentAuctionDTO extends AuctionDTO {
     type: AuctionRuleSet.silent;
     minimumBid: number;
+    highestBidSoFar?: number;
 }
 
 export interface ReverseAuctionDTO extends AuctionDTO {
