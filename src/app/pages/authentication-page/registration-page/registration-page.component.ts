@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import {
     Step,
@@ -35,6 +35,8 @@ import { MessageService } from 'primeng/api';
 import { AssetsService } from '../../../services/assets.service';
 import { take } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
+import { NavigationService } from '../../../services/navigation.service';
+import { Location } from '@angular/common';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -81,7 +83,7 @@ interface registrationForm {
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
 })
-export class RegistrationPageComponent implements OnInit {
+export class RegistrationPageComponent implements OnInit, OnDestroy {
     @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
     public registrationForm!: FormGroup<registrationForm>;
@@ -148,6 +150,8 @@ export class RegistrationPageComponent implements OnInit {
         private readonly authentication: AuthenticationService,
         private readonly message: MessageService,
         public readonly assets: AssetsService,
+        private readonly navigation: NavigationService,
+        private readonly location: Location,
     ) {}
 
     public ngOnInit(): void {
@@ -167,6 +171,12 @@ export class RegistrationPageComponent implements OnInit {
             });
 
         this.handleCityControl();
+
+        this.navigation.backAction = this.onBack.bind(this);
+    }
+
+    public ngOnDestroy(): void {
+        this.navigation.backAction = null;
     }
 
     private initForm(): void {
@@ -248,6 +258,11 @@ export class RegistrationPageComponent implements OnInit {
 
     public next(): void {
         this.stepper.nextStep();
+    }
+
+    private onBack(): void {
+        if (this.activeStep > 0) this.stepper.prevStep();
+        else this.location.back();
     }
 
     public onSubmit(): void {

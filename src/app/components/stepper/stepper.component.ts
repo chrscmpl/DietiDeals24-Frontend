@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
+import { WindowService } from '../../services/window.service';
+import { AsyncPipe } from '@angular/common';
 
 export interface Step {
     title: string;
@@ -11,7 +13,7 @@ export interface Step {
 @Component({
     selector: 'dd24-stepper',
     standalone: true,
-    imports: [StepperModule, ButtonModule],
+    imports: [StepperModule, ButtonModule, AsyncPipe],
     templateUrl: './stepper.component.html',
     styleUrl: './stepper.component.scss',
 })
@@ -25,6 +27,8 @@ export class StepperComponent {
     @Input() set activeStep(value: number) {
         if (value >= 0 && value < this.steps.length) this._activeIndex = value;
     }
+
+    public constructor(public readonly windowService: WindowService) {}
 
     public set activeIndex(value: number) {
         this._activeIndex = value;

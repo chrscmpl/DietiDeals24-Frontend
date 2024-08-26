@@ -1,6 +1,6 @@
 import { Component, ElementRef, NgZone, Renderer2 } from '@angular/core';
 import { WindowService } from '../../services/window.service';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { LogoComponent } from '../logo/logo.component';
@@ -26,9 +26,8 @@ export class MobileHeaderComponent {
 
     constructor(
         public readonly windowService: WindowService,
-        public readonly location: Location,
         public readonly titleService: Title,
-        private readonly navigationService: NavigationService,
+        public readonly navigationService: NavigationService,
         private readonly element: ElementRef,
         private readonly renderer: Renderer2,
         private readonly zone: NgZone,

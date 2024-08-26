@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service';
-import { Location } from '@angular/common';
 import { InputOtpModule } from 'primeng/inputotp';
 import {
     FormBuilder,
@@ -43,7 +42,6 @@ export class VerifyEmailPageComponent implements OnInit {
     public submissionLoading: boolean = false;
 
     public constructor(
-        private readonly location: Location,
         private readonly authentication: AuthenticationService,
         private readonly formBuilder: FormBuilder,
         private readonly navigation: NavigationService,
@@ -52,7 +50,7 @@ export class VerifyEmailPageComponent implements OnInit {
 
     public ngOnInit(): void {
         if (!this.authentication.emailToVerify) {
-            this.location.back();
+            this.navigation.back();
             return;
         }
         this.verificationForm = this.formBuilder.group<verificationForm>({

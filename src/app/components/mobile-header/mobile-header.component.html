@@ -1,20 +1,22 @@
 <nav class="mobile-nav" [class.minimal]="windowService.UIhidden$ | async">
     @if (windowService.UIhidden$ | async) {
-        <button (click)="location.back()">
+        <button (click)="navigationService.back()">
             <i class="pi pi-arrow-left medium-icon"></i>
         </button>
     } @else {
         <button (click)="windowService.isSidebarVisible = true">
             <i class="pi pi-bars medium-icon"></i>
         </button>
-        @if ((title$ | async) !== "DietiDeals24") {
-            <h1 class="title wk-nowrap">
-                {{ title$ | async }}
-            </h1>
-        } @else {
-            <dd24-logo class="logo"></dd24-logo>
-            <div class="spacer"></div>
-        }
+    }
+    @if ((title$ | async) !== "DietiDeals24") {
+        <h1 class="title wk-nowrap">
+            {{ title$ | async }}
+        </h1>
+    } @else {
+        <dd24-logo class="logo"></dd24-logo>
+        <div class="spacer"></div>
+    }
+    @if ((windowService.UIhidden$ | async) === false) {
         <button routerLink="/help" routerLinkActive="link-active">
             <i class="link-icon pi pi-question-circle medium-icon"></i>
         </button>

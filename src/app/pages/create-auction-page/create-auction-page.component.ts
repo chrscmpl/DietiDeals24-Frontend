@@ -41,7 +41,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Country } from '../../models/location.model';
 import { GeographicalLocationsService } from '../../services/geographical-locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, Location } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
@@ -56,6 +56,7 @@ import { UploaderComponent } from '../../components/uploader/uploader.component'
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuctionCreationDTO } from '../../DTOs/auction.dto';
 import { omit } from 'lodash-es';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -188,6 +189,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         private readonly confirmationService: ConfirmationService,
         private readonly message: MessageService,
         private readonly element: ElementRef,
+        private readonly navigation: NavigationService,
+        private readonly location: Location,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -228,10 +231,13 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.locationsService.refreshCountries();
 
         this.onFirstChange(this.form.controls.ruleset, this.next.bind(this));
+
+        this.navigation.backAction = this.onBack.bind(this);
     }
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
+        this.navigation.backAction = null;
     }
 
     private initPageState(): void {
@@ -267,6 +273,11 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private next(): void {
         this.stepper.nextStep();
+    }
+
+    private onBack(): void {
+        if (this.activeStep > 0) this.stepper.prevStep();
+        else this.location.back();
     }
 
     public onSubmit(): void {

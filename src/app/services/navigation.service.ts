@@ -21,6 +21,7 @@ import {
 } from 'rxjs';
 import { SearchService } from './search-service.service';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
+import { Location } from '@angular/common';
 
 type query = Params | AuctionSearchParameters;
 
@@ -30,6 +31,15 @@ type query = Params | AuctionSearchParameters;
 export class NavigationService {
     private _routeBeforeRedirection: string | null = null;
     private _routeBeforeTransaction: string | null = null;
+    private _backAction: () => void = this.location.back.bind(this.location);
+
+    public set backAction(action: (() => void) | null) {
+        this._backAction = action || this.location.back.bind(this.location);
+    }
+
+    public back(): void {
+        this._backAction();
+    }
 
     public currentLocation$: Observable<{
         path: string[];
@@ -59,6 +69,7 @@ export class NavigationService {
         private router: Router,
         private route: ActivatedRoute,
         private searchService: SearchService,
+        private location: Location,
     ) {
         this.currentLocation$ = this.router.events.pipe(
             filter((event) => event instanceof NavigationEnd),

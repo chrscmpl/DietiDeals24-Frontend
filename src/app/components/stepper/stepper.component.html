@@ -2,7 +2,9 @@
     @for (step of steps; track $index) {
         <p-stepperPanel [header]="step.title">
             <ng-template pTemplate="header" let-index="index">
-                @if (index === 0) {
+                @if (
+                    index === 0 && (windowService.isMobile$ | async) === false
+                ) {
                     <div class="arrow-btn-container">
                         @if (activeIndex > 0) {
                             <button
@@ -39,7 +41,10 @@
                     </p-button>
                     <span class="step-title">{{ step.title }}</span>
                 </div>
-                @if (index === steps.length - 1) {
+                @if (
+                    index === steps.length - 1 &&
+                    (windowService.isMobile$ | async) === false
+                ) {
                     <div class="arrow-btn-container">
                         @if (activeIndex < steps.length - 1) {
                             <button

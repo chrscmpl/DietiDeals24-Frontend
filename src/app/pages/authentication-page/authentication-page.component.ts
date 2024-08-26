@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from '../../components/logo/logo.component';
 import { WindowService } from '../../services/window.service';
 import { RouterOutlet } from '@angular/router';
+import { NavigationService } from '../../services/navigation.service';
 @Component({
     selector: 'dd24-authentication-page',
     standalone: true,
@@ -12,11 +13,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AuthenticationPageComponent {
     constructor(
-        private readonly location: Location,
+        private readonly navigation: NavigationService,
         public readonly windowService: WindowService,
     ) {}
 
     goBack() {
-        this.location.back();
+        this.navigation.back();
     }
 }

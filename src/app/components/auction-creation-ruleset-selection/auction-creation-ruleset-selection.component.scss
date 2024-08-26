@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 .ruleset-item {
     @include layouts.flex(row, start, center, 0.5rem);
@@ -99,5 +100,11 @@
     .p-submenu-icon {
         height: var(--font-size-large);
         width: var(--font-size-large);
+    }
+
+    @include viewports.mobile {
+        .divider .p-divider {
+            margin-top: 1rem;
+        }
     }
 }

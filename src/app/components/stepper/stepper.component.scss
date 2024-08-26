@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 :host {
     width: 100%;
@@ -106,5 +107,11 @@
 
     .p-stepper-panels {
         padding: 0;
+    }
+
+    @include viewports.mobile {
+        .p-stepper-nav {
+            padding: 0 1rem;
+        }
     }
 }

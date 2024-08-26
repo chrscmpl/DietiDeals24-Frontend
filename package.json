@@ -16,7 +16,8 @@
         "lint": "ng lint",
         "backend": "git --git-dir=../DietiDeals24-Backend/.git --work-tree=../DietiDeals24-Backend pull && docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml up",
         "backend-down": "docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml down -v",
-        "backend-newdb": "npm run backend-down && rimraf ../DietiDeals24-Backend/postgres_volume && npm run backend"
+        "backend-newdb": "npm run backend-down && rimraf ../DietiDeals24-Backend/postgres_volume && npm run backend",
+        "db": "docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml exec database psql -d dietideals24 -U postgres -p 5433"
     },
     "private": true,
     "dependencies": {

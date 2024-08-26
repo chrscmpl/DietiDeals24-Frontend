@@ -1,4 +1,4 @@
-import { Location, ViewportScroller } from '@angular/common';
+import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -11,6 +11,7 @@ import { FAQ } from '../../models/faq.model';
 import { WindowService } from '../../services/window.service';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
     selector: 'dd24-help-page',
@@ -35,7 +36,7 @@ export class HelpPageComponent implements OnInit, OnDestroy {
 
     public constructor(
         private readonly route: ActivatedRoute,
-        public readonly location: Location,
+        public readonly navigation: NavigationService,
         private readonly viewPortScroller: ViewportScroller,
         private readonly windowService: WindowService,
     ) {}

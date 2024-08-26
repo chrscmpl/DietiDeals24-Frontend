@@ -24,9 +24,19 @@
     .footer {
         grid-area: footer;
         z-index: 500;
+    }
 
-        @include viewports.mobile {
+    @include viewports.mobile {
+        .header,
+        .footer {
             position: sticky;
+        }
+
+        .header {
+            top: 0;
+        }
+
+        .footer {
             bottom: 0;
         }
     }
