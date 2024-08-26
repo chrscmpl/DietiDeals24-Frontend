@@ -5,9 +5,18 @@ import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from '../logo/logo.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { mainPages } from '../../helpers/links';
-import { Observable, delay, map, of, startWith, switchMap } from 'rxjs';
+import {
+    Observable,
+    combineLatest,
+    delay,
+    map,
+    of,
+    startWith,
+    switchMap,
+} from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
     selector: 'dd24-sidebar',
@@ -29,6 +38,7 @@ export class SidebarComponent implements OnInit {
     constructor(
         public readonly windowService: WindowService,
         private readonly accessoryInformation: CategoriesService,
+        private readonly authentication: AuthenticationService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
             label: 'Settings',
@@ -55,28 +65,44 @@ export class SidebarComponent implements OnInit {
     public items$: Observable<MenuItem[]> = of([]);
 
     ngOnInit() {
-        this.items$ = this.accessoryInformation.trendingCategories$.pipe(
-            startWith([]),
-            switchMap((categories) => {
-                if (categories.length === 0)
-                    return of(categories).pipe(delay(1000));
-                return of(categories);
-            }),
-            map((categories) => {
+        this.items$ = combineLatest([
+            this.accessoryInformation.trendingCategories$.pipe(startWith([])),
+            this.authentication.isLogged$,
+        ]).pipe(
+            switchMap(([categories, isLogged]) =>
+                combineLatest([of(categories), of(isLogged)]).pipe(
+                    delay(categories.length ? 0 : 1000),
+                ),
+            ),
+            map(([categories, isLogged]) => {
                 const items: MenuItem[] = [...this.mainPagesMenuItems];
-                if (categories.length === 0) return items;
-                const categoriesItem: MenuItem = {
-                    label: 'Trending Categories',
-                    icon: 'pi pi-chart-line',
-                    items: categories.map((category) => {
-                        return {
-                            label: category,
-                            routerLink: ['/auctions', { category: category }],
-                            command: () => this.hideSidebar(),
-                        };
-                    }),
-                };
-                items.splice(items.length - 2, 0, categoriesItem);
+                if (categories.length) {
+                    const categoriesItem: MenuItem = {
+                        label: 'Trending Categories',
+                        icon: 'pi pi-chart-line',
+                        items: categories.map((category) => {
+                            return {
+                                label: category,
+                                routerLink: [
+                                    '/auctions',
+                                    { category: category },
+                                ],
+                                command: () => this.hideSidebar(),
+                            };
+                        }),
+                    };
+                    items.splice(items.length - 2, 0, categoriesItem);
+                }
+                if (isLogged) {
+                    items.push({
+                        label: 'Logout',
+                        icon: 'pi pi-sign-out',
+                        command: () => {
+                            this.authentication.logout();
+                            this.hideSidebar();
+                        },
+                    });
+                }
                 return items;
             }),
         );
