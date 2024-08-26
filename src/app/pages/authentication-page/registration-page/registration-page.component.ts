@@ -33,10 +33,11 @@ import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { AssetsService } from '../../../services/assets.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
 import { NavigationService } from '../../../services/navigation.service';
 import { Location } from '@angular/common';
+import { WindowService } from '../../../services/window.service';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -84,6 +85,7 @@ interface registrationForm {
     styleUrl: './registration-page.component.scss',
 })
 export class RegistrationPageComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription[] = [];
     @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
     public registrationForm!: FormGroup<registrationForm>;
@@ -152,6 +154,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         public readonly assets: AssetsService,
         private readonly navigation: NavigationService,
         private readonly location: Location,
+        private readonly windowService: WindowService,
     ) {}
 
     public ngOnInit(): void {
@@ -172,10 +175,17 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
         this.handleCityControl();
 
-        this.navigation.backAction = this.onBack.bind(this);
+        this.subscriptions.push(
+            this.windowService.isMobile$.subscribe((isMobile) => {
+                this.navigation.backAction = isMobile
+                    ? this.onBack.bind(this)
+                    : null;
+            }),
+        );
     }
 
     public ngOnDestroy(): void {
+        this.subscriptions.forEach((s) => s.unsubscribe());
         this.navigation.backAction = null;
     }
 

@@ -201,9 +201,12 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.initPageState();
 
         this.subscriptions.push(
-            this.windowService.isMobile$.subscribe((isMobile) =>
-                this.windowService.setUIvisibility(!isMobile),
-            ),
+            this.windowService.isMobile$.subscribe((isMobile) => {
+                this.windowService.setUIvisibility(!isMobile);
+                this.navigation.backAction = isMobile
+                    ? this.onBack.bind(this)
+                    : null;
+            }),
         );
 
         this.subscriptions.push(
@@ -234,8 +237,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.locationsService.refreshCountries();
 
         this.onFirstChange(this.form.controls.ruleset, this.next.bind(this));
-
-        this.navigation.backAction = this.onBack.bind(this);
     }
 
     public ngOnDestroy(): void {
