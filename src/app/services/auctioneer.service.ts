@@ -209,7 +209,9 @@ export class AuctioneerService {
         auction: AuctionCreationDTO,
     ): Observable<unknown> {
         return this.http
-            .post(`${environment.backendHost}/auctions`, auction)
+            .post(`${environment.backendHost}/auctions`, auction, {
+                responseType: 'text',
+            })
             .pipe(
                 catchError((e) =>
                     throwError(() => new AuctionCreationException(e)),
@@ -228,10 +230,9 @@ export class AuctioneerService {
         conclusionOptions: AuctionConclusionDTO,
     ): Observable<unknown> {
         return this.http
-            .post<unknown>(
-                `${environment.backendHost}/conclude`,
-                conclusionOptions,
-            )
+            .post(`${environment.backendHost}/conclude`, conclusionOptions, {
+                responseType: 'text',
+            })
             .pipe(
                 catchError((e) =>
                     throwError(() =>
