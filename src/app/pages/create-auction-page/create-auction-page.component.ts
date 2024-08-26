@@ -134,7 +134,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
             title: 'Details',
             nextCallback: () =>
                 this.checkNext(
-                    this.form.controls.category,
+                    this.form.controls.details,
                     '',
                     this.onNextDetails.bind(this),
                 ),
@@ -174,7 +174,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private acceptedProgressingWithNoPictures: boolean = false;
 
-    public previewPictureUrls: string[] = [];
+    public previewPictureUrls: { url: string; id: number }[] = [];
 
     public constructor(
         private readonly route: ActivatedRoute,
@@ -443,8 +443,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private updatePreviewPictureUrls(): void {
         this.previewPictureUrls =
-            this.form.controls.pictures.value?.map((file) =>
-                URL.createObjectURL(file.file),
-            ) ?? [];
+            this.form.controls.pictures.value?.map((file) => ({
+                url: URL.createObjectURL(file.file),
+                id: file.id,
+            })) ?? [];
     }
 }

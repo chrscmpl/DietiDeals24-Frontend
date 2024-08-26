@@ -12,11 +12,13 @@ import { UploadedFile } from '../../models/uploaded-file.model';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, filter, take } from 'rxjs';
+import { WindowService } from '../../services/window.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'dd24-uploader',
     standalone: true,
-    imports: [FileUploadModule],
+    imports: [FileUploadModule, AsyncPipe],
     templateUrl: './uploader.component.html',
     styleUrl: './uploader.component.scss',
 })
@@ -46,6 +48,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
         private readonly uploader: UploadService,
         private readonly http: HttpClient,
         private readonly message: MessageService,
+        public readonly windowService: WindowService,
     ) {}
 
     public ngOnInit(): void {

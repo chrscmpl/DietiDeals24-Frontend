@@ -187,6 +187,12 @@
     @include layouts.flex(column, start, stretch, 0.5rem);
 }
 
+@include viewports.mobile {
+    .create-auction-uploader {
+        flex-grow: 1;
+    }
+}
+
 :host ::ng-deep {
     .currency-dropdown {
         .p-dropdown-trigger {

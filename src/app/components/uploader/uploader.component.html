@@ -1,21 +1,27 @@
 <p-fileUpload
     #fileUpload
+    class="fileupload"
     [accept]="accept"
     [maxFileSize]="maxSize"
     [fileLimit]="maxFiles"
     [files]="files"
     multiple="true"
     auto="true"
-    chooseLabel="Add"
+    [chooseLabel]="(windowService.isMobile$ | async) ? 'Add a picture' : 'Add'"
+    [chooseIcon]="
+        (windowService.isMobile$ | async) ? 'pi pi-image' : 'pi pi-plus'
+    "
     customUpload="true"
     (uploadHandler)="onUpload($event)"
     (onRemove)="onRemove($event)"
     (onClear)="onClear()"
 >
     <ng-template pTemplate="empty">
-        <div class="drag-and-drop-message">
-            <i class="drag-and-drop-icon pi pi-cloud-upload"></i>
-            <p class="drag-and-drop-text">{{ dragAndDropMessage }}</p>
-        </div>
+        @if ((windowService.isMobile$ | async) === false) {
+            <div class="drag-and-drop-message">
+                <i class="drag-and-drop-icon pi pi-cloud-upload"></i>
+                <p class="drag-and-drop-text">{{ dragAndDropMessage }}</p>
+            </div>
+        }
     </ng-template>
 </p-fileUpload>

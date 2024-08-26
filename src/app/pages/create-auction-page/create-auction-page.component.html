@@ -286,6 +286,7 @@
                 </div>
             } @else if (activeStep === 3) {
                 <dd24-uploader
+                    class="create-auction-uploader"
                     controlName="pictures"
                     accept="image/*"
                     [maxFiles]="environment.auctionMaxPictures"
@@ -305,11 +306,11 @@
                             >
                                 @for (
                                     previewUrl of previewPictureUrls;
-                                    track previewUrl
+                                    track previewUrl.id
                                 ) {
                                     <img
                                         class="auction-review-picture"
-                                        [src]="previewUrl"
+                                        [src]="previewUrl.url"
                                         alt="Auction review picture"
                                     />
                                 } @empty {
@@ -415,7 +416,11 @@
                     </div>
                 </div>
             }
-            <div class="spacer"></div>
+            @if (
+                (windowService.isMobile$ | async) === false || activeStep !== 3
+            ) {
+                <div class="spacer"></div>
+            }
 
             <p class="error">{{ error }}</p>
             <p-button
