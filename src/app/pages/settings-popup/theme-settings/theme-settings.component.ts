@@ -19,7 +19,7 @@ export class ThemeSettingsComponent implements OnInit {
     ngOnInit(): void {
         this.themeControl = new FormControl<theme | 'system' | null>(null);
 
-        this.themeService.theme$.pipe(take(1)).subscribe((theme) => {
+        this.themeService.themeStatus$.pipe(take(1)).subscribe((theme) => {
             if (theme.isSystemPreference) this.themeControl.setValue('system');
             else this.themeControl.setValue(theme.theme);
         });

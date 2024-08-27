@@ -53,13 +53,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         public readonly windowService: WindowService,
         private readonly router: Router,
         private readonly primengConfig: PrimeNGConfig,
-        private readonly themeService: ThemeService,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
         _: BidService, // have it instantiated for caching purposes
+        __: ThemeService,
     ) {}
 
     public ngOnInit(): void {
@@ -67,7 +67,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.configureVirtualKeyboard();
         this.redirectOnBadInitialRoute();
         this.configurePrimeNG();
-        this.themeService.initTheme();
         this.configureNotifications();
     }
 

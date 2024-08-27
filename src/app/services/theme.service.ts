@@ -2,12 +2,16 @@ import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import {
     Observable,
     ReplaySubject,
-    Subject,
+    combineLatest,
+    debounceTime,
     distinctUntilChanged,
     fromEvent,
     map,
+    shareReplay,
+    startWith,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { isEqual } from 'lodash-es';
 
 export type theme = 'light' | 'dark';
 
@@ -22,108 +26,87 @@ type themeStatus = {
 export class ThemeService {
     private themeLink: HTMLLinkElement;
     private renderer: Renderer2;
-    private alreadyInitialized: boolean = false;
-    private themeLoadingSubject: Subject<boolean> = new ReplaySubject<boolean>(
-        1,
+
+    private matchDarkTheme = this.mediaMatcher.matchMedia(
+        '(prefers-color-scheme: dark)',
     );
-    private themeFirstLoadedSubject: Subject<boolean> =
-        new ReplaySubject<boolean>(1);
 
-    private isThemeSetManually: boolean = false;
-    private preferredColorScheme: theme = 'light';
-
-    private themeSubject: Subject<theme> = new ReplaySubject<theme>(1);
-    public theme$: Observable<themeStatus> = this.themeSubject
-        .asObservable()
-        .pipe(
-            map((theme: theme) => ({
-                theme,
-                isSystemPreference: !this.isThemeSetManually,
-            })),
+    private systemPreference$: Observable<theme> =
+        fromEvent<MediaQueryListEvent>(this.matchDarkTheme, 'change').pipe(
+            startWith(this.matchDarkTheme),
+            map((mediaQueryListEvent) =>
+                mediaQueryListEvent.matches ? 'dark' : 'light',
+            ),
+            shareReplay(1),
         );
+
+    private manuallySetTheme$: ReplaySubject<theme | null> =
+        new ReplaySubject<theme | null>();
+
+    public themeStatus$: Observable<themeStatus> = combineLatest([
+        this.systemPreference$,
+        this.manuallySetTheme$,
+    ]).pipe(
+        map(([systemPreference, manuallySetTheme]) => {
+            const theme = manuallySetTheme ?? systemPreference;
+
+            return {
+                theme,
+                isSystemPreference: !manuallySetTheme,
+            };
+        }),
+        debounceTime(100),
+        distinctUntilChanged(isEqual),
+        shareReplay(1),
+    );
+
+    private theme$: Observable<theme> = this.themeStatus$.pipe(
+        map((status: themeStatus) => status.theme),
+        distinctUntilChanged(isEqual),
+        shareReplay(1),
+    );
 
     constructor(
         private mediaMatcher: MediaMatcher,
         rendererFactory: RendererFactory2,
     ) {
-        this.themeLoadingSubject.next(false);
-        this.themeFirstLoadedSubject.next(false);
+        this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
+
         this.renderer = rendererFactory.createRenderer(null, null);
-        this.themeLink = this.renderer.createElement('link');
-        this.renderer.setAttribute(this.themeLink, 'rel', 'stylesheet');
-        this.renderer.setAttribute(this.themeLink, 'type', 'text/css');
+        this.themeLink = this.createStyleSheetLink();
+        this.renderer.appendChild(document.head, this.themeLink);
 
-        fromEvent(this.themeLink, 'load', { passive: true }).subscribe(() => {
-            this.themeLoadingSubject.next(false);
-            this.themeFirstLoadedSubject.next(true);
-            this.updateThemeColor();
-        });
-
-        this.listenForPreferredColorScheme();
+        this.theme$.subscribe(this.onThemeChange.bind(this));
+        fromEvent(this.themeLink, 'load', { passive: true }).subscribe(
+            this.updateThemeColor.bind(this),
+        );
     }
 
-    public themeLoading$: Observable<boolean> =
-        this.themeLoadingSubject.asObservable();
+    public getSavedThemeFromStorage(): theme | null {
+        return localStorage.getItem('theme') as theme | null;
+    }
 
-    public themeFirstLoaded$: Observable<boolean> = this.themeFirstLoadedSubject
-        .asObservable()
-        .pipe(distinctUntilChanged());
+    public saveThemeToStorage(theme: theme | null): void {
+        if (theme) localStorage.setItem('theme', theme);
+        else localStorage.removeItem('theme');
+    }
 
-    public initTheme(): void {
-        let theme: string | null = localStorage.getItem('theme');
-        if (theme) {
-            this.isThemeSetManually = true;
-        } else {
-            theme = this.preferredColorScheme;
-        }
-        this.setThemeWithoutSaving(theme as theme);
+    private createStyleSheetLink(): HTMLLinkElement {
+        const link = this.renderer.createElement('link');
+        this.renderer.setAttribute(link, 'rel', 'stylesheet');
+        this.renderer.setAttribute(link, 'type', 'text/css');
+        return link;
+    }
+
+    private onThemeChange(theme: theme): void {
+        const href = `./theme-${theme}.css`;
+        this.renderer.setAttribute(this.themeLink, 'href', href);
     }
 
     public setTheme(theme: theme | 'system'): void {
-        if (theme === 'system') {
-            this.setThemeToSystemPreference();
-            return;
-        }
-        localStorage.setItem('theme', theme);
-        this.isThemeSetManually = true;
-        this.setThemeWithoutSaving(theme);
-    }
-
-    private setThemeToSystemPreference(): void {
-        localStorage.removeItem('theme');
-        this.isThemeSetManually = false;
-        this.setThemeWithoutSaving(this.preferredColorScheme);
-    }
-
-    private setThemeWithoutSaving(theme: theme): void {
-        const href = `./theme-${theme}.css`;
-        if (href === this.themeLink.getAttribute('href')) return;
-
-        this.themeLoadingSubject.next(true);
-        this.renderer.setAttribute(this.themeLink, 'href', href);
-        if (!this.alreadyInitialized) {
-            this.renderer.appendChild(document.head, this.themeLink);
-            this.alreadyInitialized = true;
-        }
-        this.themeSubject.next(theme);
-    }
-
-    private listenForPreferredColorScheme(): void {
-        const prefersDark = this.mediaMatcher.matchMedia(
-            '(prefers-color-scheme: dark)',
-        );
-        this.preferredColorScheme = prefersDark.matches ? 'dark' : 'light';
-
-        prefersDark.addEventListener('change', (mediaQueryListEvent) => {
-            const newTheme = mediaQueryListEvent.matches ? 'dark' : 'light';
-            if (
-                this.preferredColorScheme !== newTheme &&
-                !this.isThemeSetManually
-            ) {
-                this.preferredColorScheme = newTheme;
-                this.setThemeWithoutSaving(newTheme);
-            }
-        });
+        const isSystemPreference = theme === 'system';
+        this.saveThemeToStorage(isSystemPreference ? null : theme);
+        this.manuallySetTheme$.next(isSystemPreference ? null : theme);
     }
 
     private updateThemeColor(): void {

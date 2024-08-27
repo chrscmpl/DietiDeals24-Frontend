@@ -36,7 +36,6 @@ import { AssetsService } from '../../../services/assets.service';
 import { Subscription, take } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
 import { NavigationService } from '../../../services/navigation.service';
-import { Location } from '@angular/common';
 import { WindowService } from '../../../services/window.service';
 
 interface userDataForm {
@@ -153,7 +152,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         private readonly message: MessageService,
         public readonly assets: AssetsService,
         private readonly navigation: NavigationService,
-        private readonly location: Location,
         private readonly windowService: WindowService,
     ) {}
 
@@ -270,9 +268,9 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         this.stepper.nextStep();
     }
 
-    private onBack(): void {
+    private onBack(defaultFn: () => void): void {
         if (this.activeStep > 0) this.stepper.prevStep();
-        else this.location.back();
+        else defaultFn();
     }
 
     public onSubmit(): void {

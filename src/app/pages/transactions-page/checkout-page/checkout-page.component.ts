@@ -255,7 +255,7 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private onOperationSuccess() {
-        this.navigation.navigateToRouteBeforeTransaction();
+        this.navigation.navigateToSavedRoute();
         this.message.add({
             severity: 'success',
             summary: 'Success',

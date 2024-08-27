@@ -41,7 +41,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Country } from '../../models/location.model';
 import { GeographicalLocationsService } from '../../services/geographical-locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
-import { AsyncPipe, CurrencyPipe, Location } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CurrencyDecimalDigitsPipe } from '../../pipes/currency-decimal-digits.pipe';
 import { CurrencySymbolPipe } from '../../pipes/currency-symbol.pipe';
@@ -193,7 +193,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         private readonly message: MessageService,
         private readonly element: ElementRef,
         private readonly navigation: NavigationService,
-        private readonly location: Location,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -279,9 +278,9 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.stepper.nextStep();
     }
 
-    private onBack(): void {
+    private onBack(defaultFn: () => void): void {
         if (this.activeStep > 0) this.stepper.prevStep();
-        else this.location.back();
+        else defaultFn();
     }
 
     public onSubmit(): void {

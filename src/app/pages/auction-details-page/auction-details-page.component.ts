@@ -219,7 +219,7 @@ export class AuctionDetailsPageComponent
     }
 
     public onBid(): void {
-        this.navigation.routeBeforeTransaction =
+        this.navigation.savedRoute =
             this.navigation.primaryOutletRoute;
         this.router.navigate([
             {
