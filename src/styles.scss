@@ -23,7 +23,6 @@
 }
 
 :root {
-    --background-color: var(--surface-ground);
     --component-color: var(--surface-card);
     --text-color-1: var(--text-color);
     --text-color-2: var(--text-color-secondary);
@@ -86,6 +85,13 @@
     line-height: var(--line-height-medium);
     color: var(--text-color-1);
 
+    @media (prefers-color-scheme: dark) {
+        --background-color: #111111;
+    }
+    --background-color: #f8fafc;
+
+    background-color: var(--background-color);
+
     @include viewports.mobile {
         --font-size-small: calc(1 * var(--mobile-font-size));
         --font-size-medium: var(--mobile-font-size);
@@ -97,10 +103,11 @@
 html,
 body {
     min-height: 100svh;
-    @media (prefers-color-scheme: dark) {
-        background-color: black;
-    }
-    background-color: white;
+}
+
+body {
+    --background-color: var(--surface-ground);
+    background-color: var(--background-color);
 }
 
 .dd24-main-page {
