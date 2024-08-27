@@ -40,7 +40,9 @@
             @if ((windowService.UIhidden$ | async) === false) {
                 <dd24-mobile-navbar
                     class="footer"
-                    [class.hidden]="hiddenMobileFooter"
+                    [class.hidden]="
+                        windowService.isVirtualKeyboardShown$ | async
+                    "
                 ></dd24-mobile-navbar>
             }
         }
