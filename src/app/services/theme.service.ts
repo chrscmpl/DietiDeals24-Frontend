@@ -80,7 +80,9 @@ export class ThemeService {
     ) {
         this.renderer = rendererFactory.createRenderer(null, null);
 
-        let skipFirstLoad = !!document?.head?.querySelector('.theme-link');
+        this.themeLink = document?.head?.querySelector('.theme-link') ?? null;
+
+        let skipFirstLoad = !!this.themeLink;
 
         this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
 

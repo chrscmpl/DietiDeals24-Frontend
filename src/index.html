@@ -19,7 +19,7 @@
         </style>
         <link rel="manifest" href="manifest.webmanifest" />
         <meta name="theme-color" content="#000000" />
-        <script>let t;try{t=(localStorage.getItem("theme")??matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")??"light";}catch(e){t="light";}const l=document.createElement("link");l.rel="stylesheet";l.type="text/css";l.href=`./theme-${t}.css`;l.className="theme-link";document.head.appendChild(l);</script>
+        <script>let t;try{t=(localStorage.getItem("theme")??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))??"light";}catch(e){t="light";}const l=document.createElement("link");l.rel="stylesheet";l.type="text/css";l.href=`./theme-${t}.css`;l.className="theme-link";document.head.appendChild(l);</script>
     </head>
     <body>
         <dd24-root></dd24-root>
