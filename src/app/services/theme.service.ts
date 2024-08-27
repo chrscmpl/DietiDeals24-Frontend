@@ -88,6 +88,7 @@ export class ThemeService {
             .pipe(
                 filter(() => {
                     const skip = skipFirstLoad;
+                    if (skip) this.onThemeLoad();
                     skipFirstLoad = false;
                     return !skip;
                 }),
