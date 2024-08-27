@@ -1,31 +1,39 @@
-<div class="theme-selection">
-    <div class="theme-entry">
-        <p-radioButton
-            name="theme"
-            value="light"
-            inputId="theme-light"
-            [formControl]="themeControl"
-        />
-        <label for="theme-light" class="ml-2"> Light </label>
-    </div>
+<div class="theme-settings">
+    <div class="theme-selection">
+        <div class="theme-entry">
+            <p-radioButton
+                name="theme"
+                value="light"
+                inputId="theme-light"
+                [formControl]="themeControl"
+            />
+            <label for="theme-light" class="ml-2"> Light </label>
+        </div>
 
-    <div class="theme-entry">
-        <p-radioButton
-            name="theme"
-            value="dark"
-            inputId="theme-dark"
-            [formControl]="themeControl"
-        />
-        <label for="theme-dark" class="ml-2"> Dark </label>
-    </div>
+        <div class="theme-entry">
+            <p-radioButton
+                name="theme"
+                value="dark"
+                inputId="theme-dark"
+                [formControl]="themeControl"
+            />
+            <label for="theme-dark" class="ml-2"> Dark </label>
+        </div>
 
-    <div class="theme-entry">
-        <p-radioButton
-            name="theme"
-            value="system"
-            inputId="theme-system"
-            [formControl]="themeControl"
-        />
-        <label for="theme-system"> System </label>
+        <div class="theme-entry">
+            <p-radioButton
+                name="theme"
+                value="system"
+                inputId="theme-system"
+                [formControl]="themeControl"
+            />
+            <label for="theme-system"> System </label>
+        </div>
     </div>
+    @if (themeLoading$ | async) {
+        <p-progressSpinner
+            strokeWidth="6"
+            [style]="{ height: '3rem', width: '3rem' }"
+        ></p-progressSpinner>
+    }
 </div>

@@ -9,6 +9,7 @@ import {
     map,
     shareReplay,
     startWith,
+    take,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { isEqual } from 'lodash-es';
@@ -24,7 +25,7 @@ type themeStatus = {
     providedIn: 'root',
 })
 export class ThemeService {
-    private themeLink: HTMLLinkElement;
+    private themeLink: HTMLLinkElement | null = null;
     private renderer: Renderer2;
 
     private matchDarkTheme = this.mediaMatcher.matchMedia(
@@ -66,6 +67,12 @@ export class ThemeService {
         shareReplay(1),
     );
 
+    private _themeLoading$ = new ReplaySubject<boolean>(1);
+
+    public get themeLoading$(): Observable<boolean> {
+        return this._themeLoading$;
+    }
+
     constructor(
         private mediaMatcher: MediaMatcher,
         rendererFactory: RendererFactory2,
@@ -73,13 +80,8 @@ export class ThemeService {
         this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
 
         this.renderer = rendererFactory.createRenderer(null, null);
-        this.themeLink = this.createStyleSheetLink();
-        this.renderer.appendChild(document.head, this.themeLink);
 
         this.theme$.subscribe(this.onThemeChange.bind(this));
-        fromEvent(this.themeLink, 'load', { passive: true }).subscribe(
-            this.updateThemeColor.bind(this),
-        );
     }
 
     public getSavedThemeFromStorage(): theme | null {
@@ -91,22 +93,44 @@ export class ThemeService {
         else localStorage.removeItem('theme');
     }
 
-    private createStyleSheetLink(): HTMLLinkElement {
-        const link = this.renderer.createElement('link');
-        this.renderer.setAttribute(link, 'rel', 'stylesheet');
-        this.renderer.setAttribute(link, 'type', 'text/css');
-        return link;
-    }
-
-    private onThemeChange(theme: theme): void {
-        const href = `./theme-${theme}.css`;
-        this.renderer.setAttribute(this.themeLink, 'href', href);
-    }
-
     public setTheme(theme: theme | 'system'): void {
         const isSystemPreference = theme === 'system';
         this.saveThemeToStorage(isSystemPreference ? null : theme);
         this.manuallySetTheme$.next(isSystemPreference ? null : theme);
+    }
+
+    private createStyleSheetLink(): HTMLLinkElement {
+        const link = this.renderer.createElement('link');
+        this.renderer.setAttribute(link, 'rel', 'stylesheet');
+        this.renderer.setAttribute(link, 'type', 'text/css');
+        this.renderer.appendChild(document.head, link);
+        return link;
+    }
+
+    private destroyStyleSheetLink(link: HTMLLinkElement): void {
+        this.renderer.removeChild(document.head, link);
+    }
+
+    private onThemeChange(theme: theme): void {
+        this._themeLoading$.next(true);
+        const href = `./theme-${theme}.css`;
+
+        const oldLink = this.themeLink;
+        this.themeLink = this.createStyleSheetLink();
+
+        fromEvent(this.themeLink, 'load', { passive: true })
+            .pipe(take(1))
+            .subscribe(() => {
+                if (oldLink) this.destroyStyleSheetLink(oldLink);
+                this.onThemeLoad();
+            });
+
+        this.renderer.setAttribute(this.themeLink, 'href', href);
+    }
+
+    private onThemeLoad(): void {
+        this.updateThemeColor();
+        this._themeLoading$.next(false);
     }
 
     private updateThemeColor(): void {

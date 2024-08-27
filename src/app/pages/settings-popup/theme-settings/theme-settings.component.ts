@@ -2,17 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ThemeService, theme } from '../../../services/theme.service';
-import { take } from 'rxjs';
+import { debounceTime, Observable, take } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
     selector: 'dd24-theme-settings',
     standalone: true,
-    imports: [RadioButtonModule, ReactiveFormsModule],
+    imports: [
+        RadioButtonModule,
+        ReactiveFormsModule,
+        AsyncPipe,
+        ProgressSpinnerModule,
+    ],
     templateUrl: './theme-settings.component.html',
     styleUrl: './theme-settings.component.scss',
 })
 export class ThemeSettingsComponent implements OnInit {
     public themeControl!: FormControl<theme | 'system' | null>;
+
+    public themeLoading$: Observable<boolean> =
+        this.themeService.themeLoading$.pipe(debounceTime(100));
 
     constructor(private readonly themeService: ThemeService) {}
 
