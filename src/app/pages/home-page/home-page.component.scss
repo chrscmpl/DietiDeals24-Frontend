@@ -222,7 +222,18 @@
     }
 
     .p-carousel-indicators {
-        padding-bottom: 0;
+        padding: 0.5rem;
+        border-bottom: var(--border);
+        gap: 0.5rem;
+    }
+
+    .p-carousel-indicator {
+        margin: 0;
+        flex-grow: 1;
+
+        button {
+            width: 100%;
+        }
     }
 
     .carousel-item-button .p-button-label {
