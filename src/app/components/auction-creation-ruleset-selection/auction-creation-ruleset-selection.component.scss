@@ -102,9 +102,11 @@
         width: var(--font-size-large);
     }
 
-    @include viewports.mobile {
-        .divider .p-divider {
-            margin-top: 1rem;
+    .divider .p-divider {
+        margin-top: 1.75rem;
+
+        @include viewports.mobile {
+            margin-bottom: 1.25rem;
         }
     }
 }

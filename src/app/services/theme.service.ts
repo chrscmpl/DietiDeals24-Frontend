@@ -5,6 +5,7 @@ import {
     combineLatest,
     debounceTime,
     distinctUntilChanged,
+    filter,
     fromEvent,
     map,
     shareReplay,
@@ -77,11 +78,21 @@ export class ThemeService {
         private mediaMatcher: MediaMatcher,
         rendererFactory: RendererFactory2,
     ) {
-        this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
-
         this.renderer = rendererFactory.createRenderer(null, null);
 
-        this.theme$.subscribe(this.onThemeChange.bind(this));
+        let skipFirstLoad = !!document?.head?.querySelector('.theme-link');
+
+        this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
+
+        this.theme$
+            .pipe(
+                filter(() => {
+                    const skip = skipFirstLoad;
+                    skipFirstLoad = false;
+                    return !skip;
+                }),
+            )
+            .subscribe(this.onThemeChange.bind(this));
     }
 
     public getSavedThemeFromStorage(): theme | null {
@@ -103,6 +114,7 @@ export class ThemeService {
         const link = this.renderer.createElement('link');
         this.renderer.setAttribute(link, 'rel', 'stylesheet');
         this.renderer.setAttribute(link, 'type', 'text/css');
+        this.renderer.setAttribute(link, 'class', 'theme-link');
         this.renderer.appendChild(document.head, link);
         return link;
     }
