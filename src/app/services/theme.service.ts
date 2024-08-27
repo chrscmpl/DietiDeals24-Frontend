@@ -5,10 +5,10 @@ import {
     combineLatest,
     debounceTime,
     distinctUntilChanged,
-    filter,
     fromEvent,
     map,
     shareReplay,
+    skip,
     startWith,
     take,
 } from 'rxjs';
@@ -81,21 +81,14 @@ export class ThemeService {
         this.renderer = rendererFactory.createRenderer(null, null);
 
         this.themeLink = document?.head?.querySelector('.theme-link') ?? null;
-
-        let skipFirstLoad = !!this.themeLink;
-
-        this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
+        if (this.themeLink) this.onThemeLoad();
+        const skipCount = this.themeLink ? 1 : 0;
 
         this.theme$
-            .pipe(
-                filter(() => {
-                    const skip = skipFirstLoad;
-                    if (skip) this.onThemeLoad();
-                    skipFirstLoad = false;
-                    return !skip;
-                }),
-            )
+            .pipe(skip(skipCount))
             .subscribe(this.onThemeChange.bind(this));
+
+        this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
     }
 
     public getSavedThemeFromStorage(): theme | null {
