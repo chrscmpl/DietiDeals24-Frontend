@@ -5,6 +5,7 @@ import {
     ReplaySubject,
     delay,
     distinctUntilChanged,
+    filter,
     fromEvent,
     map,
     merge,
@@ -12,6 +13,7 @@ import {
     shareReplay,
     startWith,
     switchMap,
+    withLatestFrom,
 } from 'rxjs';
 
 @Injectable({
@@ -65,14 +67,7 @@ export class WindowService {
         shareReplay(1),
     );
 
-    private isVirtualKeyboardShownVKAPI$: Observable<boolean> | null =
-        this.getVirtualKeyboard()
-            ? fromEvent(this.getVirtualKeyboard(), 'geometrychange').pipe(
-                  map((event) => !!(event as { height?: number }).height),
-              )
-            : null;
-
-    private isVirtualKeyboardShownFallback$: Observable<boolean> = merge(
+    public isVirtualKeyboardShown$: Observable<boolean> = merge(
         fromEvent(document.body, 'focus', {
             capture: true,
             passive: true,
@@ -82,17 +77,14 @@ export class WindowService {
             passive: true,
         }),
     ).pipe(
+        withLatestFrom(this.isMobile$),
+        filter(([_, isMobile]) => isMobile),
         map(
-            (e) =>
+            ([e]) =>
                 e.type === 'focus' &&
                 (e?.target as Element)?.matches?.('input, textarea, select'),
         ),
-    );
 
-    public isVirtualKeyboardShown$: Observable<boolean> = (
-        this.isVirtualKeyboardShownVKAPI$ ??
-        this.isVirtualKeyboardShownFallback$
-    ).pipe(
         distinctUntilChanged(),
         switchMap((isOpen) => of(isOpen).pipe(delay(isOpen ? 0 : 50))),
         shareReplay(1),
