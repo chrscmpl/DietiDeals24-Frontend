@@ -13,6 +13,8 @@ import {
     shareReplay,
     startWith,
     switchMap,
+    tap,
+    throttleTime,
     withLatestFrom,
 } from 'rxjs';
 
@@ -20,6 +22,7 @@ import {
     providedIn: 'root',
 })
 export class WindowService {
+    private maxHeight = window.innerHeight;
     private styles!: HTMLStyleElement;
     private readonly matchMobile =
         this.mediaMatcher.matchMedia('(max-width: 768px)');
@@ -76,16 +79,25 @@ export class WindowService {
             capture: true,
             passive: true,
         }),
+        fromEvent(window, 'resize', { passive: true }).pipe(
+            throttleTime(100),
+            tap(() => {
+                if (this.maxHeight < window.innerHeight)
+                    this.maxHeight = window.innerHeight;
+            }),
+        ),
     ).pipe(
         withLatestFrom(this.isMobile$),
         filter(([_, isMobile]) => isMobile),
-        map(
-            ([e]) =>
-                e.type === 'focus' &&
-                (e?.target as Element)?.matches?.('input, textarea, select'),
+        map(([e]) =>
+            e.type === 'resize'
+                ? window.innerHeight < this.maxHeight - 100
+                : e.type === 'focus' &&
+                  (e?.target as Element)?.matches?.('input, textarea, select'),
         ),
 
         distinctUntilChanged(),
+        tap((isOpen) => console.log('isOpen', isOpen)),
         switchMap((isOpen) => of(isOpen).pipe(delay(isOpen ? 0 : 50))),
         shareReplay(1),
     );
@@ -95,10 +107,5 @@ export class WindowService {
         this.styles.innerHTML =
             '.dd24-smooth-scroll {scroll-behavior: smooth;}';
         document.head.appendChild(this.styles);
-    }
-
-    private getVirtualKeyboard() {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (window.navigator as any).virtualKeyboard;
     }
 }
