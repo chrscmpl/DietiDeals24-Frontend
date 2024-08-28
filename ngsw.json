@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1724838785378,
+  "timestamp": 1724839521402,
   "index": "/DietiDeals24-Frontend/index.html",
   "assetGroups": [
     {
@@ -48,7 +48,7 @@
     {
       "name": "themes",
       "installMode": "lazy",
-      "updateMode": "prefetch",
+      "updateMode": "lazy",
       "cacheQueryOptions": {
         "ignoreVary": true
       },
