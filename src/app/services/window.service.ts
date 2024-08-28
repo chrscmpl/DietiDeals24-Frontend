@@ -26,22 +26,24 @@ export class WindowService {
     private styles!: HTMLStyleElement;
     private readonly matchMobile =
         this.mediaMatcher.matchMedia('(max-width: 768px)');
-    private resize$ = new Subject<void>();
+    private throttledResize$ = new Subject<void>();
 
     constructor(
         private readonly mediaMatcher: MediaMatcher,
-        zone: NgZone,
+        private readonly zone: NgZone,
     ) {
         this.UIhiddenSUbject.next(true);
         this.initStyles();
 
-        zone.runOutsideAngular(() => {
+        this.zone.runOutsideAngular(() => {
             fromEvent(window, 'resize')
-                .pipe(throttleTime(500))
+                .pipe(throttleTime(1000))
                 .subscribe(() => {
-                    if (window.innerHeight > this.maxHeight)
-                        this.maxHeight = window.innerHeight;
-                    this.resize$.next();
+                    this.zone.run(() => {
+                        if (window.innerHeight > this.maxHeight)
+                            this.maxHeight = window.innerHeight;
+                        this.throttledResize$.next();
+                    });
                 });
         });
     }
@@ -93,7 +95,9 @@ export class WindowService {
             capture: true,
             passive: true,
         }),
-        this.resize$.pipe(map(() => window.innerHeight < this.maxHeight - 100)),
+        this.throttledResize$.pipe(
+            map(() => window.innerHeight < this.maxHeight - 100),
+        ),
     ).pipe(
         withLatestFrom(this.isMobile$),
         filter(([_, isMobile]) => isMobile),
