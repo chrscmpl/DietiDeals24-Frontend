@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1724847541067,
+  "timestamp": 1724848086040,
   "index": "/DietiDeals24-Frontend/index.html",
   "assetGroups": [
     {
@@ -38,7 +38,7 @@
         "/DietiDeals24-Frontend/chunk-ZY7KC37K.js",
         "/DietiDeals24-Frontend/favicon.ico",
         "/DietiDeals24-Frontend/index.html",
-        "/DietiDeals24-Frontend/main-6FTLXWJD.js",
+        "/DietiDeals24-Frontend/main-KX2BZYN6.js",
         "/DietiDeals24-Frontend/manifest.webmanifest",
         "/DietiDeals24-Frontend/polyfills-RT5I6R6G.js",
         "/DietiDeals24-Frontend/styles-SF2UTTIV.css"
@@ -455,8 +455,8 @@
     "/DietiDeals24-Frontend/chunk-ZRKX6LIS.js": "3d979da0c8736f080d772d8320c45b180b580f96",
     "/DietiDeals24-Frontend/chunk-ZY7KC37K.js": "f435e357f9825159097bd14c4984cef64f9be709",
     "/DietiDeals24-Frontend/favicon.ico": "1989b803ad98be3c6f06ec28ab935d7b392f3e17",
-    "/DietiDeals24-Frontend/index.html": "f944a181178086ebff192953cd0bb0fac31e53c5",
-    "/DietiDeals24-Frontend/main-6FTLXWJD.js": "bea931e8bcecd1717c13d292ce8126759b43f68c",
+    "/DietiDeals24-Frontend/index.html": "9cbee47a1b731ddce36f48dc6e13a66ac1a6f3a7",
+    "/DietiDeals24-Frontend/main-KX2BZYN6.js": "52f67950c4ff39327e649213de27b0eb8090ac25",
     "/DietiDeals24-Frontend/manifest.webmanifest": "c27d37d12867987f3f9b5dcb71b0ee77d9c9d05a",
     "/DietiDeals24-Frontend/media/Inter-roman.var-WIJJYAE4.woff2": "7a2602d2ebb08ce895e33addb6fe595f1029431e",
     "/DietiDeals24-Frontend/media/color-3LUHUBGQ.png": "ff4c4bcb2207891b292f544edb4da9d2df5d45cf",
