@@ -13,7 +13,7 @@ import {
     take,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { isEqual } from 'lodash-es';
+import { isEqual, set } from 'lodash-es';
 
 export type theme = 'light' | 'dark';
 
@@ -120,6 +120,10 @@ export class ThemeService {
             .pipe(skip(skipCount))
             .subscribe(this.onThemeChange.bind(this));
 
+        this.theme$
+            .pipe(take(1))
+            .subscribe(this.checkStorageIntegrity.bind(this));
+
         this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
         this.lightThemeVariation$.next(
             this.getThemeVariationFromStorage('light') ?? 'default',
@@ -127,8 +131,6 @@ export class ThemeService {
         this.darkThemeVariation$.next(
             this.getThemeVariationFromStorage('dark') ?? 'default',
         );
-
-        this.checkStorageIntegrity();
     }
 
     public setTheme(theme: theme | 'system'): void {
