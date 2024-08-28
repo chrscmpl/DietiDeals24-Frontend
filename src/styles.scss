@@ -9,16 +9,12 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
     }
 
     button {
         background: none;
         border: none;
-    }
-
-    button,
-    a {
-        -webkit-tap-highlight-color: transparent;
     }
 }
 
@@ -102,7 +98,7 @@
 
 html,
 body {
-    min-height: 100svh;
+    min-height: 100dvh;
 }
 
 body {
@@ -180,6 +176,10 @@ body {
 
 .error {
     color: var(--error-color);
+}
+
+.no-sel {
+    user-select: none;
 }
 
 .wk-nowrap {

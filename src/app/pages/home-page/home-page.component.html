@@ -46,7 +46,7 @@
                         }"
                     >
                     </p-button>
-                    <p class="carousel-text">
+                    <p class="carousel-text no-sel">
                         {{ item.message }}
                     </p>
                 </div>
@@ -54,7 +54,7 @@
         </p-carousel>
     }
 
-    <section class="trending-categories">
+    <section class="trending-categories no-sel">
         <h2 class="home-page-section-header">Trending Categories</h2>
         <div class="trending-categories-buttons">
             @if (
@@ -130,7 +130,7 @@
         </section>
     }
     <section class="trending-auctions">
-        <h2 class="home-page-section-header">Trending Auctions</h2>
+        <h2 class="home-page-section-header no-sel">Trending Auctions</h2>
         <dd24-auction-list requestKey="/home"></dd24-auction-list>
     </section>
 </main>

@@ -208,7 +208,6 @@ export class ThemeService {
 
     private onFirstThemeLoad(): void {
         this.checkStorageIntegrity();
-        this.clearUnusedThemesFromCache();
     }
 
     private checkStorageIntegrity(): void {
@@ -227,39 +226,5 @@ export class ThemeService {
 
         if (darkVariation && !this.darkThemeVariations.includes(darkVariation))
             this.setThemeVariation('dark', 'default');
-    }
-
-    private clearUnusedThemesFromCache(): void {
-        if (!window.caches) return;
-        // try {
-        //     this.theme$.pipe(take(1)).subscribe((currentTheme) => {
-        //         console.log('CURRENT THEME: ', currentTheme);
-        //         window.caches.keys().then((keys) => {
-        //             for (const themeCache of keys.filter((key) =>
-        //                 key.includes('themes'),
-        //             )) {
-        //                 window.caches.open(themeCache).then((cache) => {
-        //                     cache.keys().then((requests) => {
-        //                         console.log(requests);
-        //                         requests.forEach((r) => {
-        //                             if (
-        //                                 !r.url.endsWith(
-        //                                     `theme-${currentTheme}.css`,
-        //                                 )
-        //                             ) {
-        //                                 console.log('DELETING CACHE: ', r);
-        //                                 cache.delete(r).then((after) => {
-        //                                     console.log('AFTER: ', after);
-        //                                 });
-        //                             }
-        //                         });
-        //                     });
-        //                 });
-        //             }
-        //         });
-        //     });
-        // } catch (e) {
-        //     console.error(e);
-        // }
     }
 }

@@ -13,13 +13,13 @@
     padding: 0;
     background-color: var(--component-color);
 
-    min-height: max(98svh, 50rem);
+    min-height: max(98dvh, 50rem);
 
     @include viewports.mobile {
         @include layouts.grid(
             "nav" auto "info" 1fr "bottom-section" auto / 1fr
         );
-        height: 100svh;
+        height: 100dvh;
         min-height: 0;
         --auction-details-padding: 0.5rem;
     }
@@ -71,7 +71,7 @@
     margin-bottom: 0;
 
     @include viewports.mobile {
-        height: min(12rem, 20svh);
+        height: min(12rem, 20dvh);
     }
 }
 
@@ -172,7 +172,7 @@
 
     &:not(.auction-description-expanded) {
         @include viewports.notMobile {
-            max-height: max(21svh, 12rem);
+            max-height: max(21dvh, 12rem);
         }
     }
 }
