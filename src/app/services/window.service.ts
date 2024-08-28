@@ -1,8 +1,9 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import {
     Observable,
     ReplaySubject,
+    Subject,
     delay,
     distinctUntilChanged,
     filter,
@@ -13,7 +14,6 @@ import {
     shareReplay,
     startWith,
     switchMap,
-    tap,
     throttleTime,
     withLatestFrom,
 } from 'rxjs';
@@ -26,10 +26,24 @@ export class WindowService {
     private styles!: HTMLStyleElement;
     private readonly matchMobile =
         this.mediaMatcher.matchMedia('(max-width: 768px)');
+    private resize$ = new Subject<void>();
 
-    constructor(private readonly mediaMatcher: MediaMatcher) {
+    constructor(
+        private readonly mediaMatcher: MediaMatcher,
+        zone: NgZone,
+    ) {
         this.UIhiddenSUbject.next(true);
         this.initStyles();
+
+        zone.runOutsideAngular(() => {
+            fromEvent(window, 'resize')
+                .pipe(throttleTime(500))
+                .subscribe(() => {
+                    if (window.innerHeight > this.maxHeight)
+                        this.maxHeight = window.innerHeight;
+                    this.resize$.next();
+                });
+        });
     }
 
     public isSidebarVisible = false;
@@ -79,21 +93,20 @@ export class WindowService {
             capture: true,
             passive: true,
         }),
-        fromEvent(window, 'resize', { passive: true }).pipe(
-            throttleTime(100),
-            tap(() => {
-                if (this.maxHeight < window.innerHeight)
-                    this.maxHeight = window.innerHeight;
-            }),
-        ),
+        this.resize$.pipe(map(() => window.innerHeight < this.maxHeight - 100)),
     ).pipe(
         withLatestFrom(this.isMobile$),
         filter(([_, isMobile]) => isMobile),
-        map(([e]) =>
-            e.type === 'resize'
-                ? window.innerHeight < this.maxHeight - 100
+        map<(boolean | Event)[], boolean>(([e]) =>
+            typeof e === 'boolean'
+                ? e
                 : e.type === 'focus' &&
-                  (e?.target as Element)?.matches?.('input, textarea, select'),
+                  (e?.target as Element)?.matches?.(
+                      'input, textarea, select',
+                  ) &&
+                  !['checkbox', 'radio'].includes(
+                      (e?.target as Element)?.getAttribute('type') ?? '',
+                  ),
         ),
 
         distinctUntilChanged(),

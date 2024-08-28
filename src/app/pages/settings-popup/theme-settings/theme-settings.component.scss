@@ -1,7 +1,7 @@
 @use "layouts";
 
 .theme-settings {
-    @include layouts.flex(row, start, center, 2rem);
+    @include layouts.flex(row, start, center, 2rem, wrap);
 }
 
 .theme-selection {
