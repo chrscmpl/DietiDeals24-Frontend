@@ -127,6 +127,8 @@ export class ThemeService {
         this.darkThemeVariation$.next(
             this.getThemeVariationFromStorage('dark') ?? 'default',
         );
+
+        this.checkStorageIntegrity();
     }
 
     public setTheme(theme: theme | 'system'): void {
@@ -202,5 +204,23 @@ export class ThemeService {
             document.head
                 .querySelector('meta[name="theme-color"]')
                 ?.setAttribute('content', themeColor);
+    }
+
+    private checkStorageIntegrity(): void {
+        const theme = this.getSavedThemeFromStorage();
+        const lightVariation = this.getThemeVariationFromStorage('light');
+        const darkVariation = this.getThemeVariationFromStorage('dark');
+
+        if (theme && !['light', 'dark'].includes(theme))
+            this.setTheme('system');
+
+        if (
+            lightVariation &&
+            !this.lightThemeVariations.includes(lightVariation)
+        )
+            this.setThemeVariation('light', 'default');
+
+        if (darkVariation && !this.darkThemeVariations.includes(darkVariation))
+            this.setThemeVariation('dark', 'default');
     }
 }
