@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1724836255126,
+  "timestamp": 1724838785378,
   "index": "/DietiDeals24-Frontend/index.html",
   "assetGroups": [
     {
@@ -41,7 +41,18 @@
         "/DietiDeals24-Frontend/main-KYK6FYYX.js",
         "/DietiDeals24-Frontend/manifest.webmanifest",
         "/DietiDeals24-Frontend/polyfills-RT5I6R6G.js",
-        "/DietiDeals24-Frontend/styles-SF2UTTIV.css",
+        "/DietiDeals24-Frontend/styles-SF2UTTIV.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "themes",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
         "/DietiDeals24-Frontend/theme-dark.css",
         "/DietiDeals24-Frontend/theme-light-classic.css",
         "/DietiDeals24-Frontend/theme-light.css"
