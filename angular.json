@@ -46,6 +46,11 @@
                                 "input": "src/assets/theme/dark/variations/default.scss",
                                 "bundleName": "theme-dark",
                                 "inject": false
+                            },
+                            {
+                                "input": "src/assets/theme/dark/variations/alien.scss",
+                                "bundleName": "theme-dark-alien",
+                                "inject": false
                             }
                         ],
                         "stylePreprocessorOptions": {

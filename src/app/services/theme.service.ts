@@ -34,7 +34,7 @@ export class ThemeService {
     private renderer: Renderer2;
 
     public lightThemeVariations: ReadonlyArray<string> = ['default', 'classic'];
-    public darkThemeVariations: ReadonlyArray<string> = ['default'];
+    public darkThemeVariations: ReadonlyArray<string> = ['default', 'alien'];
 
     private matchDarkTheme = this.mediaMatcher.matchMedia(
         '(prefers-color-scheme: dark)',
