@@ -1,6 +1,5 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     Input,
@@ -16,7 +15,6 @@ import { FindCurrencyPipe } from '../../../pipes/find-currency.pipe';
     imports: [RouterLink, FindCurrencyPipe],
     templateUrl: './notification.component.html',
     styleUrl: './notification.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationComponent implements AfterViewInit {
     @Input({ required: true })

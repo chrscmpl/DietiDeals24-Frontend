@@ -13,7 +13,7 @@ import {
     take,
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { isEqual, set } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
 export type theme = 'light' | 'dark';
 

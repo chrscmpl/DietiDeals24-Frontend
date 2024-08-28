@@ -37,11 +37,12 @@ import { Subscription, take } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
 import { NavigationService } from '../../../services/navigation.service';
 import { WindowService } from '../../../services/window.service';
+import { defaults } from 'lodash-es';
 
 interface userDataForm {
     name: FormControl<string | null>;
     surname: FormControl<string | null>;
-    birthday: FormControl<string | null>;
+    birthday: FormControl<Date | null>;
     country: FormControl<string | null>;
     city: FormControl<string | null>;
 }
@@ -190,36 +191,36 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     private initForm(): void {
         this.registrationForm = this.formBuilder.group<registrationForm>({
             userData: this.formBuilder.group<userDataForm>({
-                name: new FormControl(null, {
+                name: new FormControl<string | null>(null, {
                     validators: [Validators.required],
                     updateOn: 'blur',
                 }),
-                surname: new FormControl(null, {
+                surname: new FormControl<string | null>(null, {
                     validators: [Validators.required],
                     updateOn: 'blur',
                 }),
-                birthday: new FormControl(null, {
+                birthday: new FormControl<Date | null>(null, {
                     validators: [
                         Validators.required,
                         this.validateBirthday.bind(this),
                     ],
                     updateOn: 'submit',
                 }),
-                country: new FormControl(null),
-                city: new FormControl(null, {
+                country: new FormControl<string | null>(null),
+                city: new FormControl<string | null>(null, {
                     validators: this.validateCity.bind(this),
                 }),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
-                email: new FormControl(null, {
+                email: new FormControl<string | null>(null, {
                     validators: [Validators.required, Validators.email],
                     updateOn: 'blur',
                 }),
-                username: new FormControl(null, {
+                username: new FormControl<string | null>(null, {
                     validators: [Validators.required],
                     updateOn: 'blur',
                 }),
-                password: new FormControl(null, {
+                password: new FormControl<string | null>(null, {
                     validators: [
                         Validators.required,
                         Validators.minLength(8),
@@ -227,7 +228,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                     ],
                     updateOn: 'blur',
                 }),
-                confirmPassword: new FormControl(null, {
+                confirmPassword: new FormControl<string | null>(null, {
                     validators: [
                         Validators.required,
                         this.validateConfirmPassword.bind(this),
@@ -236,7 +237,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                 }),
             }),
             privacyPolicy: this.formBuilder.group<privacyPolicyForm>({
-                accept: new FormControl(false, {
+                accept: new FormControl<boolean>(false, {
                     nonNullable: true,
                     validators: Validators.requiredTrue,
                 }),
@@ -292,10 +293,16 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
         this.error = '';
 
-        const newUser = {
-            ...this.registrationForm.value.userData,
-            ...this.registrationForm.value.credentials,
-        };
+        const newUser = defaults(
+            {
+                birthday:
+                    this.registrationForm.value.userData!.birthday!.toISOString(),
+            },
+            {
+                ...this.registrationForm.value.userData,
+                ...this.registrationForm.value.credentials,
+            },
+        );
 
         delete newUser.confirmPassword;
 

@@ -110,7 +110,10 @@ export class NotificationsService {
         );
         this.unreadNotificationsCount = 0;
         this.http
-            .post(`${environment.backendHost}/notifications/read`, {})
+            .post(
+                `${environment.backendHost}/notifications/mark-all-as-read`,
+                {},
+            )
             .subscribe();
     }
 
