@@ -1,11 +1,11 @@
 <div class="theme-settings">
-    <div class="theme-selection">
+    <div class="theme-selection" [formGroup]="themeForm">
         <div class="theme-entry">
             <p-radioButton
                 name="theme"
                 value="light"
                 inputId="theme-light"
-                [formControl]="themeControl"
+                formControlName="theme"
             />
             <label for="theme-light" class="ml-2"> Light </label>
         </div>
@@ -15,7 +15,7 @@
                 name="theme"
                 value="dark"
                 inputId="theme-dark"
-                [formControl]="themeControl"
+                formControlName="theme"
             />
             <label for="theme-dark" class="ml-2"> Dark </label>
         </div>
@@ -25,10 +25,24 @@
                 name="theme"
                 value="system"
                 inputId="theme-system"
-                [formControl]="themeControl"
+                formControlName="theme"
             />
             <label for="theme-system"> System </label>
         </div>
+
+        @for (option of themeVariationOptions; track $index) {
+            @if (currentTheme === option.theme) {
+                <div class="theme-variation-buttons-wrapper">
+                    <span>Theme variation</span>
+                    <p-selectButton
+                        class="theme-variation-buttons"
+                        [formControlName]="option.controlName"
+                        [options]="option.options"
+                        allowEmpty="false"
+                    />
+                </div>
+            }
+        }
     </div>
     @if (themeLoading$ | async) {
         <p-progressSpinner

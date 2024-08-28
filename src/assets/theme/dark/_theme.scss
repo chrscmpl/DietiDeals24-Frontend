@@ -1,0 +1,51 @@
+$primaryColor: #1eb377 !default;
+$primaryLightColor: #24bf81 !default;
+$primaryLighterColor: #29cc8b !default;
+$primaryLightestColor: #2bd993 !default;
+$primaryTextColor: #030712 !default;
+
+$highlightBg: rgba(34, 211, 238, 0.16) !default;
+$highlightTextColor: rgba(255, 255, 255, 0.87) !default;
+$highlightFocusBg: rgba($primaryColor, 0.24) !default;
+
+$secondaryColor: #1eb377 !default;
+$secondaryTextColor: #030712 !default;
+
+$sideColor: #18181b !default;
+$sideBorderColor: #27272a !default;
+
+$inputPlaceholderTextColor: #8c8c8d !default;
+
+$shade000: #ffffff !default;
+$shade50: #fafafa !default;
+$shade100: #f4f4f5 !default;
+$shade200: #e4e4e7 !default;
+$shade300: #d4d4d8 !default;
+$shade400: #a1a1aa !default;
+$shade500: #71717a !default;
+$shade600: #52525b !default;
+$shade700: #3f3f46 !default;
+$shade800: #27272a !default;
+$shade900: #18181b !default;
+$shade950: #111111 !default;
+
+$focusOutlineColor: $primaryLightestColor !default;
+$focusShadow: 0 0 0 0.1rem $focusOutlineColor !default;
+
+$secondaryButtonBg: $shade900 !default;
+$secondaryButtonTextColor: $shade000 !default;
+$secondaryButtonBorder: 1px solid $shade100 !default;
+$secondaryButtonHoverBg: #27272a !default;
+$secondaryButtonTextHoverColor: $shade000 !default;
+$secondaryButtonHoverBorderColor: $shade100 !default;
+$secondaryButtonActiveBg: #3f3f46 !default;
+$secondaryButtonTextActiveColor: $shade50 !default;
+$secondaryButtonActiveBorderColor: $shade100 !default;
+$secondaryButtonFocusShadow: none !default;
+
+$borderRadius: 8px !default;
+
+@import "./variables";
+@import "../fonts/fonts";
+@import "../theme-base/components";
+@import "./extensions";

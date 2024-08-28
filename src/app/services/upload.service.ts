@@ -59,9 +59,8 @@ export class UploadService {
                     this.nextUploadUrl = null;
                     const formData = new FormData();
                     formData.append('file', compressedFile);
-                    // this.http
-                    //     .put(url, formData)
-                    of(null)
+                    this.http
+                        .put(url, formData)
                         .pipe(
                             catchError((error) =>
                                 throwError(() => new UploadException(error)),
@@ -79,19 +78,18 @@ export class UploadService {
     }
 
     private getNextUploadUrl(): Observable<string> {
-        return of('https://example.com/upload');
-        // const nextUploadUrl = this.nextUploadUrl;
-        // if (nextUploadUrl) {
-        //     this.nextUploadUrl = null;
-        //     return of(nextUploadUrl);
-        // }
-        // return this.http
-        //     .get<string>(`${environment.backendHost}/upload-url`)
-        //     .pipe(
-        //         catchError((error) =>
-        //             throwError(() => new GetNextUploadUrlException(error)),
-        //         ),
-        //     );
+        const nextUploadUrl = this.nextUploadUrl;
+        if (nextUploadUrl) {
+            this.nextUploadUrl = null;
+            return of(nextUploadUrl);
+        }
+        return this.http
+            .get<string>(`${environment.backendHost}/upload-url`)
+            .pipe(
+                catchError((error) =>
+                    throwError(() => new GetNextUploadUrlException(error)),
+                ),
+            );
     }
 
     private compressFile(file: File): Observable<File> {

@@ -33,12 +33,17 @@
                             "node_modules/primeicons/primeicons.css",
                             "src/styles.scss",
                             {
-                                "input": "src/assets/theme/light/theme.scss",
+                                "input": "src/assets/theme/light/variations/default.scss",
                                 "bundleName": "theme-light",
                                 "inject": false
                             },
                             {
-                                "input": "src/assets/theme/dark/theme.scss",
+                                "input": "src/assets/theme/light/variations/classic.scss",
+                                "bundleName": "theme-light-classic",
+                                "inject": false
+                            },
+                            {
+                                "input": "src/assets/theme/dark/variations/default.scss",
                                 "bundleName": "theme-dark",
                                 "inject": false
                             }

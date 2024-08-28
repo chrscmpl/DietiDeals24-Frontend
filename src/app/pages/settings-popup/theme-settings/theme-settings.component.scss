@@ -11,3 +11,18 @@
         @include layouts.flex(row, start, center, 1ch);
     }
 }
+
+.theme-variation-buttons-wrapper {
+    @include layouts.flex(column, center, center, 0.2em);
+    border: var(--border);
+    border-radius: var(--border-radius-medium);
+    padding: 1ch;
+}
+
+:host ::ng-deep {
+    .theme-variation-buttons {
+        .p-button {
+            padding: 0.3em;
+        }
+    }
+}

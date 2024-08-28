@@ -1,0 +1,83 @@
+$textColor: #0c1929 !default;
+$textSecondaryColor: #707080 !default;
+$errorColor: #e22d4e !default;
+
+$inputTextColor: #495057 !default;
+
+$primaryColor: #2d7074 !default;
+$primaryDarkColor: #276368 !default;
+$primaryDarkerColor: #265e62 !default;
+$primaryTextColor: #ffffff !default;
+$secondaryColor: #37587e !default;
+$secondaryTextColor: #ffffff !default;
+
+$inputPlaceholderTextColor: #a4a8ab !default;
+$inputPadding: 0.75rem 0.75rem !default;
+$buttonPadding: 1rem 1.25rem !default;
+
+$borderRadius: 8px !default;
+
+$shade000: #ffffff !default;
+$shade50: #f8fafc !default;
+$shade100: #f1f5f9 !default;
+$shade200: #e2e8f0 !default;
+$shade300: #cbd5e1 !default;
+$shade400: #94a3b8 !default;
+$shade500: #64748b !default;
+$shade600: #475569 !default;
+$shade700: #334155 !default;
+$shade800: #1e293b !default;
+$shade900: #0f172a !default;
+$shade950: #0c1929 !default;
+
+$highlightBg: #f0fdfa !default;
+$highlightTextColor: $primaryDarkerColor !default;
+$highlightFocusBg: rgba($primaryColor, 0.24) !default;
+
+$secondaryButtonBg: #ffffff !default;
+$secondaryButtonTextColor: $textColor !default;
+$secondaryButtonBorder: 1px solid #aeb4ba !default;
+$secondaryButtonHoverBg: #eff0f1 !default;
+$secondaryButtonTextHoverColor: $textColor !default;
+$secondaryButtonHoverBorderColor: #aeb4ba !default;
+$secondaryButtonActiveBg: #dfe3e3 !default;
+$secondaryButtonTextActiveColor: $textColor !default;
+$secondaryButtonActiveBorderColor: #aeb4ba !default;
+$secondaryButtonFocusShadow: none !default;
+
+$toggleButtonBg: none !default;
+$toggleButtonBorder: 2px solid $primaryColor !default;
+$toggleButtonTextColor: $primaryColor !default;
+$toggleButtonIconColor: $primaryColor !default;
+$toggleButtonHoverBg: rgba($primaryColor, 0.1) !default;
+$toggleButtonHoverBorderColor: $primaryDarkerColor !default;
+$toggleButtonTextHoverColor: $primaryColor !default;
+$toggleButtonIconHoverColor: $primaryTextColor !default;
+$toggleButtonActiveBg: $primaryColor !default;
+$toggleButtonActiveBorderColor: $primaryColor !default;
+$toggleButtonTextActiveColor: $primaryTextColor !default;
+$toggleButtonIconActiveColor: $primaryTextColor !default;
+$toggleButtonActiveHoverBg: $primaryDarkerColor !default;
+$toggleButtonActiveHoverBorderColor: $primaryDarkerColor !default;
+$toggleButtonTextActiveHoverColor: $primaryTextColor !default;
+$toggleButtonIconActiveHoverColor: $primaryTextColor !default;
+
+.p-togglebutton.p-highlight .p-button-label {
+    background: none;
+}
+
+.p-selectbutton .p-button.p-highlight {
+    color: $primaryColor;
+}
+
+.p-selectbutton .p-button::before {
+    left: 0.15rem;
+    top: 0.15rem;
+    width: calc(100% - 0.3rem);
+    height: calc(100% - 0.3rem);
+}
+
+@import "./_variables";
+@import "../fonts/fonts";
+@import "../theme-base/_components";
+@import "./extensions/_extensions";

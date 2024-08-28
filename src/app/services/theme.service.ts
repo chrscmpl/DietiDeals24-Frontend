@@ -19,6 +19,10 @@ export type theme = 'light' | 'dark';
 
 type themeStatus = {
     theme: theme;
+    variations: {
+        light: string;
+        dark: string;
+    };
     isSystemPreference: boolean;
 };
 
@@ -28,6 +32,9 @@ type themeStatus = {
 export class ThemeService {
     private themeLink: HTMLLinkElement | null = null;
     private renderer: Renderer2;
+
+    public lightThemeVariations: ReadonlyArray<string> = ['default', 'classic'];
+    public darkThemeVariations: ReadonlyArray<string> = ['default'];
 
     private matchDarkTheme = this.mediaMatcher.matchMedia(
         '(prefers-color-scheme: dark)',
@@ -43,27 +50,52 @@ export class ThemeService {
         );
 
     private manuallySetTheme$: ReplaySubject<theme | null> =
-        new ReplaySubject<theme | null>();
+        new ReplaySubject<theme | null>(1);
+
+    private lightThemeVariation$: ReplaySubject<string> =
+        new ReplaySubject<string>(1);
+
+    private darkThemeVariation$: ReplaySubject<string> =
+        new ReplaySubject<string>(1);
 
     public themeStatus$: Observable<themeStatus> = combineLatest([
         this.systemPreference$,
         this.manuallySetTheme$,
+        this.lightThemeVariation$,
+        this.darkThemeVariation$,
     ]).pipe(
-        map(([systemPreference, manuallySetTheme]) => {
-            const theme = manuallySetTheme ?? systemPreference;
-
-            return {
-                theme,
-                isSystemPreference: !manuallySetTheme,
-            };
-        }),
         debounceTime(100),
+        map(
+            ([
+                systemPreference,
+                manuallySetTheme,
+                lightVariation,
+                darkVariation,
+            ]) => {
+                const theme = manuallySetTheme ?? systemPreference;
+
+                return {
+                    theme,
+                    variations: {
+                        light: lightVariation ?? 'default',
+                        dark: darkVariation ?? 'default',
+                    },
+                    isSystemPreference: !manuallySetTheme,
+                };
+            },
+        ),
         distinctUntilChanged(isEqual),
         shareReplay(1),
     );
 
-    private theme$: Observable<theme> = this.themeStatus$.pipe(
-        map((status: themeStatus) => status.theme),
+    private theme$: Observable<string> = this.themeStatus$.pipe(
+        map((status: themeStatus) => {
+            const variation =
+                status.theme === 'light'
+                    ? status.variations.light
+                    : status.variations.dark;
+            return `${status.theme}${variation && variation !== 'default' ? `-${variation}` : ''}`;
+        }),
         distinctUntilChanged(isEqual),
         shareReplay(1),
     );
@@ -89,21 +121,41 @@ export class ThemeService {
             .subscribe(this.onThemeChange.bind(this));
 
         this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
-    }
-
-    public getSavedThemeFromStorage(): theme | null {
-        return localStorage.getItem('theme') as theme | null;
-    }
-
-    public saveThemeToStorage(theme: theme | null): void {
-        if (theme) localStorage.setItem('theme', theme);
-        else localStorage.removeItem('theme');
+        this.lightThemeVariation$.next(
+            this.getThemeVariationFromStorage('light') ?? 'default',
+        );
+        this.darkThemeVariation$.next(
+            this.getThemeVariationFromStorage('dark') ?? 'default',
+        );
     }
 
     public setTheme(theme: theme | 'system'): void {
         const isSystemPreference = theme === 'system';
         this.saveThemeToStorage(isSystemPreference ? null : theme);
         this.manuallySetTheme$.next(isSystemPreference ? null : theme);
+    }
+
+    public setThemeVariation(theme: theme, variation: string): void {
+        this.saveThemeVariationToStorage(theme, variation);
+        if (theme === 'light') this.lightThemeVariation$.next(variation);
+        else this.darkThemeVariation$.next(variation);
+    }
+
+    private getSavedThemeFromStorage(): theme | null {
+        return localStorage.getItem('theme') as theme | null;
+    }
+
+    private saveThemeToStorage(theme: theme | null): void {
+        if (theme) localStorage.setItem('theme', theme);
+        else localStorage.removeItem('theme');
+    }
+
+    private getThemeVariationFromStorage(theme: theme): string | null {
+        return localStorage.getItem(`${theme}-theme-variation`);
+    }
+
+    private saveThemeVariationToStorage(theme: theme, variation: string): void {
+        localStorage.setItem(`${theme}-theme-variation`, variation);
     }
 
     private createStyleSheetLink(): HTMLLinkElement {
@@ -119,7 +171,7 @@ export class ThemeService {
         this.renderer.removeChild(document.head, link);
     }
 
-    private onThemeChange(theme: theme): void {
+    private onThemeChange(theme: string): void {
         this._themeLoading$.next(true);
         const href = `./theme-${theme}.css`;
 
