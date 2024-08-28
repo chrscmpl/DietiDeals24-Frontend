@@ -120,9 +120,7 @@ export class ThemeService {
             .pipe(skip(skipCount))
             .subscribe(this.onThemeChange.bind(this));
 
-        this.theme$
-            .pipe(take(1))
-            .subscribe(this.checkStorageIntegrity.bind(this));
+        this.theme$.pipe(take(1)).subscribe(this.onFirstThemeLoad.bind(this));
 
         this.manuallySetTheme$.next(this.getSavedThemeFromStorage());
         this.lightThemeVariation$.next(
@@ -208,6 +206,11 @@ export class ThemeService {
                 ?.setAttribute('content', themeColor);
     }
 
+    private onFirstThemeLoad(): void {
+        this.checkStorageIntegrity();
+        this.clearUnusedThemesFromCache();
+    }
+
     private checkStorageIntegrity(): void {
         const theme = this.getSavedThemeFromStorage();
         const lightVariation = this.getThemeVariationFromStorage('light');
@@ -224,5 +227,39 @@ export class ThemeService {
 
         if (darkVariation && !this.darkThemeVariations.includes(darkVariation))
             this.setThemeVariation('dark', 'default');
+    }
+
+    private clearUnusedThemesFromCache(): void {
+        if (!window.caches) return;
+        // try {
+        //     this.theme$.pipe(take(1)).subscribe((currentTheme) => {
+        //         console.log('CURRENT THEME: ', currentTheme);
+        //         window.caches.keys().then((keys) => {
+        //             for (const themeCache of keys.filter((key) =>
+        //                 key.includes('themes'),
+        //             )) {
+        //                 window.caches.open(themeCache).then((cache) => {
+        //                     cache.keys().then((requests) => {
+        //                         console.log(requests);
+        //                         requests.forEach((r) => {
+        //                             if (
+        //                                 !r.url.endsWith(
+        //                                     `theme-${currentTheme}.css`,
+        //                                 )
+        //                             ) {
+        //                                 console.log('DELETING CACHE: ', r);
+        //                                 cache.delete(r).then((after) => {
+        //                                     console.log('AFTER: ', after);
+        //                                 });
+        //                             }
+        //                         });
+        //                     });
+        //                 });
+        //             }
+        //         });
+        //     });
+        // } catch (e) {
+        //     console.error(e);
+        // }
     }
 }

@@ -97,7 +97,6 @@ export class WindowService {
         ),
 
         distinctUntilChanged(),
-        tap((isOpen) => console.log('isOpen', isOpen)),
         switchMap((isOpen) => of(isOpen).pipe(delay(isOpen ? 0 : 50))),
         shareReplay(1),
     );

@@ -150,6 +150,7 @@ body {
         border: none;
         border-radius: 0;
         width: 100%;
+        background-color: var(--background-color);
     }
 
     h1 {
@@ -284,6 +285,10 @@ i {
 
 .p-divider-content {
     background-color: var(--component-color);
+
+    @include viewports.mobile {
+        background-color: var(--background-color);
+    }
 }
 
 .custom-dialog {
