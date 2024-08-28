@@ -6,7 +6,7 @@
         [style]="{ height: '100%', width: '100%' }"
         [page]="imageCarouselPage"
         (onPage)="onImageCarouselNavigation($event)"
-        showIndicators="false"
+        [showIndicators]="carouselItems.length > 1"
         ><ng-template let-picture pTemplate="item">
             <div class="carousel-item-wrapper">
                 <div

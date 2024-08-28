@@ -419,6 +419,44 @@
                 }
             }
         }
+
+        .p-carousel-content {
+            @include layouts.grid("." minmax(0, 1fr) / minmax(0, 1fr));
+
+            > * {
+                grid-area: 1/1;
+            }
+        }
+
+        .p-carousel-indicators {
+            justify-self: center;
+            align-self: end;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.5);
+            gap: 0.5rem;
+            border-radius: var(--border-radius-large);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .p-carousel-indicator {
+            margin: 0;
+
+            button {
+                border-radius: 5000px;
+                width: 1rem;
+                height: 0.5rem;
+                background-color: #888888 !important;
+            }
+
+            button:hover {
+                background-color: #777777 !important;
+            }
+
+            &.p-highlight button {
+                background-color: white !important;
+            }
+        }
     }
 
     .dd24-carousel-overlay {
@@ -427,6 +465,18 @@
         }
         .carousel-item-mask {
             cursor: pointer !important;
+            width: 100dvw;
+        }
+
+        .p-carousel-indicators {
+            gap: 0.75rem;
+        }
+
+        .p-carousel-indicator {
+            button {
+                width: 2rem;
+                height: 1rem;
+            }
         }
 
         @include viewports.notMobile() {

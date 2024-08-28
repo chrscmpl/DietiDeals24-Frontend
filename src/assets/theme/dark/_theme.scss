@@ -45,6 +45,13 @@ $secondaryButtonFocusShadow: none !default;
 
 $borderRadius: 8px !default;
 
+.p-carousel
+    .p-carousel-indicators
+    .p-carousel-indicator:not(.p-highlight)
+    button:hover {
+    background: $shade500;
+}
+
 @import "./variables";
 @import "../fonts/fonts";
 @import "../theme-base/components";
