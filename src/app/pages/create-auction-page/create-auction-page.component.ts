@@ -57,6 +57,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuctionCreationDTO } from '../../DTOs/auction.dto';
 import { omit } from 'lodash-es';
 import { NavigationService } from '../../services/navigation.service';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -79,6 +80,7 @@ import { NavigationService } from '../../services/navigation.service';
         InputNumberModule,
         CalendarModule,
         DividerModule,
+        KeyFilterModule,
         CurrencyDecimalDigitsPipe,
         CurrencySymbolPipe,
         CurrencyPipe,

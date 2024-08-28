@@ -38,6 +38,7 @@ import { RegistrationException } from '../../../exceptions/registration.exceptio
 import { NavigationService } from '../../../services/navigation.service';
 import { WindowService } from '../../../services/window.service';
 import { defaults } from 'lodash-es';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -80,6 +81,7 @@ interface registrationForm {
         PasswordModule,
         DialogModule,
         CheckboxModule,
+        KeyFilterModule,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',
@@ -206,9 +208,11 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                     ],
                     updateOn: 'submit',
                 }),
-                country: new FormControl<string | null>(null),
+                country: new FormControl<string | null>(null, {
+                    validators: Validators.required,
+                }),
                 city: new FormControl<string | null>(null, {
-                    validators: this.validateCity.bind(this),
+                    validators: Validators.required,
                 }),
             }),
             credentials: this.formBuilder.group<credentialsForm>({
@@ -384,17 +388,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
             (e instanceof KeyboardEvent && e.key === 'Enter')
         )
             this.privacyPolicyDialogVisible = true;
-    }
-
-    private validateCity(control: AbstractControl<string>): ValidationErrors {
-        const countryControl = this.registrationForm
-            ?.get('userData')
-            ?.get('country');
-        if (!countryControl?.value) {
-            if (!control.value) return {};
-            return { noCountrySelected: true };
-        } else if (!control.value) return { required: true };
-        return {};
     }
 
     private validateBirthday(

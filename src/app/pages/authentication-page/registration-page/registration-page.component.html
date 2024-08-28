@@ -44,6 +44,7 @@
                             class="p-fluid"
                             type="text"
                             pInputText
+                            pKeyFilter="alpha"
                             formControlName="name"
                             name="name"
                             placeholder="Your name"
@@ -67,6 +68,7 @@
                             class="p-fluid"
                             type="text"
                             pInputText
+                            pKeyFilter="alpha"
                             formControlName="surname"
                             name="surname"
                             placeholder="Your surname"
@@ -109,8 +111,16 @@
                     </dd24-input>
                 </div>
                 <div class="input">
-                    <label for="country">Country</label>
-                    <dd24-input controlName="country">
+                    <label for="country">Country*</label>
+                    <dd24-input
+                        controlName="country"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'a country is required'
+                            }
+                        ]"
+                    >
                         <p-autoComplete
                             class="p-fluid"
                             formControlName="country"
@@ -124,6 +134,7 @@
                             [minLength]="2"
                             (completeMethod)="completeCountries($event)"
                             inputId="country"
+                            pKeyFilter="alpha"
                         >
                         </p-autoComplete>
                     </dd24-input>
@@ -135,7 +146,7 @@
                             registrationForm.controls.userData.controls.city
                                 .disabled
                         "
-                        >City</label
+                        >City*</label
                     >
                     <dd24-input
                         controlName="city"
@@ -147,8 +158,7 @@
                             },
                             {
                                 validation: 'required',
-                                message:
-                                    'a city is required, if a country is selected'
+                                message: 'a city is required'
                             }
                         ]"
                     >
@@ -162,6 +172,7 @@
                             [forceSelection]="true"
                             (completeMethod)="completeCities($event)"
                             inputId="city"
+                            pKeyFilter="alpha"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>
@@ -216,6 +227,7 @@
                             name="username"
                             placeholder="An unique username"
                             id="username"
+                            pKeyFilter="alphanum"
                         />
                     </dd24-input>
                 </div>
