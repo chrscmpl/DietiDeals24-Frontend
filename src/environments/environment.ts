@@ -12,4 +12,5 @@ export const environment = {
     auctionMinDuration: 1 * 24 * 60 * 60 * 1000,
     auctionMaxPictures: 4,
     auctionMaxPictureSize: 5 * 1024 * 1024,
+    auctionPendingTime: 3 * 24 * 60 * 60 * 1000,
 };

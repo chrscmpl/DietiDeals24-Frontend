@@ -72,7 +72,11 @@
         <p-button
             class="checkout-submit-btn"
             type="submit"
-            label="Confirm and bid"
+            [label]="
+                operation === OPERATIONS.bid
+                    ? 'confirm and bid'
+                    : 'confirm and accept'
+            "
             [style]="{ padding: '1rem 2rem' }"
             [loading]="submissionLoading"
         ></p-button>

@@ -48,7 +48,7 @@ export class AuctionPreviewResolver implements Resolve<Auction> {
 
         if (this.authentication.loggedUser)
             auction.user = new UserSummary({
-                id: this.authentication.loggedUser.id,
+                userId: this.authentication.loggedUser.id,
                 username: this.authentication.loggedUser.username,
                 profilePictureUrl:
                     this.authentication.loggedUser.profilePictureUrl ?? '',

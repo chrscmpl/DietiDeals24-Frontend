@@ -97,7 +97,7 @@ export class UserSummary {
     private _location: GeographicalLocation;
 
     public constructor(dto: UserSummaryDTO) {
-        this._id = dto.id;
+        this._id = dto.userId;
         this._username = dto.username;
         this._profilePictureUrl = dto.profilePictureUrl;
         this._location = { country: dto.country, city: dto.city };

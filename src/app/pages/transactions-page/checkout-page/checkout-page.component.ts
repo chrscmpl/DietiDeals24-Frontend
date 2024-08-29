@@ -206,6 +206,8 @@ export class CheckoutPageComponent implements OnInit {
                     : "You won't be able to undo this action later",
             acceptButtonStyleClass: 'p-button-danger',
             accept: this.startOperation.bind(this),
+            dismissableMask: true,
+            closeOnEscape: true,
         });
     }
 

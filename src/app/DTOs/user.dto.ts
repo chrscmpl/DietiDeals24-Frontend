@@ -17,7 +17,7 @@ export interface AuthenticatedUserDTO {
 }
 
 export type UserSummaryDTO = {
-    id: string;
+    userId: string;
     username: string;
     profilePictureUrl: string;
     country: string;

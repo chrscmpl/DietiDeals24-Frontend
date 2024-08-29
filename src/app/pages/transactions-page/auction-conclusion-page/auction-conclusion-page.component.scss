@@ -23,3 +23,38 @@
 .conclusion-page-auction-card {
     margin: 0 -2rem;
 }
+
+.conclusion-page-buttons-wrapper {
+    border-top: var(--border);
+    border-bottom: var(--border);
+    margin: 0 -2rem;
+    padding: 1rem 2rem;
+    @include layouts.flex(column, start, start, 1rem);
+}
+
+.conclusion-page-timer {
+    @include layouts.flex(row, start, center);
+    color: var(--danger-color);
+    font-size: var(--font-size-large);
+    line-height: var(--line-height-large);
+
+    i {
+        font-size: var(--font-size-large);
+        line-height: var(--line-height-large);
+        margin-right: 1ch;
+    }
+}
+
+.conclusion-page-bid {
+    @include layouts.flex(row, start, center);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
+    margin-left: calc(1.5rem + 1ch);
+}
+
+.conclusion-page-btns {
+    @include layouts.flex(row, start, center, 1ch);
+    margin-left: calc(1.5rem + 1ch);
+    font-size: var(--font-size-large);
+}

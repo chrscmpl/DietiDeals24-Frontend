@@ -14,4 +14,30 @@
             [skipLocationChange]="true"
         ></dd24-auction-card>
     }
+
+    <div class="conclusion-page-buttons-wrapper">
+        <span class="conclusion-page-timer">
+            <i class="pi pi-clock"></i>
+            <dd24-timer [endDate]="endTime" />
+            &nbsp;left to choose
+        </span>
+        <span class="conclusion-page-bid">
+            Winning bid:
+            {{ auction.winningBid | currency: auction.currency }} by&nbsp;
+            <dd24-user-preview [user]="auction.winner!" />
+        </span>
+        <div class="conclusion-page-btns">
+            <p-button
+                label="Accept"
+                [style]="{ padding: '1rem 2rem' }"
+                [routerLink]="['checkout']"
+            />
+            <p-button
+                label="Reject"
+                outlined="true"
+                [style]="{ padding: '1rem 2rem' }"
+                (onClick)="showRejectDialog()"
+            />
+        </div>
+    </div>
 </main>
