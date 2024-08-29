@@ -52,5 +52,10 @@
 
     .google-login-btn button {
         @include layouts.flex(row, center, center, 1ch);
+        font-size: var(--font-size-small);
+        background-color: white;
+        color: black;
+        padding: 0.5rem;
+        font-weight: 500;
     }
 }

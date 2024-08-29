@@ -4,6 +4,7 @@ import {
     Observable,
     ReplaySubject,
     Subject,
+    Subscription,
     delay,
     distinctUntilChanged,
     filter,
@@ -14,6 +15,7 @@ import {
     shareReplay,
     startWith,
     switchMap,
+    take,
     throttleTime,
     withLatestFrom,
 } from 'rxjs';
@@ -22,11 +24,13 @@ import {
     providedIn: 'root',
 })
 export class WindowService {
-    private maxHeight = window.innerHeight;
     private styles!: HTMLStyleElement;
     private readonly matchMobile =
         this.mediaMatcher.matchMedia('(max-width: 768px)');
-    private throttledResize$ = new Subject<void>();
+
+    private maxHeight = window.innerHeight;
+    private mobileResize$ = new Subject<void>();
+    private resizeSubscription?: Subscription;
 
     constructor(
         private readonly mediaMatcher: MediaMatcher,
@@ -35,16 +39,20 @@ export class WindowService {
         this.UIhiddenSUbject.next(true);
         this.initStyles();
 
-        this.zone.runOutsideAngular(() => {
-            fromEvent(window, 'resize')
-                .pipe(throttleTime(1000))
-                .subscribe(() => {
-                    this.zone.run(() => {
-                        if (window.innerHeight > this.maxHeight)
-                            this.maxHeight = window.innerHeight;
-                        this.throttledResize$.next();
-                    });
+        this.isMobile$.subscribe((isMobile) => {
+            if (isMobile)
+                this.zone.runOutsideAngular(() => {
+                    this.resizeSubscription = fromEvent(window, 'resize')
+                        .pipe(throttleTime(500))
+                        .subscribe(() => {
+                            this.zone.run(() => {
+                                if (window.innerHeight > this.maxHeight)
+                                    this.maxHeight = window.innerHeight;
+                                this.mobileResize$.next();
+                            });
+                        });
                 });
+            else this.resizeSubscription?.unsubscribe();
         });
     }
 
@@ -95,7 +103,7 @@ export class WindowService {
             capture: true,
             passive: true,
         }),
-        this.throttledResize$.pipe(
+        this.mobileResize$.pipe(
             map(() => window.innerHeight < this.maxHeight - 100),
         ),
     ).pipe(
