@@ -42,15 +42,19 @@
         </span>
 
         <span class="auction-card-time-left wk-nowrap">
-            @if ((windowService.isMobile$ | async) === false) {
-                Time left:
-            }
-            <dd24-timer
-                [endDate]="auction.endTime"
-                style="font-weight: var(--font-weight-bolder)"
-            ></dd24-timer>
-            @if ((windowService.isMobile$ | async) === false) {
-                (Until {{ auction.endTime | localDate }})
+            @if (!auction.isOver) {
+                @if ((windowService.isMobile$ | async) === false) {
+                    Time left:
+                }
+                <dd24-timer
+                    [endDate]="auction.endTime"
+                    style="font-weight: var(--font-weight-bolder)"
+                ></dd24-timer>
+                @if ((windowService.isMobile$ | async) === false) {
+                    (Until {{ auction.endTime | localDate }})
+                }
+            } @else {
+                <span>Ended on {{ auction.endTime | localDate }}</span>
             }
         </span>
     </div>

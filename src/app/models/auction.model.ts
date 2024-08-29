@@ -132,6 +132,10 @@ export abstract class Auction {
         this._lastBidder = winner;
     }
 
+    public get isOver(): boolean {
+        return this._isOver;
+    }
+
     public abstract get winningBid(): number | null;
 
     public abstract get winnerId(): string | null;

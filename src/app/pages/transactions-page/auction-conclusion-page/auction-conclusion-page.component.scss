@@ -1,0 +1,25 @@
+@use "layouts";
+@use "viewports";
+@use "box";
+
+.conclusion-page {
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+    color: var(--text-color-1);
+    padding: 2rem;
+    padding-top: 4rem;
+    background-color: var(--background-color);
+
+    @include viewports.mobile {
+        height: 100%;
+    }
+}
+
+.conclusion-page-title {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
+}
+
+.conclusion-page-auction-card {
+    margin: 0 -2rem;
+}

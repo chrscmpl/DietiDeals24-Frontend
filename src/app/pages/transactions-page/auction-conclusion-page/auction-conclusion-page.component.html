@@ -1,1 +1,17 @@
-<p>auction-conclusion-page works!</p>
+<main class="conclusion-page">
+    @if ((windowService.isMobile$ | async) === false) {
+        <h1 class="conclusion-page-title">This auction has ended</h1>
+    }
+    @if (auction) {
+        <dd24-auction-card
+            class="conclusion-page-auction-card"
+            [auction]="auction"
+            [cardStyle]="{
+                borderRadius: 0,
+                borderLeft: 'none',
+                borderRight: 'none'
+            }"
+            [skipLocationChange]="true"
+        ></dd24-auction-card>
+    }
+</main>

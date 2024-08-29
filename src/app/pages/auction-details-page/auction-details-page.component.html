@@ -163,17 +163,21 @@
                     }
                 </p>
                 <p class="auction-time">
-                    <span>Time left: </span>
-                    <dd24-timer
-                        [endDate]="auction.endTime"
-                        style="
-                            font-weight: var(--font-weight-bolder);
-                            line-height: normal;
-                        "
-                    ></dd24-timer>
-                    <span class="auction-end-date"
-                        >Until {{ auction.endTime | localDate }}</span
-                    >
+                    @if (!auction.isOver) {
+                        <span>Time left: </span>
+                        <dd24-timer
+                            [endDate]="auction.endTime"
+                            style="
+                                font-weight: var(--font-weight-bolder);
+                                line-height: normal;
+                            "
+                        ></dd24-timer>
+                        <span class="auction-end-date"
+                            >Until {{ auction.endTime | localDate }}</span
+                        >
+                    } @else {
+                        <span>Ended on {{ auction.endTime | localDate }}</span>
+                    }
                 </p>
 
                 @if ((windowService.isMobile$ | async) === false) {
