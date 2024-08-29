@@ -1,0 +1,41 @@
+@font-face {
+    font-family: "dd24-custom-icons";
+    src: url("fonts/dd24-custom-icons.eot?o7di2");
+    src:
+        url("fonts/dd24-custom-icons.eot?o7di2#iefix")
+            format("embedded-opentype"),
+        url("fonts/dd24-custom-icons.ttf?o7di2") format("truetype"),
+        url("fonts/dd24-custom-icons.woff?o7di2") format("woff"),
+        url("fonts/dd24-custom-icons.svg?o7di2#dd24-custom-icons") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="dd24icon-"],
+[class*=" dd24icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "dd24-custom-icons" !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+
+    font-size: 1.8em !important;
+    line-height: normal !important;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.dd24icon-user-fill:before {
+    content: "\e901";
+}
+.dd24icon-inbox-fill:before {
+    content: "\e902";
+}
+.dd24icon-home-fill:before {
+    content: "\e903";
+}

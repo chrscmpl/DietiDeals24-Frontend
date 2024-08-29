@@ -2,6 +2,8 @@
 
 .mobile-navbar {
     @include layouts.flex(row, space-between, center);
+    height: 3rem;
+    overflow: hidden;
     padding: 10px 4%;
     width: 100%;
     border-top: var(--border);

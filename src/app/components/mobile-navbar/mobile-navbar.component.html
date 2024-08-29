@@ -1,12 +1,23 @@
 <nav class="mobile-navbar">
-    <a class="nav-entry" routerLink="/home" routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon medium-icon pi pi-home"></i
+    <a
+        class="nav-entry"
+        routerLink="/home"
+        routerLinkActive="nav-entry-active"
+        #homeLink="routerLinkActive"
+        ><i
+            class="nav-link-icon medium-icon pi pi-home"
+            [class.dd24icon-home-fill]="homeLink.isActive"
+        ></i
     ></a>
     <a
         class="nav-entry"
         routerLink="/auctions"
         routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon medium-icon pi pi-search"></i
+        #auctionsLink="routerLinkActive"
+        ><i
+            class="nav-link-icon medium-icon pi pi-search"
+            [style]="auctionsLink.isActive ? { fontWeight: '900' } : {}"
+        ></i
     ></a>
     <a
         class="nav-entry"
@@ -20,8 +31,12 @@
             class="nav-entry"
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
+            #notificationsLinkWithBadge="routerLinkActive"
             ><i
                 class="nav-link-icon medium-icon pi pi-inbox"
+                [class.dd24icon-inbox-fill]="
+                    notificationsLinkWithBadge.isActive
+                "
                 pBadge
                 [value]="
                     (notificationsService.unreadNotificationsCount$ | async) ??
@@ -38,7 +53,11 @@
             class="nav-entry"
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
-            ><i class="nav-link-icon medium-icon pi pi-inbox"></i
+            #notificationsLink="routerLinkActive"
+            ><i
+                class="nav-link-icon medium-icon pi pi-inbox"
+                [class.dd24icon-inbox-fill]="notificationsLink.isActive"
+            ></i
         ></a>
     }
     <p-avatar
@@ -46,7 +65,9 @@
         [icon]="
             (profilePicture$ | async) !== null && !showImagePlaceholder
                 ? ''
-                : 'pi pi-user'
+                : yourPageLink.isActive
+                  ? 'dd24icon-user-fill'
+                  : 'pi pi-user'
         "
         [shape]="
             (profilePicture$ | async) !== null && !showImagePlaceholder
@@ -61,5 +82,6 @@
         (onImageError)="onImageError()"
         routerLink="/your-page"
         routerLinkActive="nav-entry-active"
+        #yourPageLink="routerLinkActive"
     />
 </nav>
