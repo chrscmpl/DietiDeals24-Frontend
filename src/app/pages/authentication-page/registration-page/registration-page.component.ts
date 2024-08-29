@@ -369,10 +369,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     }
 
     public completeCities(event: AutoCompleteCompleteEvent): void {
-        if (event.query.length < 2) {
-            if (this.filteredCities.length > 2) this.filteredCities = [];
-            return;
-        }
         this.filteredCities = this.cities.filter((city) =>
             city.toLowerCase().includes(event.query.toLowerCase()),
         );

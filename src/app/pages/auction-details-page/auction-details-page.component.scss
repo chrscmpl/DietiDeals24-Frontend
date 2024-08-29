@@ -293,7 +293,7 @@
 }
 
 .carousel-icon {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
 
     @include viewports.mobile {
@@ -371,8 +371,8 @@
 
         .p-carousel-prev,
         .p-carousel-next {
-            height: 2.5rem;
-            width: 2.5rem;
+            height: 3rem;
+            width: 3rem;
             background-color: rgba(0, 0, 0, 0.5);
             --p-focus-ring-color: rgba(255, 255, 255, 0.5);
             z-index: 100000;

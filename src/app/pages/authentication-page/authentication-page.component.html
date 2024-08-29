@@ -16,6 +16,8 @@
             <div class="spacer"></div>
         }
         <router-outlet></router-outlet>
-        <div class="spacer"></div>
+        @if ((windowService.isMobile$ | async) === false) {
+            <div class="spacer"></div>
+        }
     </main>
 </div>
