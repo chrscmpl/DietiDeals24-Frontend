@@ -14,7 +14,7 @@
         text-decoration: none;
 
         .nav-link-icon {
-            color: var(--basic-affordances-color);
+            color: var(--mobile-tab-icon-color);
             cursor: pointer;
 
             &.create {
@@ -23,13 +23,8 @@
         }
 
         &.nav-entry-active {
-            background: radial-gradient(
-                var(--border-color-transparent) 0%,
-                transparent 100%
-            );
-
             .nav-link-icon:not(.create) {
-                text-shadow: var(--active-icon-shadow);
+                color: var(--text-color-1);
             }
         }
     }
@@ -39,16 +34,15 @@
     .p-avatar {
         background: transparent;
         .p-avatar-icon {
-            color: var(--basic-affordances-color);
+            color: var(--mobile-tab-icon-color);
             font-size: var(--mobile-icon-size);
             border-radius: 0;
             overflow: visible;
         }
     }
     .nav-entry-active {
-        background-color: var(--border-color-transparent);
         .p-avatar-icon {
-            text-shadow: var(--active-icon-shadow);
+            color: var(--text-color-1);
         }
     }
 

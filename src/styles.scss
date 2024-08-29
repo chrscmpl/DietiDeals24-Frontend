@@ -68,12 +68,7 @@
 
     --mobile-icon-size: clamp(16px, 2rem, 32px);
 
-    --active-icon-shadow: 0px 0.3px 0px var(--basic-affordances-color),
-        0px -0.3px 0px var(--basic-affordances-color),
-        -0.3px -0.3px 0px var(--basic-affordances-color),
-        -0.3px 0.3px 0px var(--basic-affordances-color),
-        0.3px 0.3px 0px var(--basic-affordances-color),
-        0.3px -0.3px 0px var(--basic-affordances-color);
+    --mobile-tab-icon-color: var(--mobile-icon-color);
 
     font-family: var(--font);
     font-size: var(--font-size-medium);
