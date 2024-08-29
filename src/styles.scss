@@ -70,12 +70,6 @@
 
     --mobile-tab-icon-color: var(--mobile-icon-color);
 
-    font-family: var(--font);
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-medium);
-    color: var(--text-color-1);
-
     @media (prefers-color-scheme: dark) {
         --background-color: #111111;
     }
@@ -99,6 +93,11 @@ body {
 body {
     --background-color: var(--surface-ground);
     background-color: var(--background-color);
+    font-family: var(--font);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-medium);
+    color: var(--text-color-1);
 }
 
 .dd24-main-page {

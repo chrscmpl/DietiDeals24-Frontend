@@ -10,8 +10,9 @@
     background-color: var(--component-color);
 
     .nav-entry {
-        border-radius: 5000px;
         aspect-ratio: 1/1;
+        height: var(--mobile-icon-size);
+        overflow-x: hidden;
         @include layouts.center;
         text-decoration: none;
 
