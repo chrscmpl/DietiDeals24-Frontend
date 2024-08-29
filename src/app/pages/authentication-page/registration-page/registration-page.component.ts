@@ -202,11 +202,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                     updateOn: 'blur',
                 }),
                 birthday: new FormControl<Date | null>(null, {
-                    validators: [
-                        Validators.required,
-                        this.validateBirthday.bind(this),
-                    ],
-                    updateOn: 'submit',
+                    validators: [Validators.required],
                 }),
                 country: new FormControl<string | null>(null, {
                     validators: Validators.required,
@@ -388,19 +384,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
             (e instanceof KeyboardEvent && e.key === 'Enter')
         )
             this.privacyPolicyDialogVisible = true;
-    }
-
-    private validateBirthday(
-        control: AbstractControl<string>,
-    ): ValidationErrors {
-        if (!control.value) return {};
-        const birthday = new Date(control.value);
-
-        if (isNaN(birthday.getTime())) return { pattern: true };
-        if (birthday < this.minBirthdayDate) return { min: true };
-        if (birthday > this.maxBirthdayDate) return { max: true };
-
-        return {};
     }
 
     private validateConfirmPassword(

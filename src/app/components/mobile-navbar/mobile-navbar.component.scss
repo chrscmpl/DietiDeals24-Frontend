@@ -12,7 +12,7 @@
     .nav-entry {
         aspect-ratio: 1/1;
         height: var(--mobile-icon-size);
-        overflow-x: hidden;
+        overflow: hidden;
         @include layouts.center;
         text-decoration: none;
 

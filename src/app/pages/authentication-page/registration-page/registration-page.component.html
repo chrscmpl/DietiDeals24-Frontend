@@ -84,14 +84,6 @@
                             {
                                 validation: 'required',
                                 message: 'a birthday is required'
-                            },
-                            {
-                                validation: 'max',
-                                message: 'you must be at least 18 years old'
-                            },
-                            {
-                                validation: ['min', 'pattern'],
-                                message: 'this date is invalid'
                             }
                         ]"
                     >
@@ -130,8 +122,8 @@
                             [suggestions]="filteredCountries"
                             optionLabel="name"
                             optionValue="code"
-                            [forceSelection]="true"
-                            [minLength]="2"
+                            forceSelection="true"
+                            minLength="2"
                             (completeMethod)="completeCountries($event)"
                             inputId="country"
                             pKeyFilter="alpha"
@@ -169,10 +161,11 @@
                             placeholder="The city you live in"
                             emptyMessage="No cities found"
                             [suggestions]="filteredCities"
-                            [forceSelection]="true"
+                            forceSelection="true"
                             (completeMethod)="completeCities($event)"
                             inputId="city"
                             pKeyFilter="alpha"
+                            minLength="2"
                         ></p-autoComplete>
                     </dd24-input>
                 </div>
@@ -228,6 +221,7 @@
                             placeholder="An unique username"
                             id="username"
                             pKeyFilter="alphanum"
+                            maxlength="30"
                         />
                     </dd24-input>
                 </div>
