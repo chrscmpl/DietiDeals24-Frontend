@@ -63,17 +63,13 @@
     <p-avatar
         class="avatar nav-entry"
         [icon]="
-            (profilePicture$ | async) !== null && !showImagePlaceholder
+            !showImagePlaceholder
                 ? ''
                 : yourPageLink.isActive
                   ? 'dd24icon-user-fill'
                   : 'pi pi-user'
         "
-        [shape]="
-            (profilePicture$ | async) !== null && !showImagePlaceholder
-                ? 'circle'
-                : 'square'
-        "
+        [shape]="showImagePlaceholder ? 'square' : 'circle'"
         [image]="
             showImagePlaceholder
                 ? undefined
@@ -81,6 +77,7 @@
         "
         (onImageError)="onImageError()"
         routerLink="/your-page"
+        [styleClass]="showImagePlaceholder ? '' : 'using-picture'"
         routerLinkActive="nav-entry-active"
         #yourPageLink="routerLinkActive"
     />

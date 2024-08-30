@@ -38,6 +38,7 @@
 
 :host ::ng-deep {
     .p-avatar {
+        box-sizing: content-box;
         background: transparent;
         .p-avatar-icon {
             color: var(--mobile-tab-icon-color);
@@ -46,7 +47,18 @@
             overflow: visible;
         }
     }
+
+    .p-avatar.using-picture {
+        height: calc(var(--mobile-icon-size) - 4px);
+        width: calc(var(--mobile-icon-size) - 4px);
+        margin-top: 2px;
+    }
+
     .nav-entry-active {
+        .p-avatar.using-picture {
+            margin-top: 0;
+            border: 2px solid var(--text-color-1);
+        }
         .p-avatar-icon {
             color: var(--text-color-1);
         }
