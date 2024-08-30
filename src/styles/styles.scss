@@ -100,6 +100,20 @@ body {
     color: var(--text-color-1);
 }
 
+@include viewports.mobile {
+    .medium-icon {
+        font-size: var(--mobile-icon-size);
+    }
+
+    body {
+        user-select: none;
+    }
+
+    .mobile-select {
+        user-select: auto;
+    }
+}
+
 .dd24-main-page {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
     font-size: var(--font-size-medium);
@@ -158,22 +172,12 @@ body {
     }
 }
 
-@include viewports.mobile {
-    .medium-icon {
-        font-size: var(--mobile-icon-size);
-    }
-}
-
 .danger {
     color: var(--danger-color);
 }
 
 .error {
     color: var(--error-color);
-}
-
-.no-sel {
-    user-select: none;
 }
 
 .wk-nowrap {

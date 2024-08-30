@@ -17,6 +17,7 @@ import {
 import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';
 import { AuthenticationService } from '../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'dd24-sidebar',
@@ -101,6 +102,7 @@ export class SidebarComponent implements OnInit {
                             this.authentication.logout();
                             this.hideSidebar();
                         },
+                        routerLink: ['/'],
                     });
                 }
                 return items;

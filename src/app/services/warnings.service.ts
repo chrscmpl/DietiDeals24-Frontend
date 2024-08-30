@@ -45,6 +45,7 @@ export class WarningsService {
             summary:
                 'As this transaction is fake, you can use this example IBAN',
             detail: 'IT60X0542811101000000123456',
+            styleClass: 'mobile-select',
             life: WarningsService.TRANSACTION_WARNING_LIFE,
         });
     }
