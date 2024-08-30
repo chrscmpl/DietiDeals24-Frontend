@@ -29,32 +29,72 @@
     border-bottom: var(--border);
     margin: 0 -2rem;
     padding: 1rem 2rem;
-    @include layouts.flex(column, start, start, 1rem);
+    background-color: var(--component-color);
+    @include layouts.grid($align-items: center, $gap: 1rem);
+
+    @include viewports.mobile {
+        border: none;
+        flex-grow: 1;
+        padding: 0 2rem;
+        background: none;
+        grid-template-rows: 1fr auto auto;
+    }
 }
 
 .conclusion-page-timer {
-    @include layouts.flex(row, start, center);
     color: var(--danger-color);
     font-size: var(--font-size-large);
     line-height: var(--line-height-large);
 
+    > * {
+        width: max-content;
+    }
+
     i {
         font-size: var(--font-size-large);
         line-height: var(--line-height-large);
-        margin-right: 1ch;
+    }
+
+    @include viewports.mobile {
+        font-size: var(--font-size-small);
+        line-height: var(--line-height-small);
+        text-align: center;
+
+        i {
+            font-size: var(--font-size-small);
+            line-height: var(--line-height-small);
+        }
     }
 }
 
 .conclusion-page-bid {
-    @include layouts.flex(row, start, center);
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
-    margin-left: calc(1.5rem + 1ch);
+    width: 100%;
+
+    @include viewports.mobile {
+        grid-row: 1;
+        text-align: center;
+        border: var(--border);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        background-color: var(--component-color);
+    }
+}
+
+@include viewports.mobile {
+    .conclusion-page-bid-amount {
+        color: var(--accent-color-1);
+    }
 }
 
 .conclusion-page-btns {
     @include layouts.flex(row, start, center, 1ch);
-    margin-left: calc(1.5rem + 1ch);
     font-size: var(--font-size-large);
+
+    @include viewports.mobile {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
 }

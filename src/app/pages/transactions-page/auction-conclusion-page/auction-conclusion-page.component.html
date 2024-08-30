@@ -17,14 +17,22 @@
 
     <div class="conclusion-page-buttons-wrapper">
         <span class="conclusion-page-timer">
-            <i class="pi pi-clock"></i>
+            <i class="pi pi-clock"></i>&nbsp;
             <dd24-timer [endDate]="endTime" />
-            &nbsp;left to choose
+            left to choose
         </span>
-        <span class="conclusion-page-bid">
-            Winning bid:
-            {{ auction.winningBid | currency: auction.currency }} by&nbsp;
-            <dd24-user-preview [user]="auction.winner!" />
+        <span class="conclusion-page-bid"
+            ><span>
+                Winning bid:
+                <span class="conclusion-page-bid-amount">{{
+                    auction.winningBid | currency: auction.currency
+                }}</span>
+                by&nbsp;
+            </span>
+            <dd24-user-preview
+                [user]="auction.winner!"
+                style="display: inline-block; width: min-content"
+            />
         </span>
         <div class="conclusion-page-btns">
             <p-button
