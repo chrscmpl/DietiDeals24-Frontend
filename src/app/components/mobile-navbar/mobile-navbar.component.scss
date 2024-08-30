@@ -1,19 +1,22 @@
 @use "layouts";
 
 .mobile-navbar {
-    @include layouts.flex(row, space-between, center);
-    height: 3rem;
+    @include layouts.flex(row, space-between, start);
+    height: calc(var(--mobile-icon-size) * 2);
     overflow: hidden;
-    padding: 10px 4%;
+    padding: 0;
     width: 100%;
     border-top: var(--border);
     background-color: var(--component-color);
 
     .nav-entry {
-        aspect-ratio: 1/1;
-        height: var(--mobile-icon-size);
+        width: 2ch;
+        flex-grow: 1;
+        font-size: var(--mobile-icon-size);
+        height: calc(var(--mobile-icon-size) + 20px);
+        @include layouts.flex(column, start, center);
         overflow: hidden;
-        @include layouts.center;
+        padding: 10px 0;
         text-decoration: none;
 
         .nav-link-icon {
