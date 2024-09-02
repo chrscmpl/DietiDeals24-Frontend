@@ -14,7 +14,6 @@ import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
 import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
-import { paymentMethodBuilder } from '../helpers/builders/payment-method-builder';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
 import {
@@ -25,6 +24,7 @@ import {
 import { environment } from '../../environments/environment';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
+import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -35,6 +35,7 @@ export class PaymentService {
     constructor(
         private readonly authentication: AuthenticationService,
         private readonly http: HttpClient,
+        private readonly deserializer: PaymentMethodDeserializer,
     ) {
         merge([
             this.authentication.isLogged$,
@@ -91,7 +92,7 @@ export class PaymentService {
                           >(`${environment.backendHost}/payments/methods`)
                           .pipe(
                               map((dtos) =>
-                                  paymentMethodBuilder.buildArray(dtos),
+                                  this.deserializer.deserializeArray(dtos),
                               ),
                           ),
             ),

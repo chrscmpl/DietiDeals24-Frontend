@@ -10,12 +10,12 @@ import {
     tap,
 } from 'rxjs';
 
-type Factory<Entity> = (input: any) => Entity[];
+type DeserializerFn<Entity> = (input: any) => Entity[];
 
 export interface PaginatedRequestParams<Entity> {
     http: HttpClient;
     url: string;
-    factory?: Factory<Entity>;
+    deserializer?: DeserializerFn<Entity>;
     queryParameters: any;
     pageNumber: number;
     pageSize: number;
@@ -30,7 +30,7 @@ export class PaginatedRequest<Entity> {
     private readonly queryParameters: any;
     private readonly http: HttpClient;
     private readonly url: string;
-    private readonly factory?: Factory<Entity>;
+    private readonly deserializer?: DeserializerFn<Entity>;
 
     private dataSubject: ReplaySubject<Entity[]> = new ReplaySubject<Entity[]>(
         1,
@@ -45,7 +45,7 @@ export class PaginatedRequest<Entity> {
         this.data$ = this.createDataObservable();
         this.http = params.http;
         this.url = params.url;
-        this.factory = params.factory;
+        this.deserializer = params.deserializer;
         this.queryParameters = params.queryParameters;
         this._pageSize = params.pageSize;
         this.pageNumber = params.pageNumber;
@@ -77,9 +77,9 @@ export class PaginatedRequest<Entity> {
 
     private newRequest(): Observable<Entity[]> {
         if (this.wasMaximumResultsExceeded()) return of([]);
-        if (this.factory) {
+        if (this.deserializer) {
             return this.makeHttpRequest().pipe(
-                map((data) => (this.factory as Factory<Entity>)(data)),
+                map((data) => this.deserializer?.(data) ?? data),
             );
         }
         return this.makeHttpRequest();

@@ -4,9 +4,9 @@ import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
-import { notificationsBuilder } from '../helpers/builders/notification-builder';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
+import { NotificationDeserializer } from '../deserializers/notification.deserializer';
 
 @Injectable({
     providedIn: 'root',
@@ -38,14 +38,17 @@ export class NotificationsService {
     constructor(
         private readonly http: HttpClient,
         private readonly authentication: AuthenticationService,
+        private readonly deserializer: NotificationDeserializer,
     ) {
         this.request = new PaginatedRequestManager({
             http: this.http,
             url: `${environment.backendHost}/notifications/all`,
-            factory: (res: NotificationResponse): DisplayableNotification[] => {
+            deserializer: (
+                res: NotificationResponse,
+            ): DisplayableNotification[] => {
                 this.notificationsCount = res.notificationsCounter;
                 this.unreadNotificationsCount = res.unreadNotifications;
-                return notificationsBuilder.buildArray(
+                return this.deserializer.deserializeArray(
                     res.notifications.filter(
                         (dto) =>
                             this.notifications.find((n) => n.id === dto.id) ===

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedRequestParams } from '../helpers/paginated-request';
-import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
 import { map, Observable, Subscription } from 'rxjs';
@@ -10,12 +9,13 @@ import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
 import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
+import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 
 export type RequestKey = string;
 
 export type auctionsPaginationParams = Omit<
     PaginatedRequestParams<Auction>,
-    'http' | 'factory' | 'url' | 'queryParameters'
+    'http' | 'deserializer' | 'url' | 'queryParameters'
 > & {
     queryParameters: AuctionSearchParameters;
 };
@@ -29,7 +29,10 @@ export class AuctionsService {
         PaginatedRequestManager<Auction>
     >();
 
-    public constructor(private readonly http: HttpClient) {}
+    public constructor(
+        private readonly http: HttpClient,
+        private readonly deserializer: AuctionDeserializer,
+    ) {}
 
     public set(key: RequestKey, params: auctionsPaginationParams): void {
         const request = this.requestsMap.get(key);
@@ -92,7 +95,7 @@ export class AuctionsService {
                     params: { id },
                 },
             )
-            .pipe(map((dto) => auctionBuilder.buildSingle(dto)));
+            .pipe(map((dto) => this.deserializer.deserialize(dto)));
     }
 
     private getRequest(key: RequestKey): PaginatedRequestManager<Auction> {
@@ -113,7 +116,8 @@ export class AuctionsService {
         return Object.assign(params, {
             http: this.http,
             url: `${environment.backendHost}/auctions/search`,
-            factory: (dtos: AuctionDTO[]) => auctionBuilder.buildArray(dtos),
+            deserializer: (dtos: AuctionDTO[]) =>
+                this.deserializer.deserializeArray(dtos),
         });
     }
 }

@@ -14,7 +14,6 @@ import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
 import { AuctionCreationDTO, AuctionDTO } from '../DTOs/auction.dto';
 import { environment } from '../../environments/environment';
-import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { AuctionConclusionDTO } from '../DTOs/auction-conclusion.dto';
 import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
@@ -32,6 +31,7 @@ import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Categories, CategoriesService } from './categories.service';
 import { UploadedFile } from '../models/uploaded-file.model';
 import { AuctionCreationException } from '../exceptions/auction-creation.exception';
+import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -113,6 +113,7 @@ export class AuctioneerService {
         private readonly auth: AuthenticationService,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
+        private deserializer: AuctionDeserializer,
     ) {
         this.auth.isLogged$.subscribe(() => {
             OwnActiveAuctionsCacheBuster$.next();
@@ -252,7 +253,7 @@ export class AuctioneerService {
         return this.http
             .get<AuctionDTO[]>(`${environment.backendHost}/auctions/own-active`)
             .pipe(
-                map((dtos) => auctionBuilder.buildArray(dtos)),
+                map((dtos) => this.deserializer.deserializeArray(dtos)),
                 catchError(() => of([])),
             );
     }

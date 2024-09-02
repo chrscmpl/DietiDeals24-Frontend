@@ -7,8 +7,8 @@ import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { AuthenticationService } from './authentication.service';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
 import { AuctionDTO } from '../DTOs/auction.dto';
-import { auctionBuilder } from '../helpers/builders/auction-builder';
 import { Auction } from '../models/auction.model';
+import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 
 export const ActiveBidsCacheBuster$ = new Subject<void>();
 
@@ -19,6 +19,7 @@ export class BidService {
     constructor(
         private readonly http: HttpClient,
         private readonly auth: AuthenticationService,
+        private readonly deserializer: AuctionDeserializer,
     ) {
         this.auth.isLogged$.subscribe((isLogged) => {
             ActiveBidsCacheBuster$.next();
@@ -54,7 +55,7 @@ export class BidService {
         return this.http
             .get<AuctionDTO[]>(`${environment.backendHost}/bids/active`)
             .pipe(
-                map((dtos) => auctionBuilder.buildArray(dtos)),
+                map((dtos) => this.deserializer.deserializeArray(dtos)),
                 catchError(() => of([])),
             );
     }
