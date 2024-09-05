@@ -1,14 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { Observable, of, switchMap, take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { WindowService } from '../../../services/window.service';
 import { PaymentMethodOptionComponent } from '../../../components/payment-method-option/payment-method-option.component';
-import {
-    ChosenPaymentMethodDTO,
-    UnauthorizedPaymentMethodRegistrationDTO,
-} from '../../../DTOs/payment-method.dto';
+
 import {
     FormBuilder,
     FormControl,
@@ -39,6 +36,14 @@ import { AuctionConclusionOptions } from '../../../enums/auction-conclusion-opti
 import { PaymentAuthorizationException } from '../../../exceptions/payment-authorization.exception';
 import { BidPlacementException } from '../../../exceptions/bid-placement.exception';
 import { BidAcceptanceException } from '../../../exceptions/bid-acceptance.exception';
+import {
+    UnauthorizedCreditCard,
+    UnauthorizedIBAN,
+    UnauthorizedPaymentMethod,
+} from '../../../models/unauthorized-payment-method.model';
+import { AuthorizedPaymentMethod } from '../../../models/authorized-payment-method.model';
+import { BidCreationData } from '../../../models/bid-creation-data.model';
+import { AuctionConclusionData } from '../../../models/auction-conclusion-data.model';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<{ id: string } | PaymentMethodType | null>;
@@ -165,20 +170,29 @@ export class CheckoutPageComponent implements OnInit {
         );
     }
 
-    private getSavedPaymentMethod() {
-        return {
-            paymentMethodId: (
-                this.chosenPaymentMethodForm.get('chosenPaymentMethod')
-                    ?.value as { id: string }
-            ).id,
-        };
+    private getSavedPaymentMethodId(): string {
+        return this.chosenPaymentMethodForm.get('chosenPaymentMethod')
+            ?.value as string;
     }
 
-    private getNewPaymentMethod() {
-        return this.chosenPaymentMethodForm
+    private getNewPaymentMethod(): UnauthorizedPaymentMethod | null {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const unauthorizedPaymentMethod: any = this.chosenPaymentMethodForm
             .get('newPaymentMethod')
-            ?.get('newMethod')
-            ?.value as UnauthorizedPaymentMethodRegistrationDTO;
+            ?.get('newMethod')?.value;
+        const month = unauthorizedPaymentMethod.expirationDate?.split('/')[0];
+        const year = Number(
+            `20${unauthorizedPaymentMethod.expirationDate?.split('/')[1]}`,
+        );
+        if (!unauthorizedPaymentMethod) return null;
+        return unauthorizedPaymentMethod.type === PaymentMethodType.IBAN
+            ? new UnauthorizedIBAN(unauthorizedPaymentMethod.iban)
+            : new UnauthorizedCreditCard(
+                  unauthorizedPaymentMethod.ownerName,
+                  unauthorizedPaymentMethod.cardNumber,
+                  new Date(year, month),
+                  unauthorizedPaymentMethod.cvv,
+              );
     }
 
     private getSave(): boolean {
@@ -221,39 +235,40 @@ export class CheckoutPageComponent implements OnInit {
             });
     }
 
-    private getPaymentMethod$(): Observable<ChosenPaymentMethodDTO> {
+    private getPaymentMethod$(): Observable<string | AuthorizedPaymentMethod> {
         return (
             !this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
             )
-                ? of(this.getSavedPaymentMethod())
-                : this.paymentService
-                      .authorizePayment(this.getNewPaymentMethod())
-                      .pipe(
-                          map((newPaymentMethod) => {
-                              const key = this.getSave()
-                                  ? 'paymentMethodToBeSaved'
-                                  : 'OneTimePaymentMethod';
-                              return { [key]: newPaymentMethod };
-                          }),
-                      )
-        ) as Observable<ChosenPaymentMethodDTO>;
+                ? of(this.getSavedPaymentMethodId())
+                : this.paymentService.authorizePayment(
+                      this.getNewPaymentMethod()!,
+                  )
+        ) as Observable<string | AuthorizedPaymentMethod>;
     }
 
     private performOperation$(
-        paymentMethod: ChosenPaymentMethodDTO,
+        paymentMethod: string | AuthorizedPaymentMethod,
     ): Observable<unknown> {
         return this.operation === TransactionOperation.bid
-            ? this.bidService.placeBid({
-                  auctionId: this.auction.id,
-                  bidAmount: this.bidAmount,
-                  ...paymentMethod,
-              })
-            : this.auctioneerService.concludeAuction({
-                  choice: AuctionConclusionOptions.accept,
-                  auctionId: this.auction.id,
-                  ...paymentMethod,
-              });
+            ? this.bidService.placeBid(
+                  new BidCreationData(
+                      this.auction.id,
+                      this.bidAmount,
+                      typeof paymentMethod === 'string'
+                          ? { id: paymentMethod }
+                          : { data: paymentMethod, save: this.getSave() },
+                  ),
+              )
+            : this.auctioneerService.concludeAuction(
+                  new AuctionConclusionData(
+                      this.auction.id,
+                      AuctionConclusionOptions.accept,
+                      typeof paymentMethod === 'string'
+                          ? { id: paymentMethod }
+                          : { data: paymentMethod, save: this.getSave() },
+                  ),
+              );
     }
 
     private onOperationSuccess() {

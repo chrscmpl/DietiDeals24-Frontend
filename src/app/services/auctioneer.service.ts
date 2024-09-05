@@ -12,14 +12,13 @@ import {
 } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
-import { AuctionCreationDTO, AuctionDTO } from '../DTOs/auction.dto';
+import { AuctionDTO } from '../DTOs/auction.dto';
 import { environment } from '../../environments/environment';
-import { AuctionConclusionDTO } from '../DTOs/auction-conclusion.dto';
 import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
 import { AuctionCreationData } from '../models/auction-creation-data.model';
-import { ToReactiveForm } from '../typeUtils/ToForm';
+import { ToReactiveForm } from '../typeUtils/to-reactive-form';
 import {
     AbstractControl,
     FormBuilder,
@@ -32,6 +31,9 @@ import { Categories, CategoriesService } from './categories.service';
 import { UploadedFile } from '../models/uploaded-file.model';
 import { AuctionCreationException } from '../exceptions/auction-creation.exception';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
+import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
+import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
+import { AuctionConclusionSerializer } from '../serializers/auction-conclusion.serializer';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -113,7 +115,9 @@ export class AuctioneerService {
         private readonly auth: AuthenticationService,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
-        private deserializer: AuctionDeserializer,
+        private readonly deserializer: AuctionDeserializer,
+        private readonly auctionCreationSerializer: AuctionCreationSerializer,
+        private readonly auctionConclusionSerializer: AuctionConclusionSerializer,
     ) {
         this.auth.isLogged$.subscribe(() => {
             OwnActiveAuctionsCacheBuster$.next();
@@ -197,7 +201,7 @@ export class AuctioneerService {
     }
 
     public createAuction(
-        auction: AuctionCreationDTO,
+        auction: AuctionCreationData,
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.createAuctionObservable(auction).subscribe(cb);
@@ -207,12 +211,16 @@ export class AuctioneerService {
         cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
     })
     private createAuctionObservable(
-        auction: AuctionCreationDTO,
+        auction: AuctionCreationData,
     ): Observable<unknown> {
         return this.http
-            .post(`${environment.backendHost}/auctions`, auction, {
-                responseType: 'text',
-            })
+            .post(
+                `${environment.backendHost}/auctions`,
+                this.auctionCreationSerializer.serialize(auction),
+                {
+                    responseType: 'text',
+                },
+            )
             .pipe(
                 catchError((e) =>
                     throwError(() => new AuctionCreationException(e)),
@@ -228,12 +236,16 @@ export class AuctioneerService {
         cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
     })
     public concludeAuction(
-        conclusionOptions: AuctionConclusionDTO,
+        conclusionOptions: AuctionConclusionData,
     ): Observable<unknown> {
         return this.http
-            .post(`${environment.backendHost}/conclude`, conclusionOptions, {
-                responseType: 'text',
-            })
+            .post(
+                `${environment.backendHost}/conclude`,
+                this.auctionConclusionSerializer.serialize(conclusionOptions),
+                {
+                    responseType: 'text',
+                },
+            )
             .pipe(
                 catchError((e) =>
                     throwError(() =>

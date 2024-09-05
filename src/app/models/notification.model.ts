@@ -1,5 +1,5 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
-import { routerLinkType } from '../typeUtils/routerLinkType';
+import { routerLinkType } from '../typeUtils/router-link-type';
 import { Auction } from './auction.model';
 
 export interface DisplayableNotification {

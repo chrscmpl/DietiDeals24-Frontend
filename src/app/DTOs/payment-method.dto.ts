@@ -23,6 +23,10 @@ export interface UnauthorizedCreditCardRegistrationDTO {
     cvv: string;
 }
 
+export interface CreditCardAuthorizationDataDTO {
+    token: string;
+}
+
 interface AuthorizedCreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
     last4digits: string;

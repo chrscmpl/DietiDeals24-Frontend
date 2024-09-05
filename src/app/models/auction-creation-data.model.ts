@@ -6,8 +6,8 @@ export interface AuctionCreationData {
     category: string;
     details: {
         title: string;
-        conditions: string;
-        description: string;
+        conditions: string | null | undefined;
+        description: string | null | undefined;
         country: string;
         city: string;
         startingBid: number;

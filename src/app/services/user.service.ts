@@ -5,12 +5,16 @@ import { environment } from '../../environments/environment';
 import { map, Observable } from 'rxjs';
 import { UserSummaryDTO } from '../DTOs/user.dto';
 import { Cacheable } from 'ts-cacheable';
+import { UserSummaryDeserializer } from '../deserializers/user-summary.deserializer';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
-    constructor(private readonly http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly summaryDeserializer: UserSummaryDeserializer,
+    ) {}
 
     @Cacheable({ maxCacheCount: 16 })
     public getSummary(id: string): Observable<UserSummary> {
@@ -19,6 +23,6 @@ export class UserService {
                 `${environment.backendHost}/profile/public-view`,
                 { params: { id } },
             )
-            .pipe(map((dto) => new UserSummary(dto)));
+            .pipe(map((dto) => this.summaryDeserializer.deserialize(dto)));
     }
 }

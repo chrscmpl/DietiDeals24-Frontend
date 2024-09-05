@@ -24,6 +24,7 @@ import { LoginException } from '../exceptions/login.exception';
 import { GetUserDataException } from '../exceptions/get-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';
 import { EmailVerificationException } from '../exceptions/email-verification.exception';
+import { AuthenticatedUserDeserializer } from '../deserializers/authenticated-user.deserializer';
 
 @Injectable({
     providedIn: 'root',
@@ -47,7 +48,10 @@ export class AuthenticationService {
     private readonly loggedUserSubject = new ReplaySubject<void>(1);
     private readonly isLoggedSubject = new ReplaySubject<void>(1);
 
-    constructor(private readonly http: HttpClient) {
+    constructor(
+        private readonly http: HttpClient,
+        private readonly deserializer: AuthenticatedUserDeserializer,
+    ) {
         this.isLoggedSubject.next();
         if (AuthenticationService.authorizationToken)
             this.getUserDataObservable().subscribe();
@@ -128,7 +132,9 @@ export class AuthenticationService {
                 `${environment.backendHost}/profile/owner-view`,
             )
             .pipe(
-                map((dto: AuthenticatedUserDTO) => new AuthenticatedUser(dto)),
+                map((dto: AuthenticatedUserDTO) =>
+                    this.deserializer.deserialize(dto),
+                ),
                 tap(this.setLoggedUser.bind(this)),
                 catchError((e) => {
                     this.setInitialized();

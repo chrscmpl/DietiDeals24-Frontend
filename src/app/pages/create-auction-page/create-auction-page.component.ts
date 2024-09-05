@@ -58,6 +58,7 @@ import { AuctionCreationDTO } from '../../DTOs/auction.dto';
 import { omit } from 'lodash-es';
 import { NavigationService } from '../../services/navigation.service';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { AuctionCreationData } from '../../models/auction-creation-data.model';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -292,10 +293,13 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private onAuctionCreation(): void {
         this.submissionLoading = true;
-        this.auctioneerService.createAuction(this.getFormDTOValue(), {
-            next: this.onAuctionCreationSuccess.bind(this),
-            error: this.onAuctionCreationError.bind(this),
-        });
+        this.auctioneerService.createAuction(
+            this.form.value as AuctionCreationData,
+            {
+                next: this.onAuctionCreationSuccess.bind(this),
+                error: this.onAuctionCreationError.bind(this),
+            },
+        );
     }
 
     private onAuctionCreationSuccess(): void {
@@ -444,15 +448,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         const date = new Date();
         date.setTime(date.getTime() + milliseconds);
         return date;
-    }
-
-    private getFormDTOValue(): AuctionCreationDTO {
-        if (!this.form.valid) throw new Error('Form is invalid');
-        return {
-            ...this.form.value.details,
-            ...omit(this.form.value, ['details', 'pictures']),
-            pictures: this.form.value.pictures?.map((file) => file.url) ?? [],
-        } as AuctionCreationDTO;
     }
 
     private updatePreviewPictureUrls(): void {

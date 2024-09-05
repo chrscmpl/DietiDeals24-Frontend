@@ -16,15 +16,19 @@ import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
-import {
-    AuthorizedPaymentMethodRegistrationDTO,
-    PaymentMethodDTO,
-    UnauthorizedPaymentMethodRegistrationDTO,
-} from '../DTOs/payment-method.dto';
+import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
 import { environment } from '../../environments/environment';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
+import { UnauthorizedPaymentMethod } from '../models/unauthorized-payment-method.model';
+import { UnauthorizedPaymentMethodSerializer } from '../serializers/unauthorized-payment-method.serializer';
+import { CreditCardAuthorizationDataDeserializer } from '../deserializers/credit-card-authorization-data.deserializer';
+import {
+    AuthorizedCreditCard,
+    AuthorizedIBAN,
+    AuthorizedPaymentMethod,
+} from '../models/authorized-payment-method.model';
 
 const paymentMethodsCacheBuster$ = new Subject<void>();
 
@@ -36,6 +40,8 @@ export class PaymentService {
         private readonly authentication: AuthenticationService,
         private readonly http: HttpClient,
         private readonly deserializer: PaymentMethodDeserializer,
+        private readonly unauthorizedPaymentMethodSerializer: UnauthorizedPaymentMethodSerializer,
+        private readonly creditCardAuthorizationDataDeserializer: CreditCardAuthorizationDataDeserializer,
     ) {
         merge([
             this.authentication.isLogged$,
@@ -47,19 +53,29 @@ export class PaymentService {
     // this method is a mock implementation, this
     // platform does not actually process payments
     public authorizePayment(
-        paymentMethod: UnauthorizedPaymentMethodRegistrationDTO,
-    ): Observable<AuthorizedPaymentMethodRegistrationDTO> {
-        return of<AuthorizedPaymentMethodRegistrationDTO>(
-            paymentMethod.type === PaymentMethodType.IBAN
-                ? {
-                      type: PaymentMethodType.IBAN,
-                      ibanString: paymentMethod.iban,
-                  }
-                : {
-                      type: PaymentMethodType.creditCard,
-                      paymentProcessorToken: '123456',
-                      last4digits: paymentMethod?.cardNumber?.slice(-4),
-                  },
+        paymentMethod: UnauthorizedPaymentMethod,
+    ): Observable<AuthorizedPaymentMethod> {
+        const unauthorizedDTO =
+            this.unauthorizedPaymentMethodSerializer.serialize(paymentMethod);
+
+        return (
+            (unauthorizedDTO.type === PaymentMethodType.IBAN
+                ? of(new AuthorizedIBAN(unauthorizedDTO.iban))
+                : of(
+                      this.creditCardAuthorizationDataDeserializer.deserialize({
+                          token: '123456',
+                      }),
+                  ).pipe(
+                      map(
+                          (data) =>
+                              new AuthorizedCreditCard(
+                                  data.token,
+                                  unauthorizedDTO.cardNumber.substring(
+                                      unauthorizedDTO.cardNumber.length - 4,
+                                  ),
+                              ),
+                      ),
+                  )) as Observable<AuthorizedPaymentMethod>
         ).pipe(
             catchError((e) =>
                 throwError(() => new PaymentAuthorizationException(e)),

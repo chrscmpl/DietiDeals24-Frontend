@@ -6,12 +6,16 @@ import { Country } from '../models/location.model';
 import { CountryDTO } from '../DTOs/country.dto';
 import { environment } from '../../environments/environment';
 import { Cacheable } from 'ts-cacheable';
+import { CountryDeserializer } from '../deserializers/country.deserializer';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GeographicalLocationsService {
-    constructor(private readonly http: HttpClient) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly deserializer: CountryDeserializer,
+    ) {}
 
     private countriesSubject = new ReplaySubject<void>(1);
     private _countries: Country[] | null = null;
@@ -33,6 +37,9 @@ export class GeographicalLocationsService {
         return this.http
             .get<CountryDTO[]>(`${environment.backendHost}/countries`)
             .pipe(
+                map((dtos: CountryDTO[]) =>
+                    this.deserializer.deserializeArray(dtos),
+                ),
                 tap((countries) => {
                     this._countries = countries;
                     this.countriesSubject.next();

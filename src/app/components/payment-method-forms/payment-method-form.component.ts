@@ -14,17 +14,22 @@ import { InputComponent } from '../input/input.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { isValid as isValidIBAN } from 'iban-ts';
 import { WarningsService } from '../../services/warnings.service';
-import { ToReactiveForm } from '../../typeUtils/ToForm';
-import {
-    UnauthorizedCreditCardRegistrationDTO,
-    UnauthorizedIBANRegistrationDTO,
-} from '../../DTOs/payment-method.dto';
+import { ToReactiveForm } from '../../typeUtils/to-reactive-form';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DescendantsAttributesDirective } from '../../directives/set-descentant-attributes.directive';
 
-type IBANForm = ToReactiveForm<UnauthorizedIBANRegistrationDTO>;
+type IBANForm = ToReactiveForm<{
+    type: PaymentMethodType.IBAN;
+    iban: string;
+}>;
 
-type CreditCardForm = ToReactiveForm<UnauthorizedCreditCardRegistrationDTO>;
+type CreditCardForm = ToReactiveForm<{
+    type: PaymentMethodType.creditCard;
+    ownerName: string;
+    cardNumber: string;
+    expirationDate: string;
+    cvv: string;
+}>;
 
 export interface NewPaymentMethodForm {
     newMethod?: FormGroup<IBANForm> | FormGroup<CreditCardForm>;
