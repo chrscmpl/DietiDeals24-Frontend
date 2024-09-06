@@ -15,30 +15,37 @@
     >
         <ng-template let-group pTemplate="group">
             @if (showUI && group.macroCategory === -1) {
+                <div class="macro-category-btns-container">
+                    @for (
+                        macroCategory of macroCategoryOptions$ | async;
+                        track $index
+                    ) {
+                        <p-button
+                            class="macro-category-btn p-fluid"
+                            [label]="macroCategory.name"
+                            (onClick)="setValue(macroCategory.value)"
+                            [icon]="
+                                value === macroCategory.value
+                                    ? 'pi pi-check'
+                                    : ''
+                            "
+                            [style]="{
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                whiteSpace: 'nowrap'
+                            }"
+                        ></p-button>
+                    }
+                </div>
                 <p-tabMenu
                     [model]="tabs"
                     [(activeItem)]="currentTab"
                 ></p-tabMenu>
-            } @else if (
-                showUI && group.macroCategory === selectedMacroCategory
-            ) {
-                <div class="macro-category-btn-container">
-                    <p-button
-                        label="All categories"
-                        (onClick)="setValue(null)"
-                        [icon]="value === null ? 'pi pi-check' : ''"
-                    ></p-button>
-                    <p-button
-                        [label]="'All ' + group.groupName"
-                        (onClick)="setValue(group.groupName)"
-                        [icon]="value === group.groupName ? 'pi pi-check' : ''"
-                        class="p-fluid"
-                    ></p-button>
-                </div>
             }
         </ng-template>
         <ng-template let-item pTemplate="item">
             @if (
+                !showUI ||
                 item.macroCategory === selectedMacroCategory ||
                 item.macroCategory === 0
             ) {

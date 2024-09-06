@@ -37,10 +37,30 @@
         padding: 10px;
         color: var(--text-color-3);
     }
-    .macro-category-btn-container {
-        @include layouts.flex(column, start, stretch, 0.75rem);
+    .macro-category-btns-container {
+        @include layouts.grid(1fr 1fr / 1fr 1fr, $gap: 0.75rem);
         padding: 0.75rem;
+        grid-auto-flow: column;
+
+        > :first-child {
+            grid-column: 1 / -1;
+        }
+
+        > :not(:first-child) {
+            grid-row: 2;
+        }
     }
+
+    .macro-category-btn {
+        flex: 1;
+        .p-button {
+            justify-content: center;
+        }
+        .p-button-label {
+            flex-grow: 0;
+        }
+    }
+
     .p-dropdown-empty-message {
         padding: 0;
     }

@@ -248,6 +248,10 @@ i {
     font-weight: var(--font-weight-bolder);
 }
 
+.p-dropdown-panel {
+    overflow: hidden;
+}
+
 .p-dialog:not(.p-confirm-dialog) {
     border-radius: var(--border-radius-large);
     .p-dialog-header {

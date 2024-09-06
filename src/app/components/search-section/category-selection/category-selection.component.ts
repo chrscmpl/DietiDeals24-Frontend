@@ -16,7 +16,7 @@ import {
 } from 'primeng/dropdown';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
-import { Observable, ReplaySubject } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 import { ButtonModule } from 'primeng/button';
@@ -63,6 +63,9 @@ export class CategorySelectionComponent implements OnInit, OnDestroy {
     private currentOptionsSubject = new ReplaySubject<group[]>(1);
     public currentOptions$: Observable<group[]> =
         this.currentOptionsSubject.asObservable();
+
+    public macroCategoryOptions$: Observable<option[]> =
+        this.currentOptions$.pipe(map((groups) => groups[0]?.items ?? []));
 
     public showUI: boolean = true;
 
