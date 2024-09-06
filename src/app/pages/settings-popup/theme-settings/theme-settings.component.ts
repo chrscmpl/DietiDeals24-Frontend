@@ -6,6 +6,7 @@ import { debounceTime, Observable, skip, Subscription, take } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { OneCharUpperPipe } from '../../../pipes/one-char-upper.pipe';
 
 @Component({
     selector: 'dd24-theme-settings',
@@ -16,6 +17,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         AsyncPipe,
         ProgressSpinnerModule,
         SelectButtonModule,
+        OneCharUpperPipe,
     ],
     templateUrl: './theme-settings.component.html',
     styleUrl: './theme-settings.component.scss',

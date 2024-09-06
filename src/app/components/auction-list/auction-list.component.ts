@@ -101,9 +101,9 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         if (this.requestKey === null) return;
         this.error = false;
         this.showEmpty = false;
-        this.startLoading();
         this.auctions = this.auctionsService.elements(this.requestKey);
         this.pageSize = this.auctionsService.pageSize(this.requestKey);
+        if (!this.auctions.length) this.startLoading();
 
         this.subscriptions.push(
             this.auctionsService.subscribeUninterrupted(this.requestKey, {

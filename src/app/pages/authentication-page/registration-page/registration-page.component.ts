@@ -339,8 +339,13 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                 'Invalid data',
                 'Please check your data and try again.',
             );
+        } else if (e.error.status === 0) {
+            this.showErrorToast(
+                'Network error',
+                'Check your connection and try again',
+            );
         } else {
-            this.showErrorToast('Error', 'An error has occurred.');
+            this.showErrorToast('An error occurred', 'Please try again later.');
         }
         console.error(e.error);
     }

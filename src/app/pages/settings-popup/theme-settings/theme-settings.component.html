@@ -1,4 +1,4 @@
-<div class="theme-settings ">
+<div class="theme-settings">
     <div class="theme-selection" [formGroup]="themeForm">
         <div class="theme-entry">
             <p-radioButton
@@ -27,13 +27,13 @@
                 inputId="theme-system"
                 formControlName="theme"
             />
-            <label for="theme-system"> System </label>
+            <label for="theme-system"> Follow system </label>
         </div>
 
         @for (option of themeVariationOptions; track $index) {
             @if (currentTheme === option.theme && option.options.length > 1) {
                 <div class="theme-variation-buttons-wrapper">
-                    <span>Theme variation</span>
+                    <span>{{ option.theme | oneCharUpper }} theme</span>
                     <p-selectButton
                         class="theme-variation-buttons"
                         [formControlName]="option.controlName"

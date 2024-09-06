@@ -114,6 +114,11 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
                             'Incorrect email or password',
                             'Please try again',
                         );
+                    } else if (e.error.status === 0) {
+                        this.displayError(
+                            'Network error',
+                            'Check your connection and try again',
+                        );
                     } else {
                         this.displayError(
                             'An error occurred',

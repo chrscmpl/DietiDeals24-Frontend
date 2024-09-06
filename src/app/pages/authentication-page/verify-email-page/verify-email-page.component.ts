@@ -108,17 +108,27 @@ export class VerifyEmailPageComponent implements OnInit {
     ): void {
         this.submissionLoading = false;
         if (e.error.status >= 500) {
-            this.message.add({
-                severity: 'error',
-                summary: 'Server error',
-                detail: 'Please try again later.',
-            });
-        } else if (e.error.status >= 401) {
-            this.message.add({
-                severity: 'error',
-                summary: 'Invalid code',
-                detail: 'Please check your code and try again.',
-            });
+            this.displayError('Server error', 'Please try again later.');
+        } else if (e.error.status >= 400) {
+            this.displayError(
+                'Invalid code',
+                'Please check your code and try again.',
+            );
+        } else if (e.error.status === 0) {
+            this.displayError(
+                'Network error',
+                'Check your connection and try again',
+            );
+        } else {
+            this.displayError('An error occurred', 'Please try again later');
         }
+    }
+
+    private displayError(summary: string, detail: string): void {
+        this.message.add({
+            severity: 'error',
+            summary,
+            detail,
+        });
     }
 }

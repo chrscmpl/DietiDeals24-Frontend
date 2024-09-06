@@ -59,6 +59,7 @@ import { omit } from 'lodash-es';
 import { NavigationService } from '../../services/navigation.service';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { AuctionCreationData } from '../../models/auction-creation-data.model';
+import { AuctionCreationException } from '../../exceptions/auction-creation.exception';
 
 @Component({
     selector: 'dd24-create-auction-page',
@@ -314,13 +315,21 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onAuctionCreationError(): void {
+    private onAuctionCreationError(e: AuctionCreationException): void {
         this.submissionLoading = false;
-        this.message.add({
-            severity: 'error',
-            summary: 'Auction creation failed',
-            detail: 'An error occurred while creating the auction, try again later',
-        });
+        if (e?.error?.status === 0) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Network error',
+                detail: 'Check your connection and try again',
+            });
+        } else {
+            this.message.add({
+                severity: 'error',
+                summary: 'An error occurred',
+                detail: 'An error occurred while creating the auction, try again later',
+            });
+        }
     }
 
     private checkNext(

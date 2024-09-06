@@ -290,15 +290,24 @@ export class CheckoutPageComponent implements OnInit {
             | BidAcceptanceException,
     ) {
         this.submissionLoading = false;
-        this.message.add({
-            severity: 'error',
-            summary: 'There was a problem',
-            detail:
-                e instanceof PaymentAuthorizationException
-                    ? 'Payment authorization failed, check that the data is correct'
-                    : e instanceof BidPlacementException
-                      ? 'Failed to place bid, please try again later'
-                      : 'Failed to accept the bid, please try again later',
-        });
+
+        if (e.error?.status === 0) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Network error',
+                detail: 'Check your connection and try again',
+            });
+        } else {
+            this.message.add({
+                severity: 'error',
+                summary: 'An error occurred',
+                detail:
+                    e instanceof PaymentAuthorizationException
+                        ? 'Payment authorization failed, check that the data is correct'
+                        : e instanceof BidPlacementException
+                          ? 'Failed to place bid, please try again later'
+                          : 'Failed to accept the bid, please try again later',
+            });
+        }
     }
 }

@@ -29,6 +29,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(0);
 
+    public readonly auctionsRequestKey: string = '/home';
+
     private readonly subscriptions: Subscription[] = [];
 
     constructor(
@@ -38,7 +40,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.auctionsService.set('/home', {
+        this.auctionsService.setIfAbsent(this.auctionsRequestKey, {
             queryParameters: {},
             pageNumber: 1,
             pageSize: 10,
