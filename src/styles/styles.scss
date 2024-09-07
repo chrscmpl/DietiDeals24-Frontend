@@ -264,6 +264,10 @@ i {
     }
 }
 
+.p-dialog-header {
+    color: var(--text-color-1);
+}
+
 .p-confirm-dialog {
     width: min(45rem, 100svw);
 }
