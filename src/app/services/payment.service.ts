@@ -17,7 +17,6 @@ import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
 import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
-import { environment } from '../../environments/environment';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
@@ -103,9 +102,7 @@ export class PaymentService {
                 !isLogged
                     ? throwError(() => new Error('User is not authenticated'))
                     : this.http
-                          .get<
-                              PaymentMethodDTO[]
-                          >(`${environment.backendHost}/payments/methods`)
+                          .get<PaymentMethodDTO[]>(`payments/methods`)
                           .pipe(
                               map((dtos) =>
                                   this.deserializer.deserializeArray(dtos),

@@ -4,7 +4,6 @@ import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 
 import { Country } from '../models/location.model';
 import { CountryDTO } from '../DTOs/country.dto';
-import { environment } from '../../environments/environment';
 import { Cacheable } from 'ts-cacheable';
 import { CountryDeserializer } from '../deserializers/country.deserializer';
 
@@ -34,24 +33,22 @@ export class GeographicalLocationsService {
 
     @Cacheable()
     private getCountries(): Observable<Country[]> {
-        return this.http
-            .get<CountryDTO[]>(`${environment.backendHost}/countries`)
-            .pipe(
-                map((dtos: CountryDTO[]) =>
-                    this.deserializer.deserializeArray(dtos),
-                ),
-                tap((countries) => {
-                    this._countries = countries;
-                    this.countriesSubject.next();
-                }),
-            );
+        return this.http.get<CountryDTO[]>(`countries`).pipe(
+            map((dtos: CountryDTO[]) =>
+                this.deserializer.deserializeArray(dtos),
+            ),
+            tap((countries) => {
+                this._countries = countries;
+                this.countriesSubject.next();
+            }),
+        );
     }
 
     @Cacheable({
         maxCacheCount: 4,
     })
     public getCities(country: Country | string): Observable<string[]> {
-        return this.http.get<string[]>(`${environment.backendHost}/cities`, {
+        return this.http.get<string[]>(`cities`, {
             params: {
                 country: typeof country === 'string' ? country : country.code,
             },

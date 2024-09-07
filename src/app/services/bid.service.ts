@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, Subject, throwError } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { AuthenticationService } from './authentication.service';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
@@ -40,13 +39,9 @@ export class BidService {
     })
     public placeBid(bid: BidCreationData): Observable<unknown> {
         return this.http
-            .post(
-                `${environment.backendHost}/bids/new`,
-                this.serializer.serialize(bid),
-                {
-                    responseType: 'text',
-                },
-            )
+            .post(`bids/new`, this.serializer.serialize(bid), {
+                responseType: 'text',
+            })
             .pipe(
                 catchError((e) =>
                     throwError(() => new BidPlacementException(e)),
@@ -58,11 +53,9 @@ export class BidService {
         cacheBusterObserver: ActiveBidsCacheBuster$,
     })
     public getOwnActiveBids(): Observable<Auction[]> {
-        return this.http
-            .get<AuctionDTO[]>(`${environment.backendHost}/bids/active`)
-            .pipe(
-                map((dtos) => this.deserializer.deserializeArray(dtos)),
-                catchError(() => of([])),
-            );
+        return this.http.get<AuctionDTO[]>(`bids/active`).pipe(
+            map((dtos) => this.deserializer.deserializeArray(dtos)),
+            catchError(() => of([])),
+        );
     }
 }

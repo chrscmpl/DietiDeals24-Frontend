@@ -8,12 +8,16 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
+import { PrependBackendHostInterceptor } from './interceptors/prepend-backend-host.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
         provideHttpClient(
-            withInterceptors([AuthenticationInterceptor.asHttpInterceptorFn()]),
+            withInterceptors([
+                PrependBackendHostInterceptor.asHttpInterceptorFn(),
+                AuthenticationInterceptor.asHttpInterceptorFn(),
+            ]),
         ),
         importProvidersFrom([BrowserAnimationsModule]),
         MessageService,

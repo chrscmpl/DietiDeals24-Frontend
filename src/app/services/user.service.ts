@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserSummary } from '../models/user.model';
-import { environment } from '../../environments/environment';
 import { map, Observable } from 'rxjs';
 import { UserSummaryDTO } from '../DTOs/user.dto';
 import { Cacheable } from 'ts-cacheable';
@@ -19,10 +18,7 @@ export class UserService {
     @Cacheable({ maxCacheCount: 16 })
     public getSummary(id: string): Observable<UserSummary> {
         return this.http
-            .get<UserSummaryDTO>(
-                `${environment.backendHost}/profile/public-view`,
-                { params: { id } },
-            )
+            .get<UserSummaryDTO>(`profile/public-view`, { params: { id } })
             .pipe(map((dto) => this.summaryDeserializer.deserialize(dto)));
     }
 }

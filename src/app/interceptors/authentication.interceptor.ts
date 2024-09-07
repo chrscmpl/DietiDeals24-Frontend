@@ -7,16 +7,16 @@ import {
     HttpResponse,
 } from '@angular/common/http';
 import { tap } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
+import { BACKEND_REQUEST } from '../tokens/generic-request.token';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthenticationInterceptor implements HttpInterceptor {
     public intercept(request: HttpRequest<unknown>, next: HttpHandler) {
-        if (!request.url.startsWith(environment.backendHost)) {
+        if (!request.context.get(BACKEND_REQUEST)) {
             return next.handle(request);
         }
 

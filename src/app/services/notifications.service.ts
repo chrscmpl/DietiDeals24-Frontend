@@ -4,7 +4,6 @@ import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
 import { NotificationDeserializer } from '../deserializers/notification.deserializer';
 
@@ -42,7 +41,7 @@ export class NotificationsService {
     ) {
         this.request = new PaginatedRequestManager({
             http: this.http,
-            url: `${environment.backendHost}/notifications/all`,
+            url: `notifications/all`,
             deserializer: (
                 res: NotificationResponse,
             ): DisplayableNotification[] => {
@@ -101,7 +100,7 @@ export class NotificationsService {
         this.unreadNotificationsCount--;
         this.http
             .post(
-                `${environment.backendHost}/notifications/mark-as-read?notificationId=${notification.id}`,
+                `notifications/mark-as-read?notificationId=${notification.id}`,
                 {},
             )
             .subscribe();
@@ -112,12 +111,7 @@ export class NotificationsService {
             (notification) => (notification.read = true),
         );
         this.unreadNotificationsCount = 0;
-        this.http
-            .post(
-                `${environment.backendHost}/notifications/mark-all-as-read`,
-                {},
-            )
-            .subscribe();
+        this.http.post(`notifications/mark-all-as-read`, {}).subscribe();
     }
 
     public deleteOne(notification: DisplayableNotification): void {
@@ -129,7 +123,7 @@ export class NotificationsService {
         this.request.editableElements.splice(index, 1);
         this.http
             .delete(
-                `${environment.backendHost}/notifications/mark-as-eliminated?notificationId=${notification.id}`,
+                `notifications/mark-as-eliminated?notificationId=${notification.id}`,
             )
             .subscribe();
     }
@@ -137,11 +131,7 @@ export class NotificationsService {
     public deleteAll(): void {
         this.request.editableElements.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
-        this.http
-            .delete(
-                `${environment.backendHost}/notifications/mark-all-as-eliminated`,
-            )
-            .subscribe();
+        this.http.delete(`notifications/mark-all-as-eliminated`).subscribe();
     }
 
     public get unreadNotificationsCount(): number {

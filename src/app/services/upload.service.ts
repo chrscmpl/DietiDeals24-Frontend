@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     catchError,
@@ -16,10 +16,10 @@ import {
 
 import imageCompression from 'browser-image-compression';
 import { UploadedFile } from '../models/uploaded-file.model';
-import { environment } from '../../environments/environment';
 import { UploadException } from '../exceptions/upload.exception';
 import { GetNextUploadUrlException } from '../exceptions/get-next-upload-url.exception';
 import { FileCompressionException } from '../exceptions/file-compression.exception';
+import { BACKEND_REQUEST } from '../tokens/generic-request.token';
 
 @Injectable({
     providedIn: 'root',
@@ -60,7 +60,12 @@ export class UploadService {
                     const formData = new FormData();
                     formData.append('file', compressedFile);
                     this.http
-                        .put(url, formData)
+                        .put(url, formData, {
+                            context: new HttpContext().set(
+                                BACKEND_REQUEST,
+                                false,
+                            ),
+                        })
                         .pipe(
                             catchError((error) =>
                                 throwError(() => new UploadException(error)),
@@ -84,7 +89,7 @@ export class UploadService {
             return of(nextUploadUrl);
         }
         return this.http
-            .get<string>(`${environment.backendHost}/upload-url`)
+            .get<string>(`upload-url`)
             .pipe(
                 catchError((error) =>
                     throwError(() => new GetNextUploadUrlException(error)),

@@ -13,7 +13,6 @@ import {
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
 import { AuctionDTO } from '../DTOs/auction.dto';
-import { environment } from '../../environments/environment';
 import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
@@ -215,7 +214,7 @@ export class AuctioneerService {
     ): Observable<unknown> {
         return this.http
             .post(
-                `${environment.backendHost}/auctions`,
+                `auctions`,
                 this.auctionCreationSerializer.serialize(auction),
                 {
                     responseType: 'text',
@@ -240,7 +239,7 @@ export class AuctioneerService {
     ): Observable<unknown> {
         return this.http
             .post(
-                `${environment.backendHost}/conclude`,
+                `conclude`,
                 this.auctionConclusionSerializer.serialize(conclusionOptions),
                 {
                     responseType: 'text',
@@ -262,11 +261,9 @@ export class AuctioneerService {
         cacheBusterObserver: OwnActiveAuctionsCacheBuster$,
     })
     public getOwnActiveAuctions(): Observable<Auction[]> {
-        return this.http
-            .get<AuctionDTO[]>(`${environment.backendHost}/auctions/own-active`)
-            .pipe(
-                map((dtos) => this.deserializer.deserializeArray(dtos)),
-                catchError(() => of([])),
-            );
+        return this.http.get<AuctionDTO[]>(`auctions/own-active`).pipe(
+            map((dtos) => this.deserializer.deserializeArray(dtos)),
+            catchError(() => of([])),
+        );
     }
 }

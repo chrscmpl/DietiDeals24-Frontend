@@ -14,7 +14,6 @@ import {
     withLatestFrom,
 } from 'rxjs';
 import { UserCredentials, AuthenticatedUserDTO } from '../DTOs/user.dto';
-import { environment } from '../../environments/environment';
 import { LoginException } from '../exceptions/login.exception';
 import { GetUserDataException } from '../exceptions/get-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';
@@ -78,7 +77,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post(`${environment.backendHost}/login`, credentials, {
+            .post(`login`, credentials, {
                 observe: 'response',
             })
             .pipe(
@@ -97,7 +96,7 @@ export class AuthenticationService {
     ): void {
         this.http
             .post(
-                `${environment.backendHost}/register/init`,
+                `register/init`,
                 this.registrationSerializer.serialize(newUser),
                 {
                     responseType: 'text',
@@ -117,7 +116,7 @@ export class AuthenticationService {
     ): void {
         this.http
             .post(
-                `${environment.backendHost}/register/confirm`,
+                `register/confirm`,
                 this.emailVerificationSerializer.serialize(data),
                 {
                     observe: 'response',
@@ -136,20 +135,16 @@ export class AuthenticationService {
     }
 
     private getUserDataObservable(): Observable<AuthenticatedUser> {
-        return this.http
-            .get<AuthenticatedUserDTO>(
-                `${environment.backendHost}/profile/owner-view`,
-            )
-            .pipe(
-                map((dto: AuthenticatedUserDTO) =>
-                    this.deserializer.deserialize(dto),
-                ),
-                tap(this.setLoggedUser.bind(this)),
-                catchError((e) => {
-                    this.setInitialized();
-                    return throwError(() => new GetUserDataException(e));
-                }),
-            );
+        return this.http.get<AuthenticatedUserDTO>(`profile/owner-view`).pipe(
+            map((dto: AuthenticatedUserDTO) =>
+                this.deserializer.deserialize(dto),
+            ),
+            tap(this.setLoggedUser.bind(this)),
+            catchError((e) => {
+                this.setInitialized();
+                return throwError(() => new GetUserDataException(e));
+            }),
+        );
     }
 
     public logout(): void {

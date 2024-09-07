@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedRequestParams } from '../helpers/paginated-request';
-import { environment } from '../../environments/environment';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
 import { map, Observable, Subscription } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterrupted-resettable-observer';
@@ -89,12 +88,9 @@ export class AuctionsService {
     @Cacheable({ maxCacheCount: 16 })
     public getDetails(id: string): Observable<Auction> {
         return this.http
-            .get<AuctionDTO>(
-                `${environment.backendHost}/auctions/specific/public-view`,
-                {
-                    params: { id },
-                },
-            )
+            .get<AuctionDTO>(`auctions/specific/public-view`, {
+                params: { id },
+            })
             .pipe(map((dto) => this.deserializer.deserialize(dto)));
     }
 
@@ -115,7 +111,7 @@ export class AuctionsService {
     ): PaginatedRequestParams<Auction> {
         return Object.assign(params, {
             http: this.http,
-            url: `${environment.backendHost}/auctions/search`,
+            url: `auctions/search`,
             deserializer: (dtos: AuctionDTO[]) =>
                 this.deserializer.deserializeArray(dtos),
         });
