@@ -28,8 +28,8 @@ export type UserRegistrationDTO = {
     name: string;
     surname: string;
     birthday: string;
-    country?: string;
-    city?: string;
+    country: string;
+    city: string;
     username: string;
     email: string;
     password: string;

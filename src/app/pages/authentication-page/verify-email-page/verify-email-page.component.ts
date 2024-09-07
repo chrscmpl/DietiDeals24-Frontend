@@ -11,12 +11,12 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { InputComponent } from '../../../components/input/input.component';
 import { MaskedPipe } from '../../../pipes/masked.pipe';
-import { emailVerificationDTO } from '../../../DTOs/user.dto';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { EmailVerificationException } from '../../../exceptions/email-verification.exception';
 import { GetUserDataException } from '../../../exceptions/get-user-data.exception';
+import { emailVerificationData } from '../../../models/email-verification-data.model';
 
 interface verificationForm {
     code: FormControl<string | null>;
@@ -81,7 +81,7 @@ export class VerifyEmailPageComponent implements OnInit {
         this.submissionLoading = true;
 
         this.authentication.verifyEmail(
-            this.verificationForm.value as emailVerificationDTO,
+            this.verificationForm.value as emailVerificationData,
             {
                 next: this.onVerificationSuccess.bind(this),
                 error: this.onVerificationError.bind(this),

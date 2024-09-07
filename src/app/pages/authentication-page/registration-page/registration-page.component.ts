@@ -27,7 +27,6 @@ import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthenticationService } from '../../../services/authentication.service';
-import { UserRegistrationDTO } from '../../../DTOs/user.dto';
 import { Country } from '../../../models/location.model';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
@@ -37,8 +36,9 @@ import { Subscription, take } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
 import { NavigationService } from '../../../services/navigation.service';
 import { WindowService } from '../../../services/window.service';
-import { defaults } from 'lodash-es';
+import { omit } from 'lodash-es';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { UserRegistrationData } from '../../../models/user-registration-data.model';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -293,20 +293,15 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
         this.error = '';
 
-        const newUser = defaults(
-            {
-                birthday:
-                    this.registrationForm.value.userData!.birthday!.toISOString(),
-            },
+        const newUser = omit(
             {
                 ...this.registrationForm.value.userData,
                 ...this.registrationForm.value.credentials,
             },
+            ['confirmPassword'],
         );
 
-        delete newUser.confirmPassword;
-
-        this.authentication.register(newUser as UserRegistrationDTO, {
+        this.authentication.register(newUser as UserRegistrationData, {
             next: this.onRegisterSuccess.bind(this),
             error: this.onRegisterError.bind(this),
         });

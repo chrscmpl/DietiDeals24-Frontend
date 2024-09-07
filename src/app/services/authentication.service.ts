@@ -13,18 +13,17 @@ import {
     throwError,
     withLatestFrom,
 } from 'rxjs';
-import {
-    UserCredentials,
-    AuthenticatedUserDTO,
-    UserRegistrationDTO,
-    emailVerificationDTO,
-} from '../DTOs/user.dto';
+import { UserCredentials, AuthenticatedUserDTO } from '../DTOs/user.dto';
 import { environment } from '../../environments/environment';
 import { LoginException } from '../exceptions/login.exception';
 import { GetUserDataException } from '../exceptions/get-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';
 import { EmailVerificationException } from '../exceptions/email-verification.exception';
 import { AuthenticatedUserDeserializer } from '../deserializers/authenticated-user.deserializer';
+import { UserRegistrationSerializer } from '../serializers/user-registration-data.serializer';
+import { UserRegistrationData } from '../models/user-registration-data.model';
+import { EmailVerificationSerializer } from '../serializers/email-verification.serializer';
+import { emailVerificationData } from '../models/email-verification-data.model';
 
 @Injectable({
     providedIn: 'root',
@@ -51,6 +50,8 @@ export class AuthenticationService {
     constructor(
         private readonly http: HttpClient,
         private readonly deserializer: AuthenticatedUserDeserializer,
+        private readonly registrationSerializer: UserRegistrationSerializer,
+        private readonly emailVerificationSerializer: EmailVerificationSerializer,
     ) {
         this.isLoggedSubject.next();
         if (AuthenticationService.authorizationToken)
@@ -91,13 +92,17 @@ export class AuthenticationService {
     }
 
     public register(
-        newUser: UserRegistrationDTO,
+        newUser: UserRegistrationData,
         cb?: Partial<Observer<string>>,
     ): void {
         this.http
-            .post(`${environment.backendHost}/register/init`, newUser, {
-                responseType: 'text',
-            })
+            .post(
+                `${environment.backendHost}/register/init`,
+                this.registrationSerializer.serialize(newUser),
+                {
+                    responseType: 'text',
+                },
+            )
             .pipe(
                 catchError((e) =>
                     throwError(() => new RegistrationException(e)),
@@ -107,13 +112,17 @@ export class AuthenticationService {
     }
 
     public verifyEmail(
-        data: emailVerificationDTO,
+        data: emailVerificationData,
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post(`${environment.backendHost}/register/confirm`, data, {
-                observe: 'response',
-            })
+            .post(
+                `${environment.backendHost}/register/confirm`,
+                this.emailVerificationSerializer.serialize(data),
+                {
+                    observe: 'response',
+                },
+            )
             .pipe(
                 catchError((e) =>
                     throwError(() => new EmailVerificationException(e)),
