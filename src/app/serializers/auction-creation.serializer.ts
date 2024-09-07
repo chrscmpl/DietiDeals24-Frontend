@@ -16,7 +16,15 @@ export class AuctionCreationSerializer
 
         return omitBy(
             {
-                ...auction.details,
+                endTime: `${
+                    new Date(
+                        auction.details.endTime.getTime() -
+                            auction.details.endTime.getTimezoneOffset() * 60000,
+                    )
+                        .toISOString()
+                        .split('.')[0]
+                }Z`,
+                ...omit(auction.details, ['endTime']),
                 ...omit(auction, ['details', 'pictures']),
                 pictures: auction.pictures.map((picture) => picture.url),
             },

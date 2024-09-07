@@ -29,8 +29,8 @@
         }
 
         &.nav-entry-active {
-            .nav-link-icon:not(.create) {
-                color: var(--text-color-1);
+            .nav-link-icon {
+                font-weight: 900;
             }
         }
     }
@@ -57,10 +57,10 @@
     .nav-entry-active {
         .p-avatar.using-picture {
             margin-top: 0;
-            border: 2px solid var(--text-color-1);
+            border: 2px solid var(--mobile-tab-icon-color);
         }
         .p-avatar-icon {
-            color: var(--text-color-1);
+            font-weight: 900;
         }
     }
 

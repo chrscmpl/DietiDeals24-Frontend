@@ -41,4 +41,8 @@ export type AuctionCreationDTO = Omit<
     AuctionCreationData,
     'details' | 'pictures'
 > &
-    AuctionCreationData['details'] & { pictures: string[] };
+    Omit<AuctionCreationData['details'], 'endTime'>
+  & {
+        pictures: string[];
+        endTime: string;
+    };

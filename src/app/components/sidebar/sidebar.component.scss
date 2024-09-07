@@ -22,9 +22,9 @@
         }
 
         .p-sidebar-close-icon {
-            i {
+            .back-icon {
                 font-size: var(--mobile-icon-size);
-                color: var(--basic-affordances-color);
+                color: var(--mobile-icon-color);
             }
         }
 

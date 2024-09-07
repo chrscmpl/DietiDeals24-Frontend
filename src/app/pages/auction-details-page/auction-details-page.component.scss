@@ -301,6 +301,10 @@
     }
 }
 
+.auction-details-navbar-btn i {
+    color: var(--mobile-icon-color);
+}
+
 :host ::ng-deep {
     .overlay-btn {
         .p-button {

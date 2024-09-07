@@ -29,7 +29,7 @@ $shade800: #27272a !default;
 $shade900: #18181b !default;
 $shade950: #111111 !default;
 
-$mobileIconColor: #a1a1aa !default;
+$mobileIconColor: $shade000 !default;
 
 $focusOutlineColor: $primaryLightestColor !default;
 $focusShadow: 0 0 0 0.1rem $focusOutlineColor !default;

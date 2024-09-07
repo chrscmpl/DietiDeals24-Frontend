@@ -1,10 +1,7 @@
-<nav
-    class="mobile-nav "
-    [class.minimal]="windowService.UIhidden$ | async"
->
+<nav class="mobile-nav" [class.minimal]="windowService.UIhidden$ | async">
     @if (windowService.UIhidden$ | async) {
         <button (click)="navigationService.back()">
-            <i class="pi pi-arrow-left medium-icon"></i>
+            <i class="nav-icon pi pi-arrow-left medium-icon"></i>
         </button>
     } @else {
         <button (click)="windowService.isSidebarVisible = true">

@@ -37,13 +37,14 @@
     }
 
     .link-icon,
-    .hamb-menu {
+    .hamb-menu,
+    .nav-icon {
         color: var(--mobile-tab-icon-color);
     }
 }
 
 .link-active {
     .link-icon {
-        color: var(--text-color-1);
+        font-weight: 900;
     }
 }
