@@ -27,7 +27,7 @@ export class AuctionCreationSerializer
                 ...omit(auction.details, ['endTime']),
                 ...omit(auction, ['details', 'pictures']),
                 pictures: auction.pictures.map((picture) => picture.url),
-            },
+            } as AuctionCreationDTO,
             isNil,
         ) as AuctionCreationDTO;
     }

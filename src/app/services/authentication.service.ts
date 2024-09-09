@@ -23,6 +23,7 @@ import { UserRegistrationSerializer } from '../serializers/user-registration-dat
 import { UserRegistrationData } from '../models/user-registration-data.model';
 import { EmailVerificationSerializer } from '../serializers/email-verification.serializer';
 import { emailVerificationData } from '../models/email-verification-data.model';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
     providedIn: 'root',
@@ -51,6 +52,7 @@ export class AuthenticationService {
         private readonly deserializer: AuthenticatedUserDeserializer,
         private readonly registrationSerializer: UserRegistrationSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
+        private readonly messageService: MessageService,
     ) {
         this.isLoggedSubject.next();
         if (AuthenticationService.authorizationToken)
@@ -142,13 +144,21 @@ export class AuthenticationService {
             tap(this.setLoggedUser.bind(this)),
             catchError((e) => {
                 this.setInitialized();
+                if (
+                    e.status >= 400 &&
+                    e.status < 500 &&
+                    AuthenticationService.authorizationToken
+                ) {
+                    AuthenticationService.authorizationToken = null;
+                    this.showExpiredTokenError();
+                }
                 return throwError(() => new GetUserDataException(e));
             }),
         );
     }
 
     public logout(): void {
-        localStorage.removeItem('authorizationToken');
+        AuthenticationService.authorizationToken = null;
         this._isLogged = false;
         this._loggedUser = null;
         this.isLoggedSubject.next();
@@ -168,6 +178,14 @@ export class AuthenticationService {
         this.initializedSubject.next();
     }
 
+    private showExpiredTokenError(): void {
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Session expired',
+            detail: 'Your session has expired. Please log in again.',
+        });
+    }
+
     // These methods need to be static because they are needed in an HttpInterceptor.
     // As this service depends on HttpClient, it cannot be injected in the HttpInterceptor,
     // as it would create a circular dependency
@@ -177,8 +195,9 @@ export class AuthenticationService {
         if (token) this.authorizationToken = token;
     }
 
-    private static set authorizationToken(token: string) {
-        localStorage.setItem('authorizationToken', token);
+    private static set authorizationToken(token: string | null) {
+        if (token) localStorage.setItem('authorizationToken', token);
+        else localStorage.removeItem('authorizationToken');
     }
 
     public static get authorizationToken(): string | null {
