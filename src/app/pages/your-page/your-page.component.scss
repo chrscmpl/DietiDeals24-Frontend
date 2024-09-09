@@ -1,0 +1,45 @@
+@use "layouts";
+
+.your-page {
+    @include layouts.flex(column, stretch, start, var(--page-items-gap));
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.your-page-outlet {
+    display: none;
+}
+
+.your-page-header {
+    font-size: calc(var(--font-size-large) * 1.5);
+    font-weight: var(--font-weight-bolder);
+    line-height: normal;
+}
+
+:host ::ng-deep {
+    .p-tabmenu-nav {
+        background: none;
+        border: none;
+        line-height: normal;
+    }
+
+    .p-menuitem-link {
+        padding: 0.4rem 1ch;
+        font-size: var(--font-size-large);
+        background: none;
+        border: none;
+        color: var(--text-color-3);
+    }
+
+    .p-tabmenuitem:first-child .p-menuitem-link {
+        padding-left: 0;
+    }
+
+    .p-menuitem-link-active {
+        color: var(--text-color-1);
+    }
+
+    .p-menuitem-link:hover {
+        text-decoration: underline;
+    }
+}

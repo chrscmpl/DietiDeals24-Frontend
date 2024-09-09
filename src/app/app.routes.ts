@@ -25,6 +25,9 @@ import { FAQResolver } from './resolvers/faq.resolver';
 import { RulesetDescriptionResolver } from './resolvers/ruleset-description.resolver';
 import { CurrencyCodesResolver } from './resolvers/currency-codes.resolver';
 import { AuctionPreviewResolver } from './resolvers/auction-preview.resolver';
+import { ActivityPageComponent } from './pages/your-page/activity-page/activity-page.component';
+import { YourDataPageComponent } from './pages/your-page/your-data-page/your-data-page.component';
+import { SecurityAndPrivacyPageComponent } from './pages/your-page/security-and-privacy-page/security-and-privacy-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -54,6 +57,27 @@ export const routes: Routes = [
             ShowUIGuard.asCanActivateFn(true),
             ConfirmReloadGuard.asCanActivateFn(false),
             AuthenticationGuard.asCanActivateFn(true),
+        ],
+        children: [
+            {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'activity',
+            },
+            {
+                path: 'activity',
+                component: ActivityPageComponent,
+            },
+            {
+                path: 'your-data',
+                title: 'Your Data',
+                component: YourDataPageComponent,
+            },
+            {
+                path: 'security-privacy',
+                title: 'Security & Privacy',
+                component: SecurityAndPrivacyPageComponent,
+            },
         ],
     },
     {

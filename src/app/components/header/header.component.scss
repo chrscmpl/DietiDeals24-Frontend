@@ -67,7 +67,7 @@
                     &:first-child {
                         border-left: var(--border);
                     }
-                    &.navbar-tab-active {
+                    &.navbar-tab-active:not(:has(~ .navbar-tab-active)) {
                         background-color: var(--border-color-transparent);
                     }
                 }
