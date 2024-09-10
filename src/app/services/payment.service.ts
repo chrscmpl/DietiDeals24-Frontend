@@ -16,7 +16,7 @@ import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
-import { GetPaymentMethodsResponseDTO } from '../DTOs/payment-method.dto';
+import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
@@ -42,11 +42,13 @@ export class PaymentService {
         private readonly unauthorizedPaymentMethodSerializer: UnauthorizedPaymentMethodSerializer,
         private readonly creditCardAuthorizationDataDeserializer: CreditCardAuthorizationDataDeserializer,
     ) {
-        merge([
+        merge(
             this.authentication.isLogged$,
             ActiveBidsCacheBuster$,
             OwnActiveAuctionsCacheBuster$,
-        ]).subscribe(() => paymentMethodsCacheBuster$.next());
+        ).subscribe(() => {
+            paymentMethodsCacheBuster$.next();
+        });
     }
 
     // this method is a mock implementation, this
@@ -102,19 +104,10 @@ export class PaymentService {
                 !isLogged
                     ? throwError(() => new Error('User is not authenticated'))
                     : this.http
-                          .get<GetPaymentMethodsResponseDTO>(`payments/methods`)
+                          .get<PaymentMethodDTO[]>(`payments/methods`)
                           .pipe(
-                              map((res) =>
-                                  this.deserializer.deserializeArray([
-                                      ...(res.creditCards?.map((dto) => ({
-                                          ...dto,
-                                          type: PaymentMethodType.creditCard,
-                                      })) ?? []),
-                                      ...(res.ibans?.map((dto) => ({
-                                          ...dto,
-                                          type: PaymentMethodType.IBAN,
-                                      })) ?? []),
-                                  ]),
+                              map((dtos) =>
+                                  this.deserializer.deserializeArray(dtos),
                               ),
                           ),
             ),

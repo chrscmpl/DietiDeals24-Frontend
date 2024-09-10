@@ -1,19 +1,17 @@
 import { PaymentMethodType } from '../enums/payment-method-type';
 
-export interface GetPaymentMethodsResponseDTO {
-    creditCards: CreditCardDTO[];
-    ibans: IBANDTO[];
-}
-
 export interface PaymentMethodDTO {
+    type: PaymentMethodType;
     id: string;
 }
 
 export interface CreditCardDTO extends PaymentMethodDTO {
-    cardNumberLastDigits: string;
+    type: PaymentMethodType.creditCard;
+    last4digits: string;
 }
 
 export interface IBANDTO extends PaymentMethodDTO {
+    type: PaymentMethodType.IBAN;
     iban: string;
 }
 
@@ -32,7 +30,7 @@ export interface CreditCardAuthorizationDataDTO {
 interface AuthorizedCreditCardRegistrationDTO {
     type: PaymentMethodType.creditCard;
     last4digits: string;
-    paymentProcessorToken: string;
+    creditCardToken: string;
 }
 
 export interface UnauthorizedIBANRegistrationDTO {

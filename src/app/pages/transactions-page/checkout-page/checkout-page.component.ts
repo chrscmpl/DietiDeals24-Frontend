@@ -171,8 +171,14 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private getSavedPaymentMethodId(): string {
-        return this.chosenPaymentMethodForm.get('chosenPaymentMethod')
-            ?.value as string;
+        return (
+            (
+                this.chosenPaymentMethodForm.get('chosenPaymentMethod')
+                    ?.value as {
+                    id: string;
+                }
+            )?.id ?? ''
+        );
     }
 
     private getNewPaymentMethod(): UnauthorizedPaymentMethod | null {
@@ -236,15 +242,17 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private getPaymentMethod$(): Observable<string | AuthorizedPaymentMethod> {
-        return (
+        if (
             !this.isPaymentMethodType(
                 this.chosenPaymentMethodForm.get('chosenPaymentMethod')?.value,
             )
-                ? of(this.getSavedPaymentMethodId())
-                : this.paymentService.authorizePayment(
-                      this.getNewPaymentMethod()!,
-                  )
-        ) as Observable<string | AuthorizedPaymentMethod>;
+        ) {
+            return of(this.getSavedPaymentMethodId());
+        }
+
+        return this.paymentService.authorizePayment(
+            this.getNewPaymentMethod()!,
+        );
     }
 
     private performOperation$(
@@ -306,7 +314,9 @@ export class CheckoutPageComponent implements OnInit {
                         ? 'Payment authorization failed, check that the data is correct'
                         : e instanceof BidPlacementException
                           ? 'Failed to place bid, please try again later'
-                          : 'Failed to accept the bid, please try again later',
+                          : e instanceof BidAcceptanceException
+                            ? 'Failed to accept the bid, please try again later'
+                            : 'An error occurred',
             });
         }
     }

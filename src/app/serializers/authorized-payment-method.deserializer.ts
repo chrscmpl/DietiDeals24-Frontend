@@ -31,7 +31,7 @@ export class AuthorizedPaymentMethodSerializer
             return {
                 type: PaymentMethodType.creditCard,
                 last4digits: paymentMethod.cardNumberLastDigits,
-                paymentProcessorToken: paymentMethod.token,
+                creditCardToken: paymentMethod.token,
             };
 
         throw new Error(

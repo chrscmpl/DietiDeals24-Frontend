@@ -10,7 +10,7 @@ export abstract class PaymentMethod {
     protected _id: string;
 
     constructor(dto: PaymentMethodDTO) {
-        this._id = dto.id;
+        this._id = `${dto.id}`;
     }
 
     public get id(): string {
@@ -29,7 +29,7 @@ export class CreditCard extends PaymentMethod {
 
     constructor(dto: CreditCardDTO) {
         super(dto);
-        this._cardNumberLastDigits = dto.cardNumberLastDigits;
+        this._cardNumberLastDigits = dto.last4digits;
     }
 
     public get category(): PaymentMethodCategory {
