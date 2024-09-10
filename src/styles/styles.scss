@@ -72,6 +72,8 @@
 
     --mobile-tab-icon-color: var(--mobile-icon-color);
 
+    --custom-ripple-color: var(--alt-ripple-color);
+
     @media (prefers-color-scheme: dark) {
         --background-color: #111111;
     }
@@ -180,6 +182,10 @@ body {
 
 .error {
     color: var(--error-color);
+}
+
+.custom-ripple .p-ink {
+    background-color: var(--custom-ripple-color);
 }
 
 .wk-nowrap {

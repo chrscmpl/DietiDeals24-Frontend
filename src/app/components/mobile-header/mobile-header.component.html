@@ -1,7 +1,7 @@
 <nav class="mobile-nav">
     @if (windowService.UIhidden$ | async) {
         <button
-            class="mobile-header-btn"
+            class="mobile-header-btn custom-ripple"
             pRipple
             (click)="navigationService.back()"
         >
@@ -9,7 +9,7 @@
         </button>
     } @else {
         <button
-            class="mobile-header-btn"
+            class="mobile-header-btn custom-ripple"
             pRipple
             (click)="windowService.isSidebarVisible = true"
         >
@@ -26,7 +26,7 @@
     }
     @if ((windowService.UIhidden$ | async) === false) {
         <button
-            class="mobile-header-btn"
+            class="mobile-header-btn custom-ripple"
             pRipple
             routerLink="/help"
             routerLinkActive="link-active"

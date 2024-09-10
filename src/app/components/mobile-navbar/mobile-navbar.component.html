@@ -1,6 +1,6 @@
 <nav class="mobile-navbar">
     <button
-        class="nav-entry"
+        class="nav-entry custom-ripple"
         pRipple
         routerLink="/home"
         routerLinkActive="nav-entry-active"
@@ -12,7 +12,7 @@
         ></i>
     </button>
     <button
-        class="nav-entry"
+        class="nav-entry custom-ripple"
         pRipple
         routerLink="/auctions"
         routerLinkActive="nav-entry-active"
@@ -20,7 +20,7 @@
         <i class="nav-link-icon medium-icon pi pi-search"></i>
     </button>
     <button
-        class="nav-entry"
+        class="nav-entry custom-ripple"
         pRipple
         routerLink="/create-auction"
         routerLinkActive="nav-entry-active"
@@ -30,7 +30,7 @@
 
     @if (authenticationService.isLogged$ | async) {
         <button
-            class="nav-entry"
+            class="nav-entry custom-ripple"
             pRipple
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
@@ -54,7 +54,7 @@
         </button>
     } @else {
         <button
-            class="nav-entry"
+            class="nav-entry custom-ripple"
             pRipple
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
@@ -67,7 +67,7 @@
         </button>
     }
     <p-avatar
-        class="avatar nav-entry"
+        class="avatar nav-entry custom-ripple"
         pRipple
         [icon]="
             !showImagePlaceholder
