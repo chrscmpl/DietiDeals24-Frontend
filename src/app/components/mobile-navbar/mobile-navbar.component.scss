@@ -1,7 +1,11 @@
 @use "layouts";
 
 .mobile-navbar {
-    @include layouts.flex(row, space-between, start);
+    @include layouts.grid(
+        1fr / repeat(5, 1fr),
+        $justify-items: center,
+        $align-items: center
+    );
     height: calc(var(--mobile-icon-size) * 2);
     overflow: hidden;
     padding: 0;
@@ -10,14 +14,14 @@
     background-color: var(--component-color);
 
     .nav-entry {
-        width: 2ch;
-        flex-grow: 1;
+        aspect-ratio: 1 / 1;
         font-size: var(--mobile-icon-size);
         height: calc(var(--mobile-icon-size) + 20px);
         @include layouts.flex(column, start, center);
-        overflow: hidden;
-        padding: 10px 0;
+        padding: var(--mobile-icon-padding) 0;
         text-decoration: none;
+        border-radius: 5000px;
+        overflow: hidden;
 
         .nav-link-icon {
             color: var(--mobile-tab-icon-color);
@@ -37,6 +41,10 @@
 }
 
 :host ::ng-deep {
+    .p-badge {
+        transform: translate(25%, -25%);
+    }
+
     .p-avatar {
         box-sizing: content-box;
         background: transparent;

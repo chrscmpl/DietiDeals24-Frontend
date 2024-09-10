@@ -6,6 +6,7 @@ import { Observable, Subscription, map, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { BadgeModule } from 'primeng/badge';
 import { NotificationsService } from '../../services/notifications.service';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
     selector: 'dd24-mobile-navbar',
@@ -16,6 +17,7 @@ import { NotificationsService } from '../../services/notifications.service';
         AsyncPipe,
         BadgeModule,
         RouterLinkActive,
+        RippleModule,
     ],
     templateUrl: './mobile-navbar.component.html',
     styleUrl: './mobile-navbar.component.scss',

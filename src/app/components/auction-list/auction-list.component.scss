@@ -10,7 +10,16 @@
     }
 
     .card-placeholder {
+        background-color: var(--component-color);
+        border: var(--border);
+        border-radius: var(--border-radius-large);
         height: var(--card-height);
+
+        @include viewports.mobile {
+            border-radius: 0;
+            border-right-width: 0;
+            border-left-width: 0;
+        }
     }
 
     .empty-message {

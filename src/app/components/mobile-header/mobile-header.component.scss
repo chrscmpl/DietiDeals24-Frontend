@@ -2,15 +2,11 @@
 
 .mobile-nav {
     @include layouts.flex(row, start, center, 1.5rem);
-    padding: 10px 4%;
+    padding: 3px calc(4% - var(--mobile-icon-padding));
     background-color: var(--component-color);
     border-bottom: var(--border);
     width: 100%;
     max-width: 100%;
-
-    &.minimal {
-        padding: 0.5rem 1rem;
-    }
 
     i {
         color: var(--basic-affordances-color);
@@ -41,6 +37,11 @@
     .nav-icon {
         color: var(--mobile-tab-icon-color);
     }
+}
+
+.mobile-header-btn {
+    padding: var(--mobile-icon-padding);
+    border-radius: 5000px;
 }
 
 .link-active {

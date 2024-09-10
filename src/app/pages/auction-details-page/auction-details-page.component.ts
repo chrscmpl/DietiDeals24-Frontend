@@ -30,6 +30,7 @@ import { BidService } from '../../services/bid.service';
 import { AuctionStatus } from '../../enums/auction-status.enum';
 import { NavigationService } from '../../services/navigation.service';
 import { CategoriesService } from '../../services/categories.service';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -47,6 +48,7 @@ import { CategoriesService } from '../../services/categories.service';
         ButtonModule,
         CarouselModule,
         NgTemplateOutlet,
+        RippleModule,
     ],
     templateUrl: './auction-details-page.component.html',
     styleUrl: './auction-details-page.component.scss',
@@ -219,8 +221,7 @@ export class AuctionDetailsPageComponent
     }
 
     public onBid(): void {
-        this.navigation.savedRoute =
-            this.navigation.primaryOutletRoute;
+        this.navigation.savedRoute = this.navigation.primaryOutletRoute;
         this.router.navigate([
             {
                 outlets: {

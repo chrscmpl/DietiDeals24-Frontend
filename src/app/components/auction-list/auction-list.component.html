@@ -10,16 +10,16 @@
         }
     } @empty {
         @if (showEmpty && !error) {
-            <div class="empty-message ">
+            <div class="empty-message">
                 No auctions corresponding to the search criteria
             </div>
         }
     }
 
     @if (loadingIndicator.isLoading$ | async) {
-        <dd24-loading-placeholder
+        <dd24-cards-placeholder
             [style]="{ padding: '1rem 0' }"
-        ></dd24-loading-placeholder>
+        ></dd24-cards-placeholder>
     } @else if (error) {
         <dd24-reload-button
             class="no-results"

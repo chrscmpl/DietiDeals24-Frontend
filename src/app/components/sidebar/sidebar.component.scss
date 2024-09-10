@@ -16,7 +16,7 @@
         }
 
         .p-sidebar-header {
-            padding: 10px 4%;
+            padding: 3px calc(4% - var(--mobile-icon-padding));
         }
 
         .p-sidebar-close {
@@ -26,6 +26,7 @@
         }
 
         .p-sidebar-close-icon {
+            padding: var(--mobile-icon-padding);
             .close-icon {
                 font-size: var(--mobile-icon-size);
                 color: var(--mobile-icon-color);

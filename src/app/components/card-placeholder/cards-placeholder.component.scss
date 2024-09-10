@@ -1,13 +1,13 @@
 @use "layouts";
 @use "viewports";
 
-.loading-placeholder {
+.cards-placeholder {
     width: 100%;
     @include layouts.flex(column, center, stretch, var(--page-items-gap));
 }
 
 @include viewports.mobile {
-    .loading-placeholder {
+    .cards-placeholder {
         gap: calc(var(--page-items-gap) * 0.5);
     }
 

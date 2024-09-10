@@ -1,34 +1,42 @@
 <nav class="mobile-navbar">
-    <a
+    <button
         class="nav-entry"
+        pRipple
         routerLink="/home"
         routerLinkActive="nav-entry-active"
         #homeLink="routerLinkActive"
-        ><i
+    >
+        <i
             class="nav-link-icon medium-icon pi pi-home"
             [class.dd24icon-home-fill]="homeLink.isActive"
-        ></i
-    ></a>
-    <a
+        ></i>
+    </button>
+    <button
         class="nav-entry"
+        pRipple
         routerLink="/auctions"
         routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon medium-icon pi pi-search"></i
-    ></a>
-    <a
+    >
+        <i class="nav-link-icon medium-icon pi pi-search"></i>
+    </button>
+    <button
         class="nav-entry"
+        pRipple
         routerLink="/create-auction"
         routerLinkActive="nav-entry-active"
-        ><i class="nav-link-icon medium-icon create pi pi-plus-circle"></i
-    ></a>
+    >
+        <i class="nav-link-icon medium-icon create pi pi-plus-circle"></i>
+    </button>
 
     @if (authenticationService.isLogged$ | async) {
-        <a
+        <button
             class="nav-entry"
+            pRipple
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
             #notificationsLinkWithBadge="routerLinkActive"
-            ><i
+        >
+            <i
                 class="nav-link-icon medium-icon pi pi-inbox"
                 [class.dd24icon-inbox-fill]="
                     notificationsLinkWithBadge.isActive
@@ -42,22 +50,25 @@
                     (notificationsService.unreadNotificationsCount$ | async) ===
                     0
                 "
-            ></i
-        ></a>
+            ></i>
+        </button>
     } @else {
-        <a
+        <button
             class="nav-entry"
+            pRipple
             routerLink="/notifications"
             routerLinkActive="nav-entry-active"
             #notificationsLink="routerLinkActive"
-            ><i
+        >
+            <i
                 class="nav-link-icon medium-icon pi pi-inbox"
                 [class.dd24icon-inbox-fill]="notificationsLink.isActive"
-            ></i
-        ></a>
+            ></i>
+        </button>
     }
     <p-avatar
         class="avatar nav-entry"
+        pRipple
         [icon]="
             !showImagePlaceholder
                 ? ''

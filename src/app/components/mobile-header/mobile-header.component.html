@@ -1,10 +1,18 @@
-<nav class="mobile-nav" [class.minimal]="windowService.UIhidden$ | async">
+<nav class="mobile-nav">
     @if (windowService.UIhidden$ | async) {
-        <button (click)="navigationService.back()">
+        <button
+            class="mobile-header-btn"
+            pRipple
+            (click)="navigationService.back()"
+        >
             <i class="nav-icon pi pi-arrow-left medium-icon"></i>
         </button>
     } @else {
-        <button (click)="windowService.isSidebarVisible = true">
+        <button
+            class="mobile-header-btn"
+            pRipple
+            (click)="windowService.isSidebarVisible = true"
+        >
             <i class="pi pi-bars medium-icon hamb-menu"></i>
         </button>
     }
@@ -17,7 +25,12 @@
         <div class="spacer"></div>
     }
     @if ((windowService.UIhidden$ | async) === false) {
-        <button routerLink="/help" routerLinkActive="link-active">
+        <button
+            class="mobile-header-btn"
+            pRipple
+            routerLink="/help"
+            routerLinkActive="link-active"
+        >
             <i class="link-icon pi pi-question-circle medium-icon"></i>
         </button>
     }

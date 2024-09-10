@@ -28,7 +28,7 @@
 .auction-details-navbar {
     grid-area: nav;
     @include layouts.flex(row, space-between, center);
-    padding: 10px 4%;
+    padding: 3px calc(4% - var(--mobile-icon-padding));
     background-color: var(--component-color);
     border-bottom: var(--border);
 }
@@ -301,8 +301,13 @@
     }
 }
 
-.auction-details-navbar-btn i {
-    color: var(--mobile-icon-color);
+.auction-details-navbar-btn {
+    padding: var(--mobile-icon-padding);
+    border-radius: 5000px;
+
+    i {
+        color: var(--mobile-icon-color);
+    }
 }
 
 :host ::ng-deep {

@@ -68,6 +68,8 @@
 
     --mobile-icon-size: clamp(16px, 2rem, 32px);
 
+    --mobile-icon-padding: 10px;
+
     --mobile-tab-icon-color: var(--mobile-icon-color);
 
     @media (prefers-color-scheme: dark) {

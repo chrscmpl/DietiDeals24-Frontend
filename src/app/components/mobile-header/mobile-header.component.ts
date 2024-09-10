@@ -6,11 +6,18 @@ import { Title } from '@angular/platform-browser';
 import { LogoComponent } from '../logo/logo.component';
 import { NavigationService } from '../../services/navigation.service';
 import { delay, map, Observable, shareReplay, startWith, tap } from 'rxjs';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
     selector: 'dd24-mobile-header',
     standalone: true,
-    imports: [AsyncPipe, RouterLink, RouterLinkActive, LogoComponent],
+    imports: [
+        AsyncPipe,
+        RouterLink,
+        RouterLinkActive,
+        LogoComponent,
+        RippleModule,
+    ],
     templateUrl: './mobile-header.component.html',
     styleUrl: './mobile-header.component.scss',
 })
