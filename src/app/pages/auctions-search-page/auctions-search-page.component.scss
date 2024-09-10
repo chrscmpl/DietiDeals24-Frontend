@@ -19,6 +19,11 @@
 
 .auction-list {
     grid-area: auctions;
+
+    @include viewports.mobile {
+        margin-left: -2%;
+        margin-right: -2%;
+    }
 }
 
 .mobile-search {

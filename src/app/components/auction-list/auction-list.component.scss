@@ -1,16 +1,15 @@
 @use "layouts";
+@use "viewports";
 
 .auction-list {
     @include layouts.flex(column, start, stretch, var(--page-items-gap));
     width: 100%;
 
+    @include viewports.mobile {
+        gap: calc(var(--page-items-gap) * 0.5);
+    }
+
     .card-placeholder {
-        border-radius: var(--border-radius-large);
-        background: linear-gradient(
-            to right,
-            var(--border-color) 0%,
-            transparent 160%
-        );
         height: var(--card-height);
     }
 

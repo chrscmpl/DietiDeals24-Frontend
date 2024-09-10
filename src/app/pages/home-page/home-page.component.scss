@@ -188,6 +188,11 @@
         align-self: stretch;
         justify-self: end;
     }
+
+    .trending-auctions-list {
+        margin-left: -2%;
+        margin-right: -2%;
+    }
 }
 
 :host ::ng-deep {
