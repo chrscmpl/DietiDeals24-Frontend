@@ -16,7 +16,7 @@ import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { ActiveBidsCacheBuster$ } from './bid.service';
-import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
+import { GetPaymentMethodsResponseDTO } from '../DTOs/payment-method.dto';
 import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
@@ -102,10 +102,19 @@ export class PaymentService {
                 !isLogged
                     ? throwError(() => new Error('User is not authenticated'))
                     : this.http
-                          .get<PaymentMethodDTO[]>(`payments/methods`)
+                          .get<GetPaymentMethodsResponseDTO>(`payments/methods`)
                           .pipe(
-                              map((dtos) =>
-                                  this.deserializer.deserializeArray(dtos),
+                              map((res) =>
+                                  this.deserializer.deserializeArray([
+                                      ...(res.creditCards?.map((dto) => ({
+                                          ...dto,
+                                          type: PaymentMethodType.creditCard,
+                                      })) ?? []),
+                                      ...(res.ibans?.map((dto) => ({
+                                          ...dto,
+                                          type: PaymentMethodType.IBAN,
+                                      })) ?? []),
+                                  ]),
                               ),
                           ),
             ),
