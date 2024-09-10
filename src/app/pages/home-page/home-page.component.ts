@@ -42,7 +42,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.auctionsService.setIfAbsent(this.auctionsRequestKey, {
             queryParameters: {},
-            pageNumber: 1,
             pageSize: 10,
             maximumResults: 20,
             eager: true,

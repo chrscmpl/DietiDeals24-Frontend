@@ -15,8 +15,9 @@ export type RequestKey = string;
 
 export type auctionsPaginationParams = Omit<
     PaginatedRequestParams<Auction>,
-    'http' | 'deserializer' | 'url' | 'queryParameters'
+    'http' | 'deserializer' | 'url' | 'queryParameters' | 'pageNumber'
 > & {
+    pageNumber?: number;
     queryParameters?: AuctionSearchParameters;
     ownAuctions?: boolean;
     ofUser?: string;
@@ -139,6 +140,7 @@ export class AuctionsService {
             { queryParameters },
             {
                 ...params,
+                pageNumber: params.pageNumber ?? 1,
                 http: this.http,
                 deserializer: (dtos: AuctionDTO[]) =>
                     this.deserializer.deserializeArray(dtos),

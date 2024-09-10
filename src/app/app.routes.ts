@@ -83,7 +83,6 @@ export const routes: Routes = [
                                 AuctionsRequestKeyResolver.asResolveFn(
                                     '/activity/current',
                                     {
-                                        pageNumber: 1,
                                         pageSize: 10,
                                         ownAuctions: true,
                                         currentAuctions: true,
@@ -99,7 +98,6 @@ export const routes: Routes = [
                                 AuctionsRequestKeyResolver.asResolveFn(
                                     '/activity/past',
                                     {
-                                        pageNumber: 1,
                                         pageSize: 10,
                                         ownAuctions: true,
                                         currentAuctions: false,

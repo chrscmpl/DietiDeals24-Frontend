@@ -104,7 +104,6 @@ export class AuctionsSearchPageComponent
     private startSearch(params: AuctionSearchParameters) {
         this.auctionsService.set(AuctionsSearchPageComponent.REQUEST_KEY, {
             queryParameters: params,
-            pageNumber: 1,
             pageSize: 10,
             eager: true,
         });
