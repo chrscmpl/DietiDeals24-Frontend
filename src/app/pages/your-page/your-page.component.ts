@@ -18,11 +18,11 @@ export class YourPageComponent {
     public readonly tabs: MenuItem[] = [
         {
             label: 'Current activity',
-            routerLink: ['activity'],
+            routerLink: ['activity', 'current'],
         },
         {
             label: 'Past activity',
-            routerLink: ['activity'],
+            routerLink: ['activity', 'past'],
         },
         {
             label: 'Your data',

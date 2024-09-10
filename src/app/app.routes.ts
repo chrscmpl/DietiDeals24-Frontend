@@ -28,6 +28,8 @@ import { AuctionPreviewResolver } from './resolvers/auction-preview.resolver';
 import { ActivityPageComponent } from './pages/your-page/activity-page/activity-page.component';
 import { YourDataPageComponent } from './pages/your-page/your-data-page/your-data-page.component';
 import { SecurityAndPrivacyPageComponent } from './pages/your-page/security-and-privacy-page/security-and-privacy-page.component';
+import { UserAuctionListComponent } from './components/user-auction-list/user-auction-list.component';
+import { AuctionsRequestKeyResolver } from './resolvers/auctions-request-key.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -67,6 +69,45 @@ export const routes: Routes = [
             {
                 path: 'activity',
                 component: ActivityPageComponent,
+                children: [
+                    {
+                        path: '',
+                        pathMatch: 'full',
+                        redirectTo: 'current',
+                    },
+                    {
+                        path: 'current',
+                        component: UserAuctionListComponent,
+                        resolve: {
+                            auctionsRequestKey:
+                                AuctionsRequestKeyResolver.asResolveFn(
+                                    '/activity/current',
+                                    {
+                                        pageNumber: 1,
+                                        pageSize: 10,
+                                        ownAuctions: true,
+                                        currentAuctions: true,
+                                    },
+                                ),
+                        },
+                    },
+                    {
+                        path: 'past',
+                        component: UserAuctionListComponent,
+                        resolve: {
+                            auctionsRequestKey:
+                                AuctionsRequestKeyResolver.asResolveFn(
+                                    '/activity/past',
+                                    {
+                                        pageNumber: 1,
+                                        pageSize: 10,
+                                        ownAuctions: true,
+                                        currentAuctions: false,
+                                    },
+                                ),
+                        },
+                    },
+                ],
             },
             {
                 path: 'your-data',
