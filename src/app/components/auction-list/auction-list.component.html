@@ -11,7 +11,7 @@
     } @empty {
         @if (showEmpty && !error) {
             <div class="empty-message">
-                No auctions corresponding to the search criteria
+                {{ emptyMessage }}
             </div>
         }
     }
