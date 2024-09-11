@@ -1,23 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import {
-    catchError,
-    map,
-    merge,
-    Observable,
-    of,
-    Subject,
-    switchMap,
-    throwError,
-} from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
 import { Cacheable } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
-import { ActiveBidsCacheBuster$ } from './bid.service';
 import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
-import { OwnActiveAuctionsCacheBuster$ } from './auctioneer.service';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';
 import { UnauthorizedPaymentMethod } from '../models/unauthorized-payment-method.model';
@@ -28,8 +17,7 @@ import {
     AuthorizedIBAN,
     AuthorizedPaymentMethod,
 } from '../models/authorized-payment-method.model';
-
-const paymentMethodsCacheBuster$ = new Subject<void>();
+import { CacheBustersService } from './cache-busters.service';
 
 @Injectable({
     providedIn: 'root',
@@ -41,15 +29,7 @@ export class PaymentService {
         private readonly deserializer: PaymentMethodDeserializer,
         private readonly unauthorizedPaymentMethodSerializer: UnauthorizedPaymentMethodSerializer,
         private readonly creditCardAuthorizationDataDeserializer: CreditCardAuthorizationDataDeserializer,
-    ) {
-        merge(
-            this.authentication.isLogged$,
-            ActiveBidsCacheBuster$,
-            OwnActiveAuctionsCacheBuster$,
-        ).subscribe(() => {
-            paymentMethodsCacheBuster$.next();
-        });
-    }
+    ) {}
 
     // this method is a mock implementation, this
     // platform does not actually process payments
@@ -96,7 +76,7 @@ export class PaymentService {
     }
 
     @Cacheable({
-        cacheBusterObserver: paymentMethodsCacheBuster$,
+        cacheBusterObserver: CacheBustersService.CACHE_BUSTERS.paymentMethods$,
     })
     private retrieveAllPaymentMethods(): Observable<PaymentMethod[]> {
         return this.authentication.isLogged$.pipe(

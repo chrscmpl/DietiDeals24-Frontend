@@ -20,6 +20,7 @@ import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BidService } from './services/bid.service';
 import { NavigationService } from './services/navigation.service';
+import { CacheBustersService } from './services/cache-busters.service';
 
 @Component({
     selector: 'dd24-root',
@@ -56,8 +57,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
-        _: BidService, // have it instantiated for caching purposes
-        __: ThemeService,
+        _: CacheBustersService,
+        __: BidService, // have it instantiated for caching purposes
+        ___: ThemeService,
     ) {}
 
     public ngOnInit(): void {

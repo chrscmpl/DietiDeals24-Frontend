@@ -1,15 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
-import {
-    catchError,
-    map,
-    Observable,
-    Observer,
-    of,
-    Subject,
-    throwError,
-} from 'rxjs';
+import { catchError, map, Observable, Observer, of, throwError } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { Auction } from '../models/auction.model';
 import { AuctionDTO } from '../DTOs/auction.dto';
@@ -33,6 +25,7 @@ import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
 import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
 import { AuctionConclusionSerializer } from '../serializers/auction-conclusion.serializer';
+import { CacheBustersService } from './cache-busters.service';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -41,8 +34,6 @@ type auctionCreationDetailsForm = ToReactiveForm<
 type auctionCreationForm = ToReactiveForm<
     Omit<AuctionCreationData, 'details'>
 > & { details: FormGroup<auctionCreationDetailsForm> };
-
-export const OwnActiveAuctionsCacheBuster$ = new Subject<void>();
 
 @Injectable({
     providedIn: 'root',
@@ -118,10 +109,6 @@ export class AuctioneerService {
         private readonly auctionCreationSerializer: AuctionCreationSerializer,
         private readonly auctionConclusionSerializer: AuctionConclusionSerializer,
     ) {
-        this.auth.isLogged$.subscribe(() => {
-            OwnActiveAuctionsCacheBuster$.next();
-        });
-
         this.auctionCreationForm.controls.details.controls.city.disable();
 
         this.categoriesService.categories$.subscribe((categories) => {
@@ -207,7 +194,8 @@ export class AuctioneerService {
     }
 
     @CacheBuster({
-        cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
+        cacheBusterNotifier:
+            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
     })
     private createAuctionObservable(
         auction: AuctionCreationData,
@@ -232,7 +220,8 @@ export class AuctioneerService {
     }
 
     @CacheBuster({
-        cacheBusterNotifier: OwnActiveAuctionsCacheBuster$,
+        cacheBusterNotifier:
+            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
     })
     public concludeAuction(
         conclusionOptions: AuctionConclusionData,
@@ -258,7 +247,8 @@ export class AuctioneerService {
     }
 
     @Cacheable({
-        cacheBusterObserver: OwnActiveAuctionsCacheBuster$,
+        cacheBusterObserver:
+            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
     })
     public getOwnActiveAuctions(): Observable<Auction[]> {
         return this.http.get<AuctionDTO[]>(`auctions/own-active`).pipe(
