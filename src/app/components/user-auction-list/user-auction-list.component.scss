@@ -1,0 +1,5 @@
+@use "layouts";
+
+.user-auction-list {
+    @include layouts.flex(column, stretch, stretch, var(--page-items-gap));
+}

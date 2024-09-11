@@ -1,3 +1,12 @@
 <div class="user-auction-list">
+    @if (enableFilter) {
+        <p-dropdown
+            [formControl]="filterControl"
+            [options]="filterOptions"
+            optionLabel="label"
+            optionValue="value"
+            [style]="{ minWidth: '25ch' }"
+        ></p-dropdown>
+    }
     <dd24-auction-list [requestKey]="requestKey" emptyMessage="" />
 </div>
