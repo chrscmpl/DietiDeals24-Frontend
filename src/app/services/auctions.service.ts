@@ -26,14 +26,20 @@ export type auctionsPaginationParams = Omit<
     onlyBids?: boolean;
 };
 
+type RequestData = {
+    manager: PaginatedRequestManager<Auction>;
+    ownAuctions: boolean;
+    ofUser: string | null;
+    currentAuctions: boolean;
+    onlyAuctions: boolean;
+    onlyBids: boolean;
+};
+
 @Injectable({
     providedIn: 'root',
 })
 export class AuctionsService {
-    private requestsMap = new Map<
-        RequestKey,
-        PaginatedRequestManager<Auction>
-    >();
+    private requestsMap = new Map<RequestKey, RequestData>();
 
     public constructor(
         private readonly http: HttpClient,
@@ -43,12 +49,9 @@ export class AuctionsService {
     public set(key: RequestKey, params: auctionsPaginationParams): void {
         const request = this.requestsMap.get(key);
         if (request) {
-            request.reset(this.completeParams(params));
+            request.manager.reset(this.completeParams(params));
         } else {
-            this.requestsMap.set(
-                key,
-                this.createAuctionsRequestManager(params),
-            );
+            this.requestsMap.set(key, this.createAuctionsRequestData(params));
         }
     }
 
@@ -57,39 +60,50 @@ export class AuctionsService {
         params: auctionsPaginationParams,
     ): void {
         if (this.requestsMap.get(key)) return;
-        this.requestsMap.set(key, this.createAuctionsRequestManager(params));
+        this.requestsMap.set(key, this.createAuctionsRequestData(params));
     }
 
     public subscribeUninterrupted(
         key: RequestKey,
         observer: Partial<UninterruptedResettableObserver<Auction[]>>,
     ): Subscription {
-        return this.getRequest(key).subscribeUninterrupted(observer);
+        return this.getRequest(key).manager.subscribeUninterrupted(observer);
     }
 
     public elements(key: RequestKey): ReadonlyArray<Auction> {
-        return this.getRequest(key).elements;
+        return this.getRequest(key).manager.elements;
     }
 
     public pageSize(key: RequestKey): number {
-        return this.getRequest(key).pageSize;
+        return this.getRequest(key).manager.pageSize;
     }
 
     public more(key: RequestKey): void {
-        this.getRequest(key).more();
+        this.getRequest(key).manager.more();
     }
 
     public refresh(key: RequestKey): void {
-        this.getRequest(key).refresh();
+        this.getRequest(key).manager.refresh();
     }
 
     public reset(key: RequestKey): void {
-        this.getRequest(key).reset();
+        this.getRequest(key).manager.reset();
     }
 
     public remove(key: RequestKey): void {
-        this.getRequest(key).clear();
+        this.getRequest(key).manager.clear();
         this.requestsMap.delete(key);
+    }
+
+    public removeOn(
+        filter: (params: Omit<RequestData, 'manager'>) => boolean,
+    ): void {
+        for (const [key, value] of this.requestsMap.entries()) {
+            if (filter(value)) {
+                value.manager.clear();
+                this.requestsMap.delete(key);
+            }
+        }
     }
 
     @Cacheable({ maxCacheCount: 16 })
@@ -101,16 +115,23 @@ export class AuctionsService {
             .pipe(map((dto) => this.deserializer.deserialize(dto)));
     }
 
-    private getRequest(key: RequestKey): PaginatedRequestManager<Auction> {
+    private getRequest(key: RequestKey): RequestData {
         const request = this.requestsMap.get(key);
         if (!request) throw new Error(`Auctions Request not found: ${key}`);
         return request;
     }
 
-    private createAuctionsRequestManager(
+    private createAuctionsRequestData(
         params: auctionsPaginationParams,
-    ): PaginatedRequestManager<Auction> {
-        return new PaginatedRequestManager(this.completeParams(params));
+    ): RequestData {
+        return {
+            manager: new PaginatedRequestManager(this.completeParams(params)),
+            ownAuctions: params.ownAuctions ?? false,
+            ofUser: params.ofUser ?? null,
+            currentAuctions: params.currentAuctions ?? false,
+            onlyAuctions: params.onlyAuctions ?? false,
+            onlyBids: params.onlyBids ?? false,
+        };
     }
 
     private completeParams(

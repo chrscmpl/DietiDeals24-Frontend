@@ -29,7 +29,7 @@ import { ActivityPageComponent } from './pages/your-page/activity-page/activity-
 import { YourDataPageComponent } from './pages/your-page/your-data-page/your-data-page.component';
 import { SecurityAndPrivacyPageComponent } from './pages/your-page/security-and-privacy-page/security-and-privacy-page.component';
 import { UserAuctionListComponent } from './components/user-auction-list/user-auction-list.component';
-import { AuctionsRequestKeyResolver } from './resolvers/auctions-request-key.resolver';
+import { AuctionsRequestDataResolver } from './resolvers/auctions-request-params.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -79,8 +79,8 @@ export const routes: Routes = [
                         path: 'current',
                         component: UserAuctionListComponent,
                         resolve: {
-                            auctionsRequestKey:
-                                AuctionsRequestKeyResolver.asResolveFn(
+                            auctionsRequestData:
+                                AuctionsRequestDataResolver.asResolveFn(
                                     '/activity/current',
                                     {
                                         pageSize: 10,
@@ -94,8 +94,8 @@ export const routes: Routes = [
                         path: 'past',
                         component: UserAuctionListComponent,
                         resolve: {
-                            auctionsRequestKey:
-                                AuctionsRequestKeyResolver.asResolveFn(
+                            auctionsRequestData:
+                                AuctionsRequestDataResolver.asResolveFn(
                                     '/activity/past',
                                     {
                                         pageSize: 10,
