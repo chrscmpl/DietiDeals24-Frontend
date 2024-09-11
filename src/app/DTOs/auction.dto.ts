@@ -17,11 +17,12 @@ export interface AuctionDTO {
     description?: string | null;
     numberOfBids?: number | null;
     userId?: string | null;
-    lastBidderId?: string | null;
+    currentBidderId?: string | null;
     picturesUrls?: string[] | null;
 
     startingBid?: number | null;
     lastBid?: number | null;
+    ownBid?: number | null;
 }
 
 export interface SilentAuctionDTO extends AuctionDTO {

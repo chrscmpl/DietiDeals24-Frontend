@@ -1,0 +1,38 @@
+@use "layouts";
+
+.user-information-card {
+    @include layouts.flex(column, start, stretch);
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    background-color: var(--component-color);
+    width: calc(30vw - 3rem);
+    min-height: 40vh;
+    padding: 1rem 4rem;
+}
+
+.user-username-wrapper {
+    @include layouts.flex(row, start, stretch, 1ch);
+    margin-left: calc(-2rem - 1ch);
+}
+
+.user-username {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
+}
+
+.user-location {
+    color: var(--text-color-3);
+    margin-bottom: 0.5rem;
+}
+
+.user-counters {
+    @include layouts.flex(column, start, stretch);
+    border-top: var(--border);
+    border-bottom: var(--border);
+    padding: 0.3rem 0;
+}
+
+.user-counter-value {
+    font-weight: var(--font-weight-bolder);
+}

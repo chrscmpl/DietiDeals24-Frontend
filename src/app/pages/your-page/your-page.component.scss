@@ -1,7 +1,7 @@
 @use "layouts";
 
 .your-page {
-    @include layouts.flex(column, stretch, start, var(--page-items-gap));
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
     padding-left: 1rem;
     padding-right: 1rem;
 }

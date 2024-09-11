@@ -14,7 +14,9 @@ export class AuthenticatedUser {
     private _birthday: string;
     private _email: string;
     private _onlineAuctionsCounter: number;
-    private _pastDealsCounter: number;
+    private _activeBidsCounter: number;
+    private _pastBidsCounter: number;
+    private _pastAuctionsCounter: number;
     private _profilePictureUrl: string | null;
     private _country: string | null;
     private _city: string | null;
@@ -29,7 +31,9 @@ export class AuthenticatedUser {
         this._birthday = dto.birthday;
         this._email = dto.email;
         this._onlineAuctionsCounter = dto.onlineAuctionsCounter ?? 0;
-        this._pastDealsCounter = dto.pastDealsCounter ?? 0;
+        this._activeBidsCounter = dto.onlineBidsCounter ?? 0;
+        this._pastBidsCounter = dto.pastBidsCounter ?? 0;
+        this._pastAuctionsCounter = dto.pastAuctionsCounter ?? 0;
         this._profilePictureUrl = dto.profilePictureUrl ?? null;
         this._country = dto.country ?? null;
         this._city = dto.city ?? null;
@@ -65,8 +69,16 @@ export class AuthenticatedUser {
         return this._onlineAuctionsCounter;
     }
 
-    public get pastDealsCounter(): number {
-        return this._pastDealsCounter;
+    public get activeBidsCounter(): number {
+        return this._activeBidsCounter;
+    }
+
+    public get pastBidsCounter(): number {
+        return this._pastBidsCounter;
+    }
+
+    public get pastAuctionsCounter(): number {
+        return this._pastAuctionsCounter;
     }
 
     public get profilePictureUrl(): string | null {

@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<div class="user-activity">
+    <dd24-user-information-card
+        [user]="(authentication.loggedUser$ | async)!"
+        [privateView]="true"
+    ></dd24-user-information-card>
+    <router-outlet class="activity-outlet"></router-outlet>
+</div>

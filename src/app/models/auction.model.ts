@@ -29,6 +29,8 @@ export abstract class Auction {
     protected _lastBidderId: string | null;
     protected _picturesUrls: string[];
 
+    protected _ownBid: number | null = null;
+
     protected _user: UserSummary | null = null;
     protected _lastBidder: UserSummary | null = null;
 
@@ -46,9 +48,10 @@ export abstract class Auction {
         this._description = dto.description ?? null;
         this._bids = dto.numberOfBids ?? null;
         this._userId = String(dto.userId) ?? null;
-        this._lastBidderId = String(dto.lastBidderId) ?? null;
+        this._lastBidderId = String(dto.currentBidderId) ?? null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
+        this._ownBid = dto.ownBid ?? null;
         this._isOver = this._status !== Auction.STATUSES.active;
     }
 
@@ -106,6 +109,10 @@ export abstract class Auction {
 
     public get pictureUrl(): string | null {
         return this._picturesUrls[0] ?? null;
+    }
+
+    public get ownBid(): number | null {
+        return this._ownBid;
     }
 
     public get user(): UserSummary | null {

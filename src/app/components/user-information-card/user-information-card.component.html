@@ -1,0 +1,83 @@
+<ng-template #userCounter let-value="value" let-description="description">
+    <span class="user-counter">
+        <span class="user-counter-value">
+            {{ value }}
+        </span>
+        {{ description + (value !== 1 ? "s" : "") }}
+    </span>
+</ng-template>
+
+<div class="user-information-card">
+    <span class="user-username-wrapper">
+        <p-avatar
+            class="user-avatar"
+            [icon]="
+                user.profilePictureUrl && !showImagePlaceholder
+                    ? ''
+                    : 'pi pi-user'
+            "
+            [image]="user.profilePictureUrl ?? ''"
+            (onImageError)="onImageError()"
+            shape="circle"
+            [style]="{
+                border: '2px solid var(--outline-color)',
+                width: '2rem',
+                height: '2rem'
+            }"
+        />
+        <h3 class="user-username">
+            {{ user.username }}
+        </h3>
+    </span>
+    <span class="user-location">from {{ user.city }}, {{ user.country }}</span>
+    <span class="user-counters">
+        @if (privateView) {
+            <ng-container
+                *ngTemplateOutlet="
+                    userCounter;
+                    context: {
+                        value: user.onlineAuctionsCounter,
+                        description: 'online auction'
+                    }
+                "
+            />
+
+            <ng-container
+                *ngTemplateOutlet="
+                    userCounter;
+                    context: {
+                        value: user.activeBidsCounter,
+                        description: 'active bid'
+                    }
+                "
+            />
+
+            <p-divider
+                [style]="{
+                    borderColor: 'var(--borderColor)',
+                    margin: '0.3rem 0'
+                }"
+            />
+
+            <ng-container
+                *ngTemplateOutlet="
+                    userCounter;
+                    context: {
+                        value: user.pastAuctionsCounter,
+                        description: 'past auction'
+                    }
+                "
+            />
+
+            <ng-container
+                *ngTemplateOutlet="
+                    userCounter;
+                    context: {
+                        value: user.pastBidsCounter,
+                        description: 'past bid'
+                    }
+                "
+            />
+        } @else {}
+    </span>
+</div>

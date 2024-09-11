@@ -7,8 +7,10 @@ export interface AuthenticatedUserDTO {
     surname: string;
     birthday: string;
     email: string;
-    onlineAuctionsCounter?: number | null;
-    pastDealsCounter?: number | null;
+    onlineAuctionsCounter: number;
+    onlineBidsCounter: number;
+    pastBidsCounter: number;
+    pastAuctionsCounter: number;
     profilePictureUrl?: string | null;
     country?: string | null;
     city?: string | null;

@@ -15,6 +15,8 @@ class CacheBusters {
     providedIn: 'root',
 })
 export class CacheBustersService {
+    // needs to be static because the cache busters are used by
+    // the @Cachable decorator, and therefore can't depend on Angular's DI
     public static readonly CACHE_BUSTERS = new CacheBusters();
 
     constructor(

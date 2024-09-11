@@ -1,0 +1,9 @@
+@use "layouts";
+
+.user-activity {
+    @include layouts.grid("user-info auctions" 1fr / auto 1fr, $gap: 1rem);
+}
+
+.activity-outlet {
+    display: none;
+}

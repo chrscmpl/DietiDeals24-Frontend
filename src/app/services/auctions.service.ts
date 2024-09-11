@@ -96,10 +96,10 @@ export class AuctionsService {
     }
 
     public removeOn(
-        filter: (params: Omit<RequestData, 'manager'>) => boolean,
+        predicate: (params: Omit<RequestData, 'manager'>) => boolean,
     ): void {
         for (const [key, value] of this.requestsMap.entries()) {
-            if (filter(value)) {
+            if (predicate(value)) {
                 value.manager.clear();
                 this.requestsMap.delete(key);
             }
