@@ -1,21 +1,29 @@
 <div class="user-activity">
-    <dd24-user-information-card
-        [user]="(authentication.loggedUser$ | async)!"
-        [privateView]="true"
-    >
-        <div class="buttons-wrapper">
-            <p-button label="Your data" [routerLink]="['..', 'your-data']" />
-            <p-button
-                label="Security & Privacy"
-                [routerLink]="['..', 'security-privacy']"
-            />
-        </div>
-    </dd24-user-information-card>
+    @if (userData) {
+        <dd24-user-information-card
+            class="user-info"
+            [user]="userData"
+            [privateView]="true"
+        >
+            <div class="buttons-wrapper">
+                <p-button
+                    label="Your data"
+                    [routerLink]="['..', 'your-data']"
+                />
+                <p-button
+                    label="Security & Privacy"
+                    [routerLink]="['..', 'security-privacy']"
+                />
+            </div>
+        </dd24-user-information-card>
+    }
     @if (windowService.isMobile$ | async) {
         <div class="activity-tabs-wrapper">
             <h3 class="activity-header">Your Activity</h3>
             <p-tabMenu class="activity-tabs" [model]="tabs"></p-tabMenu>
         </div>
     }
-    <router-outlet class="activity-outlet"></router-outlet>
+    <div class="auctions-list">
+        <router-outlet class="activity-outlet"></router-outlet>
+    </div>
 </div>

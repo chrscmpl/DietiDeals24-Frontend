@@ -6,6 +6,7 @@ import {
     Observer,
     ReplaySubject,
     catchError,
+    distinctUntilChanged,
     filter,
     map,
     switchMap,
@@ -24,6 +25,9 @@ import { UserRegistrationData } from '../models/user-registration-data.model';
 import { EmailVerificationSerializer } from '../serializers/email-verification.serializer';
 import { emailVerificationData } from '../models/email-verification-data.model';
 import { MessageService } from 'primeng/api';
+import { Cacheable } from 'ts-cacheable';
+import { CacheBustersService } from './cache-busters.service';
+import { isEqual } from 'lodash-es';
 
 @Injectable({
     providedIn: 'root',
@@ -56,19 +60,23 @@ export class AuthenticationService {
     ) {
         this.isLoggedSubject.next();
         if (AuthenticationService.authorizationToken)
-            this.getUserDataObservable().subscribe();
+            this.loginUsingToken().subscribe();
         else this.setInitialized();
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
         .asObservable()
-        .pipe(map(() => this.isLogged));
+        .pipe(
+            map(() => this.isLogged),
+            distinctUntilChanged(),
+        );
 
     public readonly loggedUser$: Observable<AuthenticatedUser> =
         this.loggedUserSubject.asObservable().pipe(
             withLatestFrom(this.isLogged$),
             filter(() => this.isLogged),
             map(() => this.loggedUser as AuthenticatedUser),
+            distinctUntilChanged(isEqual),
         );
 
     public readonly initialized$: Observable<void> =
@@ -86,7 +94,7 @@ export class AuthenticationService {
                 catchError((e) => throwError(() => new LoginException(e))),
                 switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
-                    return this.getUserDataObservable();
+                    return this.loginUsingToken();
                 }),
             )
             .subscribe(cb);
@@ -130,18 +138,28 @@ export class AuthenticationService {
                 ),
                 switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
-                    return this.getUserDataObservable();
+                    return this.loginUsingToken();
                 }),
             )
             .subscribe(cb);
     }
 
-    private getUserDataObservable(): Observable<AuthenticatedUser> {
+    @Cacheable({
+        cacheBusterObserver:
+            CacheBustersService.CACHE_BUSTERS.authenticatedUserData$,
+    })
+    public getAuthenticatedUserData(): Observable<AuthenticatedUser> {
         return this.http.get<AuthenticatedUserDTO>(`profile/owner-view`).pipe(
             map((dto: AuthenticatedUserDTO) =>
                 this.deserializer.deserialize(dto),
             ),
             tap(this.setLoggedUser.bind(this)),
+            catchError((e) => throwError(() => new GetUserDataException(e))),
+        );
+    }
+
+    private loginUsingToken(): Observable<AuthenticatedUser> {
+        return this.getAuthenticatedUserData().pipe(
             catchError((e) => {
                 this.setInitialized();
                 if (
@@ -152,7 +170,7 @@ export class AuthenticationService {
                     AuthenticationService.authorizationToken = null;
                     this.showExpiredTokenError();
                 }
-                return throwError(() => new GetUserDataException(e));
+                return throwError(() => e);
             }),
         );
     }

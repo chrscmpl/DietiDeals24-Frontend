@@ -4,6 +4,8 @@ import { AuthenticationService } from './authentication.service';
 import { AuctionsService } from './auctions.service';
 
 class CacheBusters {
+    public readonly authenticatedUserData$ = new Subject<void>();
+
     public readonly activeBids$ = new Subject<void>();
 
     public readonly ownActiveAuctions$ = new Subject<void>();
@@ -33,8 +35,14 @@ export class CacheBustersService {
             CacheBustersService.CACHE_BUSTERS.activeBids$,
             CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
         ).subscribe(() => {
-            CacheBustersService.CACHE_BUSTERS.paymentMethods$.next();
+            CacheBustersService.CACHE_BUSTERS.authenticatedUserData$.next();
         });
+
+        CacheBustersService.CACHE_BUSTERS.authenticatedUserData$.subscribe(
+            () => {
+                CacheBustersService.CACHE_BUSTERS.paymentMethods$.next();
+            },
+        );
 
         CacheBustersService.CACHE_BUSTERS.activeBids$.subscribe(() => {
             this.auctionsService.removeOn(

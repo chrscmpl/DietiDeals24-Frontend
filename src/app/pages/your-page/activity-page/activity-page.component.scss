@@ -3,9 +3,21 @@
 
 .user-activity {
     @include layouts.grid(
-        "user-info auctions" 1fr / calc(30vw - 3rem) 1fr,
+        "user-info auctions" 1fr / max(calc(30vw - 3rem), 20rem) 1fr,
         $gap: 1rem
     );
+}
+
+.user-info {
+    grid-area: user-info;
+}
+
+.auctions-list {
+    grid-area: auctions;
+
+    @include viewports.mobile {
+        margin: 0 -2%;
+    }
 }
 
 .activity-outlet {
@@ -19,7 +31,7 @@
 
 @include viewports.mobile {
     .user-activity {
-        grid-template: "user-info" auto "auctions" 1fr / 1fr;
+        grid-template: "user-info" auto "tabs" auto "auctions" 1fr / 1fr;
     }
 
     .activity-tabs-wrapper {

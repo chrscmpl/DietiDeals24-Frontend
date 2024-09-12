@@ -30,6 +30,7 @@ import { YourDataPageComponent } from './pages/your-page/your-data-page/your-dat
 import { SecurityAndPrivacyPageComponent } from './pages/your-page/security-and-privacy-page/security-and-privacy-page.component';
 import { UserAuctionListComponent } from './components/user-auction-list/user-auction-list.component';
 import { AuctionsRequestDataResolver } from './resolvers/auctions-request-params.resolver';
+import { AuthenticatedUserDataResolver } from './resolvers/authenticated-user-data.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -60,6 +61,9 @@ export const routes: Routes = [
             ConfirmReloadGuard.asCanActivateFn(false),
             AuthenticationGuard.asCanActivateFn(true),
         ],
+        resolve: {
+            userData: AuthenticatedUserDataResolver.asResolveFn(),
+        },
         children: [
             {
                 path: '',
