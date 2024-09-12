@@ -2,6 +2,14 @@
     <dd24-user-information-card
         [user]="(authentication.loggedUser$ | async)!"
         [privateView]="true"
-    ></dd24-user-information-card>
+    >
+        <div class="buttons-wrapper">
+            <p-button label="Your data" [routerLink]="['..', 'your-data']" />
+            <p-button
+                label="Security & Privacy"
+                [routerLink]="['..', 'security-privacy']"
+            />
+        </div>
+    </dd24-user-information-card>
     <router-outlet class="activity-outlet"></router-outlet>
 </div>

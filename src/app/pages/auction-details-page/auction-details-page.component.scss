@@ -154,6 +154,12 @@
     color: var(--text-color-3);
 }
 
+.auction-title,
+.auction-description {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
 .auction-description-wrapper {
     margin-top: 0.5rem;
     grid-area: description;
@@ -380,8 +386,8 @@
 
         .p-carousel-prev,
         .p-carousel-next {
-            height: 3rem;
-            width: 3rem;
+            height: 2.5rem;
+            width: 2.5rem;
             background-color: rgba(0, 0, 0, 0.5);
             --p-focus-ring-color: rgba(255, 255, 255, 0.5);
             z-index: 100000;

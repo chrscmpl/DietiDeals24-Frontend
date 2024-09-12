@@ -80,4 +80,22 @@
             />
         } @else {}
     </span>
+
+    @if (user.bio) {
+        <span class="user-bio">{{ user.bio }}</span>
+    }
+
+    @if (user.links.length) {
+        <span class="user-links">
+            @for (link of user.links; track $index) {
+                <a class="user-link" [href]="link.url" target="_blank">
+                    <i class="pi pi-link"></i>&nbsp;{{ link.name }}
+                </a>
+            }
+        </span>
+    }
+
+    <div class="custom-content">
+        <ng-content></ng-content>
+    </div>
 </div>

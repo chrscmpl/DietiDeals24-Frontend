@@ -7,3 +7,8 @@
 .activity-outlet {
     display: none;
 }
+
+.buttons-wrapper {
+    @include layouts.flex(column, start, stretch);
+    gap: 0.5rem;
+}
