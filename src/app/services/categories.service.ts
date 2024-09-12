@@ -48,7 +48,7 @@ export class CategoriesService {
 
     public refreshTrendingCategories(cb?: Partial<Observer<string[]>>): void {
         this.http
-            .get<string[]>(`info/trending-categories`)
+            .get<string[]>(`categories/trending`)
             .pipe(
                 tap((value) => {
                     this._trendingCategories = value;
@@ -60,7 +60,7 @@ export class CategoriesService {
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
-            .get<Categories>(`categories`)
+            .get<Categories>(`categories/all`)
             .pipe(
                 map((categories) => {
                     const sorted: Categories = {};
