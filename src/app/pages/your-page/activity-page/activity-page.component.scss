@@ -1,7 +1,11 @@
 @use "layouts";
+@use "viewports";
 
 .user-activity {
-    @include layouts.grid("user-info auctions" 1fr / auto 1fr, $gap: 1rem);
+    @include layouts.grid(
+        "user-info auctions" 1fr / calc(30vw - 3rem) 1fr,
+        $gap: 1rem
+    );
 }
 
 .activity-outlet {
@@ -11,4 +15,45 @@
 .buttons-wrapper {
     @include layouts.flex(column, start, stretch);
     gap: 0.5rem;
+}
+
+@include viewports.mobile {
+    .user-activity {
+        grid-template: "user-info" auto "auctions" 1fr / 1fr;
+    }
+
+    .activity-tabs-wrapper {
+        margin: 0 -2%;
+        @include layouts.flex(column, start, stretch);
+        padding-top: 1rem;
+    }
+
+    .activity-header {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bolder);
+        line-height: var(--line-height-large);
+        margin-left: 1rem;
+    }
+}
+
+:host ::ng-deep {
+    .activity-tabs {
+        .p-menuitem-link {
+            border-radius: 0;
+            width: 100%;
+            @include layouts.center;
+            background: none;
+        }
+
+        .p-tabmenu-nav > .p-tabmenuitem {
+            flex: 1;
+        }
+
+        .p-tabmenu-nav > .p-tabmenuitem:not(:nth-last-child(2)) {
+        }
+
+        .p-tabmenu-nav {
+            background: none;
+        }
+    }
 }

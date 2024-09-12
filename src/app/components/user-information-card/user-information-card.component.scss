@@ -1,27 +1,44 @@
 @use "layouts";
+@use "viewports";
 
 .user-information-card {
     @include layouts.flex(column, start, stretch);
     border: var(--border);
     border-radius: var(--border-radius-large);
     background-color: var(--component-color);
-    width: calc(30vw - 3rem);
-    min-height: 40vh;
     padding: 1rem 4rem;
+
+    @include viewports.mobile {
+        padding: 1rem;
+    }
 }
 
 .user-username-wrapper {
-    @include layouts.flex(row, start, stretch, 1ch);
+    @include layouts.grid(
+        "avatar username" auto "avatar location" auto / auto 1fr,
+        $gap: 1ch
+    );
+    row-gap: 0;
     margin-left: calc(-2rem - 1ch);
+
+    @include viewports.mobile {
+        margin: 0;
+    }
+}
+
+.user-avatar {
+    grid-area: avatar;
 }
 
 .user-username {
+    grid-area: username;
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
 }
 
 .user-location {
+    grid-area: location;
     color: var(--text-color-3);
 }
 
@@ -55,4 +72,17 @@
 
 .custom-content {
     margin-top: 0.5rem;
+}
+
+:host ::ng-deep {
+    @include viewports.mobile {
+        .p-avatar {
+            height: 4rem !important;
+            width: 4rem !important;
+        }
+
+        .p-avatar-icon {
+            font-size: 2rem;
+        }
+    }
 }

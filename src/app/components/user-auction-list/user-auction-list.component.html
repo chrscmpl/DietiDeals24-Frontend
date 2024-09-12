@@ -1,6 +1,7 @@
 <div class="user-auction-list">
     @if (enableFilter) {
         <p-dropdown
+            class="user-auctions-filter"
             [formControl]="filterControl"
             [options]="filterOptions"
             optionLabel="label"

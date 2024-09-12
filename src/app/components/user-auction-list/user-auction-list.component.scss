@@ -1,5 +1,16 @@
 @use "layouts";
+@use "viewports";
 
 .user-auction-list {
     @include layouts.flex(column, stretch, stretch, var(--page-items-gap));
+}
+
+@include viewports.mobile {
+    :host {
+        margin: 0 -2%;
+    }
+
+    .user-auctions-filter {
+        margin-left: 2%;
+    }
 }

@@ -28,8 +28,10 @@
         <h3 class="user-username">
             {{ user.username }}
         </h3>
+        <span class="user-location"
+            >from {{ user.city }}, {{ user.country }}</span
+        >
     </span>
-    <span class="user-location">from {{ user.city }}, {{ user.country }}</span>
     <span class="user-counters">
         @if (privateView) {
             <ng-container

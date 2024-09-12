@@ -11,5 +11,11 @@
             />
         </div>
     </dd24-user-information-card>
+    @if (windowService.isMobile$ | async) {
+        <div class="activity-tabs-wrapper">
+            <h3 class="activity-header">Your Activity</h3>
+            <p-tabMenu class="activity-tabs" [model]="tabs"></p-tabMenu>
+        </div>
+    }
     <router-outlet class="activity-outlet"></router-outlet>
 </div>

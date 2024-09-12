@@ -1,7 +1,7 @@
 <main class="your-page dd24-main-page-alt">
     @if ((windowService.isMobile$ | async) === false) {
         <h1 class="your-page-header">Your Page</h1>
+        <p-tabMenu class="your-page-tabs" [model]="tabs"></p-tabMenu>
     }
-    <p-tabMenu [model]="tabs"></p-tabMenu>
     <router-outlet class="your-page-outlet"></router-outlet>
 </main>
