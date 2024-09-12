@@ -38,15 +38,17 @@ export interface ReverseAuctionDTO extends AuctionDTO {
 }
 
 export interface AuctionCreationDTO {
-    ruleset: AuctionRuleSet;
-    category: string;
-    title: string;
-    conditions?: string | null;
+    auctionType: AuctionRuleSet;
+    itemCategory: string;
+    itemName: string;
+    itemCondition?: string | null;
     description?: string | null;
     country: string;
     city: string;
-    startingBid: number;
     currency: string;
     endTime: string;
-    pictures: string[];
+    picturesUrls: string[];
+    startingBid?: number;
+    minimumBid?: number;
+    maximumBid?: number;
 }
