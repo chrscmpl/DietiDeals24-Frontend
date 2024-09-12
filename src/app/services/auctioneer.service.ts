@@ -202,7 +202,7 @@ export class AuctioneerService {
     ): Observable<unknown> {
         return this.http
             .post(
-                `auctions`,
+                `auctions/new`,
                 this.auctionCreationSerializer.serialize(auction),
                 {
                     responseType: 'text',
