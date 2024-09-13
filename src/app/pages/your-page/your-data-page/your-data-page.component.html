@@ -1,1 +1,12 @@
-<p>your-data-page works!</p>
+<div class="your-data-page">
+    <aside class="your-data-page-side">
+        @for (tab of tabs; track $index) {
+            <span class="your-data-page-tab"> {{ tab.label }} </span>
+        }
+    </aside>
+    <div class="your-data-page-main">
+        <section class="your-data-page-section">
+            <h1 class="your-data-page-header">Public profile</h1>
+        </section>
+    </div>
+</div>

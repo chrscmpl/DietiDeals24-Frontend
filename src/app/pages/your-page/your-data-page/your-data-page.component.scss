@@ -1,0 +1,47 @@
+@use "layouts";
+
+:host {
+    flex-grow: 1;
+    @include layouts.flex(column, stretch, stretch);
+    padding: 0 calc(15% - 1rem);
+}
+
+.your-data-page {
+    @include layouts.grid(1fr / auto 1fr);
+    background-color: var(--component-color);
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    min-height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.your-data-page-side {
+    @include layouts.flex(column, start, stretch);
+    border-right: var(--border);
+}
+
+.your-data-page-tab {
+    @include layouts.center;
+    padding: 0.5rem 1rem;
+    border-bottom: var(--border);
+}
+
+.your-data-page-main {
+    @include layouts.flex(column, start, stretch);
+}
+
+.your-data-page-section {
+    @include layouts.flex(column, start, start);
+    padding: 1.5rem;
+
+    &:not(:last-child) {
+        border-bottom: var(--border);
+    }
+}
+
+.your-data-page-header {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bolder);
+    line-height: var(--line-height-large);
+}
