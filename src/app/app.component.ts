@@ -100,6 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 );
             } else if (interval) {
                 clearInterval(interval);
+                interval = null;
             }
         });
     }

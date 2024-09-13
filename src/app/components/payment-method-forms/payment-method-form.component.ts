@@ -16,7 +16,7 @@ import { isValid as isValidIBAN } from 'iban-ts';
 import { WarningsService } from '../../services/warnings.service';
 import { ToReactiveForm } from '../../typeUtils/to-reactive-form';
 import { InputMaskModule } from 'primeng/inputmask';
-import { DescendantsAttributesDirective } from '../../directives/set-descentant-attributes.directive';
+import { DescendantsAttributesDirective } from '../../directives/descentant-attributes.directive';
 
 type IBANForm = ToReactiveForm<{
     type: PaymentMethodType.IBAN;

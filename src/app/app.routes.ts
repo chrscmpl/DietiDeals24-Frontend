@@ -226,7 +226,7 @@ export const routes: Routes = [
         ],
 
         loadChildren: () =>
-            import('./modules/auth-routing/auth-routing.module').then(
+            import('./modules/auth-routing.module').then(
                 (m) => m.AuthRoutingModule,
             ),
     },
