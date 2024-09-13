@@ -3,7 +3,7 @@
         class="user-page-back-btn"
         icon="pi pi-chevron-left"
         label="Go back"
-        (onClick)="navigation.back()"
+        (onClick)="router.navigateByUrl(previousRoute)"
     />
     @if (user) {
         <dd24-user-information-card class="user-info" [user]="user">

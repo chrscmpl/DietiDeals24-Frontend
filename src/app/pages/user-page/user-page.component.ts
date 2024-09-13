@@ -1,6 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import {
+    ActivatedRoute,
+    Router,
+    RouterLink,
+    RouterOutlet,
+    UrlTree,
+} from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { UserInformationCardComponent } from '../../components/user-information-card/user-information-card.component';
 import { WindowService } from '../../services/window.service';
@@ -9,6 +15,7 @@ import { MenuItem } from 'primeng/api';
 import { AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { routerLinkType } from '../../typeUtils/router-link-type';
 
 @Component({
     selector: 'dd24-user-page',
@@ -28,6 +35,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
     public user!: User;
     public showPastActivityButton: boolean = false;
+    public previousRoute!: UrlTree;
 
     public readonly tabs: MenuItem[] = [
         {
@@ -44,9 +52,12 @@ export class UserPageComponent implements OnInit, OnDestroy {
         private readonly route: ActivatedRoute,
         public readonly windowService: WindowService,
         public readonly navigation: NavigationService,
+        public readonly router: Router,
     ) {}
 
     public ngOnInit(): void {
+        this.previousRoute = this.navigation.lastRoute;
+
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.user = data['user'];
         });

@@ -7,6 +7,7 @@ import {
     NavigationStart,
     Params,
     Router,
+    UrlTree,
 } from '@angular/router';
 import {
     Observable,
@@ -34,14 +35,20 @@ export class NavigationService {
     private _backAction: ((defaultFn: () => void) => void) | null = null;
     private _routeBeforeRedirection: string | null = null;
     private _savedRoute: string | null = null;
+    private _lastRoute: UrlTree = this.getCurrentUrlTree();
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private searchService: SearchService,
-        private location: Location,
+        private readonly router: Router,
+        private readonly route: ActivatedRoute,
+        private readonly searchService: SearchService,
+        private readonly location: Location,
     ) {
+        let _lastRouteTemp!: UrlTree;
+        this.navigationStart$.subscribe(() => {
+            _lastRouteTemp = this.getCurrentUrlTree();
+        });
         this.navigationEnd$.subscribe(() => {
+            this._lastRoute = _lastRouteTemp;
             this._navigationCounter++;
         });
         this.location.subscribe(() => {
@@ -91,6 +98,10 @@ export class NavigationService {
         map((location) => location.query),
     );
 
+    public get lastRoute(): UrlTree {
+        return this._lastRoute;
+    }
+
     public navigationStart$: Observable<NavigationStart> =
         this.router.events.pipe(
             filter((event) => event instanceof NavigationStart),
@@ -134,6 +145,7 @@ export class NavigationService {
     }
 
     public navigateToSavedRoute() {
+        console.log(this._savedRoute);
         this.navigateToRoute(this._savedRoute);
         this._savedRoute = null;
     }
@@ -162,5 +174,13 @@ export class NavigationService {
             (segment) => segment.path,
         );
         return segments ?? [];
+    }
+
+    private getCurrentUrlTree(): UrlTree {
+        return this.router.createUrlTree([], {
+            relativeTo: this.router.routerState.root,
+            preserveFragment: true,
+            queryParamsHandling: 'merge',
+        });
     }
 }

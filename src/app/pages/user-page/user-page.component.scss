@@ -73,20 +73,22 @@
 }
 
 :host ::ng-deep {
-    .user-activity-tabs {
-        .p-menuitem-link {
-            border-radius: 0;
-            width: 100%;
-            @include layouts.center;
-            background: none;
-        }
+    @include viewports.mobile {
+        .user-activity-tabs {
+            .p-menuitem-link {
+                border-radius: 0;
+                width: 100%;
+                @include layouts.center;
+                background: none;
+            }
 
-        .p-tabmenu-nav > .p-tabmenuitem {
-            flex: 1;
-        }
+            .p-tabmenu-nav > .p-tabmenuitem {
+                flex: 1;
+            }
 
-        .p-tabmenu-nav {
-            background: none;
+            .p-tabmenu-nav {
+                background: none;
+            }
         }
     }
 }
