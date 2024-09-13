@@ -43,6 +43,18 @@
         }
     }
 
+    .desktop-banners {
+        @include layouts.grid($gap: var(--page-items-gap));
+
+        @include viewports.ultraWide {
+            grid-template-columns: 1fr 1fr;
+
+            > * {
+                height: 100% !important;
+            }
+        }
+    }
+
     .create-auction-banner {
         @include layouts.flex(row, stretch, stretch);
         overflow: hidden;

@@ -9,3 +9,9 @@
         @content;
     }
 }
+
+@mixin ultraWide {
+    @media (min-width: 1680px) {
+        @content;
+    }
+}

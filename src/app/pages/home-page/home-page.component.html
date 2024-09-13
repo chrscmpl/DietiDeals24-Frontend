@@ -85,49 +85,55 @@
     </section>
 
     @if ((windowService.isMobile$ | async) === false) {
-        <section class="create-auction-banner">
-            <div
-                class="banner-img-container create-auction-banner-img-container"
-            >
-                <img
-                    class="banner-img create-auction-image"
-                    src="assets/create-auction-banner.webp"
-                    alt="create-auction-banner"
-                />
-                <p class="create-auction-banner-text text-regular text-large">
-                    Are you buying or selling? Take your first step.
-                </p>
-            </div>
-            <p-button
-                class="create-auction-button"
-                type="button"
-                routerLink="/create-auction"
-                label="Create an auction"
-                icon="pi pi-arrow-circle-right"
-                iconPos="right"
-            >
-            </p-button>
-        </section>
-        <section class="your-page-banner">
-            <div class="banner-img-container your-page-banner-img-container">
-                <img
-                    class="banner-img your-page-image"
-                    src="assets/your-page-banner.webp"
-                    alt="your-page-banner"
-                />
-                <p class="your-page-banner-text text-regular text-large">
-                    See how your auctions are currently doing.
-                </p>
-            </div>
-            <p-button
-                class="your-page-button"
-                type="button"
-                routerLink="/your-page"
-                label="View your page"
-                icon="pi pi-arrow-circle-right"
-                iconPos="right"
-            >
-            </p-button>
+        <section class="desktop-banners">
+            <section class="create-auction-banner">
+                <div
+                    class="banner-img-container create-auction-banner-img-container"
+                >
+                    <img
+                        class="banner-img create-auction-image"
+                        src="assets/create-auction-banner.webp"
+                        alt="create-auction-banner"
+                    />
+                    <p
+                        class="create-auction-banner-text text-regular text-large"
+                    >
+                        Are you buying or selling? Take your first step.
+                    </p>
+                </div>
+                <p-button
+                    class="create-auction-button"
+                    type="button"
+                    routerLink="/create-auction"
+                    label="Create an auction"
+                    icon="pi pi-arrow-circle-right"
+                    iconPos="right"
+                >
+                </p-button>
+            </section>
+            <section class="your-page-banner">
+                <div
+                    class="banner-img-container your-page-banner-img-container"
+                >
+                    <img
+                        class="banner-img your-page-image"
+                        src="assets/your-page-banner.webp"
+                        alt="your-page-banner"
+                    />
+                    <p class="your-page-banner-text text-regular text-large">
+                        See how your auctions are currently doing.
+                    </p>
+                </div>
+                <p-button
+                    class="your-page-button"
+                    type="button"
+                    routerLink="/your-page"
+                    label="View your page"
+                    icon="pi pi-arrow-circle-right"
+                    iconPos="right"
+                >
+                </p-button>
+            </section>
         </section>
     }
     <section class="trending-auctions">
