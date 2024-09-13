@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { UserInformationCardComponent } from '../../../components/user-information-card/user-information-card.component';
-import { AuthenticationService } from '../../../services/authentication.service';
 import { AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -28,7 +27,7 @@ import { NavigationService } from '../../../services/navigation.service';
 export class ActivityPageComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
     public userData!: AuthenticatedUser;
-    public childUrlSegment?: string;
+    public showPastActivityButton: boolean = false;
 
     public readonly tabs: MenuItem[] = [
         {
@@ -44,7 +43,7 @@ export class ActivityPageComponent implements OnInit, OnDestroy {
     public constructor(
         private readonly route: ActivatedRoute,
         public readonly windowService: WindowService,
-        private navigation: NavigationService,
+        private readonly navigation: NavigationService,
     ) {}
 
     public ngOnInit(): void {
@@ -52,9 +51,13 @@ export class ActivityPageComponent implements OnInit, OnDestroy {
             this.userData = data['userData'];
         });
 
+        this.route.children[0]?.url.subscribe((url) => {
+            this.showPastActivityButton = url[0]?.path !== 'past';
+        });
+
         this.subscriptions.push(
-            this.navigation.currentPath$.subscribe((url) => {
-                this.childUrlSegment = url[url.length - 1];
+            this.navigation.navigationStart$.subscribe((e) => {
+                this.showPastActivityButton = !e?.url?.endsWith('past');
             }),
         );
     }

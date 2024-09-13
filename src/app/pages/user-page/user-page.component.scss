@@ -1,0 +1,92 @@
+@use "layouts";
+@use "viewports";
+
+.user-page {
+    @include layouts.grid(
+        "back-btn tabs" auto "user-info auctions" 1fr /
+            max(calc(30vw - 3rem), 20rem) 1fr,
+        $gap: 1rem
+    );
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    @include viewports.mobile {
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+}
+
+.user-page-back-btn {
+    grid-area: back-btn;
+    justify-self: start;
+}
+
+.user-info {
+    grid-area: user-info;
+}
+
+.user-activity-tabs-wrapper {
+    grid-area: tabs;
+}
+
+.auctions-list {
+    grid-area: auctions;
+
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+
+    @include viewports.mobile {
+        margin: 0 -2%;
+    }
+}
+
+.user-activity-outlet {
+    display: none;
+}
+
+.user-activity-btn {
+    align-self: center;
+}
+
+.buttons-wrapper {
+    @include layouts.flex(column, start, stretch);
+    gap: 0.5rem;
+}
+
+@include viewports.mobile {
+    .user-page {
+        grid-template: "back-btn" auto "user-info" auto "tabs" auto "auctions" 1fr / 1fr;
+    }
+
+    .user-activity-tabs-wrapper {
+        margin: 0 -2%;
+        @include layouts.flex(column, start, stretch);
+        padding-top: 1rem;
+    }
+
+    .user-activity-header {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bolder);
+        line-height: var(--line-height-large);
+        margin-left: 1rem;
+    }
+}
+
+:host ::ng-deep {
+    .user-activity-tabs {
+        .p-menuitem-link {
+            border-radius: 0;
+            width: 100%;
+            @include layouts.center;
+            background: none;
+        }
+
+        .p-tabmenu-nav > .p-tabmenuitem {
+            flex: 1;
+        }
+
+        .p-tabmenu-nav {
+            background: none;
+        }
+    }
+}

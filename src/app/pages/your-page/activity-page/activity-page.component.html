@@ -15,13 +15,13 @@
     }
     @if (windowService.isMobile$ | async) {
         <div class="activity-tabs-wrapper">
-            <h3 class="activity-header">Your Activity</h3>
+            <h3 class="activity-header">Your activity</h3>
             <p-tabMenu class="activity-tabs" [model]="tabs"></p-tabMenu>
         </div>
     }
     <div class="auctions-list">
         <router-outlet class="activity-outlet"></router-outlet>
-        @if (childUrlSegment === "current") {
+        @if (showPastActivityButton) {
             <p-button
                 class="activity-btn"
                 [label]="

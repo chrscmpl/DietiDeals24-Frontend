@@ -1,6 +1,46 @@
-<main class="user-page">
+<main class="user-page dd24-main-page-alt">
+    <p-button
+        class="user-page-back-btn"
+        icon="pi pi-chevron-left"
+        label="Go back"
+        (onClick)="navigation.back()"
+    />
     @if (user) {
-        <dd24-user-information-card class="user-info" [user]="user" />
+        <dd24-user-information-card class="user-info" [user]="user">
+            @if (showPastActivityButton) {
+                <div class="buttons-wrapper">
+                    <p-button
+                        label="View past deals"
+                        [routerLink]="['past-activity']"
+                    />
+                </div>
+            }
+        </dd24-user-information-card>
     }
-    <router-outlet></router-outlet>
+
+    <div class="user-activity-tabs-wrapper">
+        @if (windowService.isMobile$ | async) {
+            <h3 class="user-activity-header">{{ user.username }}'s activity</h3>
+        }
+        <p-tabMenu
+            class="user-activity-tabs"
+            [class.dd24-tabs]="(windowService.isMobile$ | async) === false"
+            [model]="tabs"
+        ></p-tabMenu>
+    </div>
+
+    <div class="auctions-list">
+        <router-outlet class="user-activity-outlet"></router-outlet>
+        @if (showPastActivityButton) {
+            <p-button
+                class="user-activity-btn"
+                [label]="
+                    (windowService.isMobile$ | async) === false
+                        ? 'View past deals'
+                        : 'View history'
+                "
+                routerLink="past-activity"
+            />
+        }
+    </div>
 </main>

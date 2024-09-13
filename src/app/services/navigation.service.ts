@@ -4,6 +4,7 @@ import {
     NavigationCancel,
     NavigationEnd,
     NavigationError,
+    NavigationStart,
     Params,
     Router,
 } from '@angular/router';
@@ -89,6 +90,11 @@ export class NavigationService {
     public currentQuery$: Observable<query> = this.currentLocation$.pipe(
         map((location) => location.query),
     );
+
+    public navigationStart$: Observable<NavigationStart> =
+        this.router.events.pipe(
+            filter((event) => event instanceof NavigationStart),
+        ) as Observable<NavigationStart>;
 
     public navigationEnd$: Observable<NavigationEnd> = this.router.events.pipe(
         filter((event) => event instanceof NavigationEnd),
