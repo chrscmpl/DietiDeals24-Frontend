@@ -160,6 +160,8 @@ export abstract class Auction {
 
     public abstract get kind(): AuctionKind;
 
+    public abstract canBeBiddenOn(): boolean;
+
     public abstract validateBid(bid: number): bidValidationError | null;
 
     public abstract newBidDescription(): string;
@@ -204,6 +206,10 @@ export class SilentAuction extends Auction {
 
     public override get kind(): AuctionKind {
         return AuctionKind.selling;
+    }
+
+    public override canBeBiddenOn(): boolean {
+        return !this._ownBid;
     }
 
     public override validateBid(bid: number): bidValidationError | null {
@@ -268,6 +274,10 @@ export class ReverseAuction extends Auction {
 
     public override get kind(): AuctionKind {
         return AuctionKind.buying;
+    }
+
+    public override canBeBiddenOn(): boolean {
+        return !this._ownBid || this._ownBid > this._lowestBid;
     }
 
     private nextValidBid(): number {

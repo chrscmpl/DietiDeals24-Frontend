@@ -27,8 +27,8 @@ import { EmailVerificationSerializer } from '../serializers/email-verification.s
 import { emailVerificationData } from '../models/email-verification-data.model';
 import { MessageService } from 'primeng/api';
 import { Cacheable } from 'ts-cacheable';
-import { CacheBustersService } from './cache-busters.service';
 import { isEqual } from 'lodash-es';
+import { cacheBusters } from '../helpers/cache-busters';
 
 @Injectable({
     providedIn: 'root',
@@ -146,8 +146,7 @@ export class AuthenticationService {
     }
 
     @Cacheable({
-        cacheBusterObserver:
-            CacheBustersService.CACHE_BUSTERS.authenticatedUserData$,
+        cacheBusterObserver: cacheBusters.authenticatedUserData$,
     })
     public getAuthenticatedUserData(): Observable<AuthenticatedUser> {
         return this.http.get<AuthenticatedUserDTO>(`profile/owner-view`).pipe(

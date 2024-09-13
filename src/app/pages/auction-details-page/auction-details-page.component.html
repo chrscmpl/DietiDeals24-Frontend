@@ -196,7 +196,7 @@
                     (onClick)="onBid()"
                     [disabled]="
                         ownAuction ||
-                        hasUserAlreadyBidded ||
+                        !auction.canBeBiddenOn() ||
                         auction.status !== auctionStatus.active
                     "
                 ></p-button>

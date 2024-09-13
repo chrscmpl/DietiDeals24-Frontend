@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedRequestParams } from '../helpers/paginated-request';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable, of, Subscription, switchMap } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterrupted-resettable-observer';
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
@@ -10,6 +10,8 @@ import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { defaults } from 'lodash-es';
+import { BidService } from './bid.service';
+import { cacheBusters } from '../helpers/cache-busters';
 
 export type RequestKey = string;
 
@@ -44,6 +46,7 @@ export class AuctionsService {
     public constructor(
         private readonly http: HttpClient,
         private readonly deserializer: AuctionDeserializer,
+        private readonly bidService: BidService,
     ) {}
 
     public set(key: RequestKey, params: auctionsPaginationParams): void {
@@ -106,13 +109,24 @@ export class AuctionsService {
         }
     }
 
-    @Cacheable({ maxCacheCount: 16 })
+    @Cacheable({
+        maxCacheCount: 16,
+        cacheBusterObserver: cacheBusters.activeBids$,
+    })
     public getDetails(id: string): Observable<Auction> {
         return this.http
             .get<AuctionDTO>(`auctions/specific/public-view`, {
                 params: { id },
             })
-            .pipe(map((dto) => this.deserializer.deserialize(dto)));
+            .pipe(
+                switchMap((dto) => {
+                    if (dto.ownBid) return of(dto);
+                    return this.bidService
+                        .getOwnBidForAuction(id)
+                        .pipe(map((ownBid) => ({ ...dto, ownBid })));
+                }),
+                map((dto) => this.deserializer.deserialize(dto)),
+            );
     }
 
     private getRequest(key: RequestKey): RequestData {

@@ -13,10 +13,8 @@ import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
 import { BidCreationData } from '../models/bid-creation-data.model';
 import { BidCreationSerializer } from '../serializers/bid-creation.serializer';
-import { CacheBustersService } from './cache-busters.service';
-import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
-import { Auction } from '../models/auction.model';
 import { AuthenticationService } from './authentication.service';
+import { cacheBusters } from '../helpers/cache-busters';
 
 @Injectable({
     providedIn: 'root',
@@ -29,7 +27,7 @@ export class BidService {
     ) {}
 
     @CacheBuster({
-        cacheBusterNotifier: CacheBustersService.CACHE_BUSTERS.activeBids$,
+        cacheBusterNotifier: cacheBusters.activeBids$,
     })
     public placeBid(bid: BidCreationData): Observable<unknown> {
         return this.http
@@ -45,35 +43,26 @@ export class BidService {
 
     @Cacheable({
         maxCacheCount: 16,
-        cacheBusterObserver: CacheBustersService.CACHE_BUSTERS.activeBids$,
+        cacheBusterObserver: cacheBusters.activeBids$,
     })
-    public hasAlreadyBidded(auction: Auction): Observable<boolean> {
+    public getOwnBidForAuction(id: string): Observable<number | null> {
         return this.authentication.isLogged$.pipe(
-            take(1),
             switchMap((isLogged) => {
-                if (!isLogged) return of(false);
-
-                return this.getOwnBidsForAuction(auction.id).pipe(
-                    map(
-                        (bids) =>
-                            !!(
-                                bids.length &&
-                                (auction.ruleset === AuctionRuleSet.silent ||
-                                    bids[bids.length - 1].bidAmount ===
-                                        auction.lastBid)
-                            ),
-                    ),
-                );
+                if (!isLogged) return of(null);
+                return this.http
+                    .get<{ bidAmount: number }[]>(`bids/own/by-auction`, {
+                        params: { auctionId: id },
+                    })
+                    .pipe(
+                        map((bids) =>
+                            bids.length
+                                ? bids[bids.length - 1].bidAmount
+                                : null,
+                        ),
+                    );
             }),
-            catchError(() => of(false)),
+            catchError(() => of(null)),
+            take(1),
         );
-    }
-
-    private getOwnBidsForAuction(
-        id: string,
-    ): Observable<{ bidAmount: number }[]> {
-        return this.http.get<{ bidAmount: number }[]>(`bids/own/by-auction`, {
-            params: { auctionId: id },
-        });
     }
 }

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { CacheBustersService } from './services/cache-busters.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingIndicator } from './helpers/loading-indicator';
@@ -18,9 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { BidService } from './services/bid.service';
 import { NavigationService } from './services/navigation.service';
-import { CacheBustersService } from './services/cache-busters.service';
 
 @Component({
     selector: 'dd24-root',
@@ -58,8 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
         _: CacheBustersService,
-        __: BidService, // have it instantiated for caching purposes
-        ___: ThemeService,
+        __: ThemeService,
     ) {}
 
     public ngOnInit(): void {

@@ -25,7 +25,7 @@ import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
 import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
 import { AuctionConclusionSerializer } from '../serializers/auction-conclusion.serializer';
-import { CacheBustersService } from './cache-busters.service';
+import { cacheBusters } from '../helpers/cache-busters';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -194,8 +194,7 @@ export class AuctioneerService {
     }
 
     @CacheBuster({
-        cacheBusterNotifier:
-            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
+        cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
     })
     private createAuctionObservable(
         auction: AuctionCreationData,
@@ -220,8 +219,7 @@ export class AuctioneerService {
     }
 
     @CacheBuster({
-        cacheBusterNotifier:
-            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
+        cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
     })
     public concludeAuction(
         conclusionOptions: AuctionConclusionData,
@@ -247,8 +245,7 @@ export class AuctioneerService {
     }
 
     @Cacheable({
-        cacheBusterObserver:
-            CacheBustersService.CACHE_BUSTERS.ownActiveAuctions$,
+        cacheBusterObserver: cacheBusters.ownActiveAuctions$,
     })
     public getOwnActiveAuctions(): Observable<Auction[]> {
         return this.http.get<AuctionDTO[]>(`auctions/own-active`).pipe(

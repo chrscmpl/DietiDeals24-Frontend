@@ -17,7 +17,7 @@ import {
     AuthorizedIBAN,
     AuthorizedPaymentMethod,
 } from '../models/authorized-payment-method.model';
-import { CacheBustersService } from './cache-busters.service';
+import { cacheBusters } from '../helpers/cache-busters';
 
 @Injectable({
     providedIn: 'root',
@@ -76,7 +76,7 @@ export class PaymentService {
     }
 
     @Cacheable({
-        cacheBusterObserver: CacheBustersService.CACHE_BUSTERS.paymentMethods$,
+        cacheBusterObserver: cacheBusters.paymentMethods$,
     })
     private retrieveAllPaymentMethods(): Observable<PaymentMethod[]> {
         return this.authentication.isLogged$.pipe(

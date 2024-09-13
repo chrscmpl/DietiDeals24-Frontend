@@ -72,8 +72,6 @@ export class AuctionDetailsPageComponent
 
     public ownAuction: boolean = false;
 
-    public hasUserAlreadyBidded: boolean = false;
-
     public carouselItems: { url: string; index: number; isEmpty?: boolean }[] =
         [];
 
@@ -111,14 +109,6 @@ export class AuctionDetailsPageComponent
             this.isMacroCategory = this.categoriesService.isMacroCategory(
                 this.auction?.category ?? '',
             );
-
-            if (this.auction)
-                this.bidService
-                    .hasAlreadyBidded(this.auction)
-                    .pipe(take(1))
-                    .subscribe((hasBidded) => {
-                        this.hasUserAlreadyBidded = hasBidded;
-                    });
         });
 
         this.subscriptions.push(

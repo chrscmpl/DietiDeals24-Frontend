@@ -9,7 +9,6 @@ import { BidService } from '../services/bid.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
-import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 
 export interface AuctionResolverOptions {
     ownAuction?: boolean;
@@ -55,15 +54,13 @@ export class AuctionResolver {
                         options?.requiredStatus,
                     );
             }),
-            switchMap((auction) =>
-                (options?.hasAlreadyBidded !== undefined
-                    ? this.validateHasAlreadyBidded(
-                          auction,
-                          options.hasAlreadyBidded,
-                      )
-                    : of(null)
-                ).pipe(map(() => auction)),
-            ),
+            tap((auction) => {
+                if (options?.hasAlreadyBidded !== undefined)
+                    this.validateHasAlreadyBidded(
+                        auction,
+                        options.hasAlreadyBidded,
+                    );
+            }),
             switchMap((auction) =>
                 options?.includeUser
                     ? this.auctionWithUser(auction)
@@ -114,16 +111,11 @@ export class AuctionResolver {
     private validateHasAlreadyBidded(
         auction: Auction,
         shouldHaveAlreadyBidded: boolean,
-    ): Observable<unknown> {
-        return this.bidService.hasAlreadyBidded(auction).pipe(
-            catchError(() => of(false)),
-            tap((hasAlreadyBidded) => {
-                if (shouldHaveAlreadyBidded !== hasAlreadyBidded)
-                    throw new Error(
-                        `Cannot access this auction because it has ${shouldHaveAlreadyBidded ? 'not ' : ''}already been bidden on by the user`,
-                    );
-            }),
-        );
+    ) {
+        if (shouldHaveAlreadyBidded === auction.canBeBiddenOn())
+            throw new Error(
+                `Cannot access this auction because it has ${shouldHaveAlreadyBidded ? 'not ' : ''}already been bidden on by the user`,
+            );
     }
 
     private auctionWithUser(auction: Auction) {
