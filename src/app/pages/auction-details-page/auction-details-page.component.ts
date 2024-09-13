@@ -111,6 +111,14 @@ export class AuctionDetailsPageComponent
             this.isMacroCategory = this.categoriesService.isMacroCategory(
                 this.auction?.category ?? '',
             );
+
+            if (this.auction)
+                this.bidService
+                    .hasAlreadyBidded(this.auction)
+                    .pipe(take(1))
+                    .subscribe((hasBidded) => {
+                        this.hasUserAlreadyBidded = hasBidded;
+                    });
         });
 
         this.subscriptions.push(
@@ -126,15 +134,6 @@ export class AuctionDetailsPageComponent
                 (user) => (this.ownAuction = this.auction?.userId === user.id),
             ),
         );
-
-        this.bidService
-            .getOwnActiveBids()
-            .pipe(take(1))
-            .subscribe((bids) => {
-                this.hasUserAlreadyBidded = !!bids.find(
-                    (bid) => bid.id === this.auction?.id,
-                );
-            });
     }
 
     public ngAfterViewInit(): void {

@@ -1,15 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, delay, map, Observable, of, throwError } from 'rxjs';
+import {
+    catchError,
+    map,
+    Observable,
+    of,
+    switchMap,
+    take,
+    throwError,
+} from 'rxjs';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
-import { AuthenticationService } from './authentication.service';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
-import { AuctionDTO } from '../DTOs/auction.dto';
-import { Auction } from '../models/auction.model';
-import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { BidCreationData } from '../models/bid-creation-data.model';
 import { BidCreationSerializer } from '../serializers/bid-creation.serializer';
 import { CacheBustersService } from './cache-busters.service';
+import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
+import { Auction } from '../models/auction.model';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
     providedIn: 'root',
@@ -17,20 +24,9 @@ import { CacheBustersService } from './cache-busters.service';
 export class BidService {
     constructor(
         private readonly http: HttpClient,
-        private readonly auth: AuthenticationService,
-        private readonly deserializer: AuctionDeserializer,
         private readonly serializer: BidCreationSerializer,
-    ) {
-        this.auth.isLogged$.pipe(delay(100)).subscribe((isLogged) => {
-            if (isLogged) {
-                this.refreshOwnActiveBids();
-            }
-        });
-    }
-
-    public refreshOwnActiveBids(): void {
-        this.getOwnActiveBids().subscribe();
-    }
+        private readonly authentication: AuthenticationService,
+    ) {}
 
     @CacheBuster({
         cacheBusterNotifier: CacheBustersService.CACHE_BUSTERS.activeBids$,
@@ -48,12 +44,36 @@ export class BidService {
     }
 
     @Cacheable({
+        maxCacheCount: 16,
         cacheBusterObserver: CacheBustersService.CACHE_BUSTERS.activeBids$,
     })
-    public getOwnActiveBids(): Observable<Auction[]> {
-        return this.http.get<AuctionDTO[]>(`bids/active`).pipe(
-            map((dtos) => this.deserializer.deserializeArray(dtos)),
-            catchError(() => of([])),
+    public hasAlreadyBidded(auction: Auction): Observable<boolean> {
+        return this.authentication.isLogged$.pipe(
+            take(1),
+            switchMap((isLogged) => {
+                if (!isLogged) return of(false);
+
+                return this.getOwnBidsForAuction(auction.id).pipe(
+                    map(
+                        (bids) =>
+                            !!(
+                                bids.length &&
+                                (auction.ruleset === AuctionRuleSet.silent ||
+                                    bids[bids.length - 1].bidAmount ===
+                                        auction.lastBid)
+                            ),
+                    ),
+                );
+            }),
+            catchError(() => of(false)),
         );
+    }
+
+    private getOwnBidsForAuction(
+        id: string,
+    ): Observable<{ bidAmount: number }[]> {
+        return this.http.get<{ bidAmount: number }[]>(`bids/own/by-auction`, {
+            params: { auctionId: id },
+        });
     }
 }

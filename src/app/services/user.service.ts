@@ -17,22 +17,21 @@ export class UserService {
         private readonly userDeserializer: UserDeserializer,
     ) {}
 
+    @Cacheable({ maxCacheCount: 16 })
     public getSummary(id: string): Observable<UserSummary> {
-        return this.getUserDTO(id).pipe(
-            map((dto) => this.summaryDeserializer.deserialize(dto)),
-        );
-    }
-
-    public getUser(id: string): Observable<User> {
-        return this.getUserDTO(id).pipe(
-            map((dto) => this.userDeserializer.deserialize(dto)),
-        );
+        return this.http
+            .get<UserDTO>(`profile/minimal-view`, {
+                params: { id },
+            })
+            .pipe(map((dto) => this.summaryDeserializer.deserialize(dto)));
     }
 
     @Cacheable({ maxCacheCount: 16 })
-    private getUserDTO(id: string): Observable<UserDTO> {
-        return this.http.get<UserDTO>(`profile/public-view`, {
-            params: { id },
-        });
+    public getUser(id: string): Observable<User> {
+        return this.http
+            .get<UserDTO>(`profile/public-view`, {
+                params: { id },
+            })
+            .pipe(map((dto) => this.userDeserializer.deserialize(dto)));
     }
 }
