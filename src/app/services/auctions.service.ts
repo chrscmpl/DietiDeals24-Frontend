@@ -12,6 +12,7 @@ import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { defaults } from 'lodash-es';
 import { BidService } from './bid.service';
 import { cacheBusters } from '../helpers/cache-busters';
+import { environment } from '../../environments/environment';
 
 export type RequestKey = string;
 
@@ -54,7 +55,7 @@ export class AuctionsService {
         if (request) {
             request.manager.reset(this.completeParams(params));
         } else {
-            this.requestsMap.set(key, this.createAuctionsRequestData(params));
+            this.createRequest(key, params);
         }
     }
 
@@ -63,7 +64,7 @@ export class AuctionsService {
         params: auctionsPaginationParams,
     ): void {
         if (this.requestsMap.get(key)) return;
-        this.requestsMap.set(key, this.createAuctionsRequestData(params));
+        this.createRequest(key, params);
     }
 
     public subscribeUninterrupted(
@@ -133,6 +134,31 @@ export class AuctionsService {
         const request = this.requestsMap.get(key);
         if (!request) throw new Error(`Auctions Request not found: ${key}`);
         return request;
+    }
+
+    private createRequest(
+        key: RequestKey,
+        params: auctionsPaginationParams,
+    ): void {
+        if (params.ofUser) {
+            this.removeOldUsersRequests(params.ofUser);
+        }
+        this.requestsMap.set(key, this.createAuctionsRequestData(params));
+        console.log(Array.from(this.requestsMap.keys()));
+    }
+
+    private removeOldUsersRequests(userId: string) {
+        const otherUsersRequests = Array.from(
+            this.requestsMap.entries(),
+        ).filter((req) => req[1].ofUser && req[1].ofUser !== userId);
+
+        if (
+            otherUsersRequests.length <
+            environment.maximumCachedUserAuctionsRequests
+        )
+            return;
+
+        this.remove(otherUsersRequests[0][0]);
     }
 
     private createAuctionsRequestData(

@@ -174,7 +174,7 @@ export const routes: Routes = [
                 resolve: {
                     auctionsRequestData:
                         AuctionsRequestDataResolver.asResolveFn(
-                            '/activity/current',
+                            '/user/current',
                             {
                                 pageSize: 10,
                                 currentAuctions: true,
@@ -192,7 +192,7 @@ export const routes: Routes = [
                 resolve: {
                     auctionsRequestData:
                         AuctionsRequestDataResolver.asResolveFn(
-                            '/activity/past',
+                            '/user/past',
                             {
                                 pageSize: 10,
                                 currentAuctions: false,

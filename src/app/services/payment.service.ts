@@ -84,7 +84,7 @@ export class PaymentService {
                 !isLogged
                     ? throwError(() => new Error('User is not authenticated'))
                     : this.http
-                          .get<PaymentMethodDTO[]>(`payments/methods`)
+                          .get<PaymentMethodDTO[]>('payments-methods/list')
                           .pipe(
                               map((dtos) =>
                                   this.deserializer.deserializeArray(dtos),

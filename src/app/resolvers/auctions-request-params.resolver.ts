@@ -16,12 +16,14 @@ export class AuctionsRequestDataResolver {
         const usedRoute =
             options?.useParent && route.parent ? route.parent : route;
 
+        const userId = options?.userParam
+            ? usedRoute.params[options.userParam]
+            : undefined;
+
         return of({
             ...params,
-            key,
-            ofUser: options?.userParam
-                ? usedRoute.params[options.userParam]
-                : undefined,
+            key: key + (userId ? `/${userId}` : ''),
+            ofUser: userId,
         });
     }
 

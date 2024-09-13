@@ -2,6 +2,7 @@ export const environment = {
     isProd: false,
     backendHost: 'http://localhost:8080',
     disableWarnings: false,
+    maximumCachedUserAuctionsRequests: 9,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,
     passwordMediumPattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})',
     passwordStrongPattern:
