@@ -11,6 +11,14 @@
     font-weight: var(--font-weight-regular);
     line-height: normal;
     column-gap: 0.5ch;
+
+    cursor: pointer;
+
+    &:focus {
+        outline-offset: 5px;
+        outline: 2px solid var(--accent-color-1);
+        border-radius: var(--border-radius-medium);
+    }
 }
 
 .avatar {

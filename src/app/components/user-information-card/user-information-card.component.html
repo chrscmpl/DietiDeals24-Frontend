@@ -33,22 +33,22 @@
         >
     </span>
     <span class="user-counters">
+        <ng-container
+            *ngTemplateOutlet="
+                userCounter;
+                context: {
+                    value: user.onlineAuctionsCounter,
+                    description: 'online auction'
+                }
+            "
+        />
+
         @if (privateView) {
             <ng-container
                 *ngTemplateOutlet="
                     userCounter;
                     context: {
-                        value: user.onlineAuctionsCounter,
-                        description: 'online auction'
-                    }
-                "
-            />
-
-            <ng-container
-                *ngTemplateOutlet="
-                    userCounter;
-                    context: {
-                        value: user.activeBidsCounter,
+                        value: authenticatedUser.activeBidsCounter,
                         description: 'active bid'
                     }
                 "
@@ -65,7 +65,7 @@
                 *ngTemplateOutlet="
                     userCounter;
                     context: {
-                        value: user.pastAuctionsCounter,
+                        value: authenticatedUser.pastAuctionsCounter,
                         description: 'past auction'
                     }
                 "
@@ -75,12 +75,22 @@
                 *ngTemplateOutlet="
                     userCounter;
                     context: {
-                        value: user.pastBidsCounter,
+                        value: authenticatedUser.pastBidsCounter,
                         description: 'past bid'
                     }
                 "
             />
-        } @else {}
+        } @else {
+            <ng-container
+                *ngTemplateOutlet="
+                    userCounter;
+                    context: {
+                        value: user.pastDealsCounter,
+                        description: 'past deal'
+                    }
+                "
+            />
+        }
     </span>
 
     @if (user.bio) {

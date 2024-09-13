@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Deserializer } from './deserializer.interface';
-import { AuthenticatedUserDTO } from '../DTOs/user.dto';
-import { AuthenticatedUser } from '../models/user.model';
+import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
+import { AuthenticatedUser } from '../models/authenticated-user.model';
 
 @Injectable({
     providedIn: 'root',

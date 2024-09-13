@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
 
-import { Country } from '../models/location.model';
+import { Country } from '../models/country.model';
 import { CountryDTO } from '../DTOs/country.dto';
 import { Cacheable } from 'ts-cacheable';
 import { CountryDeserializer } from '../deserializers/country.deserializer';

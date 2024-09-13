@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Deserializer } from './deserializer.interface';
-import { Country } from '../models/location.model';
+import { Country } from '../models/country.model';
 import { CountryDTO } from '../DTOs/country.dto';
 
 @Injectable({

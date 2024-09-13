@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { UserRegistrationData } from '../models/user-registration-data.model';
 import { defaults } from 'lodash-es';
-import { UserRegistrationDTO } from '../DTOs/user.dto';
+import { UserRegistrationDTO } from '../DTOs/authentication.dto';
 
 @Injectable({
     providedIn: 'root',

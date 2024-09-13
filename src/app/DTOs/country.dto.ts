@@ -1,3 +1,3 @@
-import { Country } from '../models/location.model';
+import { Country } from '../models/country.model';
 
 export type CountryDTO = Country;

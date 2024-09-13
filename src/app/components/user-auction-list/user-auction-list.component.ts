@@ -21,6 +21,7 @@ type filterValue = null | 'auctions' | 'bids';
 })
 export class UserAuctionListComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
+
     public requestKey!: string;
     private originalKey!: string;
     public params!: auctionsPaginationParams;

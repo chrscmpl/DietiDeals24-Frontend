@@ -67,7 +67,8 @@
                     <p-button
                         outlined="true"
                         class="trending-category-button"
-                        [routerLink]="['/auctions', { category: category }]"
+                        [routerLink]="['/auctions']"
+                        [queryParams]="{ category }"
                     >
                         {{ category }}
                     </p-button>

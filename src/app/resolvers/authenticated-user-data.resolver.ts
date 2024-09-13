@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Resolve, ResolveFn } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthenticatedUser } from '../models/user.model';
+import { AuthenticatedUser } from '../models/authenticated-user.model';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({

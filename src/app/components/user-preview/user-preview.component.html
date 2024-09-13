@@ -1,4 +1,9 @@
-<div class="user-preview">
+<div
+    class="user-preview"
+    (click)="navigateToUser()"
+    tabindex="0"
+    (keypress)="onKeyPress($event)"
+>
     <p-avatar
         class="avatar"
         [icon]="
@@ -20,9 +25,8 @@
         "
         (onImageError)="onProfilePictureError()"
     ></p-avatar>
-    <span class="username">{{ user.username }}</span>
+    <span class="username wk-nowrap">{{ user.username }}</span>
     <span class="location"
-        >{{ city ?? user.location.city }},
-        {{ country ?? user.location.country }}</span
+        >{{ city ?? user.city }}, {{ country ?? user.country }}</span
     >
 </div>

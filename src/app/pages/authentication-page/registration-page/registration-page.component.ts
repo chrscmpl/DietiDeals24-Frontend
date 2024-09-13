@@ -27,7 +27,7 @@ import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AuthenticationService } from '../../../services/authentication.service';
-import { Country } from '../../../models/location.model';
+import { Country } from '../../../models/country.model';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';

@@ -1,21 +1,31 @@
 @use "layouts";
 
 .mobile-nav {
-    @include layouts.flex(row, start, center, 1.5rem);
+    @include layouts.grid(
+        1fr / auto 1fr auto,
+        $align-content: center,
+        $align-items: center,
+        $gap: 1.5rem
+    );
+    grid-auto-flow: column;
     padding: 3px calc(4% - var(--mobile-icon-padding));
     background-color: var(--component-color);
     border-bottom: var(--border);
-    width: 100%;
+    width: 100dvw;
     max-width: 100%;
 
     i {
         color: var(--basic-affordances-color);
     }
 
+    .title-wrapper {
+        overflow: hidden;
+    }
+
     .title {
         font-size: var(--font-size-large);
-        flex: 1;
         line-height: normal;
+        max-width: 100%;
 
         &.title-long {
             font-size: var(--font-size-medium);

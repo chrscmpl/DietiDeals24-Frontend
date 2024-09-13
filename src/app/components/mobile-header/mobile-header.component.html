@@ -17,13 +17,15 @@
         </button>
     }
     @if ((title$ | async) !== "DietiDeals24") {
-        <h1 class="title wk-nowrap">
-            {{ title$ | async }}
-        </h1>
+        <div class="title-wrapper">
+            <h1 class="title wk-nowrap">
+                {{ title$ | async }}
+            </h1>
+        </div>
     } @else {
         <dd24-logo class="logo"></dd24-logo>
-        <div class="spacer"></div>
     }
+    <!-- <div class="spacer"></div> -->
     @if ((windowService.UIhidden$ | async) === false) {
         <button
             class="mobile-header-btn custom-ripple"

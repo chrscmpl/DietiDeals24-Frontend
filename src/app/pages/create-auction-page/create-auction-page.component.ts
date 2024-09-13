@@ -38,7 +38,7 @@ import {
 } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Country } from '../../models/location.model';
+import { Country } from '../../models/country.model';
 import { GeographicalLocationsService } from '../../services/geographical-locations.service';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';

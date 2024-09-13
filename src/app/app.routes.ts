@@ -31,6 +31,9 @@ import { SecurityAndPrivacyPageComponent } from './pages/your-page/security-and-
 import { UserAuctionListComponent } from './components/user-auction-list/user-auction-list.component';
 import { AuctionsRequestDataResolver } from './resolvers/auctions-request-params.resolver';
 import { AuthenticatedUserDataResolver } from './resolvers/authenticated-user-data.resolver';
+import { UserPageComponent } from './pages/user-page/user-page.component';
+import { UserResolver } from './resolvers/user.resolver';
+import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -145,6 +148,62 @@ export const routes: Routes = [
             ShowUIGuard.asCanActivateFn(true),
             ConfirmReloadGuard.asCanActivateFn(false),
             AuthenticationGuard.asCanActivateFn(true),
+        ],
+    },
+    {
+        path: 'users/:user-id',
+        component: UserPageComponent,
+        title: 'Users',
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+            RedirectToPersonalPageGuard.asCanActivateFn(),
+        ],
+        resolve: {
+            user: UserResolver.asResolveFn(),
+        },
+        children: [
+            {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'current-activity',
+            },
+            {
+                path: 'current-activity',
+                component: UserAuctionListComponent,
+                resolve: {
+                    auctionsRequestData:
+                        AuctionsRequestDataResolver.asResolveFn(
+                            '/activity/current',
+                            {
+                                pageSize: 10,
+                                currentAuctions: true,
+                            },
+                            {
+                                useParent: true,
+                                userParam: 'user-id',
+                            },
+                        ),
+                },
+            },
+            {
+                path: 'past-activity',
+                component: UserAuctionListComponent,
+                resolve: {
+                    auctionsRequestData:
+                        AuctionsRequestDataResolver.asResolveFn(
+                            '/activity/past',
+                            {
+                                pageSize: 10,
+                                currentAuctions: false,
+                            },
+                            {
+                                useParent: true,
+                                userParam: 'user-id',
+                            },
+                        ),
+                },
+            },
         ],
     },
     {

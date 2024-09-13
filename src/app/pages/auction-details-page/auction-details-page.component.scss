@@ -134,11 +134,15 @@
     color: var(--text-color-3);
     font-weight: var(--font-weight-bolder);
     justify-self: start;
+    max-width: 90%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .auction-user {
     grid-area: user;
     justify-self: end;
+    max-width: 90%;
 }
 
 .auction-title {

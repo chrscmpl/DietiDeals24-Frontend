@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthenticatedUser } from '../models/user.model';
+import { AuthenticatedUser } from '../models/authenticated-user.model';
 import {
     Observable,
     Observer,
@@ -14,7 +14,8 @@ import {
     throwError,
     withLatestFrom,
 } from 'rxjs';
-import { UserCredentials, AuthenticatedUserDTO } from '../DTOs/user.dto';
+import { UserCredentials } from '../DTOs/authentication.dto';
+import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
 import { LoginException } from '../exceptions/login.exception';
 import { GetUserDataException } from '../exceptions/get-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';

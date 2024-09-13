@@ -15,6 +15,8 @@
 .auctions-list {
     grid-area: auctions;
 
+    @include layouts.flex(column, start, stretch, var(--page-items-gap));
+
     @include viewports.mobile {
         margin: 0 -2%;
     }
@@ -22,6 +24,10 @@
 
 .activity-outlet {
     display: none;
+}
+
+.activity-btn {
+    align-self: center;
 }
 
 .buttons-wrapper {
