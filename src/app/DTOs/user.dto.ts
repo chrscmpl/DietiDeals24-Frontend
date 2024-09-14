@@ -12,5 +12,5 @@ export interface UserDTO extends UserSummaryDTO {
     onlineAuctionsCounter: number;
     pastDealsCounter: number;
     bio: string | null;
-    personalLinks: userLinkDTO[];
+    links: userLinkDTO[];
 }

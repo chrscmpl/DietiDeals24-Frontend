@@ -49,7 +49,7 @@ export class User extends UserSummary {
         this._pastDealsCounter = dto.pastDealsCounter ?? 0;
         this._bio = dto.bio ?? null;
         this._links =
-            dto.personalLinks?.map((link) => ({
+            dto.links?.map((link) => ({
                 id: String(link.id),
                 name: link.description,
                 url: link.link,

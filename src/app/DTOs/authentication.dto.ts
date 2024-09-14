@@ -15,7 +15,7 @@ export interface AuthenticatedUserDTO {
     country?: string | null;
     city?: string | null;
     bio?: string | null;
-    personalLinks?: userLinkDTO[] | null;
+    links?: userLinkDTO[] | null;
 }
 
 export interface UserRegistrationDTO {

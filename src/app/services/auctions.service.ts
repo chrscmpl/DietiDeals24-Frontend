@@ -9,7 +9,7 @@ import { Auction } from '../models/auction.model';
 import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
-import { defaults, get, omit } from 'lodash-es';
+import { defaults, omit } from 'lodash-es';
 import { BidService } from './bid.service';
 import { cacheBusters } from '../helpers/cache-busters';
 import { environment } from '../../environments/environment';

@@ -3,3 +3,8 @@ export interface userLinkDTO {
     link: string;
     description: string;
 }
+
+export interface userLinkCreationDTO {
+    link: string;
+    description: string;
+}

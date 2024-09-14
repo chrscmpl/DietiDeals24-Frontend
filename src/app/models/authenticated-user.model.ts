@@ -34,7 +34,7 @@ export class AuthenticatedUser {
         this._city = dto.city ?? null;
         this._bio = dto.bio ?? null;
         this._links =
-            dto.personalLinks?.map((link) => ({
+            dto.links?.map((link) => ({
                 id: String(link.id),
                 name: link.description,
                 url: link.link,
@@ -103,5 +103,9 @@ export class AuthenticatedUser {
 
     public get links(): userLink[] {
         return this._links;
+    }
+
+    public set links(value: userLink[]) {
+        this._links = value;
     }
 }

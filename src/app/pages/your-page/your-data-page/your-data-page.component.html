@@ -45,6 +45,10 @@
                             {
                                 validation: 'pattern',
                                 message: 'this is not a valid url'
+                            },
+                            {
+                                customValidation: 'duplicate',
+                                message: 'you can\'t have duplicate urls'
                             }
                         ]"
                     >
@@ -73,6 +77,7 @@
                             class="saved-link-del"
                             icon="pi pi-trash"
                             [style]="{ width: '2rem', height: '2rem' }"
+                            (onClick)="deleteLink(link)"
                         />
 
                         <a

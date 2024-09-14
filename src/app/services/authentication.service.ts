@@ -26,9 +26,13 @@ import { UserRegistrationData } from '../models/user-registration-data.model';
 import { EmailVerificationSerializer } from '../serializers/email-verification.serializer';
 import { emailVerificationData } from '../models/email-verification-data.model';
 import { MessageService } from 'primeng/api';
-import { Cacheable } from 'ts-cacheable';
+import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { isEqual } from 'lodash-es';
 import { cacheBusters } from '../helpers/cache-busters';
+import { userLinkCreationData } from '../models/user-link.model';
+import { UserLinkSerializer } from '../serializers/user-link.serializer';
+import { DeleteUserLinkException } from '../exceptions/delete-user-link.exception';
+import { SaveUserLinkException } from '../exceptions/save-user-link.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -56,6 +60,7 @@ export class AuthenticationService {
         private readonly http: HttpClient,
         private readonly deserializer: AuthenticatedUserDeserializer,
         private readonly registrationSerializer: UserRegistrationSerializer,
+        private readonly userLinkSerializer: UserLinkSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
     ) {
@@ -88,7 +93,7 @@ export class AuthenticationService {
         cb?: Partial<Observer<unknown>>,
     ): void {
         this.http
-            .post(`login`, credentials, {
+            .post('login', credentials, {
                 observe: 'response',
             })
             .pipe(
@@ -107,7 +112,7 @@ export class AuthenticationService {
     ): void {
         this.http
             .post(
-                `register/init`,
+                'register/init',
                 this.registrationSerializer.serialize(newUser),
                 {
                     responseType: 'text',
@@ -127,7 +132,7 @@ export class AuthenticationService {
     ): void {
         this.http
             .post(
-                `register/confirm`,
+                'register/confirm',
                 this.emailVerificationSerializer.serialize(data),
                 {
                     observe: 'response',
@@ -156,6 +161,41 @@ export class AuthenticationService {
             tap(this.setLoggedUser.bind(this)),
             catchError((e) => throwError(() => new GetUserDataException(e))),
         );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.authenticatedUserData$,
+    })
+    public addLink(link: userLinkCreationData): Observable<unknown> {
+        return this.http
+            .post(
+                'profile/links/new',
+                this.userLinkSerializer.serialize(link),
+                {
+                    responseType: 'text',
+                },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new SaveUserLinkException(e)),
+                ),
+            );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.authenticatedUserData$,
+    })
+    public deleteLink(linkId: string): Observable<unknown> {
+        return this.http
+            .delete('profile/links/delete', {
+                params: { linkId },
+                responseType: 'text',
+            })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new DeleteUserLinkException(e)),
+                ),
+            );
     }
 
     private loginUsingToken(): Observable<AuthenticatedUser> {

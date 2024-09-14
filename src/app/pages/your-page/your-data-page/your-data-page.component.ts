@@ -17,21 +17,26 @@ import {
     PaymentMethodFormComponent,
 } from '../../../components/payment-method-forms/payment-method-form.component';
 import {
+    AbstractControl,
     FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-method.model';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { AuthenticatedUser } from '../../../models/authenticated-user.model';
 import { InputComponent } from '../../../components/input/input.component';
+import { ToReactiveForm } from '../../../typeUtils/to-reactive-form';
+import {
+    userLink,
+    userLinkCreationData,
+} from '../../../models/user-link.model';
+import { AuthenticationService } from '../../../services/authentication.service';
 
-interface NewLinkForm {
-    name: FormControl<string | null>;
-    url: FormControl<string | null>;
-}
+type NewLinkForm = ToReactiveForm<userLinkCreationData>;
 
 interface editYourDataForm {
     newLink: FormGroup<NewLinkForm>;
@@ -112,12 +117,14 @@ export class YourDataPageComponent implements OnInit {
         private readonly paymentService: PaymentService,
         private readonly formBuilder: FormBuilder,
         private readonly confirm: ConfirmationService,
+        private readonly authentication: AuthenticationService,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.user = data['userData'];
             this.savedPaymentMethods = data['paymentMethods'];
+            console.log(this.user.links);
         });
         this.initForm();
     }
@@ -129,6 +136,33 @@ export class YourDataPageComponent implements OnInit {
             reactiveFormsUtils.markAllAsDirty(newLinkForm);
             return;
         }
+
+        this.authentication
+            .addLink(newLinkForm.value as userLinkCreationData)
+            .pipe(
+                switchMap(() => this.authentication.getAuthenticatedUserData()),
+            )
+            .subscribe({
+                next: (userData) => {
+                    this.user = userData;
+                    this.displaySuccess('Link added successfully');
+                },
+                error: (e) =>
+                    this.displayError(e, 'Failed to add link, try again later'),
+            });
+    }
+
+    public deleteLink(link: userLink): void {
+        this.authentication.deleteLink(link.id).subscribe({
+            next: () => {
+                this.user.links = this.user.links.filter(
+                    (l) => l.id !== link.id,
+                );
+                this.displaySuccess('Link deleted successfully');
+            },
+            error: (e) =>
+                this.displayError(e, 'Failed to delete link, try again later'),
+        });
     }
 
     public promptDeletePaymentMethod(paymentMethod: PaymentMethod): void {
@@ -216,12 +250,21 @@ export class YourDataPageComponent implements OnInit {
                         Validators.pattern(
                             /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
                         ),
+                        this.validateUrl.bind(this),
                     ],
                     updateOn: 'blur',
                 }),
             }),
             newPaymentMethod: new FormGroup<NewPaymentMethodForm>({}),
         });
+    }
+
+    private validateUrl(
+        urlControl: AbstractControl<string | null>,
+    ): ValidationErrors | null {
+        return this.user.links.some((link) => link.url === urlControl.value)
+            ? { duplicate: true }
+            : null;
     }
 
     private displaySuccess(message: string): void {

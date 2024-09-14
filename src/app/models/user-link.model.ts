@@ -3,3 +3,8 @@ export interface userLink {
     name: string;
     url: string;
 }
+
+export interface userLinkCreationData {
+    name: string;
+    url: string;
+}
