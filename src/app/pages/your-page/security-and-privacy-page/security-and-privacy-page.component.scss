@@ -1,9 +1,14 @@
 @use "layouts";
+@use "viewports";
 
 :host {
     flex-grow: 1;
     @include layouts.flex(column, stretch, stretch);
     padding: 0 calc(15% - 1rem);
+
+    @include viewports.mobile {
+        padding: 0;
+    }
 }
 
 .security-privacy-section {

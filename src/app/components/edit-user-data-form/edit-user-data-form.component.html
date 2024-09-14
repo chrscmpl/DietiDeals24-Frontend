@@ -1,16 +1,25 @@
 <div class="edit-user-form">
-    <aside class="edit-user-side">
-        <p-menu
-            [model]="tabs"
-            class="edit-user-menu"
-            [style]="{
-                background: 'none',
-                borderRadius: 0,
-                border: 'none',
-                padding: 0
-            }"
+    @if ((windowService.isMobile$ | async) === false) {
+        <aside class="edit-user-side">
+            <p-menu
+                [model]="tabs"
+                class="edit-user-menu"
+                [style]="{
+                    background: 'none',
+                    borderRadius: 0,
+                    border: 'none',
+                    padding: 0
+                }"
+            />
+        </aside>
+    } @else {
+        <p-button
+            class="go-back-btn"
+            label="Go back"
+            icon="pi pi-chevron-left"
+            (onClick)="navigation.back()"
         />
-    </aside>
+    }
     <div class="edit-user-main">
         <ng-content></ng-content>
     </div>
