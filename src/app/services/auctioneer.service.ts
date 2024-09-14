@@ -1,10 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
-import { catchError, map, Observable, Observer, of, throwError } from 'rxjs';
-import { Cacheable, CacheBuster } from 'ts-cacheable';
-import { Auction } from '../models/auction.model';
-import { AuctionDTO } from '../DTOs/auction.dto';
+import { catchError, Observable, Observer, throwError } from 'rxjs';
+import { CacheBuster } from 'ts-cacheable';
 import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
@@ -21,7 +18,6 @@ import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Categories, CategoriesService } from './categories.service';
 import { UploadedFile } from '../models/uploaded-file.model';
 import { AuctionCreationException } from '../exceptions/auction-creation.exception';
-import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
 import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
 import { AuctionConclusionSerializer } from '../serializers/auction-conclusion.serializer';
@@ -102,10 +98,8 @@ export class AuctioneerService {
 
     constructor(
         private readonly http: HttpClient,
-        private readonly auth: AuthenticationService,
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
-        private readonly deserializer: AuctionDeserializer,
         private readonly auctionCreationSerializer: AuctionCreationSerializer,
         private readonly auctionConclusionSerializer: AuctionConclusionSerializer,
     ) {
@@ -214,10 +208,6 @@ export class AuctioneerService {
             );
     }
 
-    public refreshOwnActiveAuctions(): void {
-        this.getOwnActiveAuctions().subscribe();
-    }
-
     @CacheBuster({
         cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
     })
@@ -242,15 +232,5 @@ export class AuctioneerService {
                     ),
                 ),
             );
-    }
-
-    @Cacheable({
-        cacheBusterObserver: cacheBusters.ownActiveAuctions$,
-    })
-    public getOwnActiveAuctions(): Observable<Auction[]> {
-        return this.http.get<AuctionDTO[]>(`auctions/own-active`).pipe(
-            map((dtos) => this.deserializer.deserializeArray(dtos)),
-            catchError(() => of([])),
-        );
     }
 }

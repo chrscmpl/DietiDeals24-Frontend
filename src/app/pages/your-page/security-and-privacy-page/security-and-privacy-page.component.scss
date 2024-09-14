@@ -7,7 +7,7 @@
 }
 
 .security-privacy-section {
-    @include layouts.flex(column, start, start);
+    @include layouts.flex(column, start, start, 1rem);
     padding: 1.5rem;
 
     min-height: 20rem;

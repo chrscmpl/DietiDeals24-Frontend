@@ -7,7 +7,7 @@
 }
 
 .your-data-section {
-    @include layouts.flex(column, start, start);
+    @include layouts.flex(column, start, start, 1rem);
     padding: 1.5rem;
 
     min-height: 20rem;
@@ -21,4 +21,46 @@
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
+}
+
+.payment-methods-form-wrapper {
+    @include layouts.flex(column, start, start, 1rem);
+    align-self: stretch;
+}
+
+.saved-payment-methods {
+    @include layouts.flex(column, start, start, 1rem);
+}
+
+.saved-method {
+    @include layouts.grid(". label" auto "btn input" auto / auto 1fr);
+    column-gap: 1ch;
+}
+
+.saved-method-del {
+    grid-area: btn;
+    align-self: center;
+}
+
+.saved-method-label {
+    grid-area: label;
+}
+
+.saved-method-input {
+    grid-area: input;
+}
+
+.add-method-btns {
+    @include layouts.flex(row, row, stretch, 0.5rem, wrap);
+}
+
+.add-method-btn {
+    flex-grow: 1;
+}
+
+.new-payment-method-form {
+    align-self: stretch;
+    border-top: var(--border);
+    @include layouts.flex(column, start, start, 1rem);
+    padding: 1rem 0;
 }

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
-import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
-import { Cacheable } from 'ts-cacheable';
+import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type';
 import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
@@ -18,15 +17,19 @@ import {
     AuthorizedPaymentMethod,
 } from '../models/authorized-payment-method.model';
 import { cacheBusters } from '../helpers/cache-busters';
+import { DeletePaymentMethodException } from '../exceptions/delete-payment-method.exception';
+import { GetPaymentMethodsException } from '../exceptions/get-payment-methods.exception';
+import { AuthorizedPaymentMethodSerializer } from '../serializers/authorized-payment-method.deserializer';
+import { SavePaymentMethodException } from '../exceptions/save-payment-method.exception';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PaymentService {
     constructor(
-        private readonly authentication: AuthenticationService,
         private readonly http: HttpClient,
         private readonly deserializer: PaymentMethodDeserializer,
+        private readonly authorizedPaymentMethodSerializer: AuthorizedPaymentMethodSerializer,
         private readonly unauthorizedPaymentMethodSerializer: UnauthorizedPaymentMethodSerializer,
         private readonly creditCardAuthorizationDataDeserializer: CreditCardAuthorizationDataDeserializer,
     ) {}
@@ -75,21 +78,54 @@ export class PaymentService {
         );
     }
 
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.paymentMethods$,
+    })
+    public savePaymentMethod(
+        paymentMethod: AuthorizedPaymentMethod,
+    ): Observable<unknown> {
+        return this.http
+            .post(
+                'payment-methods/new',
+                this.authorizedPaymentMethodSerializer.serialize(paymentMethod),
+                { responseType: 'text' },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new SavePaymentMethodException(e)),
+                ),
+            );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.paymentMethods$,
+    })
+    public deletePaymentMethod(
+        paymentMethod: PaymentMethod,
+    ): Observable<unknown> {
+        return this.http
+            .delete('payment-methods/delete', {
+                params: {
+                    paymentMethodId: paymentMethod.id,
+                    type: paymentMethod.type,
+                },
+                responseType: 'text',
+            })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new DeletePaymentMethodException(e)),
+                ),
+            );
+    }
+
     @Cacheable({
         cacheBusterObserver: cacheBusters.paymentMethods$,
     })
     private retrieveAllPaymentMethods(): Observable<PaymentMethod[]> {
-        return this.authentication.isLogged$.pipe(
-            switchMap((isLogged) =>
-                !isLogged
-                    ? throwError(() => new Error('User is not authenticated'))
-                    : this.http
-                          .get<PaymentMethodDTO[]>('payments-methods/list')
-                          .pipe(
-                              map((dtos) =>
-                                  this.deserializer.deserializeArray(dtos),
-                              ),
-                          ),
+        return this.http.get<PaymentMethodDTO[]>('payment-methods/list').pipe(
+            map((dtos) => this.deserializer.deserializeArray(dtos)),
+            catchError((e) =>
+                throwError(() => new GetPaymentMethodsException(e)),
             ),
         );
     }

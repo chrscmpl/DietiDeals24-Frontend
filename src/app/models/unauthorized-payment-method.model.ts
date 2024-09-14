@@ -1,4 +1,21 @@
-export abstract class UnauthorizedPaymentMethod {}
+import { PaymentMethodType } from '../enums/payment-method-type';
+
+export abstract class UnauthorizedPaymentMethod {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public static from(object: { [key: string]: any }) {
+        const month = object['expirationDate']?.split('/')[0];
+        const year = Number(`20${object['expirationDate']?.split('/')[1]}`);
+        if (!object['type']) return null;
+        return object['type'] === PaymentMethodType.IBAN
+            ? new UnauthorizedIBAN(object['iban'])
+            : new UnauthorizedCreditCard(
+                  object['ownerName'],
+                  object['cardNumber'],
+                  new Date(year, month),
+                  object['cvv'],
+              );
+    }
+}
 
 export class UnauthorizedCreditCard {
     protected _ownerName: string;

@@ -10,6 +10,88 @@
     </section>
     <section id="yd-payment-methods" class="your-data-section">
         <h1 class="your-data-header">Payment methods</h1>
+        <div class="payment-methods-form-wrapper">
+            <div class="saved-payment-methods">
+                @for (method of savedPaymentMethods; track method.id) {
+                    <div class="saved-method">
+                        <p-button
+                            class="saved-method-del"
+                            icon="pi pi-trash"
+                            [style]="{ width: '2rem', height: '2rem' }"
+                            (onClick)="deletePaymentMethod(method)"
+                        />
+                        <label
+                            class="saved-method-label"
+                            for="{{ method.type }}-{{ method.id }}"
+                            >Saved {{ method.type | paymentMethodLabel }}</label
+                        >
+                        <input
+                            class="saved-method-input"
+                            type="text"
+                            pInputText
+                            disabled
+                            id="{{ method.type }}-{{ method.id }}"
+                            [value]="
+                                method.identifyingNumber | masked: method.type
+                            "
+                        />
+                    </div>
+                }
+            </div>
+            @if (newPaymentMethodFormShown === null) {
+                <div class="add-method-btns">
+                    @for (
+                        paymentMethodType of newPaymentMethodOptions;
+                        track $index
+                    ) {
+                        <p-button
+                            class="add-method-btn"
+                            label="Add new {{
+                                paymentMethodType | paymentMethodLabel
+                            }}"
+                            icon="pi pi-plus"
+                            (onClick)="
+                                newPaymentMethodFormShown = paymentMethodType
+                            "
+                        />
+                    }
+                </div>
+            } @else {
+                <form
+                    class="new-payment-method-form"
+                    [formGroup]="editYourDataForm.controls.NewPaymentMethod"
+                    (ngSubmit)="savePaymentMethod()"
+                >
+                    <p-button
+                        class="new-payment-method-btn"
+                        label="Undo"
+                        icon="pi pi-arrow-left"
+                        (onClick)="newPaymentMethodFormShown = null"
+                        outlined="true"
+                    />
+                    <span
+                        >Add new
+                        {{
+                            newPaymentMethodFormShown | paymentMethodLabel
+                        }}</span
+                    >
+                    <dd24-payment-method-form
+                        [form]="editYourDataForm.controls.NewPaymentMethod"
+                        [type]="newPaymentMethodFormShown"
+                        [formStyle]="{ padding: 0 }"
+                    />
+
+                    <p-button
+                        class="new-payment-method-btn"
+                        label="Save"
+                        icon="pi pi-check"
+                        type="submit"
+                        [loading]="displayLoading"
+                        [style]="{ paddingLeft: '2rem', paddingRight: '2rem' }"
+                    />
+                </form>
+            }
+        </div>
     </section>
     <section id="yd-security-privacy" class="your-data-section">
         <h1 class="your-data-header">Security & Privacy</h1>

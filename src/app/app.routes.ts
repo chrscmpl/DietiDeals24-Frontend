@@ -35,6 +35,7 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { UserResolver } from './resolvers/user.resolver';
 import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.guard';
 import { TextAssetResolver } from './resolvers/text-asset.resolver';
+import { PaymentMethodsResolver } from './resolvers/payment-methods..resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -62,7 +63,6 @@ export const routes: Routes = [
         component: YourPageComponent,
         canActivate: [
             ShowUIGuard.asCanActivateFn(true),
-            ConfirmReloadGuard.asCanActivateFn(false),
             AuthenticationGuard.asCanActivateFn(true),
         ],
         resolve: {
@@ -77,6 +77,7 @@ export const routes: Routes = [
             {
                 path: 'activity',
                 component: ActivityPageComponent,
+                canActivate: [ConfirmReloadGuard.asCanActivateFn(false)],
                 children: [
                     {
                         path: '',
@@ -119,11 +120,20 @@ export const routes: Routes = [
                 path: 'your-data',
                 title: 'Your Data',
                 component: YourDataPageComponent,
+                canActivate: [
+                    ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
+                ],
+                resolve: {
+                    paymentMethods: PaymentMethodsResolver.asResolveFn(),
+                },
             },
             {
                 path: 'security-privacy',
                 title: 'Security & Privacy',
                 component: SecurityAndPrivacyPageComponent,
+                canActivate: [
+                    ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
+                ],
                 resolve: { tos: TextAssetResolver.asResolveFn('tos.txt') },
             },
         ],

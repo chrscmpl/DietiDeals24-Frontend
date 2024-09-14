@@ -33,7 +33,7 @@ type CreditCardForm = ToReactiveForm<{
 
 export interface NewPaymentMethodForm {
     newMethod?: FormGroup<IBANForm> | FormGroup<CreditCardForm>;
-    save: FormControl<boolean | null>;
+    save?: FormControl<boolean | null>;
 }
 
 @Component({
@@ -73,11 +73,11 @@ export class PaymentMethodFormComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        if (this.type === this.form.get('newMethod')?.value?.type) {
+        if (this.type === this.form.controls.newMethod?.value?.type) {
             return;
         }
 
-        this.form.get('save')?.patchValue(false);
+        this.form.controls.save?.patchValue(false);
 
         if (this.type === PaymentMethodType.IBAN) {
             this.form.setControl(
@@ -132,14 +132,14 @@ export class PaymentMethodFormComponent implements OnInit {
     }
 
     public get newMethodGroup(): FormGroup {
-        return this.form.get('newMethod') as FormGroup;
+        return this.form.controls.newMethod!;
     }
 
     public toggleSave(e: KeyboardEvent): void {
         if (e.key !== 'Enter') return;
         e.preventDefault();
         e.stopPropagation();
-        this.form.get('save')?.patchValue(!this.form.get('save')?.value);
+        this.form.get('save')?.patchValue(!this.form.controls.save?.value);
     }
 
     private validateIBAN(

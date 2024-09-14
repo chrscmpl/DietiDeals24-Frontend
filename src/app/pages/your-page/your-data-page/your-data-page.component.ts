@@ -1,16 +1,50 @@
-import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { MenuItem, MessageService } from 'primeng/api';
 import { EditUserDataFormComponent } from '../../../components/edit-user-data-form/edit-user-data-form.component';
 import { WindowService } from '../../../services/window.service';
+import { PaymentMethod } from '../../../models/payment-method.model';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap, take } from 'rxjs';
+import { InputTextModule } from 'primeng/inputtext';
+import { MaskedPipe } from '../../../pipes/masked.pipe';
+import { PaymentMethodLabelPipe } from '../../../pipes/payment-method-label.pipe';
+import { ButtonModule } from 'primeng/button';
+import { PaymentService } from '../../../services/payment.service';
+import { HttpException } from '../../../exceptions/http.exception';
+import { PaymentMethodType } from '../../../enums/payment-method-type';
+import {
+    NewPaymentMethodForm,
+    PaymentMethodFormComponent,
+} from '../../../components/payment-method-forms/payment-method-form.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-method.model';
+
+interface editYourDataForm {
+    NewPaymentMethod: FormGroup<NewPaymentMethodForm>;
+}
 
 @Component({
     selector: 'dd24-your-data-page',
     standalone: true,
-    imports: [EditUserDataFormComponent],
+    imports: [
+        EditUserDataFormComponent,
+        ReactiveFormsModule,
+        InputTextModule,
+        MaskedPipe,
+        PaymentMethodLabelPipe,
+        ButtonModule,
+        PaymentMethodFormComponent,
+    ],
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',
 })
-export class YourDataPageComponent {
+export class YourDataPageComponent implements OnInit {
+    public editYourDataForm!: FormGroup<editYourDataForm>;
+
+    public savedPaymentMethods: PaymentMethod[] = [];
+
+    public displayLoading = false;
+
     public readonly tabs: MenuItem[] = [
         {
             label: 'Public profile',
@@ -34,12 +68,111 @@ export class YourDataPageComponent {
         },
         {
             label: 'Security & Privacy',
-            command: () =>
-                this.windowService.scrollSmoothlyToAnchor(
-                    'yd-security-privacy',
-                ),
+            routerLink: ['..', 'security-privacy'],
         },
     ];
 
-    public constructor(public readonly windowService: WindowService) {}
+    public newPaymentMethodFormShown: PaymentMethodType | null = null;
+
+    public newPaymentMethodOptions = Object.values(PaymentMethodType);
+
+    public constructor(
+        public readonly windowService: WindowService,
+        private readonly route: ActivatedRoute,
+        private readonly message: MessageService,
+        private readonly paymentService: PaymentService,
+        private readonly formBuilder: FormBuilder,
+    ) {}
+
+    public ngOnInit(): void {
+        this.route.data.pipe(take(1)).subscribe((data) => {
+            this.savedPaymentMethods = data['paymentMethods'];
+        });
+        this.initForm();
+    }
+
+    public deletePaymentMethod(paymentMethod: PaymentMethod): void {
+        this.paymentService
+            .deletePaymentMethod(paymentMethod)
+            .pipe(switchMap(() => this.paymentService.getPaymentMethods()))
+            .subscribe({
+                next: (paymentMethods) => {
+                    this.savedPaymentMethods = paymentMethods;
+                    this.displaySuccess('Payment method deleted successfully');
+                },
+                error: (e) =>
+                    this.displayError(
+                        e,
+                        'Failed to delete payment method, try again later',
+                    ),
+            });
+    }
+
+    public savePaymentMethod(): void {
+        if (
+            !this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod
+                ?.valid
+        )
+            return;
+
+        const unauthorizedPaymentMethod = UnauthorizedPaymentMethod.from(
+            this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod
+                .value,
+        );
+
+        if (!unauthorizedPaymentMethod) return;
+
+        this.paymentService
+            .authorizePayment(unauthorizedPaymentMethod)
+            .pipe(
+                switchMap((authorizedPaymentMethod) =>
+                    this.paymentService.savePaymentMethod(
+                        authorizedPaymentMethod,
+                    ),
+                ),
+                switchMap(() => this.paymentService.getPaymentMethods()),
+            )
+            .subscribe({
+                next: (paymentMethods) => {
+                    this.newPaymentMethodFormShown = null;
+                    this.savedPaymentMethods = paymentMethods;
+                    this.displaySuccess('Payment method saved successfully');
+                },
+                error: (e) =>
+                    this.displayError(
+                        e,
+                        'Failed to save payment method, try again later',
+                    ),
+            });
+    }
+
+    private initForm(): void {
+        this.editYourDataForm = this.formBuilder.group({
+            NewPaymentMethod: new FormGroup<NewPaymentMethodForm>({}),
+        });
+    }
+
+    private displaySuccess(message: string): void {
+        this.message.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: message,
+        });
+    }
+
+    private displayError(error: HttpException, message: string): void {
+        if (error.error?.status === 0) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Network error',
+                detail: 'Check your internet connection and try again',
+            });
+        } else {
+            this.message.add({
+                severity: 'error',
+                summary: 'An error occurred',
+                detail: message,
+            });
+        }
+    }
 }

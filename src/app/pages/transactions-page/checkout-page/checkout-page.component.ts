@@ -130,7 +130,7 @@ export class CheckoutPageComponent implements OnInit {
             >(null, Validators.required),
             newPaymentMethod: this.formBuilder.group({
                 save: new FormControl<boolean | null>(false),
-            }),
+            }) as FormGroup<NewPaymentMethodForm>,
         });
 
         this.chosenPaymentMethodForm.controls.chosenPaymentMethod.valueChanges.subscribe(
@@ -186,19 +186,10 @@ export class CheckoutPageComponent implements OnInit {
         const unauthorizedPaymentMethod: any = this.chosenPaymentMethodForm
             .get('newPaymentMethod')
             ?.get('newMethod')?.value;
-        const month = unauthorizedPaymentMethod.expirationDate?.split('/')[0];
-        const year = Number(
-            `20${unauthorizedPaymentMethod.expirationDate?.split('/')[1]}`,
-        );
-        if (!unauthorizedPaymentMethod) return null;
-        return unauthorizedPaymentMethod.type === PaymentMethodType.IBAN
-            ? new UnauthorizedIBAN(unauthorizedPaymentMethod.iban)
-            : new UnauthorizedCreditCard(
-                  unauthorizedPaymentMethod.ownerName,
-                  unauthorizedPaymentMethod.cardNumber,
-                  new Date(year, month),
-                  unauthorizedPaymentMethod.cvv,
-              );
+
+        return unauthorizedPaymentMethod
+            ? UnauthorizedPaymentMethod.from(unauthorizedPaymentMethod)
+            : null;
     }
 
     private getSave(): boolean {
