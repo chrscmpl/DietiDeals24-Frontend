@@ -181,6 +181,8 @@ export class AuctionsService {
         let url = 'auctions/search';
         let queryParameters: { [key: string]: string | number | boolean } = {};
 
+        queryParameters['includeAuctions'] = !params.onlyBids;
+        queryParameters['includeBids'] = !params.onlyAuctions;
         if (params.ownAuctions) {
             url = 'profile/activity/custom/owner-view';
             queryParameters['includeCurrentDeals'] =
@@ -191,10 +193,17 @@ export class AuctionsService {
         } else if (params.ofUser) {
             url = `profile/activity/${params.currentAuctions ? 'current' : 'past'}-deals/public-view`;
             queryParameters['id'] = params.ofUser;
+
+            if (params.currentAuctions) {
+                delete queryParameters['includeAuctions'];
+                delete queryParameters['includeBids'];
+            }
         }
 
         if (Object.keys(queryParameters).length === 0)
             queryParameters = params.queryParameters ?? {};
+
+        console.log(queryParameters);
 
         return defaults(
             { queryParameters },

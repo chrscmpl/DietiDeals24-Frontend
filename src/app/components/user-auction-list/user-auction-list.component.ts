@@ -35,6 +35,8 @@ export class UserAuctionListComponent implements OnInit, OnDestroy {
         { label: 'Auctions only', value: 'auctions' },
     ];
 
+    public emptyMessage: string = '';
+
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly auctionsService: AuctionsService,
@@ -50,6 +52,8 @@ export class UserAuctionListComponent implements OnInit, OnDestroy {
             this.originalKey = data['auctionsRequestData'].key;
 
             this.requestKey = this.completeKey(this.originalKey, this.params);
+
+            this.emptyMessage = this.getEmptyMessage();
 
             this.initFilter();
 
@@ -85,11 +89,31 @@ export class UserAuctionListComponent implements OnInit, OnDestroy {
         const key = this.completeKey(this.originalKey, this.params);
         this.auctionsService.setIfAbsent(key, this.params);
         this.requestKey = key;
+
+        this.emptyMessage = this.getEmptyMessage();
     }
 
     private completeKey(key: string, params: auctionsPaginationParams): string {
         return `${key}${
             params.onlyAuctions ? '/auctions' : params.onlyBids ? '/bids' : ''
         }`;
+    }
+
+    private getEmptyMessage(): string {
+        let message = '';
+
+        message += this.params.ownAuctions ? 'You have no ' : 'There are no ';
+
+        message += this.params.currentAuctions ? 'current ' : 'past ';
+
+        message += this.params.onlyAuctions
+            ? 'auctions'
+            : this.params.onlyBids
+              ? 'bids'
+              : 'auctions or bids';
+
+        message += this.params.ofUser ? ' for this user' : '';
+
+        return message;
     }
 }
