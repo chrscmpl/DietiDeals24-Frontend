@@ -9,7 +9,7 @@ import { Auction } from '../models/auction.model';
 import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
-import { defaults } from 'lodash-es';
+import { defaults, get, omit } from 'lodash-es';
 import { BidService } from './bid.service';
 import { cacheBusters } from '../helpers/cache-busters';
 import { environment } from '../../environments/environment';
@@ -37,6 +37,8 @@ type RequestData = {
     onlyAuctions: boolean;
     onlyBids: boolean;
 };
+
+type httpQueryParams = { [key: string]: string | number | boolean };
 
 @Injectable({
     providedIn: 'root',
@@ -163,6 +165,7 @@ export class AuctionsService {
     private createAuctionsRequestData(
         params: auctionsPaginationParams,
     ): RequestData {
+        this.validateParams(params);
         return {
             manager: new PaginatedRequestManager(this.completeParams(params)),
             ownAuctions: params.ownAuctions ?? false,
@@ -171,51 +174,6 @@ export class AuctionsService {
             onlyAuctions: params.onlyAuctions ?? false,
             onlyBids: params.onlyBids ?? false,
         };
-    }
-
-    private completeParams(
-        params: auctionsPaginationParams,
-    ): PaginatedRequestParams<Auction> {
-        this.validateParams(params);
-
-        let url = 'auctions/search';
-        let queryParameters: { [key: string]: string | number | boolean } = {};
-
-        queryParameters['includeAuctions'] = !params.onlyBids;
-        queryParameters['includeBids'] = !params.onlyAuctions;
-        if (params.ownAuctions) {
-            url = 'profile/activity/custom/owner-view';
-            queryParameters['includeCurrentDeals'] =
-                params.currentAuctions ?? false;
-            queryParameters['includePastDeals'] = !params.currentAuctions;
-            queryParameters['includeAuctions'] = !params.onlyBids;
-            queryParameters['includeBids'] = !params.onlyAuctions;
-        } else if (params.ofUser) {
-            url = `profile/activity/${params.currentAuctions ? 'current' : 'past'}-deals/public-view`;
-            queryParameters['id'] = params.ofUser;
-
-            if (params.currentAuctions) {
-                delete queryParameters['includeAuctions'];
-                delete queryParameters['includeBids'];
-            }
-        }
-
-        if (Object.keys(queryParameters).length === 0)
-            queryParameters = params.queryParameters ?? {};
-
-        console.log(queryParameters);
-
-        return defaults(
-            { queryParameters },
-            {
-                ...params,
-                pageNumber: params.pageNumber ?? 1,
-                http: this.http,
-                deserializer: (dtos: AuctionDTO[]) =>
-                    this.deserializer.deserializeArray(dtos),
-                url,
-            },
-        );
     }
 
     private validateParams(params: auctionsPaginationParams): void {
@@ -230,5 +188,62 @@ export class AuctionsService {
                     params.onlyBids))
         )
             throw new Error('Invalid auction search parameters');
+    }
+
+    private completeParams(
+        params: auctionsPaginationParams,
+    ): PaginatedRequestParams<Auction> {
+        let url = '';
+        let queryParameters: httpQueryParams = {};
+
+        if (params.ownAuctions) {
+            url = 'profile/activity/custom/owner-view';
+            queryParameters = this.completeParamsForOwnAuctions(params);
+        } else if (params.ofUser) {
+            url = `profile/activity/${params.currentAuctions ? 'current' : 'past'}-deals/public-view`;
+            queryParameters = this.completeParamsForOtherUser(params);
+        } else {
+            url = 'auctions/search';
+            queryParameters = params.queryParameters ?? {};
+        }
+
+        return defaults(
+            { queryParameters },
+            {
+                ...params,
+                pageNumber: params.pageNumber ?? 1,
+                http: this.http,
+                deserializer: (dtos: AuctionDTO[]) =>
+                    this.deserializer.deserializeArray(dtos),
+                url,
+            },
+        );
+    }
+
+    private completeParamsForOwnAuctions(
+        params: auctionsPaginationParams,
+    ): httpQueryParams {
+        return {
+            includeCurrentDeals: params.currentAuctions ?? false,
+            includePastDeals: !params.currentAuctions,
+            includeAuctions: !params.onlyBids,
+            includeBids: !params.onlyAuctions,
+        };
+    }
+
+    private completeParamsForOtherUser(
+        params: auctionsPaginationParams,
+    ): httpQueryParams {
+        const queryParams = {
+            id: params.ofUser!,
+            includeAuctions: !params.onlyBids,
+            includeBids: !params.onlyAuctions,
+        };
+
+        if (params.currentAuctions) {
+            return omit(queryParams, ['includeAuctions', 'includeBids']);
+        }
+
+        return queryParams;
     }
 }
