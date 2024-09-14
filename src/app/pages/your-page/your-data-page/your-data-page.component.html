@@ -5,39 +5,43 @@
     <section id="yd-links" class="your-data-section">
         <h1 class="your-data-header">Links</h1>
     </section>
-    <section id="yd-private-info" class="your-data-section">
-        <h1 class="your-data-header">Private information</h1>
+    <section id="yd-private-area" class="your-data-section">
+        <h1 class="your-data-header">Private area</h1>
     </section>
     <section id="yd-payment-methods" class="your-data-section">
         <h1 class="your-data-header">Payment methods</h1>
         <div class="payment-methods-form-wrapper">
-            <div class="saved-payment-methods">
-                @for (method of savedPaymentMethods; track method.id) {
-                    <div class="saved-method">
-                        <p-button
-                            class="saved-method-del"
-                            icon="pi pi-trash"
-                            [style]="{ width: '2rem', height: '2rem' }"
-                            (onClick)="promptDeletePaymentMethod(method)"
-                        />
-                        <label
-                            class="saved-method-label"
-                            for="{{ method.type }}-{{ method.id }}"
-                            >Saved {{ method.type | paymentMethodLabel }}</label
-                        >
-                        <input
-                            class="saved-method-input"
-                            type="text"
-                            pInputText
-                            disabled
-                            id="{{ method.type }}-{{ method.id }}"
-                            [value]="
-                                method.identifyingNumber | masked: method.type
-                            "
-                        />
-                    </div>
-                }
-            </div>
+            @if (savedPaymentMethods.length) {
+                <div class="saved-payment-methods">
+                    @for (method of savedPaymentMethods; track method.id) {
+                        <div class="saved-method">
+                            <p-button
+                                class="saved-method-del"
+                                icon="pi pi-trash"
+                                [style]="{ width: '2rem', height: '2rem' }"
+                                (onClick)="promptDeletePaymentMethod(method)"
+                            />
+                            <label
+                                class="saved-method-label"
+                                for="{{ method.type }}-{{ method.id }}"
+                                >Saved
+                                {{ method.type | paymentMethodLabel }}</label
+                            >
+                            <input
+                                class="saved-method-input"
+                                type="text"
+                                pInputText
+                                disabled
+                                id="{{ method.type }}-{{ method.id }}"
+                                [value]="
+                                    method.identifyingNumber
+                                        | masked: method.type
+                                "
+                            />
+                        </div>
+                    }
+                </div>
+            }
             @if (newPaymentMethodFormShown === null) {
                 <div class="add-method-btns">
                     @for (

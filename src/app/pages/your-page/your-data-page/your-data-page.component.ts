@@ -18,6 +18,7 @@ import {
 } from '../../../components/payment-method-forms/payment-method-form.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-method.model';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 
 interface editYourDataForm {
     NewPaymentMethod: FormGroup<NewPaymentMethodForm>;
@@ -58,9 +59,9 @@ export class YourDataPageComponent implements OnInit {
                 this.windowService.scrollSmoothlyToAnchor('yd-links'),
         },
         {
-            label: 'Private information',
+            label: 'Private area',
             command: () =>
-                this.windowService.scrollSmoothlyToAnchor('yd-private-info'),
+                this.windowService.scrollSmoothlyToAnchor('yd-private-area'),
         },
         {
             label: 'Payment methods',
@@ -125,15 +126,18 @@ export class YourDataPageComponent implements OnInit {
     }
 
     public savePaymentMethod(): void {
-        if (
-            !this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod
-                ?.valid
-        )
+        const newMethodForm =
+            this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod;
+
+        if (!newMethodForm) return;
+
+        if (!newMethodForm.valid) {
+            reactiveFormsUtils.markAllAsDirty(newMethodForm);
             return;
+        }
 
         const unauthorizedPaymentMethod = UnauthorizedPaymentMethod.from(
-            this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod
-                .value,
+            newMethodForm.value,
         );
 
         if (!unauthorizedPaymentMethod) return;
