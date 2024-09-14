@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { EditUserDataFormComponent } from '../../../components/edit-user-data-form/edit-user-data-form.component';
 import { WindowService } from '../../../services/window.service';
 import { PaymentMethod } from '../../../models/payment-method.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { switchMap, take } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
 import { MaskedPipe } from '../../../pipes/masked.pipe';
@@ -34,6 +34,7 @@ interface editYourDataForm {
         PaymentMethodLabelPipe,
         ButtonModule,
         PaymentMethodFormComponent,
+        RouterLink,
     ],
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',
@@ -82,6 +83,7 @@ export class YourDataPageComponent implements OnInit {
         private readonly message: MessageService,
         private readonly paymentService: PaymentService,
         private readonly formBuilder: FormBuilder,
+        private readonly confirm: ConfirmationService,
     ) {}
 
     public ngOnInit(): void {
@@ -91,7 +93,21 @@ export class YourDataPageComponent implements OnInit {
         this.initForm();
     }
 
-    public deletePaymentMethod(paymentMethod: PaymentMethod): void {
+    public promptDeletePaymentMethod(paymentMethod: PaymentMethod): void {
+        this.confirm.confirm({
+            header: 'Are you sure?',
+            message: 'Are you sure you want to delete this payment method?',
+            accept: () => this.deletePaymentMethod(paymentMethod),
+            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-outlined',
+            acceptLabel: 'Delete',
+            acceptIcon: 'pi pi-trash',
+            rejectLabel: 'Go back',
+            rejectIcon: 'pi pi-arrow-left',
+        });
+    }
+
+    private deletePaymentMethod(paymentMethod: PaymentMethod): void {
         this.paymentService
             .deletePaymentMethod(paymentMethod)
             .pipe(switchMap(() => this.paymentService.getPaymentMethods()))

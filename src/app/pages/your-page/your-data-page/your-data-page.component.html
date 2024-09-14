@@ -18,7 +18,7 @@
                             class="saved-method-del"
                             icon="pi pi-trash"
                             [style]="{ width: '2rem', height: '2rem' }"
-                            (onClick)="deletePaymentMethod(method)"
+                            (onClick)="promptDeletePaymentMethod(method)"
                         />
                         <label
                             class="saved-method-label"
@@ -95,5 +95,9 @@
     </section>
     <section id="yd-security-privacy" class="your-data-section">
         <h1 class="your-data-header">Security & Privacy</h1>
+        <p-button
+            label="Go to Security & Privacy"
+            [routerLink]="['..', 'security-privacy']"
+        />
     </section>
 </dd24-edit-user-data-form>

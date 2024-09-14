@@ -10,8 +10,6 @@
     @include layouts.flex(column, start, start, 1rem);
     padding: 1.5rem;
 
-    min-height: 20rem;
-
     &:not(:last-child) {
         border-bottom: var(--border);
     }
