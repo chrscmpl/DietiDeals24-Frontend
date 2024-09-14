@@ -65,9 +65,6 @@ export const routes: Routes = [
             ShowUIGuard.asCanActivateFn(true),
             AuthenticationGuard.asCanActivateFn(true),
         ],
-        resolve: {
-            userData: AuthenticatedUserDataResolver.asResolveFn(),
-        },
         children: [
             {
                 path: '',
@@ -78,6 +75,9 @@ export const routes: Routes = [
                 path: 'activity',
                 component: ActivityPageComponent,
                 canActivate: [ConfirmReloadGuard.asCanActivateFn(false)],
+                resolve: {
+                    userData: AuthenticatedUserDataResolver.asResolveFn(),
+                },
                 children: [
                     {
                         path: '',
@@ -125,6 +125,7 @@ export const routes: Routes = [
                 ],
                 resolve: {
                     paymentMethods: PaymentMethodsResolver.asResolveFn(),
+                    userData: AuthenticatedUserDataResolver.asResolveFn(),
                 },
             },
             {
@@ -134,7 +135,10 @@ export const routes: Routes = [
                 canActivate: [
                     ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
                 ],
-                resolve: { tos: TextAssetResolver.asResolveFn('tos.txt') },
+                resolve: {
+                    tos: TextAssetResolver.asResolveFn('tos.txt'),
+                    userData: AuthenticatedUserDataResolver.asResolveFn(),
+                },
             },
         ],
     },

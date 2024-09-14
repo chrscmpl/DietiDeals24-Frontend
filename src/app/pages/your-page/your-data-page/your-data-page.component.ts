@@ -16,12 +16,26 @@ import {
     NewPaymentMethodForm,
     PaymentMethodFormComponent,
 } from '../../../components/payment-method-forms/payment-method-form.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
 import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-method.model';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { AuthenticatedUser } from '../../../models/authenticated-user.model';
+import { InputComponent } from '../../../components/input/input.component';
+
+interface NewLinkForm {
+    name: FormControl<string | null>;
+    url: FormControl<string | null>;
+}
 
 interface editYourDataForm {
-    NewPaymentMethod: FormGroup<NewPaymentMethodForm>;
+    newLink: FormGroup<NewLinkForm>;
+    newPaymentMethod: FormGroup<NewPaymentMethodForm>;
 }
 
 @Component({
@@ -30,6 +44,7 @@ interface editYourDataForm {
     imports: [
         EditUserDataFormComponent,
         ReactiveFormsModule,
+        InputComponent,
         InputTextModule,
         MaskedPipe,
         PaymentMethodLabelPipe,
@@ -42,6 +57,8 @@ interface editYourDataForm {
 })
 export class YourDataPageComponent implements OnInit {
     public editYourDataForm!: FormGroup<editYourDataForm>;
+
+    public user!: AuthenticatedUser;
 
     public savedPaymentMethods: PaymentMethod[] = [];
 
@@ -74,6 +91,16 @@ export class YourDataPageComponent implements OnInit {
         },
     ];
 
+    public privateAreaFields: {
+        label: string;
+        key: keyof AuthenticatedUser;
+        type: 'text' | 'date';
+    }[] = [
+        { label: 'Name', key: 'name', type: 'text' },
+        { label: 'Surname', key: 'surname', type: 'text' },
+        { label: 'Birthday', key: 'birthday', type: 'date' },
+    ];
+
     public newPaymentMethodFormShown: PaymentMethodType | null = null;
 
     public newPaymentMethodOptions = Object.values(PaymentMethodType);
@@ -89,9 +116,19 @@ export class YourDataPageComponent implements OnInit {
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
+            this.user = data['userData'];
             this.savedPaymentMethods = data['paymentMethods'];
         });
         this.initForm();
+    }
+
+    public addLink(): void {
+        const newLinkForm = this.editYourDataForm.controls.newLink;
+
+        if (!newLinkForm.valid) {
+            reactiveFormsUtils.markAllAsDirty(newLinkForm);
+            return;
+        }
     }
 
     public promptDeletePaymentMethod(paymentMethod: PaymentMethod): void {
@@ -127,7 +164,7 @@ export class YourDataPageComponent implements OnInit {
 
     public savePaymentMethod(): void {
         const newMethodForm =
-            this.editYourDataForm.controls.NewPaymentMethod.controls.newMethod;
+            this.editYourDataForm.controls.newPaymentMethod.controls.newMethod;
 
         if (!newMethodForm) return;
 
@@ -168,7 +205,22 @@ export class YourDataPageComponent implements OnInit {
 
     private initForm(): void {
         this.editYourDataForm = this.formBuilder.group({
-            NewPaymentMethod: new FormGroup<NewPaymentMethodForm>({}),
+            newLink: this.formBuilder.group<NewLinkForm>({
+                name: new FormControl<string | null>(null, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                url: new FormControl<string | null>(null, {
+                    validators: [
+                        Validators.required,
+                        Validators.pattern(
+                            /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
+                        ),
+                    ],
+                    updateOn: 'blur',
+                }),
+            }),
+            newPaymentMethod: new FormGroup<NewPaymentMethodForm>({}),
         });
     }
 

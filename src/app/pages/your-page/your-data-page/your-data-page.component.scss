@@ -25,6 +25,62 @@
     line-height: var(--line-height-large);
 }
 
+.links-form-wrapper {
+    @include layouts.flex(row, start, stretch, 1rem);
+}
+
+.new-link-form {
+    @include layouts.flex(column, start, stretch, 1rem);
+    border-right: var(--border);
+    padding-right: 1rem;
+}
+
+.saved-links {
+    @include layouts.flex(column, start, start, 1rem);
+}
+
+.saved-link,
+.saved-link-anchor {
+    @include layouts.flex(row, start, center, 1ch);
+}
+
+.saved-link-anchor {
+    gap: 0;
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+.add-link-btn {
+    align-self: start;
+}
+
+.private-area-inputs {
+    @include layouts.grid(
+        1fr / repeat(auto-fit, 20ch),
+        $justify-content: start,
+        $gap: 1rem
+    );
+    width: 100%;
+
+    @include viewports.mobile {
+        grid-template-columns: 1fr;
+        justify-content: stretch;
+    }
+}
+
+.private-area-input-wrapper {
+    @include layouts.flex(column, start, stretch);
+    width: 20ch;
+
+    @include viewports.mobile {
+        width: 100%;
+    }
+}
+
+.private-area-input {
+    max-width: 100%;
+}
+
 .payment-methods-form-wrapper {
     @include layouts.flex(column, start, start, 1rem);
     align-self: stretch;

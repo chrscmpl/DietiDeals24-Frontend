@@ -1,6 +1,26 @@
 <dd24-edit-user-data-form [tabs]="tabs">
     <section id="sp-login-security" class="security-privacy-section">
         <h1 class="security-privacy-header">Login & Security</h1>
+        <div class="user-email-input-wrapper">
+            <label class="user-email-label" for="user-email"> Email </label>
+            <p-iconField iconPosition="right">
+                <input
+                    class="user-email-input"
+                    type="text"
+                    pInputText
+                    disabled
+                    id="user-email"
+                    [value]="
+                        maskEmail ? (user.email | masked: 'email') : user.email
+                    "
+                />
+                <p-inputIcon
+                    styleClass="pi pi-eye{{ maskEmail ? '' : '-slash' }}"
+                    (click)="toggleEmailMask()"
+                />
+            </p-iconField>
+        </div>
+        <p-button class="change-password-btn" label="Change password" />
     </section>
     <section id="sp-tos-pp" class="security-privacy-section">
         <h1 class="security-privacy-header">

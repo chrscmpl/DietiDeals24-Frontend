@@ -47,7 +47,7 @@ export class ActivityPageComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        this.route.parent?.data.pipe(take(1)).subscribe((data) => {
+        this.route.data.pipe(take(1)).subscribe((data) => {
             this.userData = data['userData'];
         });
 

@@ -25,3 +25,12 @@
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
 }
+
+.user-email-input-wrapper {
+    @include layouts.flex(column, start, stretch);
+    width: 20ch;
+
+    @include viewports.mobile {
+        width: 100%;
+    }
+}

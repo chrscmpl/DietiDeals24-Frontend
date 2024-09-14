@@ -9,7 +9,7 @@ export class UserSummary {
     protected _city: string;
 
     public constructor(dto: UserSummaryDTO) {
-        this._id = dto.userId;
+        this._id = String(dto.userId);
         this._username = dto.username;
         this._profilePictureUrl = dto.profilePictureUrl ?? null;
         this._country = dto.country;
@@ -50,6 +50,7 @@ export class User extends UserSummary {
         this._bio = dto.bio ?? null;
         this._links =
             dto.personalLinks?.map((link) => ({
+                id: String(link.id),
                 name: link.description,
                 url: link.link,
             })) ?? [];

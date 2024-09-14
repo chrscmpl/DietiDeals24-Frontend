@@ -4,9 +4,111 @@
     </section>
     <section id="yd-links" class="your-data-section">
         <h1 class="your-data-header">Links</h1>
+        <div class="links-form-wrapper">
+            <form
+                class="new-link-form"
+                [formGroup]="editYourDataForm.controls.newLink"
+                (ngSubmit)="addLink()"
+            >
+                <div class="link-input-wrapper">
+                    <label for="link-name">Name</label>
+                    <dd24-input
+                        controlName="name"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'you need a name for your link'
+                            }
+                        ]"
+                    >
+                        <input
+                            class="p-fluid"
+                            type="text"
+                            pInputText
+                            formControlName="name"
+                            name="name"
+                            placeholder="A description for your link"
+                            id="link-name"
+                        />
+                    </dd24-input>
+                </div>
+
+                <div class="link-input-wrapper">
+                    <label for="link-url">Url</label>
+                    <dd24-input
+                        controlName="url"
+                        [errorMessages]="[
+                            {
+                                validation: 'required',
+                                message: 'you need to input an url'
+                            },
+                            {
+                                validation: 'pattern',
+                                message: 'this is not a valid url'
+                            }
+                        ]"
+                    >
+                        <input
+                            class="p-fluid"
+                            type="text"
+                            pInputText
+                            formControlName="url"
+                            name="url"
+                            placeholder="the address to redirect to"
+                            id="link-url"
+                        />
+                    </dd24-input>
+                </div>
+                <p-button
+                    class="add-link-btn"
+                    label="Add"
+                    icon="pi pi-plus"
+                    type="submit"
+                />
+            </form>
+            <div class="saved-links">
+                @for (link of user.links; track link.id) {
+                    <span class="saved-link">
+                        <p-button
+                            class="saved-link-del"
+                            icon="pi pi-trash"
+                            [style]="{ width: '2rem', height: '2rem' }"
+                        />
+
+                        <a
+                            class="saved-link-anchor"
+                            [href]="link.url"
+                            target="_blank"
+                        >
+                            <i class="pi pi-link"></i>&nbsp;{{ link.name }}
+                        </a>
+                    </span>
+                }
+            </div>
+        </div>
     </section>
     <section id="yd-private-area" class="your-data-section">
         <h1 class="your-data-header">Private area</h1>
+        <div class="private-area-inputs">
+            @for (field of privateAreaFields; track $index) {
+                <div class="private-area-input-wrapper">
+                    <label
+                        class="private-area-label"
+                        for="private-area-{{ field.key }}"
+                    >
+                        {{ field.label }}
+                    </label>
+                    <input
+                        class="private-area-input"
+                        [type]="field.type"
+                        pInputText
+                        disabled
+                        id="private-area-{{ field.key }}"
+                        [value]="user[field.key]"
+                    />
+                </div>
+            }
+        </div>
     </section>
     <section id="yd-payment-methods" class="your-data-section">
         <h1 class="your-data-header">Payment methods</h1>
@@ -63,7 +165,7 @@
             } @else {
                 <form
                     class="new-payment-method-form"
-                    [formGroup]="editYourDataForm.controls.NewPaymentMethod"
+                    [formGroup]="editYourDataForm.controls.newPaymentMethod"
                     (ngSubmit)="savePaymentMethod()"
                 >
                     <p-button
@@ -80,7 +182,7 @@
                         }}</span
                     >
                     <dd24-payment-method-form
-                        [form]="editYourDataForm.controls.NewPaymentMethod"
+                        [form]="editYourDataForm.controls.newPaymentMethod"
                         [type]="newPaymentMethodFormShown"
                         [formStyle]="{ padding: 0 }"
                     />

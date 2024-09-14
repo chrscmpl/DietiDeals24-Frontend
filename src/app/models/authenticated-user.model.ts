@@ -35,6 +35,7 @@ export class AuthenticatedUser {
         this._bio = dto.bio ?? null;
         this._links =
             dto.personalLinks?.map((link) => ({
+                id: String(link.id),
                 name: link.description,
                 url: link.link,
             })) ?? [];
