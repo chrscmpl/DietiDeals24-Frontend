@@ -1,0 +1,43 @@
+@use "layouts";
+
+.edit-user-form {
+    @include layouts.grid(1fr / auto 1fr);
+    background-color: var(--component-color);
+    border: var(--border);
+    border-radius: var(--border-radius-large);
+    min-height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.edit-user-side {
+    @include layouts.flex(column, start, stretch);
+    border-right: var(--border);
+}
+
+.edit-user-main {
+    @include layouts.flex(column, start, stretch);
+}
+
+:host ::ng-deep {
+    .edit-user-menu {
+        .p-menuitem-link,
+        .p-menuitem-text,
+        .p-menuitem-content,
+        .p-menuitem {
+            border-radius: 0;
+            padding: 0;
+        }
+
+        .p-menuitem-link {
+            padding: 0.75rem 1.25rem;
+            border-bottom: var(--border);
+            @include layouts.center;
+            text-align: center;
+        }
+
+        .p-menuitem-text {
+            line-height: var(--line-height-medium);
+        }
+    }
+}

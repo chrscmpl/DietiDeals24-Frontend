@@ -23,13 +23,13 @@ export class WarningsService {
                 paymentMethodTypesByCategory.get(category) ?? [];
 
         let warningMessage =
-            'This is a student project, not a real platform, and this transaction is fake. Please do not use real data. Data about payment methods will not be sent to any payment processor.';
+            "This is a student project, not a real platform, and this transaction is fake. Please do not use real data. Payment methods' data will not be sent to any payment processor.";
         if (paymentMethodTypes.includes(PaymentMethodType.creditCard))
             warningMessage +=
-                ' For credit cards, only the last 4 digits of the card number will be stored by our servers.';
+                ' For credit cards, we will only store the last 4 digits of the card number.';
         else if (paymentMethodTypes.includes(PaymentMethodType.IBAN))
             warningMessage +=
-                ' For IBANs, our servers may store the entire IBAN number or part of it.';
+                ' For IBANs, we may store the entire IBAN number or part of it.';
 
         this.showWarning({
             severity: 'warn',

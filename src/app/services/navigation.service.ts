@@ -145,7 +145,6 @@ export class NavigationService {
     }
 
     public navigateToSavedRoute() {
-        console.log(this._savedRoute);
         this.navigateToRoute(this._savedRoute);
         this._savedRoute = null;
     }

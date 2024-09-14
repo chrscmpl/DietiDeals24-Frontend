@@ -1,0 +1,17 @@
+<div class="edit-user-form">
+    <aside class="edit-user-side">
+        <p-menu
+            [model]="tabs"
+            class="edit-user-menu"
+            [style]="{
+                background: 'none',
+                borderRadius: 0,
+                border: 'none',
+                padding: 0
+            }"
+        />
+    </aside>
+    <div class="edit-user-main">
+        <ng-content></ng-content>
+    </div>
+</div>

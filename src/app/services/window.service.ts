@@ -1,4 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
+import { ViewportScroller } from '@angular/common';
 import { Injectable, NgZone } from '@angular/core';
 import {
     Observable,
@@ -34,6 +35,7 @@ export class WindowService {
     constructor(
         private readonly mediaMatcher: MediaMatcher,
         private readonly zone: NgZone,
+        private readonly viewportScroller: ViewportScroller,
     ) {
         this.UIhiddenSUbject.next(true);
         this.initStyles();
@@ -124,6 +126,18 @@ export class WindowService {
         switchMap((isOpen) => of(isOpen).pipe(delay(isOpen ? 0 : 50))),
         shareReplay(1),
     );
+
+    public scrollSmoothlyToAnchor(anchor: string): void {
+        this.setSmoothScrolling(true);
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                this.viewportScroller.scrollToAnchor(anchor);
+                setTimeout(() => {
+                    this.setSmoothScrolling(false);
+                }, 1000);
+            }, 100);
+        });
+    }
 
     private initStyles(): void {
         this.styles = document.createElement('style');

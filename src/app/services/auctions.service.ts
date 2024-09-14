@@ -144,7 +144,6 @@ export class AuctionsService {
             this.removeOldUsersRequests(params.ofUser);
         }
         this.requestsMap.set(key, this.createAuctionsRequestData(params));
-        console.log(Array.from(this.requestsMap.keys()));
     }
 
     private removeOldUsersRequests(userId: string) {

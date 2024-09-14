@@ -34,6 +34,7 @@ import { AuthenticatedUserDataResolver } from './resolvers/authenticated-user-da
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { UserResolver } from './resolvers/user.resolver';
 import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.guard';
+import { TextAssetResolver } from './resolvers/text-asset.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -123,6 +124,7 @@ export const routes: Routes = [
                 path: 'security-privacy',
                 title: 'Security & Privacy',
                 component: SecurityAndPrivacyPageComponent,
+                resolve: { tos: TextAssetResolver.asResolveFn('tos.txt') },
             },
         ],
     },

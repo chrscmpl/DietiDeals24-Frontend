@@ -1,12 +1,17 @@
-<div class="your-data-page">
-    <aside class="your-data-page-side">
-        @for (tab of tabs; track $index) {
-            <span class="your-data-page-tab"> {{ tab.label }} </span>
-        }
-    </aside>
-    <div class="your-data-page-main">
-        <section class="your-data-page-section">
-            <h1 class="your-data-page-header">Public profile</h1>
-        </section>
-    </div>
-</div>
+<dd24-edit-user-data-form [tabs]="tabs">
+    <section id="yd-public-profile" class="your-data-section">
+        <h1 class="your-data-header">Public profile</h1>
+    </section>
+    <section id="yd-links" class="your-data-section">
+        <h1 class="your-data-header">Links</h1>
+    </section>
+    <section id="yd-private-info" class="your-data-section">
+        <h1 class="your-data-header">Private information</h1>
+    </section>
+    <section id="yd-payment-methods" class="your-data-section">
+        <h1 class="your-data-header">Payment methods</h1>
+    </section>
+    <section id="yd-security-privacy" class="your-data-section">
+        <h1 class="your-data-header">Security & Privacy</h1>
+    </section>
+</dd24-edit-user-data-form>

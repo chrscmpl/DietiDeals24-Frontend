@@ -52,7 +52,10 @@ export class HelpPageComponent implements OnInit, OnDestroy {
 
                 this.filteredFaqMenuItems = this.faqMenuItems;
 
-                if (fragment) this.scrollToFaqItem(fragment);
+                if (fragment)
+                    this.windowService.scrollSmoothlyToAnchor(
+                        `${fragment}_header`,
+                    );
             });
 
         this.subscriptions.push(
@@ -87,16 +90,6 @@ export class HelpPageComponent implements OnInit, OnDestroy {
                           .toLowerCase()
                           .includes(filter.toLowerCase()),
                   );
-    }
-
-    private scrollToFaqItem(fragment: string): void {
-        this.windowService.setSmoothScrolling(true);
-        setTimeout(() => {
-            this.viewPortScroller.scrollToAnchor(`${fragment}_header`);
-            setTimeout(() => {
-                this.windowService.setSmoothScrolling(false);
-            }, 1000);
-        }, 100);
     }
 
     public ngOnDestroy(): void {
