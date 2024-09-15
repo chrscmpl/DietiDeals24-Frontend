@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { AuthorizedPaymentMethodSerializer } from './authorized-payment-method.deserializer';
-import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
-import { AuctionConclusionDTO } from '../DTOs/auction-conclusion.dto';
+import { AuctionAcceptanceData } from '../models/auction-acceptance-data.model';
+import { AuctionAcceptanceDataDTO } from '../DTOs/auction-acceptance-data.dto';
 import { AuthorizedPaymentMethod } from '../models/authorized-payment-method.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AuctionConclusionSerializer
-    implements Serializer<AuctionConclusionData, AuctionConclusionDTO>
+export class AuctionAcceptanceDataSerializer
+    implements Serializer<AuctionAcceptanceData, AuctionAcceptanceDataDTO>
 {
     public constructor(
         private readonly authorizedPaymentMethodSerializer: AuthorizedPaymentMethodSerializer,
     ) {}
 
     public serialize(
-        auctionConclusionData: AuctionConclusionData,
-    ): AuctionConclusionDTO {
+        auctionConclusionData: AuctionAcceptanceData,
+    ): AuctionAcceptanceDataDTO {
         if (
             auctionConclusionData.paymentMethod &&
             !auctionConclusionData.paymentMethod.id &&
@@ -48,14 +48,13 @@ export class AuctionConclusionSerializer
 
         return {
             auctionId: auctionConclusionData.auctionId,
-            choice: auctionConclusionData.choice,
             ...paymentMethod,
-        } as AuctionConclusionDTO;
+        } as AuctionAcceptanceDataDTO;
     }
 
     public serializeArray(
-        bids: AuctionConclusionData[],
-    ): AuctionConclusionDTO[] {
+        bids: AuctionAcceptanceData[],
+    ): AuctionAcceptanceDataDTO[] {
         return bids.map((bid) => this.serialize(bid));
     }
 }

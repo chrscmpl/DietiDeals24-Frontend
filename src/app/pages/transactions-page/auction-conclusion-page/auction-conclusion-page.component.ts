@@ -12,8 +12,6 @@ import { UserPreviewComponent } from '../../../components/user-preview/user-prev
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { AuctioneerService } from '../../../services/auctioneer.service';
-import { AuctionConclusionOptions } from '../../../enums/auction-conclusion-options.enum';
-import { AuctionConclusionData } from '../../../models/auction-conclusion-data.model';
 
 @Component({
     selector: 'dd24-auction-conclusion-page',
@@ -66,12 +64,7 @@ export class AuctionConclusionPageComponent implements OnInit {
 
     private onReject(): void {
         this.auctioneerService
-            .concludeAuction(
-                new AuctionConclusionData(
-                    this.auction.id,
-                    AuctionConclusionOptions.reject,
-                ),
-            )
+            .rejectBid(this.auction.id)
             .pipe(take(1))
             .subscribe({
                 next: this.onRejectSuccess.bind(this),

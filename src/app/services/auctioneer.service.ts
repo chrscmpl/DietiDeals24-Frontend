@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, Observer, throwError } from 'rxjs';
 import { CacheBuster } from 'ts-cacheable';
-import { AuctionConclusionOptions } from '../enums/auction-conclusion-options.enum';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
 import { AuctionCreationData } from '../models/auction-creation-data.model';
@@ -19,9 +18,10 @@ import { Categories, CategoriesService } from './categories.service';
 import { UploadedFile } from '../models/uploaded-file.model';
 import { AuctionCreationException } from '../exceptions/auction-creation.exception';
 import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
-import { AuctionConclusionData } from '../models/auction-conclusion-data.model';
-import { AuctionConclusionSerializer } from '../serializers/auction-conclusion.serializer';
+import { AuctionAcceptanceData } from '../models/auction-acceptance-data.model';
+import { AuctionAcceptanceDataSerializer } from '../serializers/auction-acceptance-data.serializer';
 import { cacheBusters } from '../helpers/cache-busters';
+import { AbortAuctionException } from '../exceptions/abort-auction.exception';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -101,7 +101,7 @@ export class AuctioneerService {
         private readonly formBuilder: FormBuilder,
         private readonly categoriesService: CategoriesService,
         private readonly auctionCreationSerializer: AuctionCreationSerializer,
-        private readonly auctionConclusionSerializer: AuctionConclusionSerializer,
+        private readonly auctionAcceptanceDataSerializer: AuctionAcceptanceDataSerializer,
     ) {
         this.auctionCreationForm.controls.details.controls.city.disable();
 
@@ -211,25 +211,54 @@ export class AuctioneerService {
     @CacheBuster({
         cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
     })
-    public concludeAuction(
-        conclusionOptions: AuctionConclusionData,
+    public acceptBid(
+        acceptanceOptions: AuctionAcceptanceData,
     ): Observable<unknown> {
         return this.http
             .post(
-                'auctions/finalize',
-                this.auctionConclusionSerializer.serialize(conclusionOptions),
+                'auctions/close',
+                this.auctionAcceptanceDataSerializer.serialize(
+                    acceptanceOptions,
+                ),
                 {
                     responseType: 'text',
                 },
             )
             .pipe(
                 catchError((e) =>
-                    throwError(() =>
-                        conclusionOptions.choice ===
-                        AuctionConclusionOptions.accept
-                            ? new BidAcceptanceException(e)
-                            : new BidRejectionException(e),
-                    ),
+                    throwError(() => new BidAcceptanceException(e)),
+                ),
+            );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
+    })
+    public rejectBid(id: string): Observable<unknown> {
+        return this.http
+            .delete('auctions/reject', {
+                responseType: 'text',
+                params: { auctionId: id },
+            })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new BidRejectionException(e)),
+                ),
+            );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.ownActiveAuctions$,
+    })
+    public abortAuction(id: string): Observable<unknown> {
+        return this.http
+            .delete('auctions/abort', {
+                responseType: 'text',
+                params: { auctionId: id },
+            })
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new AbortAuctionException(e)),
                 ),
             );
     }

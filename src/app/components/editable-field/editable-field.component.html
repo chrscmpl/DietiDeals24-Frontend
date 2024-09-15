@@ -1,0 +1,32 @@
+<dd24-input
+    [controlName]="controlName"
+    [errorMessages]="errorMessages"
+    [floatingError]="floatingError"
+>
+    <p-inputGroup>
+        @if (control.disabled) {
+            <p-button
+                class="group-btn-left"
+                icon="pi pi-pen-to-square"
+                outlined="true"
+                (onClick)="enable()"
+            />
+        } @else {
+            <p-button
+                class="group-btn-left"
+                icon="pi pi-check"
+                type="submit"
+                (onClick)="emitSubmit()"
+            />
+        }
+        <ng-content></ng-content>
+        @if (!control.disabled) {
+            <p-button
+                class="group-btn-right"
+                icon="pi pi-times"
+                severity="danger"
+                (onClick)="disable()"
+            />
+        }
+    </p-inputGroup>
+</dd24-input>

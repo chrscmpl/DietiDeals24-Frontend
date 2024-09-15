@@ -28,32 +28,8 @@
     line-height: var(--line-height-large);
 }
 
-.profile-pic-wrapper {
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    border: 3px solid var(--outline-color);
-
-    &:focus {
-        border: 3px solid var(--accent-color-1);
-        outline: 3px solid var(--accent-color-1);
-        outline-offset: -1px;
-        box-shadow: none;
-    }
-}
-
-.change-profile-pic-btn {
-    @include layouts.center;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 0;
-    width: 100%;
-
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
-    padding-bottom: 0.5rem;
-    padding-top: 0.2rem;
+.public-profile-inputs-wrapper {
+    @include layouts.flex(column, start, start, 1rem);
 }
 
 .links-form-wrapper {
@@ -179,22 +155,4 @@
     border-top: var(--border);
     @include layouts.flex(column, start, start, 1rem);
     padding: 1rem 0;
-}
-
-:host ::ng-deep {
-    .public-profile-pic {
-        .p-avatar-icon {
-            font-size: 3rem;
-        }
-    }
-
-    .group-btn-right .p-button {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    .group-btn-left .p-button {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
 }

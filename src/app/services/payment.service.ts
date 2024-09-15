@@ -100,14 +100,11 @@ export class PaymentService {
     @CacheBuster({
         cacheBusterNotifier: cacheBusters.paymentMethods$,
     })
-    public deletePaymentMethod(
-        paymentMethod: PaymentMethod,
-    ): Observable<unknown> {
+    public deletePaymentMethod(id: string): Observable<unknown> {
         return this.http
             .delete('payment-methods/delete', {
                 params: {
-                    paymentMethodId: paymentMethod.id,
-                    type: paymentMethod.type,
+                    paymentMethodId: id,
                 },
                 responseType: 'text',
             })

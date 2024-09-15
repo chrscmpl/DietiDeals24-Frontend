@@ -56,7 +56,9 @@
                                 placeholder="Choose a title for your auction"
                                 id="title"
                                 [maxlength]="environment.auctionTitleMaxLength"
-                                pKeyFilter="alphanum"
+                                [pKeyFilter]="
+                                    environment.alphaNumAndWhiteSpacePattern
+                                "
                             />
                         </dd24-input>
                     </div>
@@ -146,7 +148,9 @@
                                 minLength="2"
                                 (completeMethod)="completeCountries($event)"
                                 inputId="country"
-                                pKeyFilter="alpha"
+                                [pKeyFilter]="
+                                    environment.alphaAndWhiteSpacePattern
+                                "
                             >
                             </p-autoComplete>
                         </dd24-input>
@@ -180,7 +184,9 @@
                                 minLength="2"
                                 (completeMethod)="completeCities($event)"
                                 inputId="city"
-                                pKeyFilter="alpha"
+                                [pKeyFilter]="
+                                    environment.alphaAndWhiteSpacePattern
+                                "
                             ></p-autoComplete>
                         </dd24-input>
                     </div>

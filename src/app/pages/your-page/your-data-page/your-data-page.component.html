@@ -1,44 +1,57 @@
 <dd24-edit-user-data-form [tabs]="tabs">
     <section id="yd-public-profile" class="your-data-section">
         <h1 class="your-data-header">Public profile</h1>
-        <div
-            class="profile-pic-wrapper"
-            pRipple
-            (click)="profilePicInput.click()"
-            tabindex="0"
-            (keyup.enter)="profilePicInput.click()"
-        >
-            <p-avatar
-                class="public-profile-pic"
-                icon="pi pi-user"
-                shape="circle"
-                [image]="user.profilePictureUrl ?? undefined"
-                [style]="{
-                    width: '6rem',
-                    height: '6rem'
-                }"
-            />
-            <div class="change-profile-pic-btn">
-                <i class="pi pi-pencil"></i>
-            </div>
-            <input
-                type="file"
-                #profilePicInput
-                (change)="saveProfilePicture($event)"
-                style="display: none"
-                accept="image/*"
-            />
-        </div>
 
-        <div class="public-profile-inputs-wrapper">
-            <p-inputGroup>
-                <p-button
-                    class="group-btn-left"
-                    icon="pi pi-pencil"
-                    outlined="true"
-                />
-                <input type="text" pInputText />
-            </p-inputGroup>
+        <dd24-profile-picture-input
+            [picture]="user.profilePictureUrl"
+            [maxFileSize]="environment.profilePictureMaxSize"
+            (pictureSelection)="saveProfilePicture($event)"
+        />
+
+        <div
+            class="public-profile-inputs-wrapper"
+            [formGroup]="editYourDataForm.controls.publicProfileData"
+        >
+            <div class="pp-input-wrapper">
+                <label for="username-input">Username</label>
+                <dd24-editable-field
+                    controlName="username"
+                    [currentValue]="user.username"
+                >
+                    <input
+                        type="text"
+                        pInputText
+                        formControlName="username"
+                        name="username"
+                        id="username-input"
+                        pKeyFilter="alphanum"
+                        [maxlength]="environment.usernameMaxLength"
+                    />
+                </dd24-editable-field>
+            </div>
+
+            <div class="pp-input-wrapper">
+                <label for="country-input">Country</label>
+                <dd24-editable-field
+                    controlName="country"
+                    [currentValue]="user.country"
+                    (enabled)="fetchCountries()"
+                >
+                    <p-autoComplete
+                        formControlName="country"
+                        name="country"
+                        emptyMessage="No countries found"
+                        [suggestions]="filteredCountries"
+                        optionLabel="name"
+                        optionValue="code"
+                        forceSelection="true"
+                        minLength="2"
+                        (completeMethod)="completeCountries($event)"
+                        inputId="country-input"
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                    />
+                </dd24-editable-field>
+            </div>
         </div>
     </section>
     <section id="yd-links" class="your-data-section">

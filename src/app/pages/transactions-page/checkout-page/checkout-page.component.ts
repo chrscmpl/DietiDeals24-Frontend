@@ -32,18 +32,13 @@ import { BidService } from '../../../services/bid.service';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { NavigationService } from '../../../services/navigation.service';
 import { AuctioneerService } from '../../../services/auctioneer.service';
-import { AuctionConclusionOptions } from '../../../enums/auction-conclusion-options.enum';
 import { PaymentAuthorizationException } from '../../../exceptions/payment-authorization.exception';
 import { BidPlacementException } from '../../../exceptions/bid-placement.exception';
 import { BidAcceptanceException } from '../../../exceptions/bid-acceptance.exception';
-import {
-    UnauthorizedCreditCard,
-    UnauthorizedIBAN,
-    UnauthorizedPaymentMethod,
-} from '../../../models/unauthorized-payment-method.model';
+import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-method.model';
 import { AuthorizedPaymentMethod } from '../../../models/authorized-payment-method.model';
 import { BidCreationData } from '../../../models/bid-creation-data.model';
-import { AuctionConclusionData } from '../../../models/auction-conclusion-data.model';
+import { AuctionAcceptanceData } from '../../../models/auction-acceptance-data.model';
 
 interface PaymentMethodForm {
     chosenPaymentMethod: FormControl<{ id: string } | PaymentMethodType | null>;
@@ -259,10 +254,9 @@ export class CheckoutPageComponent implements OnInit {
                           : { data: paymentMethod, save: this.getSave() },
                   ),
               )
-            : this.auctioneerService.concludeAuction(
-                  new AuctionConclusionData(
+            : this.auctioneerService.acceptBid(
+                  new AuctionAcceptanceData(
                       this.auction.id,
-                      AuctionConclusionOptions.accept,
                       typeof paymentMethod === 'string'
                           ? { id: paymentMethod }
                           : { data: paymentMethod, save: this.getSave() },

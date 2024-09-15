@@ -36,16 +36,29 @@ import {
 } from '../../../models/user-link.model';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { AsyncPipe } from '@angular/common';
-import { AvatarModule } from 'primeng/avatar';
-import { RippleModule } from 'primeng/ripple';
 import { environment } from '../../../../environments/environment';
 import { UploadService } from '../../../services/upload.service';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ProfilePictureInputComponent } from '../../../components/profile-picture-input/profile-picture-input.component';
+import { EditableFieldComponent } from '../../../components/editable-field/editable-field.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import {
+    AutoCompleteCompleteEvent,
+    AutoCompleteModule,
+} from 'primeng/autocomplete';
+import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
+import { Country } from '../../../models/country.model';
+
+interface publicProfileDataForm {
+    username: FormControl<string | null>;
+    country: FormControl<string | null>;
+    city: FormControl<string | null>;
+    bio: FormControl<string | null>;
+}
 
 type NewLinkForm = ToReactiveForm<userLinkCreationData>;
 
 interface editYourDataForm {
+    publicProfileData: FormGroup<publicProfileDataForm>;
     newLink: FormGroup<NewLinkForm>;
     newPaymentMethod: FormGroup<NewPaymentMethodForm>;
 }
@@ -64,10 +77,10 @@ interface editYourDataForm {
         ButtonModule,
         PaymentMethodFormComponent,
         RouterLink,
-        AvatarModule,
-        RippleModule,
-        InputGroupModule,
-        InputGroupAddonModule,
+        ProfilePictureInputComponent,
+        EditableFieldComponent,
+        KeyFilterModule,
+        AutoCompleteModule,
     ],
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',
@@ -79,7 +92,11 @@ export class YourDataPageComponent implements OnInit {
 
     public savedPaymentMethods: PaymentMethod[] = [];
 
+    public filteredCountries: Country[] = [];
+
     public displayLoading = false;
+
+    public readonly environment = environment;
 
     public readonly tabs: MenuItem[] = [
         {
@@ -133,29 +150,18 @@ export class YourDataPageComponent implements OnInit {
         private readonly confirm: ConfirmationService,
         private readonly authentication: AuthenticationService,
         private readonly upload: UploadService,
+        private readonly geographicalLocationsService: GeographicalLocationsService,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.user = data['userData'];
             this.savedPaymentMethods = data['paymentMethods'];
-            console.log(this.user.links);
         });
         this.initForm();
     }
 
-    public saveProfilePicture(e: Event) {
-        const input = e.target as HTMLInputElement;
-        const file = input.files?.[0];
-        if (!file) return;
-
-        if (file.size > environment.profilePictureMaxSize) {
-            this.displayError(
-                `Profile picture cannot exceed ${environment.profilePictureMaxSize / (1024 * 1024)}MB`,
-            );
-            return;
-        }
-
+    public saveProfilePicture(file: File) {
         this.upload
             .upload(file)
             .pipe(
@@ -234,7 +240,7 @@ export class YourDataPageComponent implements OnInit {
 
     private deletePaymentMethod(paymentMethod: PaymentMethod): void {
         this.paymentService
-            .deletePaymentMethod(paymentMethod)
+            .deletePaymentMethod(paymentMethod.id)
             .pipe(switchMap(() => this.paymentService.getPaymentMethods()))
             .subscribe({
                 next: (paymentMethods) => {
@@ -293,6 +299,23 @@ export class YourDataPageComponent implements OnInit {
 
     private initForm(): void {
         this.editYourDataForm = this.formBuilder.group({
+            publicProfileData: this.formBuilder.group<publicProfileDataForm>({
+                username: new FormControl<string | null>(this.user.username, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                country: new FormControl<string | null>(this.user.country, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                city: new FormControl<string | null>(this.user.city, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
+                bio: new FormControl<string | null>(this.user.bio, {
+                    updateOn: 'blur',
+                }),
+            }),
             newLink: this.formBuilder.group<NewLinkForm>({
                 name: new FormControl<string | null>(null, {
                     validators: [Validators.required],
@@ -311,6 +334,25 @@ export class YourDataPageComponent implements OnInit {
             }),
             newPaymentMethod: new FormGroup<NewPaymentMethodForm>({}),
         });
+
+        const publicDataForm = this.editYourDataForm.controls.publicProfileData;
+
+        publicDataForm.controls.username.disable();
+        publicDataForm.controls.country.disable();
+        publicDataForm.controls.city.disable();
+        publicDataForm.controls.bio.disable();
+    }
+
+    public fetchCountries(): void {
+        if (this.geographicalLocationsService.countries?.length) return;
+        this.geographicalLocationsService.refreshCountries();
+    }
+
+    public completeCountries(event: AutoCompleteCompleteEvent): void {
+        this.filteredCountries =
+            this.geographicalLocationsService.countries?.filter((country) =>
+                country.name.toLowerCase().includes(event.query.toLowerCase()),
+            ) ?? [];
     }
 
     private validateUrl(

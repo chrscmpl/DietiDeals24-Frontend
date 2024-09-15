@@ -54,8 +54,6 @@ import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
 import { UploaderComponent } from '../../components/uploader/uploader.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AuctionCreationDTO } from '../../DTOs/auction.dto';
-import { omit } from 'lodash-es';
 import { NavigationService } from '../../services/navigation.service';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { AuctionCreationData } from '../../models/auction-creation-data.model';

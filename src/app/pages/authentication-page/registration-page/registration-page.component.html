@@ -44,7 +44,7 @@
                             class="p-fluid"
                             type="text"
                             pInputText
-                            pKeyFilter="alpha"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
                             formControlName="name"
                             name="name"
                             placeholder="Your name"
@@ -68,7 +68,7 @@
                             class="p-fluid"
                             type="text"
                             pInputText
-                            pKeyFilter="alpha"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
                             formControlName="surname"
                             name="surname"
                             placeholder="Your surname"
@@ -126,7 +126,7 @@
                             minLength="2"
                             (completeMethod)="completeCountries($event)"
                             inputId="country"
-                            pKeyFilter="alpha"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
                         >
                         </p-autoComplete>
                     </dd24-input>
@@ -164,7 +164,7 @@
                             forceSelection="true"
                             (completeMethod)="completeCities($event)"
                             inputId="city"
-                            pKeyFilter="alpha"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
                             minLength="2"
                         ></p-autoComplete>
                     </dd24-input>
@@ -221,7 +221,7 @@
                             placeholder="An unique username"
                             id="username"
                             pKeyFilter="alphanum"
-                            maxlength="30"
+                            [maxlength]="environment.usernameMaxLength"
                         />
                     </dd24-input>
                 </div>

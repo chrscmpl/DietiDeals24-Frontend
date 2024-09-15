@@ -7,6 +7,9 @@ export const environment = {
     passwordMediumPattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=.{8,})',
     passwordStrongPattern:
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W)(?=.{12,})',
+    alphaAndWhiteSpacePattern: /^[a-zA-Z\s]+$/,
+    alphaNumAndWhiteSpacePattern: /^[a-zA-Z0-9\s]+$/,
+    usernameMaxLength: 30,
     auctionTitleMaxLength: 100,
     auctionDescriptionMaxLength: 3000,
     auctionMaxDuration: 30 * 24 * 60 * 60 * 1000,
