@@ -101,7 +101,10 @@
         <span class="user-links">
             @for (link of user.links; track $index) {
                 <a class="user-link" [href]="link.url" target="_blank">
-                    <i class="pi pi-link"></i>&nbsp;{{ link.name }}
+                    <i class="pi pi-link"></i
+                    ><span class="user-link-text wk-nowrap wk-lc-2"
+                        >&nbsp;{{ link.name }}</span
+                    >
                 </a>
             }
         </span>

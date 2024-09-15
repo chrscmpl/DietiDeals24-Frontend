@@ -8,6 +8,8 @@
     background-color: var(--component-color);
     padding: 1rem 4rem;
 
+    overflow: hidden;
+
     @include viewports.mobile {
         padding: 1rem;
     }
@@ -61,6 +63,8 @@
 .user-link {
     @include layouts.flex(row, start, center);
     text-decoration: none;
+    word-wrap: break-word;
+    width: 100%;
     color: var(--link-color);
 }
 

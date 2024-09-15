@@ -35,6 +35,7 @@ import {
     userLinkCreationData,
 } from '../../../models/user-link.model';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { AsyncPipe } from '@angular/common';
 
 type NewLinkForm = ToReactiveForm<userLinkCreationData>;
 
@@ -49,6 +50,7 @@ interface editYourDataForm {
     imports: [
         EditUserDataFormComponent,
         ReactiveFormsModule,
+        AsyncPipe,
         InputComponent,
         InputTextModule,
         MaskedPipe,
@@ -106,6 +108,8 @@ export class YourDataPageComponent implements OnInit {
         { label: 'Birthday', key: 'birthday', type: 'date' },
     ];
 
+    public mobileNewLinkFormShown = false;
+
     public newPaymentMethodFormShown: PaymentMethodType | null = null;
 
     public newPaymentMethodOptions = Object.values(PaymentMethodType);
@@ -144,6 +148,8 @@ export class YourDataPageComponent implements OnInit {
             )
             .subscribe({
                 next: (userData) => {
+                    this.mobileNewLinkFormShown = false;
+                    newLinkForm.reset();
                     this.user = userData;
                     this.displaySuccess('Link added successfully');
                 },
@@ -226,6 +232,7 @@ export class YourDataPageComponent implements OnInit {
             .subscribe({
                 next: (paymentMethods) => {
                     this.newPaymentMethodFormShown = null;
+                    newMethodForm.reset();
                     this.savedPaymentMethods = paymentMethods;
                     this.displaySuccess('Payment method saved successfully');
                 },

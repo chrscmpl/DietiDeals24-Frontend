@@ -14,6 +14,8 @@ import { LocalDatePipe } from '../../pipes/local-date.pipe';
 import { WindowService } from '../../services/window.service';
 import { Router } from '@angular/router';
 import { TimerComponent } from '../timer/timer.component';
+import { AuthenticationService } from '../../services/authentication.service';
+import { TransactionOperation } from '../../enums/transaction-operation.enum';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -42,6 +44,7 @@ export class AuctionCardComponent implements OnInit {
 
     constructor(
         public readonly windowService: WindowService,
+        public readonly authentication: AuthenticationService,
         private readonly router: Router,
     ) {}
 
@@ -54,6 +57,24 @@ export class AuctionCardComponent implements OnInit {
     }
 
     public onClick(): void {
+        if (
+            this.auction.userId &&
+            this.auction.userId === this.authentication.loggedUser?.id &&
+            this.auction.status === Auction.STATUSES.pending
+        ) {
+            this.navigateToConclusion();
+        } else {
+            this.navigateToDetails();
+        }
+    }
+
+    public onKeyPress(event: KeyboardEvent): void {
+        if (event.key === 'Enter') {
+            this.onClick();
+        }
+    }
+
+    private navigateToDetails(): void {
         this.router.navigate(
             [
                 '',
@@ -70,9 +91,12 @@ export class AuctionCardComponent implements OnInit {
         );
     }
 
-    public onKeyPress(event: KeyboardEvent): void {
-        if (event.key === 'Enter') {
-            this.onClick();
-        }
+    private navigateToConclusion(): void {
+        this.router.navigate([
+            '/',
+            'txn',
+            this.auction.id,
+            TransactionOperation.conclude,
+        ]);
     }
 }

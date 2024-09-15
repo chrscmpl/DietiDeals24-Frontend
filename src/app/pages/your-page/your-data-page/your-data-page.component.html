@@ -5,71 +5,93 @@
     <section id="yd-links" class="your-data-section">
         <h1 class="your-data-header">Links</h1>
         <div class="links-form-wrapper">
-            <form
-                class="new-link-form"
-                [formGroup]="editYourDataForm.controls.newLink"
-                (ngSubmit)="addLink()"
-            >
-                <div class="link-input-wrapper">
-                    <label for="link-name">Name</label>
-                    <dd24-input
-                        controlName="name"
-                        [errorMessages]="[
-                            {
-                                validation: 'required',
-                                message: 'you need a name for your link'
-                            }
-                        ]"
-                    >
-                        <input
-                            class="p-fluid"
-                            type="text"
-                            pInputText
-                            formControlName="name"
-                            name="name"
-                            placeholder="A description for your link"
-                            id="link-name"
+            @if (
+                (windowService.isMobile$ | async) === false ||
+                mobileNewLinkFormShown
+            ) {
+                <form
+                    class="new-link-form"
+                    [formGroup]="editYourDataForm.controls.newLink"
+                    (ngSubmit)="addLink()"
+                >
+                    @if (windowService.isMobile$ | async) {
+                        <p-button
+                            class="new-link-form-btn"
+                            label="Undo"
+                            icon="pi pi-arrow-left"
+                            (onClick)="mobileNewLinkFormShown = false"
+                            outlined="true"
                         />
-                    </dd24-input>
-                </div>
+                    }
+                    <div class="link-input-wrapper">
+                        <label for="link-name">Name</label>
+                        <dd24-input
+                            controlName="name"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'you need a name for your link'
+                                }
+                            ]"
+                        >
+                            <input
+                                class="p-fluid"
+                                type="text"
+                                pInputText
+                                formControlName="name"
+                                name="name"
+                                placeholder="A description for your link"
+                                id="link-name"
+                            />
+                        </dd24-input>
+                    </div>
 
-                <div class="link-input-wrapper">
-                    <label for="link-url">Url</label>
-                    <dd24-input
-                        controlName="url"
-                        [errorMessages]="[
-                            {
-                                validation: 'required',
-                                message: 'you need to input an url'
-                            },
-                            {
-                                validation: 'pattern',
-                                message: 'this is not a valid url'
-                            },
-                            {
-                                customValidation: 'duplicate',
-                                message: 'you can\'t have duplicate urls'
-                            }
-                        ]"
-                    >
-                        <input
-                            class="p-fluid"
-                            type="text"
-                            pInputText
-                            formControlName="url"
-                            name="url"
-                            placeholder="the address to redirect to"
-                            id="link-url"
-                        />
-                    </dd24-input>
-                </div>
+                    <div class="link-input-wrapper">
+                        <label for="link-url">Url</label>
+                        <dd24-input
+                            controlName="url"
+                            [errorMessages]="[
+                                {
+                                    validation: 'required',
+                                    message: 'you need to input an url'
+                                },
+                                {
+                                    validation: 'pattern',
+                                    message: 'this is not a valid url'
+                                },
+                                {
+                                    customValidation: 'duplicate',
+                                    message: 'you can\'t have duplicate urls'
+                                }
+                            ]"
+                        >
+                            <input
+                                class="p-fluid"
+                                type="text"
+                                pInputText
+                                formControlName="url"
+                                name="url"
+                                placeholder="the address to redirect to"
+                                id="link-url"
+                            />
+                        </dd24-input>
+                    </div>
+                    <p-button
+                        class="new-link-form-btn"
+                        label="Add"
+                        icon="pi pi-plus"
+                        type="submit"
+                    />
+                </form>
+            }
+            @if ((windowService.isMobile$ | async) && !mobileNewLinkFormShown) {
                 <p-button
-                    class="add-link-btn"
-                    label="Add"
+                    class="show-new-link-form-btn"
+                    label="Add new link"
                     icon="pi pi-plus"
-                    type="submit"
+                    (onClick)="mobileNewLinkFormShown = true"
                 />
-            </form>
+            }
             <div class="saved-links">
                 @for (link of user.links; track link.id) {
                     <span class="saved-link">
@@ -85,7 +107,10 @@
                             [href]="link.url"
                             target="_blank"
                         >
-                            <i class="pi pi-link"></i>&nbsp;{{ link.name }}
+                            <i class="pi pi-link"></i>
+                            <span class="user-link-text wk-nowrap wk-lc-2">
+                                &nbsp;{{ link.name }}
+                            </span>
                         </a>
                     </span>
                 }
@@ -189,7 +214,7 @@
                     <dd24-payment-method-form
                         [form]="editYourDataForm.controls.newPaymentMethod"
                         [type]="newPaymentMethodFormShown"
-                        [formStyle]="{ padding: 0 }"
+                        [formStyle]="{ padding: 0, background: 'none' }"
                     />
 
                     <p-button

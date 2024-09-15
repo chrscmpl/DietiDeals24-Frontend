@@ -13,6 +13,9 @@
 .your-data-section {
     @include layouts.flex(column, start, start, 1rem);
     padding: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
 
     &:not(:last-child) {
         border-bottom: var(--border);
@@ -27,16 +30,37 @@
 
 .links-form-wrapper {
     @include layouts.flex(row, start, stretch, 1rem);
+
+    @include viewports.mobile {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
 }
 
 .new-link-form {
     @include layouts.flex(column, start, stretch, 1rem);
     border-right: var(--border);
     padding-right: 1rem;
+
+    @include viewports.mobile {
+        border-right: none;
+        padding-right: 0;
+        width: 100%;
+    }
+}
+
+.show-new-link-form-btn {
+    align-self: start;
 }
 
 .saved-links {
     @include layouts.flex(column, start, start, 1rem);
+
+    flex-grow: 1;
+
+    @include viewports.mobile {
+        @include layouts.flex(row, start, center, 2rem, wrap);
+    }
 }
 
 .saved-link,
@@ -48,9 +72,10 @@
     gap: 0;
     text-decoration: none;
     color: var(--link-color);
+    width: 100%;
 }
 
-.add-link-btn {
+.new-link-form-btn {
     align-self: start;
 }
 
@@ -88,6 +113,11 @@
 
 .saved-payment-methods {
     @include layouts.flex(column, start, start, 1rem);
+
+    @include viewports.mobile {
+        width: 100%;
+        align-items: stretch;
+    }
 }
 
 .saved-method {
