@@ -81,7 +81,7 @@ export class UploaderComponent implements OnInit, OnDestroy {
             let filesToUpload: number = files.length;
 
             for (const file of files)
-                uploader.upload(file, {
+                uploader.upload(file).subscribe({
                     next: (uploadedFile) => {
                         const fileIndex = event.files.lastIndexOf(file);
                         control.setValue([

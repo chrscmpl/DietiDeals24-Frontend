@@ -36,6 +36,12 @@ import {
 } from '../../../models/user-link.model';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { AsyncPipe } from '@angular/common';
+import { AvatarModule } from 'primeng/avatar';
+import { RippleModule } from 'primeng/ripple';
+import { environment } from '../../../../environments/environment';
+import { UploadService } from '../../../services/upload.service';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 type NewLinkForm = ToReactiveForm<userLinkCreationData>;
 
@@ -58,6 +64,10 @@ interface editYourDataForm {
         ButtonModule,
         PaymentMethodFormComponent,
         RouterLink,
+        AvatarModule,
+        RippleModule,
+        InputGroupModule,
+        InputGroupAddonModule,
     ],
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',
@@ -122,6 +132,7 @@ export class YourDataPageComponent implements OnInit {
         private readonly formBuilder: FormBuilder,
         private readonly confirm: ConfirmationService,
         private readonly authentication: AuthenticationService,
+        private readonly upload: UploadService,
     ) {}
 
     public ngOnInit(): void {
@@ -131,6 +142,42 @@ export class YourDataPageComponent implements OnInit {
             console.log(this.user.links);
         });
         this.initForm();
+    }
+
+    public saveProfilePicture(e: Event) {
+        const input = e.target as HTMLInputElement;
+        const file = input.files?.[0];
+        if (!file) return;
+
+        if (file.size > environment.profilePictureMaxSize) {
+            this.displayError(
+                `Profile picture cannot exceed ${environment.profilePictureMaxSize / (1024 * 1024)}MB`,
+            );
+            return;
+        }
+
+        this.upload
+            .upload(file)
+            .pipe(
+                switchMap((uploadedFile) =>
+                    this.authentication.editUser({
+                        profilePictureUrl: uploadedFile.url,
+                    }),
+                ),
+                switchMap(() => this.authentication.getAuthenticatedUserData()),
+                take(1),
+            )
+            .subscribe({
+                next: (userData) => {
+                    this.user = userData;
+                    this.displaySuccess('Profile picture updated successfully');
+                },
+                error: (e) =>
+                    this.displayError(
+                        'Failed to update the profile picture, try again later',
+                        e,
+                    ),
+            });
     }
 
     public addLink(): void {
@@ -154,7 +201,7 @@ export class YourDataPageComponent implements OnInit {
                     this.displaySuccess('Link added successfully');
                 },
                 error: (e) =>
-                    this.displayError(e, 'Failed to add link, try again later'),
+                    this.displayError('Failed to add link, try again later', e),
             });
     }
 
@@ -167,7 +214,7 @@ export class YourDataPageComponent implements OnInit {
                 this.displaySuccess('Link deleted successfully');
             },
             error: (e) =>
-                this.displayError(e, 'Failed to delete link, try again later'),
+                this.displayError('Failed to delete link, try again later', e),
         });
     }
 
@@ -196,8 +243,8 @@ export class YourDataPageComponent implements OnInit {
                 },
                 error: (e) =>
                     this.displayError(
-                        e,
                         'Failed to delete payment method, try again later',
+                        e,
                     ),
             });
     }
@@ -238,8 +285,8 @@ export class YourDataPageComponent implements OnInit {
                 },
                 error: (e) =>
                     this.displayError(
-                        e,
                         'Failed to save payment method, try again later',
+                        e,
                     ),
             });
     }
@@ -282,8 +329,8 @@ export class YourDataPageComponent implements OnInit {
         });
     }
 
-    private displayError(error: HttpException, message: string): void {
-        if (error.error?.status === 0) {
+    private displayError(message: string, error?: HttpException): void {
+        if (error?.error?.status === 0) {
             this.message.add({
                 severity: 'error',
                 summary: 'Network error',

@@ -42,7 +42,7 @@ export class SearchService {
                     /^\/auctions(\?.*)?$/.test(event.urlAfterRedirects),
             ),
             switchMap(() => this.route.queryParams.pipe(take(1))),
-            distinctUntilChanged(),
+            distinctUntilChanged(isEqual),
             withLatestFrom(
                 this.categoriesService.categories$.pipe(startWith({})),
             ),

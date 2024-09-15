@@ -9,6 +9,7 @@ import {
     Observable,
     Observer,
     of,
+    switchMap,
     take,
     tap,
     throwError,
@@ -47,39 +48,33 @@ export class UploadService {
         ).subscribe(cb);
     }
 
-    public upload(file: File, cb?: Partial<Observer<UploadedFile>>): void {
-        forkJoin([
+    public upload(file: File): Observable<UploadedFile> {
+        return forkJoin([
             this.getNextUploadUrl(),
             this.compressFile(file),
             this.uploadedFileNextId$,
-        ])
-            .pipe(take(1))
-            .subscribe({
-                next: ([url, compressedFile, id]) => {
-                    this.nextUploadUrl = null;
-                    const formData = new FormData();
-                    formData.append('file', compressedFile);
-                    this.http
-                        .put(url, formData, {
-                            context: new HttpContext().set(
-                                BACKEND_REQUEST,
-                                false,
-                            ),
-                        })
-                        .pipe(
-                            catchError((error) =>
-                                throwError(() => new UploadException(error)),
-                            ),
-                            map(() => ({
-                                url,
-                                file,
-                                id,
-                            })),
-                        )
-                        .subscribe(cb);
-                },
-                error: cb?.error,
-            });
+        ]).pipe(
+            take(1),
+            switchMap(([url, compressedFile, id]) => {
+                this.nextUploadUrl = null;
+                const formData = new FormData();
+                formData.append('file', compressedFile);
+                return this.http
+                    .put(url, formData, {
+                        context: new HttpContext().set(BACKEND_REQUEST, false),
+                    })
+                    .pipe(
+                        catchError((error) =>
+                            throwError(() => new UploadException(error)),
+                        ),
+                        map(() => ({
+                            url,
+                            file,
+                            id,
+                        })),
+                    );
+            }),
+        );
     }
 
     private getNextUploadUrl(): Observable<string> {

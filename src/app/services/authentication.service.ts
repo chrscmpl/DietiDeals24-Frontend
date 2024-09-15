@@ -33,6 +33,9 @@ import { userLinkCreationData } from '../models/user-link.model';
 import { UserLinkSerializer } from '../serializers/user-link.serializer';
 import { DeleteUserLinkException } from '../exceptions/delete-user-link.exception';
 import { SaveUserLinkException } from '../exceptions/save-user-link.exception';
+import { editableUserData } from '../models/editable-user-data.model';
+import { EditableUserDataSerializer } from '../serializers/editable-user-data.serializer';
+import { EditUserDataException } from '../exceptions/edit-user-data.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -60,6 +63,7 @@ export class AuthenticationService {
         private readonly http: HttpClient,
         private readonly deserializer: AuthenticatedUserDeserializer,
         private readonly registrationSerializer: UserRegistrationSerializer,
+        private readonly editableUserDataSerializer: EditableUserDataSerializer,
         private readonly userLinkSerializer: UserLinkSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
@@ -161,6 +165,25 @@ export class AuthenticationService {
             tap(this.setLoggedUser.bind(this)),
             catchError((e) => throwError(() => new GetUserDataException(e))),
         );
+    }
+
+    @CacheBuster({
+        cacheBusterNotifier: cacheBusters.authenticatedUserData$,
+    })
+    public editUser(data: editableUserData): Observable<unknown> {
+        return this.http
+            .post(
+                'profile/update',
+                this.editableUserDataSerializer.serialize(data),
+                {
+                    responseType: 'text',
+                },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new EditUserDataException(e)),
+                ),
+            );
     }
 
     @CacheBuster({

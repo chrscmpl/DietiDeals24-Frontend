@@ -5,7 +5,6 @@ import { AuctionsService } from '../services/auctions.service';
 import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { AuctionStatus } from '../enums/auction-status.enum';
-import { BidService } from '../services/bid.service';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
@@ -26,7 +25,6 @@ export class AuctionResolver {
     constructor(
         private readonly auctionsService: AuctionsService,
         private readonly authenticationService: AuthenticationService,
-        private readonly bidService: BidService,
         private readonly messageService: MessageService,
         private readonly userService: UserService,
     ) {}

@@ -195,7 +195,7 @@ export class AuctioneerService {
     ): Observable<unknown> {
         return this.http
             .post(
-                `auctions/new`,
+                'auctions/new',
                 this.auctionCreationSerializer.serialize(auction),
                 {
                     responseType: 'text',
@@ -216,7 +216,7 @@ export class AuctioneerService {
     ): Observable<unknown> {
         return this.http
             .post(
-                `conclude`,
+                'auctions/finalize',
                 this.auctionConclusionSerializer.serialize(conclusionOptions),
                 {
                     responseType: 'text',
