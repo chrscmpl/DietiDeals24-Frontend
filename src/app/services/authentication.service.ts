@@ -27,7 +27,7 @@ import { EmailVerificationSerializer } from '../serializers/email-verification.s
 import { emailVerificationData } from '../models/email-verification-data.model';
 import { MessageService } from 'primeng/api';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
-import { cloneDeep, isEqual } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import { cacheBusters } from '../helpers/cache-busters';
 import { userLinkCreationData } from '../models/user-link.model';
 import { UserLinkSerializer } from '../serializers/user-link.serializer';
@@ -36,6 +36,9 @@ import { SaveUserLinkException } from '../exceptions/save-user-link.exception';
 import { editableUserData } from '../models/editable-user-data.model';
 import { EditableUserDataSerializer } from '../serializers/editable-user-data.serializer';
 import { EditUserDataException } from '../exceptions/edit-user-data.exception';
+import { PasswordChangeDataSerializer } from '../serializers/password-change-data.serializer';
+import { PasswordChangeData } from '../models/password-change-data.model';
+import { ChangePasswordException } from '../exceptions/change-password.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -65,6 +68,7 @@ export class AuthenticationService {
         private readonly registrationSerializer: UserRegistrationSerializer,
         private readonly editableUserDataSerializer: EditableUserDataSerializer,
         private readonly userLinkSerializer: UserLinkSerializer,
+        private readonly passwordChangeDataSerializer: PasswordChangeDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
     ) {
@@ -182,6 +186,22 @@ export class AuthenticationService {
             .pipe(
                 catchError((e) =>
                     throwError(() => new EditUserDataException(e)),
+                ),
+            );
+    }
+
+    public changePassword(data: PasswordChangeData): Observable<unknown> {
+        return this.http
+            .post(
+                'profile/change-password',
+                this.passwordChangeDataSerializer.serialize(data),
+                {
+                    responseType: 'text',
+                },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new ChangePasswordException(e)),
                 ),
             );
     }

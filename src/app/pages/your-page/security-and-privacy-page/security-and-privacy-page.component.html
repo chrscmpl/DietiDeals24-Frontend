@@ -3,7 +3,10 @@
         <h1 class="security-privacy-header">Login & Security</h1>
         <div class="user-email-input-wrapper">
             <label class="user-email-label" for="user-email"> Email </label>
-            <p-iconField iconPosition="right">
+            <p-iconField
+                iconPosition="right"
+                [style]="{ width: '100%', display: 'block' }"
+            >
                 <input
                     class="user-email-input"
                     type="text"
@@ -13,6 +16,7 @@
                     [value]="
                         maskEmail ? (user.email | masked: 'email') : user.email
                     "
+                    style="width: 100%"
                 />
                 <p-inputIcon
                     styleClass="pi pi-eye{{ maskEmail ? '' : '-slash' }}"
@@ -89,6 +93,11 @@
                                 ],
                                 message:
                                     'a password must be at least 8 characters long, and contain at least one lowercase letter, one uppercase letter, and one special character.'
+                            },
+                            {
+                                customValidation: 'newPasswordSameAsOld',
+                                message:
+                                    'new password must be different from the old password'
                             }
                         ]"
                     >

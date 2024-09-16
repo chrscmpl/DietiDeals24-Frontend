@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WindowService } from '../../../services/window.service';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { EditUserDataFormComponent } from '../../../components/edit-user-data-form/edit-user-data-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
@@ -23,6 +23,7 @@ import { environment } from '../../../../environments/environment';
 import { InputComponent } from '../../../components/input/input.component';
 import { PasswordModule } from 'primeng/password';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 interface EditPasswordForm {
     oldPassword: FormControl<string | null>;
@@ -73,6 +74,8 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
         public readonly windowService: WindowService,
         private readonly route: ActivatedRoute,
         private readonly formBuilder: FormBuilder,
+        private readonly authenticationService: AuthenticationService,
+        private readonly message: MessageService,
     ) {}
 
     public ngOnInit(): void {
@@ -89,6 +92,29 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
             reactiveFormsUtils.markAllAsDirty(this.editPasswordForm);
             return;
         }
+
+        this.authenticationService
+            .changePassword({
+                oldPassword: this.editPasswordForm.controls.oldPassword.value!,
+                newPassword: this.editPasswordForm.controls.newPassword.value!,
+            })
+            .subscribe({
+                next: () => {
+                    this.message.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Password changed successfully',
+                    });
+                    this.hideEditPasswordForm();
+                },
+                error: () => {
+                    this.message.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Failed to change password, try again later',
+                    });
+                },
+            });
     }
 
     public showEditPasswordForm(): void {
@@ -115,13 +141,14 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(8),
                     Validators.pattern(environment.passwordPattern),
+                    this.validateNewPassword.bind(this),
                 ],
                 updateOn: 'blur',
             }),
             confirmNewPassword: new FormControl<string | null>(null, {
                 validators: [
                     Validators.required,
-                    this.validateConfirmPassword.bind(this),
+                    this.validateConfirmNewPassword.bind(this),
                 ],
                 updateOn: 'blur',
             }),
@@ -133,7 +160,15 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
         this.maskEmail = !this.maskEmail;
     }
 
-    private validateConfirmPassword(
+    private validateNewPassword(
+        control: AbstractControl<string>,
+    ): ValidationErrors {
+        if (control.value === this.editPasswordForm?.controls.oldPassword.value)
+            return { newPasswordSameAsOld: true };
+        return {};
+    }
+
+    private validateConfirmNewPassword(
         control: AbstractControl<string>,
     ): ValidationErrors {
         if (control.value === this.editPasswordForm?.controls.newPassword.value)

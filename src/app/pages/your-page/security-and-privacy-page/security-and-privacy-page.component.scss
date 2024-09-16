@@ -18,6 +18,10 @@
     &:not(:last-child) {
         border-bottom: var(--border);
     }
+
+    @include viewports.mobile {
+        align-items: stretch;
+    }
 }
 
 .security-privacy-header {
@@ -33,9 +37,15 @@
 .edit-password-form {
     @include layouts.flex(column, start, stretch, 1rem);
     padding-top: 1rem;
+    width: min(30ch, 100%);
     border-top: var(--border);
+
+    @include viewports.mobile {
+        width: 100%;
+    }
 }
 
+.change-password-btn,
 .undo-edit-password-btn,
 .edit-password-submit-btn {
     align-self: start;
