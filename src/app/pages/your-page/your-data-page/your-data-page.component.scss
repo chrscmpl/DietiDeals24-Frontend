@@ -26,17 +26,44 @@
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
 }
+@include viewports.mobile {
+    #yd-public-profile {
+        align-items: stretch;
+    }
+    .profile-picture-input {
+        align-self: center;
+    }
+}
 
 .public-profile-inputs-wrapper {
-    @include layouts.flex(column, start, start, 1rem);
+    @include layouts.flex(column, start, stretch, 1rem);
+}
+
+@include viewports.notMobile {
+    .pp-location-label,
+    .bio-label {
+        margin-left: 3.5rem;
+    }
 }
 
 .pp-location-inputs-wrapper {
     @include layouts.flex(row, start, stretch, 1rem);
+
+    @include viewports.mobile {
+        flex-direction: column-reverse;
+    }
 }
 
 .pp-location-btns {
     @include layouts.flex(column, start, stretch, 1rem);
+
+    @include viewports.mobile {
+        flex-direction: row;
+
+        > * {
+            flex-grow: 1;
+        }
+    }
 }
 
 .pp-location-inputs {
@@ -179,5 +206,18 @@
 
     .p-autocomplete {
         opacity: 1;
+    }
+
+    @include viewports.mobile {
+        .pp-location-btns .p-button {
+            width: 100%;
+            aspect-ratio: auto;
+        }
+
+        .p-autocomplete,
+        #country-input,
+        #city-input {
+            width: 100%;
+        }
     }
 }

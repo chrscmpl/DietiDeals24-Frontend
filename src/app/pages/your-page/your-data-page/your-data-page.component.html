@@ -3,6 +3,7 @@
         <h1 class="your-data-header">Public profile</h1>
 
         <dd24-profile-picture-input
+            class="profile-picture-input"
             [picture]="user.profilePictureUrl"
             [maxFileSize]="environment.profilePictureMaxSize"
             (pictureSelection)="saveProfilePicture($event)"
@@ -38,7 +39,7 @@
                 </dd24-editable-field>
             </div>
             <div class="pp-location">
-                <span style="margin-left: 3.5rem">Location</span>
+                <span class="pp-location-label">Location</span>
                 <div class="pp-location-inputs-wrapper">
                     <div class="pp-location-btns">
                         @if (
@@ -122,7 +123,7 @@
                 </div>
             </div>
             <div class="pp-input-wrapper">
-                <label for="bio-input" style="margin-left: 3.5rem">Bio</label>
+                <label class="bio-label" for="bio-input">Bio</label>
                 <dd24-editable-field
                     variant="expanded"
                     controlName="bio"
@@ -140,7 +141,7 @@
                         id="bio-input"
                         [maxlength]="environment.bioMaxLength"
                         autoResize="true"
-                        [style]="{ minHeight: '7rem', minWidth: '20rem' }"
+                        [style]="{ minHeight: '7rem', width: '100%' }"
                     ></textarea>
                 </dd24-editable-field>
             </div>

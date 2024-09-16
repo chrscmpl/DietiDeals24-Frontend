@@ -1,4 +1,5 @@
 @use "layouts";
+@use "viewports";
 
 .editable-field {
     @include layouts.flex(row, start, stretch, 1rem);
@@ -6,6 +7,24 @@
 
 .editable-field-btns {
     @include layouts.flex(column, start, stretch, 1rem);
+}
+
+.editable-field-input {
+    flex-grow: 1;
+}
+
+@include viewports.mobile {
+    .editable-field {
+        flex-direction: column-reverse;
+    }
+
+    .editable-field-btns {
+        flex-direction: row;
+
+        > * {
+            flex-grow: 1;
+        }
+    }
 }
 
 :host ::ng-deep {
@@ -25,5 +44,10 @@
 
     .editable-field-btns .p-button {
         aspect-ratio: 1/1;
+
+        @include viewports.mobile {
+            width: 100%;
+            aspect-ratio: auto;
+        }
     }
 }
