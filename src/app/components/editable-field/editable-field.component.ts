@@ -54,7 +54,7 @@ export class EditableFieldComponent implements OnInit {
 
     public enable() {
         this.control.enable();
-        this.element.nativeElement.querySelector('input', 'textarea')?.focus();
+        this.element.nativeElement.querySelector('input, textarea')?.focus();
         this.enabled.emit();
     }
 

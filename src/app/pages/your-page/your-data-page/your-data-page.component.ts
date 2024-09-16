@@ -55,6 +55,8 @@ import {
 import { Country } from '../../../models/country.model';
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { cloneDeep } from 'lodash-es';
+import { editableUserData } from '../../../models/editable-user-data.model';
 
 interface publicProfileDataForm {
     username: FormControl<string | null>;
@@ -214,7 +216,44 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public editPublicProfileData(): void {
-        console.log(this.editYourDataForm.controls.publicProfileData.value);
+        if (this.editYourDataForm.controls.publicProfileData.invalid) {
+            reactiveFormsUtils.markAllAsDirty(
+                this.editYourDataForm.controls.publicProfileData,
+            );
+            return;
+        }
+
+        const dataToEdit = cloneDeep(
+            this.editYourDataForm.controls.publicProfileData.value,
+        ) as editableUserData;
+
+        for (const entry of Object.entries(dataToEdit)) {
+            if (entry[1] === this.user[entry[0] as keyof AuthenticatedUser]) {
+                delete dataToEdit[entry[0] as keyof editableUserData];
+            }
+        }
+
+        if (!Object.keys(dataToEdit).length) return;
+
+        this.authentication
+            .editUser(dataToEdit)
+            .pipe(
+                switchMap(() => this.authentication.getAuthenticatedUserData()),
+                take(1),
+            )
+            .subscribe({
+                next: (userData) => {
+                    this.user = userData;
+                    this.updateOriginalCountryName();
+                    this.displaySuccess('Data updated successfully');
+                    this.disableControlsOtherThan([]);
+                },
+                error: (e) =>
+                    this.displayError(
+                        'Failed to update the data, try again later',
+                        e,
+                    ),
+            });
     }
 
     public addLink(): void {
@@ -386,25 +425,42 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
                 ) {
                     publicDataForm.controls.city.setValue(null);
                 }
+                if (!value) publicDataForm.controls.city.disable();
+                else publicDataForm.controls.city.enable();
             }),
         );
+    }
+
+    public disableControlsOtherThan(fields: (keyof publicProfileDataForm)[]) {
+        const publicDataForm = this.editYourDataForm.controls.publicProfileData;
+
+        Object.keys(publicDataForm.controls).forEach((key) => {
+            if (!fields.includes(key as keyof publicProfileDataForm)) {
+                const control = publicDataForm.get(key);
+                if (!control || control.disabled) return;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                control.setValue((this.user as any)[key]);
+                if (key === 'country') this.replaceCountryCodeWithCountryName();
+                control.disable();
+            }
+        });
     }
 
     public enableLocationControls(): void {
         this.editYourDataForm.controls.publicProfileData.controls.country.enable();
         this.editYourDataForm.controls.publicProfileData.controls.city.enable();
+        this.disableControlsOtherThan(['country', 'city']);
     }
 
     public disableLocationControls(): void {
-        this.editYourDataForm.controls.publicProfileData.controls.country.disable();
-        this.editYourDataForm.controls.publicProfileData.controls.city.disable();
-
         this.editYourDataForm.controls.publicProfileData.controls.country.setValue(
             this.user.country,
         );
         this.editYourDataForm.controls.publicProfileData.controls.city.setValue(
             this.user.city,
         );
+        this.editYourDataForm.controls.publicProfileData.controls.country.disable();
+        this.editYourDataForm.controls.publicProfileData.controls.city.disable();
         this.replaceCountryCodeWithCountryName();
     }
 

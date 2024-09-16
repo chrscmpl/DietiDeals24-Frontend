@@ -11,7 +11,6 @@
         <div
             class="public-profile-inputs-wrapper"
             [formGroup]="editYourDataForm.controls.publicProfileData"
-            (ngSubmit)="editPublicProfileData()"
         >
             <div class="pp-input-wrapper">
                 <label for="username-input">Username</label>
@@ -19,6 +18,13 @@
                     controlName="username"
                     [currentValue]="user.username"
                     (submission)="editPublicProfileData()"
+                    (enabled)="disableControlsOtherThan(['username'])"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'username cannot be empty'
+                        }
+                    ]"
                 >
                     <input
                         type="text"
@@ -31,65 +37,87 @@
                     />
                 </dd24-editable-field>
             </div>
-            <div class="pp-location-inputs-wrapper">
-                <div class="pp-location-btns">
-                    @if (
-                        editYourDataForm.controls.publicProfileData.controls
-                            .country.disabled
-                    ) {
-                        <p-button
-                            icon="pi pi-pen-to-square"
-                            outlined="true"
-                            (onClick)="enableLocationControls()"
-                        />
-                    } @else {
-                        <p-button
-                            icon="pi pi-times"
-                            severity="danger"
-                            (onClick)="disableLocationControls()"
-                        />
-                        <p-button icon="pi pi-check" type="submit" />
-                    }
-                </div>
-                <div class="pp-location-inputs">
-                    <div class="pp-input-wrapper">
-                        <label for="country-input">Country</label>
-                        <dd24-input controlName="country">
-                            <p-autoComplete
-                                #countryAutoComplete
-                                formControlName="country"
-                                name="country"
-                                emptyMessage="No countries found"
-                                [suggestions]="filteredCountries"
-                                optionLabel="name"
-                                optionValue="code"
-                                forceSelection="true"
-                                minLength="2"
-                                (completeMethod)="completeCountries($event)"
-                                inputId="country-input"
-                                [pKeyFilter]="
-                                    environment.alphaAndWhiteSpacePattern
-                                "
+            <div class="pp-location">
+                <span style="margin-left: 3.5rem">Location</span>
+                <div class="pp-location-inputs-wrapper">
+                    <div class="pp-location-btns">
+                        @if (
+                            editYourDataForm.controls.publicProfileData.controls
+                                .country.disabled
+                        ) {
+                            <p-button
+                                icon="pi pi-pen-to-square"
+                                outlined="true"
+                                (onClick)="enableLocationControls()"
                             />
-                        </dd24-input>
+                        } @else {
+                            <p-button
+                                icon="pi pi-times"
+                                severity="danger"
+                                (onClick)="disableLocationControls()"
+                            />
+                            <p-button
+                                icon="pi pi-check"
+                                (onClick)="editPublicProfileData()"
+                            />
+                        }
                     </div>
-                    <div class="pp-input-wrapper">
-                        <label for="city-input">City</label>
-                        <dd24-input controlName="city">
-                            <p-autoComplete
-                                formControlName="city"
-                                name="city"
-                                emptyMessage="No cities found"
-                                [suggestions]="filteredCities"
-                                forceSelection="true"
-                                minLength="2"
-                                (completeMethod)="completeCities($event)"
-                                inputId="city-input"
-                                [pKeyFilter]="
-                                    environment.alphaAndWhiteSpacePattern
-                                "
-                            />
-                        </dd24-input>
+                    <div class="pp-location-inputs">
+                        <div class="pp-input-wrapper">
+                            <label for="country-input">Country</label>
+                            <dd24-input
+                                controlName="country"
+                                [errorMessages]="[
+                                    {
+                                        validation: 'required',
+                                        message: 'country cannot be empty'
+                                    }
+                                ]"
+                            >
+                                <p-autoComplete
+                                    #countryAutoComplete
+                                    formControlName="country"
+                                    name="country"
+                                    emptyMessage="No countries found"
+                                    [suggestions]="filteredCountries"
+                                    optionLabel="name"
+                                    optionValue="code"
+                                    forceSelection="true"
+                                    minLength="2"
+                                    (completeMethod)="completeCountries($event)"
+                                    inputId="country-input"
+                                    [pKeyFilter]="
+                                        environment.alphaAndWhiteSpacePattern
+                                    "
+                                />
+                            </dd24-input>
+                        </div>
+                        <div class="pp-input-wrapper">
+                            <label for="city-input">City</label>
+                            <dd24-input
+                                controlName="city"
+                                [errorMessages]="[
+                                    {
+                                        validation: 'required',
+                                        message: 'city cannot be empty'
+                                    }
+                                ]"
+                            >
+                                <p-autoComplete
+                                    formControlName="city"
+                                    name="city"
+                                    emptyMessage="No cities found"
+                                    [suggestions]="filteredCities"
+                                    forceSelection="true"
+                                    minLength="2"
+                                    (completeMethod)="completeCities($event)"
+                                    inputId="city-input"
+                                    [pKeyFilter]="
+                                        environment.alphaAndWhiteSpacePattern
+                                    "
+                                />
+                            </dd24-input>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,6 +127,7 @@
                     variant="expanded"
                     controlName="bio"
                     [currentValue]="user.bio"
+                    (enabled)="disableControlsOtherThan(['bio'])"
                     (submission)="editPublicProfileData()"
                 >
                     <textarea
@@ -137,6 +166,7 @@
                             (onClick)="mobileNewLinkFormShown = false"
                             outlined="true"
                         />
+                        <p>Add a new link</p>
                     }
                     <div class="link-input-wrapper">
                         <label for="link-name">Name</label>
@@ -210,7 +240,7 @@
             @if ((windowService.isMobile$ | async) && !mobileNewLinkFormShown) {
                 <p-button
                     class="show-new-link-form-btn"
-                    label="Add new link"
+                    label="Add a new link"
                     icon="pi pi-plus"
                     (onClick)="mobileNewLinkFormShown = true"
                 />
@@ -305,7 +335,7 @@
                     ) {
                         <p-button
                             class="add-method-btn"
-                            label="Add new {{
+                            label="Add a new {{
                                 paymentMethodType | paymentMethodLabel
                             }}"
                             icon="pi pi-plus"
@@ -329,7 +359,7 @@
                         outlined="true"
                     />
                     <span
-                        >Add new
+                        >Add a new
                         {{
                             newPaymentMethodFormShown | paymentMethodLabel
                         }}</span
