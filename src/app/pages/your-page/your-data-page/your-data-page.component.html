@@ -31,56 +31,78 @@
                     />
                 </dd24-editable-field>
             </div>
-
+            <p-fieldset>
+                <div class="pp-input-wrapper">
+                    <label for="country-input">Country</label>
+                    <dd24-editable-field
+                        controlName="country"
+                        [currentValue]="user.country"
+                        (cancelled)="replaceCountryCodeWithCountryName()"
+                        (submission)="editPublicProfileData()"
+                    >
+                        <p-autoComplete
+                            #countryAutoComplete
+                            formControlName="country"
+                            name="country"
+                            emptyMessage="No countries found"
+                            [suggestions]="filteredCountries"
+                            optionLabel="name"
+                            optionValue="code"
+                            forceSelection="true"
+                            minLength="2"
+                            (completeMethod)="completeCountries($event)"
+                            inputId="country-input"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                            [inputStyle]="{ width: '100%' }"
+                            [panelStyle]="{ borderRadius: 0 }"
+                            [style]="{ width: '100%' }"
+                        />
+                    </dd24-editable-field>
+                </div>
+                <div class="pp-input-wrapper">
+                    <label for="city-input">City</label>
+                    <dd24-editable-field
+                        controlName="city"
+                        [currentValue]="user.city"
+                        (enabled)="fetchCities()"
+                        (submission)="editPublicProfileData()"
+                    >
+                        <p-autoComplete
+                            formControlName="city"
+                            name="city"
+                            emptyMessage="No cities found"
+                            [suggestions]="filteredCities"
+                            forceSelection="true"
+                            minLength="2"
+                            (completeMethod)="completeCities($event)"
+                            inputId="city-input"
+                            [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                            [inputStyle]="{ width: '100%' }"
+                            [panelStyle]="{ borderRadius: 0 }"
+                            [style]="{ width: '100%' }"
+                        />
+                    </dd24-editable-field>
+                </div>
+            </p-fieldset>
             <div class="pp-input-wrapper">
-                <label for="country-input">Country</label>
+                <label for="bio-input">Bio</label>
                 <dd24-editable-field
-                    controlName="country"
-                    [currentValue]="user.country"
-                    (cancelled)="replaceCountryCodeWithCountryName()"
+                    variant="expanded"
+                    controlName="bio"
+                    [currentValue]="user.bio"
                     (submission)="editPublicProfileData()"
                 >
-                    <p-autoComplete
-                        #countryAutoComplete
-                        formControlName="country"
-                        name="country"
-                        emptyMessage="No countries found"
-                        [suggestions]="filteredCountries"
-                        optionLabel="name"
-                        optionValue="code"
-                        forceSelection="true"
-                        minLength="2"
-                        (completeMethod)="completeCountries($event)"
-                        inputId="country-input"
-                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
-                        [inputStyle]="{ width: '100%' }"
-                        [panelStyle]="{ borderRadius: 0 }"
-                        [style]="{ width: '100%' }"
-                    />
-                </dd24-editable-field>
-            </div>
-            <div class="pp-input-wrapper">
-                <label for="city-input">City</label>
-                <dd24-editable-field
-                    controlName="city"
-                    [currentValue]="user.city"
-                    (enabled)="fetchCities()"
-                    (submission)="editPublicProfileData()"
-                >
-                    <p-autoComplete
-                        formControlName="city"
-                        name="city"
-                        emptyMessage="No cities found"
-                        [suggestions]="filteredCities"
-                        forceSelection="true"
-                        minLength="2"
-                        (completeMethod)="completeCities($event)"
-                        inputId="city-input"
-                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
-                        [inputStyle]="{ width: '100%' }"
-                        [panelStyle]="{ borderRadius: 0 }"
-                        [style]="{ width: '100%' }"
-                    />
+                    <textarea
+                        pInputTextarea
+                        expanded
+                        type="text"
+                        pInputText
+                        formControlName="bio"
+                        name="bio"
+                        id="bio-input"
+                        [maxlength]="environment.bioMaxLength"
+                        autoResize="true"
+                    ></textarea>
                 </dd24-editable-field>
             </div>
         </div>

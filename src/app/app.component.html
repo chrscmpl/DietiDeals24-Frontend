@@ -1,9 +1,5 @@
 <div class="app" [class.app-mobile]="windowService.isMobile$ | async">
     <div class="content">
-        <router-outlet
-            (activate)="onMainRouterOutletActivate()"
-            (deactivate)="onMainRouterOutletDeactivate()"
-        ></router-outlet>
         @if (isLoadingRouteIndicator.isLoading$ | async) {
             <div class="placeholder">
                 <p-progressSpinner
@@ -13,38 +9,39 @@
                 ></p-progressSpinner>
             </div>
         }
+        <div
+            class="primary-route-content"
+            [class.hidden]="isLoadingRouteIndicator.isLoading$ | async"
+        >
+            <router-outlet (activate)="onMainRouterOutletActivate()">
+            </router-outlet>
+        </div>
     </div>
     @if ((windowService.isMobile$ | async) === false) {
         @if ((windowService.UIhidden$ | async) === false) {
-            @defer (when (windowService.isMobile$ | async) === false) {
-                <dd24-header
-                    class="header"
-                    dd24SmartSticky
-                    [transitionTime]="0.4"
-                    [hideOffset]="100"
-                    [showOffset]="70"
-                ></dd24-header>
-                <dd24-footer class="footer"></dd24-footer>
-                <p-button
-                    class="create-auction-button"
-                    icon="pi pi-plus"
-                    [rounded]="true"
-                    size="large"
-                    routerLink="/create-auction"
-                />
-            }
+            <dd24-header
+                class="header"
+                dd24SmartSticky
+                [transitionTime]="0.4"
+                [hideOffset]="100"
+                [showOffset]="70"
+            ></dd24-header>
+            <dd24-footer class="footer"></dd24-footer>
+            <p-button
+                class="create-auction-button"
+                icon="pi pi-plus"
+                [rounded]="true"
+                size="large"
+                routerLink="/create-auction"
+            />
         }
     } @else {
-        @defer (when windowService.isMobile$ | async) {
-            <dd24-mobile-header class="header"></dd24-mobile-header>
-            @if ((windowService.UIhidden$ | async) === false) {
-                <dd24-mobile-navbar
-                    class="footer"
-                    [class.hidden]="
-                        windowService.isVirtualKeyboardShown$ | async
-                    "
-                ></dd24-mobile-navbar>
-            }
+        <dd24-mobile-header class="header"></dd24-mobile-header>
+        @if ((windowService.UIhidden$ | async) === false) {
+            <dd24-mobile-navbar
+                class="footer"
+                [class.hidden]="windowService.isVirtualKeyboardShown$ | async"
+            ></dd24-mobile-navbar>
         }
     }
     <router-outlet class="overlay-outlet" name="overlay"></router-outlet>

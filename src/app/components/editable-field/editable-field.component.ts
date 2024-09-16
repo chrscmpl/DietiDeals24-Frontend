@@ -12,6 +12,7 @@ import { AbstractControl, ControlContainer } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ButtonModule } from 'primeng/button';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'dd24-editable-field',
@@ -21,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
         ButtonModule,
         InputGroupModule,
         InputGroupAddonModule,
+        NgTemplateOutlet,
     ],
     templateUrl: './editable-field.component.html',
     styleUrl: './editable-field.component.scss',
@@ -30,6 +32,7 @@ export class EditableFieldComponent implements OnInit {
     @Input({ required: true }) controlName!: string;
     @Input() floatingError: boolean = false;
     @Input() currentValue: string | null = null;
+    @Input() variant: 'compact' | 'expanded' = 'compact';
 
     @Output() public enabled: EventEmitter<void> = new EventEmitter<void>();
     @Output() public cancelled: EventEmitter<void> = new EventEmitter<void>();
@@ -51,7 +54,7 @@ export class EditableFieldComponent implements OnInit {
 
     public enable() {
         this.control.enable();
-        this.element.nativeElement.querySelector('input')?.focus();
+        this.element.nativeElement.querySelector('input', 'textarea')?.focus();
         this.enabled.emit();
     }
 

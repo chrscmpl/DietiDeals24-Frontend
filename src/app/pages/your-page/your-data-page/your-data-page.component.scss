@@ -168,4 +168,16 @@
             border-bottom-right-radius: 0;
         }
     }
+
+    .p-fieldset-legend {
+        display: none;
+    }
+
+    .p-fieldset-content {
+        padding: 1.25rem;
+    }
+
+    .p-fieldset {
+        padding: 0;
+    }
 }

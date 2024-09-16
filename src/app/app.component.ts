@@ -65,6 +65,14 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.redirectOnBadInitialRoute();
         this.configurePrimeNG();
         this.configureNotifications();
+
+        this.navigation.navigationStart$.subscribe(() => {
+            this.isLoadingRouteIndicator.start();
+        });
+
+        this.navigation.navigationStopped$.subscribe(() => {
+            this.isLoadingRouteIndicator.stop();
+        });
     }
 
     public ngAfterViewInit(): void {
@@ -72,12 +80,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     public onMainRouterOutletActivate(): void {
-        this.isLoadingRouteIndicator.stop();
         this.viewportScroller.scrollToPosition([0, 0]);
-    }
-
-    public onMainRouterOutletDeactivate(): void {
-        this.isLoadingRouteIndicator.start();
     }
 
     private redirectOnBadInitialRoute(): void {

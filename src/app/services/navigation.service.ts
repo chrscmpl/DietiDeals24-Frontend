@@ -111,6 +111,16 @@ export class NavigationService {
         filter((event) => event instanceof NavigationEnd),
     ) as Observable<NavigationEnd>;
 
+    public navigationStopped$: Observable<NavigationCancel> =
+        this.router.events.pipe(
+            filter(
+                (event) =>
+                    event instanceof NavigationCancel ||
+                    event instanceof NavigationError ||
+                    event instanceof NavigationEnd,
+            ),
+        ) as Observable<NavigationCancel>;
+
     private isCurrentNavigationSuccessful$ = this.router.events.pipe(
         filter(
             (e) =>

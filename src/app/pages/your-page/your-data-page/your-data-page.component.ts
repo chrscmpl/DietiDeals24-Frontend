@@ -54,6 +54,8 @@ import {
 } from 'primeng/autocomplete';
 import { Country } from '../../../models/country.model';
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FieldsetModule } from 'primeng/fieldset';
 
 interface publicProfileDataForm {
     username: FormControl<string | null>;
@@ -82,11 +84,13 @@ interface editYourDataForm {
         MaskedPipe,
         PaymentMethodLabelPipe,
         ButtonModule,
+        InputTextareaModule,
         PaymentMethodFormComponent,
         RouterLink,
         ProfilePictureInputComponent,
         EditableFieldComponent,
         KeyFilterModule,
+        FieldsetModule,
         AutoCompleteModule,
     ],
     templateUrl: './your-data-page.component.html',

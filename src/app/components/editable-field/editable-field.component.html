@@ -1,32 +1,65 @@
-<dd24-input
-    [controlName]="controlName"
-    [errorMessages]="errorMessages"
-    [floatingError]="floatingError"
->
-    <p-inputGroup>
-        @if (control.disabled) {
-            <p-button
-                class="group-btn-left"
-                icon="pi pi-pen-to-square"
-                outlined="true"
-                (onClick)="enable()"
-            />
-        } @else {
-            <p-button
-                class="group-btn-left"
-                icon="pi pi-times"
-                severity="danger"
-                (onClick)="cancel()"
-            />
-        }
-        <ng-content></ng-content>
-        @if (!control.disabled) {
-            <p-button
-                class="group-btn-right"
-                icon="pi pi-check"
-                type="submit"
-                (onClick)="emitSubmit()"
-            />
-        }
-    </p-inputGroup>
-</dd24-input>
+<div class="editable-field" [class.editable-field-enabled]="!control.disabled">
+    @if (variant === "compact") {
+        <dd24-input
+            [controlName]="controlName"
+            [errorMessages]="errorMessages"
+            [floatingError]="floatingError"
+        >
+            <p-inputGroup>
+                @if (control.disabled) {
+                    <p-button
+                        class="group-btn-left"
+                        icon="pi pi-pen-to-square"
+                        outlined="true"
+                        (onClick)="enable()"
+                    />
+                } @else {
+                    <p-button
+                        class="group-btn-left"
+                        icon="pi pi-times"
+                        severity="danger"
+                        (onClick)="cancel()"
+                    />
+                }
+                <ng-content></ng-content>
+                @if (!control.disabled) {
+                    <p-button
+                        class="group-btn-right"
+                        icon="pi pi-check"
+                        type="submit"
+                        (onClick)="emitSubmit()"
+                    />
+                }
+            </p-inputGroup>
+        </dd24-input>
+    } @else {
+        <dd24-input
+            [controlName]="controlName"
+            [errorMessages]="errorMessages"
+            [floatingError]="floatingError"
+        >
+            <ng-content select="[expanded]"></ng-content>
+        </dd24-input>
+
+        <div class="editable-field-btns">
+            @if (control.disabled) {
+                <p-button
+                    icon="pi pi-pen-to-square"
+                    outlined="true"
+                    (onClick)="enable()"
+                />
+            } @else {
+                <p-button
+                    icon="pi pi-times"
+                    severity="danger"
+                    (onClick)="cancel()"
+                />
+                <p-button
+                    icon="pi pi-check"
+                    type="submit"
+                    (onClick)="emitSubmit()"
+                />
+            }
+        </div>
+    }
+</div>
