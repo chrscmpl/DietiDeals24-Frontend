@@ -12,6 +12,7 @@
 
     @include viewports.mobile {
         padding: 1rem;
+        max-width: 96vw;
     }
 }
 
@@ -34,6 +35,7 @@
 
 .user-username {
     grid-area: username;
+    min-width: 0;
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-bolder);
     line-height: var(--line-height-large);
@@ -58,14 +60,23 @@
 
 .user-links {
     @include layouts.flex(column, start, start);
+
+    @include viewports.mobile {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1ch;
+    }
 }
 
 .user-link {
     @include layouts.flex(row, start, center);
     text-decoration: none;
     word-wrap: break-word;
-    width: 100%;
     color: var(--link-color);
+}
+
+.user-link-text {
+    word-wrap: break-word;
 }
 
 .user-username,

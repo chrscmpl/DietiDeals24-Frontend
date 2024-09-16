@@ -232,6 +232,7 @@ body {
 
 .wk-nowrap {
     max-width: 100%;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

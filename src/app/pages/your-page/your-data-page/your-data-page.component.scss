@@ -106,6 +106,7 @@
 
     @include viewports.mobile {
         @include layouts.flex(row, start, center, 2rem, wrap);
+        row-gap: 1rem;
     }
 }
 

@@ -15,6 +15,7 @@
         background: none;
         border: none;
         border-radius: 0;
+        width: 96vw;
     }
 }
 
@@ -29,6 +30,9 @@
 
 .edit-user-main {
     @include layouts.flex(column, start, stretch);
+    @include viewports.mobile {
+        width: 96vw;
+    }
 }
 
 :host ::ng-deep {
