@@ -7,6 +7,7 @@ import { ForgotPasswordPageComponent } from '../pages/authentication-page/forgot
 import { AuthenticationPageComponent } from '../pages/authentication-page/authentication-page.component';
 import { VerifyEmailPageComponent } from '../pages/authentication-page/verify-email-page/verify-email-page.component';
 import { EmailVerificationGuard } from '../guards/email-verification.guard';
+import { CountriesResolver } from '../resolvers/countries.resolver';
 
 const routes: Routes = [
     {
@@ -27,6 +28,9 @@ const routes: Routes = [
                 path: 'register',
                 title: 'Sign Up',
                 component: RegistrationPageComponent,
+                resolve: {
+                    countries: CountriesResolver.asResolveFn(),
+                },
             },
             {
                 path: 'forgot-password',

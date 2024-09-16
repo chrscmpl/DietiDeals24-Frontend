@@ -13,8 +13,8 @@ export class AuthenticatedUser {
     private _pastBidsCounter: number;
     private _pastAuctionsCounter: number;
     private _profilePictureUrl: string | null;
-    private _country: string | null;
-    private _city: string | null;
+    private _country: string;
+    private _city: string;
     private _bio: string | null;
     private _links: userLink[];
 
@@ -30,8 +30,8 @@ export class AuthenticatedUser {
         this._pastBidsCounter = dto.pastBidsCounter ?? 0;
         this._pastAuctionsCounter = dto.pastAuctionsCounter ?? 0;
         this._profilePictureUrl = dto.profilePictureUrl ?? null;
-        this._country = dto.country ?? null;
-        this._city = dto.city ?? null;
+        this._country = dto.country;
+        this._city = dto.city;
         this._bio = dto.bio ?? null;
         this._links =
             dto.links?.map((link) => ({
@@ -89,11 +89,11 @@ export class AuthenticatedUser {
         return this._profilePictureUrl;
     }
 
-    public get country(): string | null {
+    public get country(): string {
         return this._country;
     }
 
-    public get city(): string | null {
+    public get city(): string {
         return this._city;
     }
 

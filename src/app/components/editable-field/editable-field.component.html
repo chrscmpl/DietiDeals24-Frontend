@@ -14,18 +14,18 @@
         } @else {
             <p-button
                 class="group-btn-left"
-                icon="pi pi-check"
-                type="submit"
-                (onClick)="emitSubmit()"
+                icon="pi pi-times"
+                severity="danger"
+                (onClick)="cancel()"
             />
         }
         <ng-content></ng-content>
         @if (!control.disabled) {
             <p-button
                 class="group-btn-right"
-                icon="pi pi-times"
-                severity="danger"
-                (onClick)="disable()"
+                icon="pi pi-check"
+                type="submit"
+                (onClick)="emitSubmit()"
             />
         }
     </p-inputGroup>

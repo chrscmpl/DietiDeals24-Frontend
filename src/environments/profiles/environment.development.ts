@@ -10,6 +10,7 @@ export const environment = {
     alphaAndWhiteSpacePattern: /^[a-zA-Z\s]+$/,
     alphaNumAndWhiteSpacePattern: /^[a-zA-Z0-9\s]+$/,
     usernameMaxLength: 30,
+    personalLinkMaxLength: 20,
     auctionTitleMaxLength: 100,
     auctionDescriptionMaxLength: 3000,
     auctionMaxDuration: 30 * 24 * 60 * 60 * 1000,

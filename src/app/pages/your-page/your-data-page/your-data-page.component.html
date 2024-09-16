@@ -11,12 +11,14 @@
         <div
             class="public-profile-inputs-wrapper"
             [formGroup]="editYourDataForm.controls.publicProfileData"
+            (ngSubmit)="editPublicProfileData()"
         >
             <div class="pp-input-wrapper">
                 <label for="username-input">Username</label>
                 <dd24-editable-field
                     controlName="username"
                     [currentValue]="user.username"
+                    (submission)="editPublicProfileData()"
                 >
                     <input
                         type="text"
@@ -35,9 +37,11 @@
                 <dd24-editable-field
                     controlName="country"
                     [currentValue]="user.country"
-                    (enabled)="fetchCountries()"
+                    (cancelled)="replaceCountryCodeWithCountryName()"
+                    (submission)="editPublicProfileData()"
                 >
                     <p-autoComplete
+                        #countryAutoComplete
                         formControlName="country"
                         name="country"
                         emptyMessage="No countries found"
@@ -49,6 +53,33 @@
                         (completeMethod)="completeCountries($event)"
                         inputId="country-input"
                         [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                        [inputStyle]="{ width: '100%' }"
+                        [panelStyle]="{ borderRadius: 0 }"
+                        [style]="{ width: '100%' }"
+                    />
+                </dd24-editable-field>
+            </div>
+            <div class="pp-input-wrapper">
+                <label for="city-input">City</label>
+                <dd24-editable-field
+                    controlName="city"
+                    [currentValue]="user.city"
+                    (enabled)="fetchCities()"
+                    (submission)="editPublicProfileData()"
+                >
+                    <p-autoComplete
+                        formControlName="city"
+                        name="city"
+                        emptyMessage="No cities found"
+                        [suggestions]="filteredCities"
+                        forceSelection="true"
+                        minLength="2"
+                        (completeMethod)="completeCities($event)"
+                        inputId="city-input"
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                        [inputStyle]="{ width: '100%' }"
+                        [panelStyle]="{ borderRadius: 0 }"
+                        [style]="{ width: '100%' }"
                     />
                 </dd24-editable-field>
             </div>
@@ -83,6 +114,13 @@
                                 {
                                     validation: 'required',
                                     message: 'you need a name for your link'
+                                },
+                                {
+                                    validation: 'maxlength',
+                                    message:
+                                        'the link name can\'t be longer than ' +
+                                        environment.personalLinkMaxLength +
+                                        ' characters'
                                 }
                             ]"
                         >
@@ -94,6 +132,7 @@
                                 name="name"
                                 placeholder="A description for your link"
                                 id="link-name"
+                                [maxlength]="environment.personalLinkMaxLength"
                             />
                         </dd24-input>
                     </div>

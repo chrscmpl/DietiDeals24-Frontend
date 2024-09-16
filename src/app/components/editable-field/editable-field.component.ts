@@ -32,6 +32,7 @@ export class EditableFieldComponent implements OnInit {
     @Input() currentValue: string | null = null;
 
     @Output() public enabled: EventEmitter<void> = new EventEmitter<void>();
+    @Output() public cancelled: EventEmitter<void> = new EventEmitter<void>();
     @Output() public submission: EventEmitter<void> = new EventEmitter<void>();
 
     public control!: AbstractControl;
@@ -51,13 +52,15 @@ export class EditableFieldComponent implements OnInit {
     public enable() {
         this.control.enable();
         this.element.nativeElement.querySelector('input')?.focus();
+        this.enabled.emit();
     }
 
-    public disable() {
+    public cancel() {
         if (this.currentValue !== null) {
             this.control.setValue(this.currentValue);
         }
         this.control.disable();
+        this.cancelled.emit();
     }
 
     public emitSubmit() {

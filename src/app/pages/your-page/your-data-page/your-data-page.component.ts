@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { EditUserDataFormComponent } from '../../../components/edit-user-data-form/edit-user-data-form.component';
 import { WindowService } from '../../../services/window.service';
 import { PaymentMethod } from '../../../models/payment-method.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { switchMap, take } from 'rxjs';
+import { Subscription, switchMap, take } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
 import { MaskedPipe } from '../../../pipes/masked.pipe';
 import { PaymentMethodLabelPipe } from '../../../pipes/payment-method-label.pipe';
@@ -45,8 +52,8 @@ import {
     AutoCompleteCompleteEvent,
     AutoCompleteModule,
 } from 'primeng/autocomplete';
-import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { Country } from '../../../models/country.model';
+import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 
 interface publicProfileDataForm {
     username: FormControl<string | null>;
@@ -85,14 +92,22 @@ interface editYourDataForm {
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',
 })
-export class YourDataPageComponent implements OnInit {
+export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
+    private subscriptions: Subscription[] = [];
+    @ViewChild('countryAutoComplete', { read: ElementRef })
+    private countryAutoComplete!: ElementRef;
+
     public editYourDataForm!: FormGroup<editYourDataForm>;
 
     public user!: AuthenticatedUser;
 
     public savedPaymentMethods: PaymentMethod[] = [];
 
+    private originalCountryName!: string;
+    private countries: Country[] = [];
     public filteredCountries: Country[] = [];
+    private cities: string[] = [];
+    public filteredCities: string[] = [];
 
     public displayLoading = false;
 
@@ -150,15 +165,25 @@ export class YourDataPageComponent implements OnInit {
         private readonly confirm: ConfirmationService,
         private readonly authentication: AuthenticationService,
         private readonly upload: UploadService,
-        private readonly geographicalLocationsService: GeographicalLocationsService,
+        private readonly geographicalLocations: GeographicalLocationsService,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.user = data['userData'];
             this.savedPaymentMethods = data['paymentMethods'];
+            this.countries = data['countries'];
+            this.updateOriginalCountryName();
+            this.initForm();
         });
-        this.initForm();
+    }
+
+    public ngAfterViewInit(): void {
+        this.replaceCountryCodeWithCountryName();
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 
     public saveProfilePicture(file: File) {
@@ -184,6 +209,10 @@ export class YourDataPageComponent implements OnInit {
                         e,
                     ),
             });
+    }
+
+    public editPublicProfileData(): void {
+        console.log(this.editYourDataForm.controls.publicProfileData.value);
     }
 
     public addLink(): void {
@@ -318,7 +347,10 @@ export class YourDataPageComponent implements OnInit {
             }),
             newLink: this.formBuilder.group<NewLinkForm>({
                 name: new FormControl<string | null>(null, {
-                    validators: [Validators.required],
+                    validators: [
+                        Validators.required,
+                        Validators.maxLength(environment.personalLinkMaxLength),
+                    ],
                     updateOn: 'blur',
                 }),
                 url: new FormControl<string | null>(null, {
@@ -341,18 +373,57 @@ export class YourDataPageComponent implements OnInit {
         publicDataForm.controls.country.disable();
         publicDataForm.controls.city.disable();
         publicDataForm.controls.bio.disable();
-    }
 
-    public fetchCountries(): void {
-        if (this.geographicalLocationsService.countries?.length) return;
-        this.geographicalLocationsService.refreshCountries();
+        this.subscriptions.push(
+            publicDataForm.controls.country.valueChanges.subscribe(() => {
+                this.cities = [];
+            }),
+        );
     }
 
     public completeCountries(event: AutoCompleteCompleteEvent): void {
         this.filteredCountries =
-            this.geographicalLocationsService.countries?.filter((country) =>
+            this.countries.filter((country) =>
                 country.name.toLowerCase().includes(event.query.toLowerCase()),
             ) ?? [];
+    }
+
+    public replaceCountryCodeWithCountryName(): void {
+        const countryInput =
+            this.countryAutoComplete.nativeElement.querySelector(
+                '#country-input',
+            ) as HTMLInputElement;
+
+        if (countryInput)
+            countryInput.value = this.originalCountryName ?? this.user.country;
+    }
+
+    public fetchCities() {
+        if (this.cities.length) return;
+
+        const countryValue =
+            this.editYourDataForm.controls.publicProfileData.controls.country
+                .value;
+
+        if (!countryValue) return;
+
+        this.geographicalLocations
+            .getCities(countryValue)
+            .subscribe((cities) => {
+                this.cities = cities;
+            });
+    }
+
+    public completeCities(event: AutoCompleteCompleteEvent): void {
+        this.filteredCities = this.cities.filter((city) =>
+            city.toLowerCase().includes(event.query.toLowerCase()),
+        );
+    }
+
+    private updateOriginalCountryName(): void {
+        this.originalCountryName =
+            this.countries.find((c) => c.code === this.user.country)?.name ??
+            this.user.country;
     }
 
     private validateUrl(

@@ -20,7 +20,7 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { PasswordModule } from 'primeng/password';
@@ -94,6 +94,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     public activeStep: number = 0;
     public error: string = '';
 
+    private countries: Country[] = [];
     public filteredCountries: Country[] = [];
 
     private cities: string[] = [];
@@ -156,6 +157,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         public readonly assets: AssetsService,
         private readonly navigation: NavigationService,
         private readonly windowService: WindowService,
+        private readonly route: ActivatedRoute,
     ) {}
 
     public ngOnInit(): void {
@@ -165,7 +167,9 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
             this.maxBirthdayDate.getFullYear() - 18,
         );
 
-        this.locationsService.refreshCountries();
+        this.route.data.pipe(take(1)).subscribe((data) => {
+            this.countries = data['countries'];
+        });
 
         this.assets
             .getPlainText('tos.txt')
@@ -363,7 +367,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
     public completeCountries(event: AutoCompleteCompleteEvent): void {
         this.filteredCountries =
-            this.locationsService.countries?.filter((country) =>
+            this.countries.filter((country) =>
                 country.name.toLowerCase().includes(event.query.toLowerCase()),
             ) ?? [];
     }

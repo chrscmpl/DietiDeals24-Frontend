@@ -36,6 +36,7 @@ import { UserResolver } from './resolvers/user.resolver';
 import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.guard';
 import { TextAssetResolver } from './resolvers/text-asset.resolver';
 import { PaymentMethodsResolver } from './resolvers/payment-methods..resolver';
+import { CountriesResolver } from './resolvers/countries.resolver';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -126,6 +127,7 @@ export const routes: Routes = [
                 resolve: {
                     paymentMethods: PaymentMethodsResolver.asResolveFn(),
                     userData: AuthenticatedUserDataResolver.asResolveFn(),
+                    countries: CountriesResolver.asResolveFn(),
                 },
             },
             {
@@ -154,6 +156,7 @@ export const routes: Routes = [
         resolve: {
             rulesets: RulesetDescriptionResolver.asResolveFn(),
             currencyCodes: CurrencyCodesResolver.asResolveFn(),
+            countries: CountriesResolver.asResolveFn(),
         },
     },
     {

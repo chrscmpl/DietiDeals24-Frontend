@@ -163,6 +163,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     public isMacroCategory: boolean = false;
     public isProduct: boolean = false;
 
+    private countries: Country[] = [];
     public filteredCountries: Country[] = [];
 
     private cities: string[] = [];
@@ -227,6 +228,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
             this.currencyCodes = data['currencyCodes'];
+            this.countries = data['countries'];
         });
 
         this.subscriptions.push(
@@ -234,8 +236,6 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
                 if (this.error) this.error = '';
             }),
         );
-
-        this.locationsService.refreshCountries();
 
         this.onFirstChange(this.form.controls.ruleset, this.next.bind(this));
     }
@@ -365,7 +365,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     private onNextDetails() {
         this.countryInternationalName =
-            this.locationsService.countries?.find(
+            this.countries.find(
                 (country) =>
                     country.code ===
                     this.form.controls.details.controls.country.value,
@@ -435,7 +435,7 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
 
     public completeCountries(event: AutoCompleteCompleteEvent): void {
         this.filteredCountries =
-            this.locationsService.countries?.filter((country) =>
+            this.countries.filter((country) =>
                 country.name.toLowerCase().includes(event.query.toLowerCase()),
             ) ?? [];
     }

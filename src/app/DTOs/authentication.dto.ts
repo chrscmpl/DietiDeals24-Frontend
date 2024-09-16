@@ -12,8 +12,8 @@ export interface AuthenticatedUserDTO {
     pastBidsCounter: number;
     pastAuctionsCounter: number;
     profilePictureUrl?: string | null;
-    country?: string | null;
-    city?: string | null;
+    country: string;
+    city: string;
     bio?: string | null;
     links?: userLinkDTO[] | null;
 }
