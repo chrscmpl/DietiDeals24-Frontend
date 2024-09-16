@@ -1,1 +1,0 @@
-import{va as i}from"./chunk-I3PUZZLM.js";var o=(()=>{let t=class t{transform(e){return e.charAt(0).toUpperCase()+e.slice(1)}};t.\u0275fac=function(a){return new(a||t)},t.\u0275pipe=i({name:"oneCharUpper",type:t,pure:!0,standalone:!0});let r=t;return r})();export{o as a};
