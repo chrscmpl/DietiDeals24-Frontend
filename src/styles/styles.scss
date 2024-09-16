@@ -175,6 +175,11 @@ body {
         margin: 0;
     }
 
+    p,
+    label {
+        font-size: var(--font-size-medium);
+    }
+
     a {
         font-size: var(--font-size-small);
     }

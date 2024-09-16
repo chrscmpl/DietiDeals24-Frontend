@@ -99,38 +99,36 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         this.authenticationService.login(
             this.loginForm.value as UserCredentials,
             {
-                next: () => {
-                    this.navigation.navigateToRouteBeforeRedirection();
-                },
-                error: (e: LoginException | GetUserDataException) => {
-                    this.submissionLoading = false;
-                    if (e.error.status >= 500) {
-                        this.displayError(
-                            'Server error',
-                            'Please try again later',
-                        );
-                    } else if (e.error.status >= 400) {
-                        this.displayError(
-                            'Incorrect email or password',
-                            'Please try again',
-                        );
-                    } else if (e.error.status === 0) {
-                        this.displayError(
-                            'Network error',
-                            'Check your connection and try again',
-                        );
-                    } else {
-                        this.displayError(
-                            'An error occurred',
-                            'Please try again',
-                        );
-                    }
-                },
+                next: this.onLoginSuccess.bind(this),
+                error: this.onLoginError.bind(this),
             },
         );
     }
 
     googleLogin() {}
+
+    private onLoginSuccess(): void {
+        this.navigation.navigateToRouteBeforeRedirection();
+    }
+
+    private onLoginError(e: LoginException | GetUserDataException): void {
+        this.submissionLoading = false;
+        if (e.error.status >= 500) {
+            this.displayError('Server error', 'Please try again later');
+        } else if (e.error.status >= 400) {
+            this.displayError(
+                'Incorrect email or password',
+                'Please try again',
+            );
+        } else if (e.error.status === 0) {
+            this.displayError(
+                'Network error',
+                'Check your connection and try again',
+            );
+        } else {
+            this.displayError('An error occurred', 'Please try again');
+        }
+    }
 
     private displayError(summary: string, detail: string): void {
         this.message.add({

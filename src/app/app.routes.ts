@@ -121,9 +121,7 @@ export const routes: Routes = [
                 path: 'your-data',
                 title: 'Your Data',
                 component: YourDataPageComponent,
-                canActivate: [
-                    ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
-                ],
+                canActivate: [ConfirmReloadGuard.asCanActivateFn(true)],
                 resolve: {
                     paymentMethods: PaymentMethodsResolver.asResolveFn(),
                     userData: AuthenticatedUserDataResolver.asResolveFn(),
@@ -134,9 +132,7 @@ export const routes: Routes = [
                 path: 'security-privacy',
                 title: 'Security & Privacy',
                 component: SecurityAndPrivacyPageComponent,
-                canActivate: [
-                    ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
-                ],
+                canActivate: [ConfirmReloadGuard.asCanActivateFn(true)],
                 resolve: {
                     tos: TextAssetResolver.asResolveFn('tos.txt'),
                     userData: AuthenticatedUserDataResolver.asResolveFn(),
@@ -241,7 +237,7 @@ export const routes: Routes = [
         canActivate: [
             AuthenticationGuard.asCanActivateFn(false),
             ShowUIGuard.asCanActivateFn(false),
-            ConfirmReloadGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(/*true*/ false),
         ],
 
         loadChildren: () =>

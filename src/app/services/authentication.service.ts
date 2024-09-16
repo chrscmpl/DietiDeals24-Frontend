@@ -39,6 +39,7 @@ import { EditUserDataException } from '../exceptions/edit-user-data.exception';
 import { PasswordChangeDataSerializer } from '../serializers/password-change-data.serializer';
 import { PasswordChangeData } from '../models/password-change-data.model';
 import { ChangePasswordException } from '../exceptions/change-password.exception';
+import { RequestForgottenPasswordResetException } from '../exceptions/request-forgotten-password-reset.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -193,7 +194,7 @@ export class AuthenticationService {
     public changePassword(data: PasswordChangeData): Observable<unknown> {
         return this.http
             .post(
-                'profile/change-password',
+                'profile/update/password',
                 this.passwordChangeDataSerializer.serialize(data),
                 {
                     responseType: 'text',
@@ -202,6 +203,24 @@ export class AuthenticationService {
             .pipe(
                 catchError((e) =>
                     throwError(() => new ChangePasswordException(e)),
+                ),
+            );
+    }
+
+    public requestForgottenPasswordReset(
+        emailOrUsername: string,
+    ): Observable<unknown> {
+        return this.http
+            .post(
+                'password-reset/request',
+                { emailOrUsername },
+                { responseType: 'text' },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(
+                        () => new RequestForgottenPasswordResetException(e),
+                    ),
                 ),
             );
     }
