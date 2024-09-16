@@ -33,14 +33,6 @@
             </p-inputGroup>
         </dd24-input>
     } @else {
-        <dd24-input
-            [controlName]="controlName"
-            [errorMessages]="errorMessages"
-            [floatingError]="floatingError"
-        >
-            <ng-content select="[expanded]"></ng-content>
-        </dd24-input>
-
         <div class="editable-field-btns">
             @if (control.disabled) {
                 <p-button
@@ -61,5 +53,12 @@
                 />
             }
         </div>
+        <dd24-input
+            [controlName]="controlName"
+            [errorMessages]="errorMessages"
+            [floatingError]="floatingError"
+        >
+            <ng-content select="[expanded]"></ng-content>
+        </dd24-input>
     }
 </div>

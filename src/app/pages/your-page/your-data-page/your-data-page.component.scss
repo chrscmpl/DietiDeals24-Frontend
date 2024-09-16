@@ -31,6 +31,21 @@
     @include layouts.flex(column, start, start, 1rem);
 }
 
+.pp-location-inputs-wrapper {
+    @include layouts.flex(row, start, stretch, 1rem);
+}
+
+.pp-location-btns {
+    @include layouts.flex(column, start, stretch, 1rem);
+}
+
+.pp-location-inputs {
+    @include layouts.flex(column, start, stretch, 1rem);
+    border-radius: var(--border-radius-medium);
+    border: var(--border);
+    padding: 1.25rem;
+}
+
 .links-form-wrapper {
     @include layouts.flex(row, start, stretch, 1rem);
 
@@ -157,27 +172,12 @@
 }
 
 :host ::ng-deep {
-    #country-input,
-    #city-input {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+    .pp-location-btns .p-button {
+        width: 2.5rem;
+        aspect-ratio: 1/1;
+    }
+
+    .p-autocomplete {
         opacity: 1;
-
-        &:enabled {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-    }
-
-    .p-fieldset-legend {
-        display: none;
-    }
-
-    .p-fieldset-content {
-        padding: 1.25rem;
-    }
-
-    .p-fieldset {
-        padding: 0;
     }
 }

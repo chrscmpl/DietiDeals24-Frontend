@@ -55,7 +55,6 @@ import {
 import { Country } from '../../../models/country.model';
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FieldsetModule } from 'primeng/fieldset';
 
 interface publicProfileDataForm {
     username: FormControl<string | null>;
@@ -90,7 +89,6 @@ interface editYourDataForm {
         ProfilePictureInputComponent,
         EditableFieldComponent,
         KeyFilterModule,
-        FieldsetModule,
         AutoCompleteModule,
     ],
     templateUrl: './your-data-page.component.html',
@@ -379,10 +377,35 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
         publicDataForm.controls.bio.disable();
 
         this.subscriptions.push(
-            publicDataForm.controls.country.valueChanges.subscribe(() => {
+            publicDataForm.controls.country.valueChanges.subscribe((value) => {
                 this.cities = [];
+                this.fetchCities();
+                if (
+                    value !== this.user.country ||
+                    publicDataForm.controls.city.value !== this.user.city
+                ) {
+                    publicDataForm.controls.city.setValue(null);
+                }
             }),
         );
+    }
+
+    public enableLocationControls(): void {
+        this.editYourDataForm.controls.publicProfileData.controls.country.enable();
+        this.editYourDataForm.controls.publicProfileData.controls.city.enable();
+    }
+
+    public disableLocationControls(): void {
+        this.editYourDataForm.controls.publicProfileData.controls.country.disable();
+        this.editYourDataForm.controls.publicProfileData.controls.city.disable();
+
+        this.editYourDataForm.controls.publicProfileData.controls.country.setValue(
+            this.user.country,
+        );
+        this.editYourDataForm.controls.publicProfileData.controls.city.setValue(
+            this.user.city,
+        );
+        this.replaceCountryCodeWithCountryName();
     }
 
     public completeCountries(event: AutoCompleteCompleteEvent): void {

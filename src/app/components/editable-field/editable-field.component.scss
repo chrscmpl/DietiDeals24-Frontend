@@ -1,17 +1,11 @@
 @use "layouts";
 
-.editable-field,
-.editable-field-enabled .editable-field-btns {
+.editable-field {
     @include layouts.flex(row, start, stretch, 1rem);
 }
 
-.editable-field-btns,
-.editable-field-enabled.editable-field {
+.editable-field-btns {
     @include layouts.flex(column, start, stretch, 1rem);
-}
-
-.editable-field-enabled .editable-field-btns > * {
-    flex-grow: 1;
 }
 
 :host ::ng-deep {
@@ -25,7 +19,11 @@
         border-bottom-right-radius: 0;
     }
 
-    .editable-field-enabled .editable-field-btns .p-button {
-        width: 100%;
+    .p-button {
+        width: 2.5rem;
+    }
+
+    .editable-field-btns .p-button {
+        aspect-ratio: 1/1;
     }
 }
