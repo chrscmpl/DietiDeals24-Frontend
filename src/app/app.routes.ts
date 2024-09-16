@@ -246,6 +246,11 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'reset-password/:id/:token',
+        redirectTo: 'auth/reset-password/:id/:token',
+        pathMatch: 'full',
+    },
+    {
         path: 'auctions/:auction-id',
         outlet: 'overlay',
         component: AuctionDetailsPageComponent,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { PasswordChangeData } from '../models/password-change-data.model';
-import { PasswordChangeDataDTO } from '../DTOs/password-change-data.dto';
+import { PasswordChangeDataDTO } from '../DTOs/password-change.dto';
 
 @Injectable({
     providedIn: 'root',

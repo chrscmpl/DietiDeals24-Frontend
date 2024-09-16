@@ -8,6 +8,7 @@ import { AuthenticationPageComponent } from '../pages/authentication-page/authen
 import { VerifyEmailPageComponent } from '../pages/authentication-page/verify-email-page/verify-email-page.component';
 import { EmailVerificationGuard } from '../guards/email-verification.guard';
 import { CountriesResolver } from '../resolvers/countries.resolver';
+import { ResetPasswordPageComponent } from '../pages/authentication-page/reset-password-page/reset-password-page.component';
 
 const routes: Routes = [
     {
@@ -36,6 +37,11 @@ const routes: Routes = [
                 path: 'forgot-password',
                 title: 'Forgot Password',
                 component: ForgotPasswordPageComponent,
+            },
+            {
+                path: 'reset-password/:id/:token',
+                title: 'Reset Password',
+                component: ResetPasswordPageComponent,
             },
             {
                 path: 'verify-email',

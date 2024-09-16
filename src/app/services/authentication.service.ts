@@ -40,6 +40,9 @@ import { PasswordChangeDataSerializer } from '../serializers/password-change-dat
 import { PasswordChangeData } from '../models/password-change-data.model';
 import { ChangePasswordException } from '../exceptions/change-password.exception';
 import { RequestForgottenPasswordResetException } from '../exceptions/request-forgotten-password-reset.exception';
+import { ResetForgottenPasswordData } from '../models/reset-forgotten-password-data.model';
+import { ResetForgottenPasswordException } from '../exceptions/reset-forgotten-password.exception';
+import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgotten-password-data.serializer';
 
 @Injectable({
     providedIn: 'root',
@@ -70,6 +73,7 @@ export class AuthenticationService {
         private readonly editableUserDataSerializer: EditableUserDataSerializer,
         private readonly userLinkSerializer: UserLinkSerializer,
         private readonly passwordChangeDataSerializer: PasswordChangeDataSerializer,
+        private readonly resetForgottenPasswordDataSerializer: ResetForgottenPasswordDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
     ) {
@@ -221,6 +225,22 @@ export class AuthenticationService {
                     throwError(
                         () => new RequestForgottenPasswordResetException(e),
                     ),
+                ),
+            );
+    }
+
+    public resetForgottenPassword(
+        data: ResetForgottenPasswordData,
+    ): Observable<unknown> {
+        return this.http
+            .post(
+                'password-reset/confirm',
+                this.resetForgottenPasswordDataSerializer.serialize(data),
+                { responseType: 'text' },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new ResetForgottenPasswordException(e)),
                 ),
             );
     }
