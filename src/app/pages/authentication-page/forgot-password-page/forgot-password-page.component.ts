@@ -61,7 +61,12 @@ export class ForgotPasswordPageComponent implements OnInit {
         this.submissionLoading = true;
         this.authentication
             .requestForgottenPasswordReset(
-                this.forgotPasswordForm.value.emailOrUsername!,
+                this.forgotPasswordForm.value.emailOrUsername!.includes('@')
+                    ? { email: this.forgotPasswordForm.value.emailOrUsername! }
+                    : {
+                          username:
+                              this.forgotPasswordForm.value.emailOrUsername!,
+                      },
             )
             .subscribe({
                 next: this.onSubmissionSuccess.bind(this),

@@ -43,6 +43,8 @@ import { RequestForgottenPasswordResetException } from '../exceptions/request-fo
 import { ResetForgottenPasswordData } from '../models/reset-forgotten-password-data.model';
 import { ResetForgottenPasswordException } from '../exceptions/reset-forgotten-password.exception';
 import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgotten-password-data.serializer';
+import { RequestForgottenPasswordEmailSerializer } from '../serializers/request-forgotten-password-email-data.serializer';
+import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
 
 @Injectable({
     providedIn: 'root',
@@ -73,6 +75,7 @@ export class AuthenticationService {
         private readonly editableUserDataSerializer: EditableUserDataSerializer,
         private readonly userLinkSerializer: UserLinkSerializer,
         private readonly passwordChangeDataSerializer: PasswordChangeDataSerializer,
+        private readonly requestForgottenPasswordEmailSerializer: RequestForgottenPasswordEmailSerializer,
         private readonly resetForgottenPasswordDataSerializer: ResetForgottenPasswordDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
@@ -212,12 +215,12 @@ export class AuthenticationService {
     }
 
     public requestForgottenPasswordReset(
-        emailOrUsername: string,
+        data: RequestForgottenPasswordEmailData,
     ): Observable<unknown> {
         return this.http
             .post(
                 'password-reset/request',
-                { emailOrUsername },
+                this.requestForgottenPasswordEmailSerializer.serialize(data),
                 { responseType: 'text' },
             )
             .pipe(
