@@ -109,12 +109,20 @@ body {
         font-size: var(--mobile-icon-size);
     }
 
+    html,
     body {
         user-select: none;
+        scrollbar-width: none;
     }
 
     .mobile-select {
         user-select: auto;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+        -webkit-appearance: none;
+        opacity: 0;
     }
 }
 

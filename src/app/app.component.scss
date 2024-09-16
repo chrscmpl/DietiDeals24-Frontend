@@ -19,6 +19,11 @@
 
     .content {
         grid-area: main;
+        @include layouts.flex(column, stretch, stretch);
+    }
+
+    .primary-route-content {
+        flex-grow: 1;
     }
 
     .footer {
