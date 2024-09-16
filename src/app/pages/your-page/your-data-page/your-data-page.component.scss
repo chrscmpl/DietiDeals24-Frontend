@@ -89,7 +89,8 @@
 
     @include viewports.mobile {
         border-right: none;
-        padding-right: 0;
+        padding: 1rem 0;
+        border-top: var(--border);
         width: 100%;
     }
 }
