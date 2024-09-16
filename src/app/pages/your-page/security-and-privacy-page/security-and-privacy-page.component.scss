@@ -28,9 +28,15 @@
 
 .user-email-input-wrapper {
     @include layouts.flex(column, start, stretch);
-    width: 20ch;
+}
 
-    @include viewports.mobile {
-        width: 100%;
-    }
+.edit-password-form {
+    @include layouts.flex(column, start, stretch, 1rem);
+    padding-top: 1rem;
+    border-top: var(--border);
+}
+
+.undo-edit-password-btn,
+.edit-password-submit-btn {
+    align-self: start;
 }
