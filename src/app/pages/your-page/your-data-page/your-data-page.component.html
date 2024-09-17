@@ -122,9 +122,16 @@
                     </div>
                 </div>
             </div>
-            <div class="pp-input-wrapper">
+            <div class="pp-input-wrapper bio-wrapper">
                 <label class="bio-label" for="bio-input">Bio</label>
+                <span class="bio-chars"
+                    >{{
+                        editYourDataForm.controls.publicProfileData.controls.bio
+                            .value?.length ?? 0
+                    }}/{{ environment.bioMaxLength }}</span
+                >
                 <dd24-editable-field
+                    class="bio-input-wrapper"
                     variant="expanded"
                     controlName="bio"
                     [currentValue]="user.bio"

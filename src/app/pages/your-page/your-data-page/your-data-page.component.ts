@@ -382,9 +382,7 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
                     validators: [Validators.required],
                     updateOn: 'blur',
                 }),
-                bio: new FormControl<string | null>(this.user.bio, {
-                    updateOn: 'blur',
-                }),
+                bio: new FormControl<string | null>(this.user.bio),
             }),
             newLink: this.formBuilder.group<NewLinkForm>({
                 name: new FormControl<string | null>(null, {

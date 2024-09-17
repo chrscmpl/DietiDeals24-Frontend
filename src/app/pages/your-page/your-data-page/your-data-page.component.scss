@@ -54,6 +54,24 @@
     }
 }
 
+.bio-wrapper {
+    @include layouts.grid("label chars" auto "input input" 1fr);
+}
+
+.bio-label {
+    grid-area: label;
+    justify-self: start;
+}
+
+.bio-chars {
+    grid-area: chars;
+    justify-self: end;
+}
+
+.bio-input-wrapper {
+    grid-area: input;
+}
+
 .pp-location-btns {
     @include layouts.flex(column, start, stretch, 1rem);
 
