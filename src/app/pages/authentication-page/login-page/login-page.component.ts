@@ -71,7 +71,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
         setTimeout(() => {
             this.patchValueFromNativeElement('email', '#email');
             this.patchValueFromNativeElement('password', '#password');

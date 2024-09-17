@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { WindowService } from '../../../services/window.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { EditUserDataFormComponent } from '../../../components/edit-user-data-form/edit-user-data-form.component';
@@ -50,6 +56,9 @@ interface EditPasswordForm {
     styleUrl: './security-and-privacy-page.component.scss',
 })
 export class SecurityAndPrivacyPageComponent implements OnInit {
+    @ViewChild('securityAndPrivacySection', { read: ElementRef })
+    securityAndPrivacySection!: ElementRef;
+
     public editPasswordForm!: FormGroup<EditPasswordForm>;
     public user!: AuthenticatedUser;
     public maskEmail = true;
@@ -137,6 +146,18 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
 
     public showEditPasswordForm(): void {
         this.editPasswordForm.enable();
+
+        setTimeout(() => {
+            const oldPasswordInput =
+                this.securityAndPrivacySection.nativeElement.querySelector(
+                    '#old-password',
+                ) as HTMLInputElement | null;
+            if (oldPasswordInput?.value) {
+                this.editPasswordForm.controls.oldPassword.setValue(
+                    oldPasswordInput.value,
+                );
+            }
+        }, 500);
     }
 
     public hideEditPasswordForm(): void {
