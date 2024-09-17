@@ -1,1 +1,105 @@
-<p>message-page works!</p>
+<main class="messaging-page dd24-main-page" [class.report-page]="isReport">
+    <p-button
+        class="back-btn"
+        label="Go back"
+        icon="pi pi-chevron-left"
+        (onClick)="navigation.back()"
+    ></p-button>
+    @if (!isReport) {
+        @if ((authentication.loggedUser$ | async)?.id === auction.user?.id) {
+            <p>
+                You have accepted
+                {{
+                    auction.winner?.username +
+                        (auction.winner &&
+                        auction.winner.username[
+                            auction.winner.username.length - 1
+                        ] === "s"
+                            ? "'"
+                            : "'s")
+                }}
+                bid of
+                <strong>{{
+                    (auction.winningBid | currency: auction.currency) ?? "null"
+                }}</strong>
+                for <strong>{{ auction.title }}</strong
+                >.
+            </p>
+        } @else {
+            <p>
+                {{ auction.user?.username }} has accepted your bid of
+                <strong>{{
+                    (auction.winningBid | currency: auction.currency) ?? "null"
+                }}</strong>
+                for <strong>{{ auction.title }}</strong
+                >.
+            </p>
+        }
+    } @else {
+        <p>
+            Write us a report about <strong>{{ auction.title }}</strong
+            >.
+        </p>
+    }
+
+    <form class="message-form" [formGroup]="messageForm" (ngSubmit)="send()">
+        <div class="message-input-wrapper">
+            <label class="message-input-label" for="message-input">
+                @if (!isReport) {
+                    Write them a message:
+                } @else {
+                    Your report:
+                }
+            </label>
+            <span class="message-input-chars"
+                >{{ messageForm.controls.message.value?.length ?? 0 }}/{{
+                    environment.messageMaxLength
+                }}</span
+            >
+            <dd24-input class="message-input" controlName="message">
+                <textarea
+                    pInputTextarea
+                    class="p-fluid"
+                    type="text"
+                    formControlName="message"
+                    name="message"
+                    id="message-input"
+                    [maxlength]="environment.messageMaxLength"
+                    autoResize="true"
+                ></textarea>
+            </dd24-input>
+        </div>
+        <div class="message-form-btns">
+            @if (!isReport) {
+                <p-button
+                    severity="danger"
+                    icon="pi pi-exclamation-circle"
+                    label="Write us a report"
+                    (onClick)="switchToReport()"
+                />
+                <p-button
+                    severity="primary"
+                    icon="pi pi-send"
+                    label="Send message"
+                    type="submit"
+                    [loading]="submissionLoading"
+                />
+            } @else {
+                <p-button
+                    severity="danger"
+                    label="Cancel report"
+                    icon="pi pi-times"
+                    outlined="true"
+                    (onClick)="switchToMessage()"
+                />
+                <p-button
+                    severity="danger"
+                    icon="pi pi-envelope"
+                    label="Send report"
+                    type="submit"
+                    [loading]="submissionLoading"
+                />
+            }
+        </div>
+    </form>
+</main>

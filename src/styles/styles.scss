@@ -104,6 +104,10 @@ body {
     color: var(--text-color-1);
 }
 
+strong {
+    font-weight: var(--font-weight-bolder);
+}
+
 @include viewports.mobile {
     .medium-icon {
         font-size: var(--mobile-icon-size);

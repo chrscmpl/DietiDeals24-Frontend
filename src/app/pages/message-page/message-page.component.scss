@@ -1,0 +1,54 @@
+@use "layouts";
+@use "viewports";
+
+.back-btn {
+    align-self: start;
+}
+
+.message-form {
+    @include layouts.flex(column, start, stretch, 1rem);
+}
+
+.message-input-wrapper {
+    @include layouts.grid(
+        "label chars" auto "input input" 1fr,
+        $align-content: end,
+        $align-items: end
+    );
+}
+
+.message-input-label {
+    grid-area: label;
+    justify-self: start;
+}
+
+.message-input-chars {
+    grid-area: chars;
+    justify-self: end;
+}
+
+.message-input {
+    grid-area: input;
+    align-self: stretch;
+}
+
+#message-input {
+    min-height: 15rem;
+}
+
+.message-form-btns {
+    @include layouts.flex(row, end, stretch, 1ch);
+
+    @include viewports.mobile {
+        @include layouts.flex(column, start, stretch, 1ch);
+    }
+}
+
+:host ::ng-deep {
+    .p-button {
+        justify-content: center;
+    }
+    .p-button-label {
+        flex-grow: 0;
+    }
+}

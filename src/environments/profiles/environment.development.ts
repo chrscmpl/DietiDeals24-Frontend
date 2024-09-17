@@ -12,6 +12,7 @@ export const environment = {
     usernameMaxLength: 30,
     personalLinkMaxLength: 20,
     bioMaxLength: 300,
+    messageMaxLength: 1000,
     auctionTitleMaxLength: 100,
     auctionDescriptionMaxLength: 3000,
     auctionMaxDuration: 30 * 24 * 60 * 60 * 1000,

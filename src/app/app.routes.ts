@@ -37,6 +37,7 @@ import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.
 import { TextAssetResolver } from './resolvers/text-asset.resolver';
 import { PaymentMethodsResolver } from './resolvers/payment-methods..resolver';
 import { CountriesResolver } from './resolvers/countries.resolver';
+import { MessagePageComponent } from './pages/message-page/message-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -270,6 +271,23 @@ export const routes: Routes = [
         component: AuctionDetailsPageComponent,
         resolve: {
             auction: AuctionPreviewResolver.asResolveFn(),
+        },
+    },
+    {
+        path: 'message/:auction-id',
+        component: MessagePageComponent,
+        canActivate: [
+            ShowUIGuard.asCanActivateFn(true),
+            ConfirmReloadGuard.asCanActivateFn(false),
+            AuthenticationGuard.asCanActivateFn(true),
+        ],
+        resolve: {
+            auction: AuctionResolver.asResolveFn({
+                isWinnerOrOwner: true,
+                requiredStatus: AuctionStatus.accepted,
+                includeUser: true,
+                includeWinner: true,
+            }),
         },
     },
     {

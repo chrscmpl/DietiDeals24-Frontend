@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
 
 export interface AuctionResolverOptions {
+    isWinnerOrOwner?: boolean;
     ownAuction?: boolean;
     requiredStatus?: AuctionStatus;
     hasAlreadyBidded?: boolean;
@@ -41,6 +42,13 @@ export class AuctionResolver {
 
         return this.auctionsService.getDetails(auctionId).pipe(
             take(1),
+            tap((auction) => {
+                if (options?.isWinnerOrOwner !== undefined)
+                    this.validateIsWinnerOrOwner(
+                        auction,
+                        options?.isWinnerOrOwner,
+                    );
+            }),
             tap((auction) => {
                 if (options?.ownAuction !== undefined)
                     this.validateOwnAuction(auction, options?.ownAuction);
@@ -84,15 +92,30 @@ export class AuctionResolver {
         );
     }
 
+    private validateIsWinnerOrOwner(
+        auction: Auction,
+        isWinnerOrOwner: boolean,
+    ) {
+        const user = this.authenticationService.loggedUser;
+        if (
+            user?.id === undefined ||
+            isWinnerOrOwner !==
+                (auction.userId === user.id || auction.winnerId === user.id)
+        )
+            throw new Error(
+                'Cannot access this auction because it is not in your past deals',
+            );
+    }
+
     private validateOwnAuction(auction: Auction, ownAuction: boolean) {
         const user = this.authenticationService.loggedUser;
         if (
-            user?.id != undefined &&
-            auction.userId != undefined &&
+            user?.id === undefined ||
+            auction.userId === undefined ||
             ownAuction !== (auction.userId === user.id)
         )
             throw new Error(
-                `Cannot access this auction because it is ${auction.userId === user.id ? '' : 'not '}yours`,
+                `Cannot access this auction because it is ${user?.id && auction.userId === user.id ? '' : 'not '}yours`,
             );
     }
 
