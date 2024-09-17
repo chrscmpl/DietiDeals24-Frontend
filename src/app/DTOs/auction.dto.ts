@@ -23,6 +23,7 @@ export interface AuctionDTO {
     startingBid?: number | null;
     lastBid?: number | null;
     ownBid?: number | null;
+    ownBids?: { bidAmount: number }[];
 }
 
 export interface SilentAuctionDTO extends AuctionDTO {

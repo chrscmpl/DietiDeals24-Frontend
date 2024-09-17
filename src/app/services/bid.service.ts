@@ -40,29 +40,4 @@ export class BidService {
                 ),
             );
     }
-
-    @Cacheable({
-        maxCacheCount: 16,
-        cacheBusterObserver: cacheBusters.activeBids$,
-    })
-    public getOwnBidForAuction(id: string): Observable<number | null> {
-        return this.authentication.isLogged$.pipe(
-            switchMap((isLogged) => {
-                if (!isLogged) return of(null);
-                return this.http
-                    .get<{ bidAmount: number }[]>(`bids/own/by-auction`, {
-                        params: { auctionId: id },
-                    })
-                    .pipe(
-                        map((bids) =>
-                            bids.length
-                                ? bids[bids.length - 1].bidAmount
-                                : null,
-                        ),
-                    );
-            }),
-            catchError(() => of(null)),
-            take(1),
-        );
-    }
 }

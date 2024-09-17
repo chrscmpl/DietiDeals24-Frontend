@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PaginatedRequestParams } from '../helpers/paginated-request';
 import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
-import { map, Observable, of, Subscription, switchMap } from 'rxjs';
+import { map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { UninterruptedResettableObserver } from '../helpers/uninterrupted-resettable-observer';
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
@@ -10,9 +10,9 @@ import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { defaults, omit } from 'lodash-es';
-import { BidService } from './bid.service';
 import { cacheBusters } from '../helpers/cache-busters';
 import { environment } from '../../environments/environment';
+import { AuthenticationService } from './authentication.service';
 
 export type RequestKey = string;
 
@@ -49,7 +49,7 @@ export class AuctionsService {
     public constructor(
         private readonly http: HttpClient,
         private readonly deserializer: AuctionDeserializer,
-        private readonly bidService: BidService,
+        private readonly authentication: AuthenticationService,
     ) {}
 
     public set(key: RequestKey, params: auctionsPaginationParams): void {
@@ -117,19 +117,18 @@ export class AuctionsService {
         cacheBusterObserver: cacheBusters.activeBids$,
     })
     public getDetails(id: string): Observable<Auction> {
-        return this.http
-            .get<AuctionDTO>(`auctions/specific/public-view`, {
-                params: { id },
-            })
-            .pipe(
-                switchMap((dto) => {
-                    if (dto.ownBid) return of(dto);
-                    return this.bidService
-                        .getOwnBidForAuction(id)
-                        .pipe(map((ownBid) => ({ ...dto, ownBid })));
-                }),
-                map((dto) => this.deserializer.deserialize(dto)),
-            );
+        return this.authentication.isLogged$.pipe(
+            switchMap((isLogged) => {
+                return this.http.get<AuctionDTO>(
+                    `auctions/specific/${isLogged ? 'authenticated' : 'guest'}-view`,
+                    {
+                        params: { id },
+                    },
+                );
+            }),
+            map((dto) => this.deserializer.deserialize(dto)),
+            take(1),
+        );
     }
 
     private getRequest(key: RequestKey): RequestData {

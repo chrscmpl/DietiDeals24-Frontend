@@ -52,7 +52,12 @@ export abstract class Auction {
         this._lastBidderId = String(dto.currentBidderId) ?? null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
-        this._ownBid = dto.ownBid ?? null;
+        this._ownBid =
+            dto.ownBid ??
+            (dto.ownBids?.length
+                ? dto.ownBids?.[dto.ownBids?.length - 1]?.bidAmount
+                : null) ??
+            null;
         this._isOver = this._status !== Auction.STATUSES.active;
     }
 
