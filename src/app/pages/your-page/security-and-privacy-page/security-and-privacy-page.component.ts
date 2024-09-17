@@ -24,6 +24,7 @@ import { InputComponent } from '../../../components/input/input.component';
 import { PasswordModule } from 'primeng/password';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { ChangePasswordException } from '../../../exceptions/change-password.exception';
 
 interface EditPasswordForm {
     oldPassword: FormControl<string | null>;
@@ -52,6 +53,7 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
     public editPasswordForm!: FormGroup<EditPasswordForm>;
     public user!: AuthenticatedUser;
     public maskEmail = true;
+    public submissionLoading = false;
 
     public readonly environment = environment;
 
@@ -88,33 +90,49 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
     }
 
     public editPassword(): void {
+        reactiveFormsUtils.forceValidation(
+            this.editPasswordForm.controls.newPassword,
+        );
+        reactiveFormsUtils.forceValidation(
+            this.editPasswordForm.controls.confirmNewPassword,
+        );
         if (this.editPasswordForm.invalid) {
             reactiveFormsUtils.markAllAsDirty(this.editPasswordForm);
             return;
         }
 
+        this.submissionLoading = true;
         this.authenticationService
             .changePassword({
                 oldPassword: this.editPasswordForm.controls.oldPassword.value!,
                 newPassword: this.editPasswordForm.controls.newPassword.value!,
             })
             .subscribe({
-                next: () => {
-                    this.message.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'Password changed successfully',
-                    });
-                    this.hideEditPasswordForm();
-                },
-                error: () => {
-                    this.message.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: 'Failed to change password, try again later',
-                    });
-                },
+                next: this.onSubmissionSuccess.bind(this),
+                error: this.onSubmissionError.bind(this),
             });
+    }
+
+    private onSubmissionSuccess(): void {
+        this.submissionLoading = false;
+        this.message.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Password changed successfully',
+        });
+        this.hideEditPasswordForm();
+    }
+
+    private onSubmissionError(e: ChangePasswordException): void {
+        this.submissionLoading = false;
+        this.message.add({
+            severity: 'error',
+            summary: 'Error',
+            detail:
+                e.error?.status === 401
+                    ? 'Your old password is incorrect'
+                    : 'Failed to change password, try again later',
+        });
     }
 
     public showEditPasswordForm(): void {

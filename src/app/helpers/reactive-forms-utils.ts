@@ -8,6 +8,10 @@ import {
 type Mark = 'touched' | 'dirty' | 'pristine' | 'untouched';
 
 class ReactiveFormsUtils {
+    public forceValidation(control: AbstractControl): void {
+        control.setValue(control.value);
+    }
+
     public markAllAsTouched(control: AbstractControl): void {
         this.markAllAs(control, 'touched');
     }

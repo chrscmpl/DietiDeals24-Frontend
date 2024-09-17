@@ -78,6 +78,9 @@ export class ResetPasswordPageComponent implements OnInit {
     }
 
     public onSubmit(): void {
+        reactiveFormsUtils.forceValidation(
+            this.resetPasswordForm.controls.confirmNewPassword,
+        );
         if (this.resetPasswordForm.invalid) {
             reactiveFormsUtils.markAllAsDirty(this.resetPasswordForm);
             return;

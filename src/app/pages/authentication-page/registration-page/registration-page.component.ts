@@ -288,6 +288,9 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     }
 
     private onRegister(): void {
+        reactiveFormsUtils.forceValidation(
+            this.registrationForm.controls.credentials.controls.confirmPassword,
+        );
         if (!this.registrationForm.valid) {
             this.onInvalidForm();
             return;
