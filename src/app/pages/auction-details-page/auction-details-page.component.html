@@ -152,10 +152,14 @@
                     [ruleset]="auction.ruleset"
                 ></dd24-auction-ruleset-link>
                 <p class="auction-bid">
-                    {{ auction.lastBidDescription | oneCharUpper }}:
-                    <span class="auction-bid-amount">{{
-                        auction.lastBid | currency: auction.currency
-                    }}</span>
+                    <span
+                        class="auction-bid-description"
+                        [innerHTML]="
+                            (auction | auctionStatusDescription | async) ?? ''
+                                | oneCharUpper
+                        "
+                    >
+                    </span>
                     @if (auction.bids) {
                         <span class="auction-bids-count">
                             {{ auction.bids }} bids made</span

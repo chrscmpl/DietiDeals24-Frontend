@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
 import { TimerComponent } from '../timer/timer.component';
 import { AuthenticationService } from '../../services/authentication.service';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
+import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
+import { ButtonModule } from 'primeng/button';
+import { AuctioneerService } from '../../services/auctioneer.service';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -25,9 +28,10 @@ import { TransactionOperation } from '../../enums/transaction-operation.enum';
         AuctionRuleSetLinkComponent,
         OneCharUpperPipe,
         LocalDatePipe,
-        CurrencyPipe,
         AsyncPipe,
         TimerComponent,
+        AuctionStatusDescriptionPipe,
+        ButtonModule,
     ],
     templateUrl: './auction-card.component.html',
     styleUrl: './auction-card.component.scss',
@@ -45,6 +49,7 @@ export class AuctionCardComponent implements OnInit {
     constructor(
         public readonly windowService: WindowService,
         public readonly authentication: AuthenticationService,
+        private readonly auctioneerService: AuctioneerService,
         private readonly router: Router,
     ) {}
 
@@ -68,10 +73,9 @@ export class AuctionCardComponent implements OnInit {
         }
     }
 
-    public onKeyPress(event: KeyboardEvent): void {
-        if (event.key === 'Enter') {
-            this.onClick();
-        }
+    public onDelete(even: Event) {
+        even.stopPropagation();
+        this.auctioneerService.showAbortDialog(this.auction.id);
     }
 
     private navigateToDetails(): void {

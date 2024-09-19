@@ -22,6 +22,7 @@ import { AuctionAcceptanceData } from '../models/auction-acceptance-data.model';
 import { AuctionAcceptanceDataSerializer } from '../serializers/auction-acceptance-data.serializer';
 import { cacheBusters } from '../helpers/cache-busters';
 import { AbortAuctionException } from '../exceptions/abort-auction.exception';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 type auctionCreationDetailsForm = ToReactiveForm<
     AuctionCreationData['details']
@@ -102,6 +103,8 @@ export class AuctioneerService {
         private readonly categoriesService: CategoriesService,
         private readonly auctionCreationSerializer: AuctionCreationSerializer,
         private readonly auctionAcceptanceDataSerializer: AuctionAcceptanceDataSerializer,
+        private readonly confirmation: ConfirmationService,
+        private readonly message: MessageService,
     ) {
         this.auctionCreationForm.controls.details.controls.city.disable();
 
@@ -245,6 +248,36 @@ export class AuctioneerService {
                     throwError(() => new BidRejectionException(e)),
                 ),
             );
+    }
+
+    public showAbortDialog(id: string): void {
+        this.confirmation.confirm({
+            header: 'Are you sure?',
+            message:
+                "Are you sure you want to abort this auction? You won't be able to undo this action.",
+            icon: 'pi pi-exclamation-triangle',
+            acceptButtonStyleClass: 'p-button-danger',
+            acceptIcon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Delete',
+            rejectLabel: 'Cancel',
+            rejectIcon: 'pi pi-arrow-left',
+            rejectButtonStyleClass: 'p-button-outlined',
+            dismissableMask: true,
+            closeOnEscape: true,
+            accept: () =>
+                this.abortAuction(id).subscribe({
+                    next: () =>
+                        this.message.add({
+                            severity: 'success',
+                            summary: 'Auction aborted successfully',
+                        }),
+                    error: (e) =>
+                        this.message.add({
+                            severity: 'error',
+                            summary: e.message,
+                        }),
+                }),
+        });
     }
 
     @CacheBuster({

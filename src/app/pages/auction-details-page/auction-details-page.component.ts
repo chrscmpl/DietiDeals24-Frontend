@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { filter, Subscription, take } from 'rxjs';
 import { WindowService } from '../../services/window.service';
-import { AsyncPipe, CurrencyPipe, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Auction } from '../../models/auction.model';
 import { UserPreviewComponent } from '../../components/user-preview/user-preview.component';
 import { DividerModule } from 'primeng/divider';
@@ -31,6 +31,7 @@ import { AuctionStatus } from '../../enums/auction-status.enum';
 import { NavigationService } from '../../services/navigation.service';
 import { CategoriesService } from '../../services/categories.service';
 import { RippleModule } from 'primeng/ripple';
+import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -41,7 +42,7 @@ import { RippleModule } from 'primeng/ripple';
         UserPreviewComponent,
         DividerModule,
         AuctionRuleSetLinkComponent,
-        CurrencyPipe,
+        AuctionStatusDescriptionPipe,
         OneCharUpperPipe,
         TimerComponent,
         LocalDatePipe,

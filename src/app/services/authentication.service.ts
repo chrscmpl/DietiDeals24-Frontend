@@ -219,7 +219,7 @@ export class AuthenticationService {
     ): Observable<unknown> {
         return this.http
             .post(
-                'password-reset/request',
+                'password/forgot/reset/init',
                 this.requestForgottenPasswordEmailSerializer.serialize(data),
                 { responseType: 'text' },
             )
@@ -237,7 +237,7 @@ export class AuthenticationService {
     ): Observable<unknown> {
         return this.http
             .post(
-                'password-reset/confirm',
+                'password/forgot/reset/finalize',
                 this.resetForgottenPasswordDataSerializer.serialize(data),
                 { responseType: 'text' },
             )

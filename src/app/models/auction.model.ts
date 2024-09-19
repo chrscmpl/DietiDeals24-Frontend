@@ -149,6 +149,14 @@ export abstract class Auction {
         this._lastBidder = winner;
     }
 
+    public get ownerUsername(): string | null {
+        return this._user?.username ?? null;
+    }
+
+    public get winnerUsername(): string | null {
+        return this._lastBidder?.username ?? null;
+    }
+
     public get isOver(): boolean {
         return this._isOver;
     }
@@ -243,6 +251,7 @@ export class ReverseAuction extends Auction {
         this._maximumStartingBid =
             dto.maximumBid ?? dto.startingBid ?? dto.lastBid;
         this._lowestBid = dto.lowestBidSoFar ?? this._maximumStartingBid;
+        if (this._ownBid !== this._lowestBid) this._ownBid = null;
     }
 
     public get maximumStartingBid(): number {

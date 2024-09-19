@@ -93,12 +93,20 @@ export class MessagePageComponent implements OnInit {
 
     private onSendSuccess(): void {
         this.submissionLoading = false;
+
+        const receiver =
+            (this.auction.user?.id !== this.authentication.loggedUser?.id
+                ? this.auction.user?.username
+                : this.auction.winner?.username) ?? 'undefined';
+
+        const detail = `Your ${
+            this.isReport ? 'report' : 'message'
+        } has been successfully sent${this.isReport ? '' : ` to ${receiver}'${receiver[receiver.length - 1] === 's' ? '' : 's'} email`}`;
+
         this.toastMessage.add({
             severity: 'success',
             summary: 'Success',
-            detail: `Your ${
-                this.isReport ? 'report' : 'message'
-            } has been successfully sent`,
+            detail,
         });
 
         this.messageForm.controls.message.setValue(null);

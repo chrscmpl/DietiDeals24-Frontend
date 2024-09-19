@@ -1,9 +1,10 @@
 <div
     class="auction-card"
+    [class.auction-card-active]="auction.isOver === false"
     [style]="cardStyle"
     (click)="onClick()"
     tabindex="0"
-    (keypress)="onKeyPress($event)"
+    (keyup.enter)="onClick()"
 >
     <div class="auction-card-image-container">
         @if (auction.pictureUrl && !showImagePlaceholder) {
@@ -17,6 +18,9 @@
             <i class="auction-card-missing-image pi pi-image"></i>
         }
     </div>
+    @if ((windowService.isMobile$ | async) === false) {
+        <div class="auction-card-divider"></div>
+    }
     <div class="auction-card-title-container">
         <span class="auction-card-title wk-nowrap">{{ auction.title }}</span>
         <span class="auction-card-secondary-line wk-nowrap">
@@ -32,13 +36,13 @@
         >{{ auction.ruleset }}</dd24-auction-ruleset-link
     >
     <div class="auction-card-details-container">
-        <span class="auction-card-sum">
-            @if (auction.status === statuses.active) {
-                {{ auction.lastBidDescription | oneCharUpper }}:
-                <span class="auction-card-sum-amount">{{
-                    auction.lastBid | currency: auction.currency
-                }}</span>
-            }
+        <span
+            class="auction-card-sum"
+            [innerHTML]="
+                (auction | auctionStatusDescription | async) ?? ''
+                    | oneCharUpper
+            "
+        >
         </span>
 
         <span class="auction-card-time-left wk-nowrap">
@@ -57,5 +61,21 @@
                 <span>Ended on {{ auction.endTime | localDate }}</span>
             }
         </span>
+    </div>
+    <div class="auction-card-btns">
+        @if (
+            auction.isOver === false &&
+            auction.userId &&
+            auction.userId === authentication.loggedUser?.id
+        ) {
+            <p-button
+                class="auction-card-btn"
+                label="Delete"
+                icon="pi pi-trash"
+                severity="danger"
+                outlined="true"
+                (onClick)="onDelete($event)"
+            />
+        }
     </div>
 </div>

@@ -54,7 +54,7 @@ export class AuctionConclusionPageComponent implements OnInit {
         this.confirmation.confirm({
             header: 'Are you sure?',
             message:
-                "Are you sure you want to reject this auction? You won't be able to undo this action.",
+                "Are you sure you want to reject this bid? You won't be able to undo this action.",
             dismissableMask: true,
             closeOnEscape: true,
             acceptButtonStyleClass: 'p-button-danger',
