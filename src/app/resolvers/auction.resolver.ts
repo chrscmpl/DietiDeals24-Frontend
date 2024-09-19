@@ -73,7 +73,7 @@ export class AuctionResolver {
                     : of(auction),
             ),
             switchMap((auction) =>
-                options?.includeWinner
+                options?.includeWinner || (auction.isOver && auction.winnerId)
                     ? this.auctionWithWinner(auction)
                     : of(auction),
             ),
