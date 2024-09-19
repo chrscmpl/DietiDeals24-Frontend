@@ -39,12 +39,13 @@ import { environment } from '../../../environments/environment';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionCardComponent implements OnInit {
-    @Input({ required: true }) auction!: Auction;
-    @Input() cardStyle: { [key: string]: string | number } = {};
-    @Input() skipLocationChange: boolean = false;
-    @Input() showInfoBtn: boolean = false;
+    @Input({ required: true }) public auction!: Auction;
+    @Input() public cardStyle: { [key: string]: string | number } = {};
+    @Input() public skipLocationChange: boolean = false;
+    @Input() public showInfoBtn: boolean = false;
+    @Input() public privateView: boolean = false;
 
-    @Output() loaded = new EventEmitter<number>();
+    @Output() public loaded = new EventEmitter<number>();
     public statuses = Auction.STATUSES;
     public showImagePlaceholder: boolean = false;
     public pendingEndTime: Date | null = null;

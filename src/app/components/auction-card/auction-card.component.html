@@ -58,7 +58,7 @@
                 @if ((windowService.isMobile$ | async) === false) {
                     (Until {{ auction.endTime | localDate }})
                 }
-            } @else if (pendingEndTime) {
+            } @else if (privateView && pendingEndTime) {
                 <span class="pending-timer">
                     <i class="pi pi-clock"></i>&nbsp; The auction is pending,
                     you have
@@ -72,6 +72,7 @@
     </div>
     <div class="auction-card-btns">
         @if (
+            privateView &&
             auction.isOver === false &&
             auction.userId &&
             auction.userId === authentication.loggedUser?.id

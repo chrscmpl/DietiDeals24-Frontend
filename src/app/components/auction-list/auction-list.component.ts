@@ -39,6 +39,8 @@ export class AuctionListComponent implements OnInit, OnDestroy {
     @Input() public emptyMessage: string =
         'No auctions corresponding to the search criteria';
 
+    @Input() public privateView: boolean = false;
+
     private _requestKey!: RequestKey | null;
     private readonly subscriptions: Subscription[] = [];
     public auctions: ReadonlyArray<Auction> = [];

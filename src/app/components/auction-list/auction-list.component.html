@@ -3,6 +3,7 @@
         @defer (on viewport) {
             <dd24-auction-card
                 [auction]="auction"
+                [privateView]="privateView"
                 (loaded)="scrolled($index)"
             ></dd24-auction-card>
         } @placeholder {
