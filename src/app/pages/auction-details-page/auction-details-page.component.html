@@ -90,7 +90,11 @@
                             : auction.category
                     }}
                 </h3>
-                @if (auction.status === auctionStatus.active && ownAuction) {
+                @if (
+                    !isPreview &&
+                    ownAuction &&
+                    auction.status === auctionStatus.active
+                ) {
                     <p-button
                         class="auction-user auction-delete-btn"
                         label="Delete"

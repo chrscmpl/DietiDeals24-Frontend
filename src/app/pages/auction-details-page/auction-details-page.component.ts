@@ -90,6 +90,8 @@ export class AuctionDetailsPageComponent
 
     public pendingEndTime: Date | null = null;
 
+    public isPreview: boolean = false;
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -121,6 +123,10 @@ export class AuctionDetailsPageComponent
                         environment.auctionPendingTime,
                 );
             }
+        });
+
+        this.route.url.pipe(take(1)).subscribe((url) => {
+            this.isPreview = url[url.length - 1].path === 'auction-preview';
         });
 
         this.subscriptions.push(

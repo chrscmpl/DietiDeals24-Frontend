@@ -282,7 +282,8 @@
 
     @include viewports.mobile {
         box-shadow: var(--mobile-overlay-shadow-top);
-        border-radius: var(--border-radius-large);
+        border-top-right-radius: var(--border-radius-large);
+        border-top-left-radius: var(--border-radius-large);
         padding: calc(var(--auction-details-padding) * 2);
     }
 }

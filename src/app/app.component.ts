@@ -123,6 +123,5 @@ export class AppComponent implements OnInit, AfterViewInit {
                     `user-scalable=${scalable ? 'yes' : 'no'}`,
                 ) ?? '',
         );
-        console.log(viewport.getAttribute('content'));
     }
 }
