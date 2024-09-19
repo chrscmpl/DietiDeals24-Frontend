@@ -26,12 +26,12 @@ import { MessageService } from 'primeng/api';
 import { CarouselModule, CarouselPageEvent } from 'primeng/carousel';
 import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuthenticationService } from '../../services/authentication.service';
-import { BidService } from '../../services/bid.service';
 import { AuctionStatus } from '../../enums/auction-status.enum';
 import { NavigationService } from '../../services/navigation.service';
 import { CategoriesService } from '../../services/categories.service';
 import { RippleModule } from 'primeng/ripple';
 import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
+import { AuctioneerService } from '../../services/auctioneer.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -72,6 +72,7 @@ export class AuctionDetailsPageComponent
     public expanded: boolean = false;
 
     public ownAuction: boolean = false;
+    public isWinner: boolean = false;
 
     public carouselItems: { url: string; index: number; isEmpty?: boolean }[] =
         [];
@@ -95,11 +96,11 @@ export class AuctionDetailsPageComponent
         public readonly windowService: WindowService,
         private readonly clipboard: Clipboard,
         private readonly message: MessageService,
-        private changeDetectorRef: ChangeDetectorRef,
+        private readonly changeDetectorRef: ChangeDetectorRef,
         private readonly authentication: AuthenticationService,
-        private readonly bidService: BidService,
         private readonly navigation: NavigationService,
         private readonly categoriesService: CategoriesService,
+        private readonly auctioneerService: AuctioneerService,
     ) {}
 
     public ngOnInit(): void {
@@ -121,9 +122,10 @@ export class AuctionDetailsPageComponent
         );
 
         this.subscriptions.push(
-            this.authentication.loggedUser$.subscribe(
-                (user) => (this.ownAuction = this.auction?.userId === user.id),
-            ),
+            this.authentication.loggedUser$.subscribe((user) => {
+                this.ownAuction = this.auction?.userId === user.id;
+                this.isWinner = this.auction?.winnerId === user.id;
+            }),
         );
     }
 
@@ -161,6 +163,10 @@ export class AuctionDetailsPageComponent
             severity: 'info',
             summary: 'Link copied to clipboard',
         });
+    }
+
+    public onDelete(): void {
+        this.auctioneerService.showAbortDialog(this.auction!.id);
     }
 
     public onNextPicture(): void {
@@ -211,16 +217,31 @@ export class AuctionDetailsPageComponent
     }
 
     public onBid(): void {
+        this.navigateToTransactionPage(TransactionOperation.bid);
+    }
+
+    public onConclude(): void {
+        this.navigateToTransactionPage(TransactionOperation.conclude);
+    }
+
+    private navigateToTransactionPage(operation: TransactionOperation): void {
         this.navigation.savedRoute = this.navigation.primaryOutletRoute;
         this.router.navigate([
             {
                 outlets: {
                     overlay: null,
-                    primary: [
-                        'txn',
-                        this.auction?.id,
-                        TransactionOperation.bid,
-                    ],
+                    primary: ['txn', this.auction?.id, operation],
+                },
+            },
+        ]);
+    }
+
+    public onMessage(): void {
+        this.router.navigate([
+            {
+                outlets: {
+                    overlay: null,
+                    primary: ['message', this.auction?.id],
                 },
             },
         ]);

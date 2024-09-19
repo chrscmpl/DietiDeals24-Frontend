@@ -19,6 +19,7 @@ import { TransactionOperation } from '../../enums/transaction-operation.enum';
 import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
 import { ButtonModule } from 'primeng/button';
 import { AuctioneerService } from '../../services/auctioneer.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'dd24-auction-card',
@@ -41,10 +42,12 @@ export class AuctionCardComponent implements OnInit {
     @Input({ required: true }) auction!: Auction;
     @Input() cardStyle: { [key: string]: string | number } = {};
     @Input() skipLocationChange: boolean = false;
+    @Input() showInfoBtn: boolean = false;
 
     @Output() loaded = new EventEmitter<number>();
     public statuses = Auction.STATUSES;
     public showImagePlaceholder: boolean = false;
+    public pendingEndTime: Date | null = null;
 
     constructor(
         public readonly windowService: WindowService,
@@ -53,8 +56,13 @@ export class AuctionCardComponent implements OnInit {
         private readonly router: Router,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.loaded.emit();
+        if (this.auction.status === Auction.STATUSES.pending) {
+            this.pendingEndTime = new Date(
+                this.auction.endTime.getTime() + environment.auctionPendingTime,
+            );
+        }
     }
 
     public onImageError(): void {

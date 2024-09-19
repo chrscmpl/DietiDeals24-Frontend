@@ -12,6 +12,7 @@
                 borderRight: 'none'
             }"
             [skipLocationChange]="true"
+            [showInfoBtn]="(windowService.isMobile$ | async) === false"
         ></dd24-auction-card>
         <form
             class="bidding-page-form"

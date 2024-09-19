@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Auction } from '../../../models/auction.model';
 import { Observable, of, switchMap, take } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
@@ -92,6 +92,7 @@ export class CheckoutPageComponent implements OnInit {
         private readonly auctioneerService: AuctioneerService,
         private readonly navigation: NavigationService,
         private readonly confirmation: ConfirmationService,
+        private readonly router: Router,
     ) {}
 
     public ngOnInit(): void {
@@ -265,7 +266,14 @@ export class CheckoutPageComponent implements OnInit {
     }
 
     private onOperationSuccess() {
-        this.navigation.navigateToSavedRoute();
+        if (this.operation === TransactionOperation.conclude) {
+            this.navigation.savedRoute = null;
+            this.router
+                .navigate(['/'])
+                .then(() => this.router.navigate(['message', this.auction.id]));
+        } else {
+            this.navigation.navigateToSavedRoute();
+        }
         this.message.add({
             severity: 'success',
             summary: 'Success',

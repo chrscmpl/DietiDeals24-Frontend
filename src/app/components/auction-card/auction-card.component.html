@@ -1,6 +1,7 @@
 <div
     class="auction-card"
     [class.auction-card-active]="auction.isOver === false"
+    [class.auction-card-pending]="auction.status === statuses.pending"
     [style]="cardStyle"
     (click)="onClick()"
     tabindex="0"
@@ -57,6 +58,13 @@
                 @if ((windowService.isMobile$ | async) === false) {
                     (Until {{ auction.endTime | localDate }})
                 }
+            } @else if (pendingEndTime) {
+                <span class="pending-timer">
+                    <i class="pi pi-clock"></i>&nbsp; The auction is pending,
+                    you have
+                    <dd24-timer [endDate]="pendingEndTime" />
+                    left to choose
+                </span>
             } @else {
                 <span>Ended on {{ auction.endTime | localDate }}</span>
             }
@@ -75,6 +83,14 @@
                 severity="danger"
                 outlined="true"
                 (onClick)="onDelete($event)"
+            />
+        }
+        @if (showInfoBtn) {
+            <p-button
+                class="auction-card-btn"
+                label="View details"
+                icon="pi pi-info-circle"
+                outlined="true"
             />
         }
     </div>

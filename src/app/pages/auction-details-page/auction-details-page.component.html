@@ -90,7 +90,20 @@
                             : auction.category
                     }}
                 </h3>
-                @if (auction.user) {
+                @if (auction.status === auctionStatus.active && ownAuction) {
+                    <p-button
+                        class="auction-user auction-delete-btn"
+                        label="Delete"
+                        icon="pi pi-trash"
+                        severity="danger"
+                        outlined="true"
+                        [style]="{
+                            paddingTop: '0.5rem',
+                            paddingBottom: '0.5rem'
+                        }"
+                        (onClick)="onDelete()"
+                    />
+                } @else if (auction.user) {
                     <dd24-user-preview
                         class="auction-user"
                         [user]="auction.user"
@@ -193,17 +206,36 @@
                         }"
                     ></p-divider>
                 }
-                <p-button
-                    class="auction-bid-btn"
-                    label="Make a bid"
-                    [style]="{ padding: '1rem' }"
-                    (onClick)="onBid()"
-                    [disabled]="
-                        ownAuction ||
-                        !auction.canBeBiddenOn() ||
-                        auction.status !== auctionStatus.active
-                    "
-                ></p-button>
+                @if (ownAuction && auction.status === auctionStatus.pending) {
+                    <p-button
+                        class="auction-bid-btn"
+                        label="Conclude"
+                        [style]="{ padding: '1rem' }"
+                        (onClick)="onConclude()"
+                    />
+                } @else if (
+                    auction.status === auctionStatus.accepted &&
+                    (ownAuction || isWinner)
+                ) {
+                    <p-button
+                        class="auction-bid-btn"
+                        label="Message"
+                        [style]="{ padding: '1rem' }"
+                        (onClick)="onMessage()"
+                    />
+                } @else {
+                    <p-button
+                        class="auction-bid-btn"
+                        label="Make a bid"
+                        [style]="{ padding: '1rem' }"
+                        (onClick)="onBid()"
+                        [disabled]="
+                            ownAuction ||
+                            !auction.canBeBiddenOn() ||
+                            auction.status !== auctionStatus.active
+                        "
+                    />
+                }
             </section>
 
             @if (windowService.isMobile$ | async) {
