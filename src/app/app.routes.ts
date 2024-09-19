@@ -258,6 +258,7 @@ export const routes: Routes = [
         resolve: {
             auction: AuctionResolver.asResolveFn({
                 includeUser: true,
+                includeWinnerIfPresent: true,
             }),
         },
     },

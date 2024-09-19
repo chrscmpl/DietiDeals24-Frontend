@@ -1,5 +1,14 @@
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
-import { catchError, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import {
+    catchError,
+    forkJoin,
+    map,
+    Observable,
+    of,
+    switchMap,
+    take,
+    tap,
+} from 'rxjs';
 import { Auction } from '../models/auction.model';
 import { AuctionsService } from '../services/auctions.service';
 import { inject, Injectable } from '@angular/core';
@@ -16,6 +25,7 @@ export interface AuctionResolverOptions {
     hasAlreadyBidded?: boolean;
     includeUser?: boolean;
     includeWinner?: boolean;
+    includeWinnerIfPresent?: boolean;
     useParent?: boolean;
 }
 
@@ -68,14 +78,23 @@ export class AuctionResolver {
                     );
             }),
             switchMap((auction) =>
-                options?.includeUser
-                    ? this.auctionWithUser(auction)
-                    : of(auction),
-            ),
-            switchMap((auction) =>
-                options?.includeWinner || (auction.isOver && auction.winnerId)
-                    ? this.auctionWithWinner(auction)
-                    : of(auction),
+                forkJoin([
+                    options?.includeUser
+                        ? this.userService.getSummary(auction.userId!)
+                        : of(null),
+                    options?.includeWinner ||
+                    (options?.includeWinnerIfPresent &&
+                        auction.isOver &&
+                        auction.winnerId)
+                        ? this.userService.getSummary(auction.winnerId!)
+                        : of(null),
+                ]).pipe(
+                    map(([user, winner]) => {
+                        if (user) auction.user = user;
+                        if (winner) auction.lastBidder = winner;
+                        return auction;
+                    }),
+                ),
             ),
             catchError((error) => {
                 const message: string =
@@ -137,20 +156,6 @@ export class AuctionResolver {
             throw new Error(
                 `Cannot access this auction because it has ${shouldHaveAlreadyBidded ? 'not ' : ''}already been bidden on by the user`,
             );
-    }
-
-    private auctionWithUser(auction: Auction) {
-        return this.userService.getSummary(auction.userId!).pipe(
-            tap((user) => (auction.user = user)),
-            map(() => auction),
-        );
-    }
-
-    private auctionWithWinner(auction: Auction) {
-        return this.userService.getSummary(auction.winnerId!).pipe(
-            tap((winner) => (auction.winner = winner)),
-            map(() => auction),
-        );
     }
 
     public static asResolveFn(
