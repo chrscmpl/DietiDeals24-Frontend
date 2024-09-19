@@ -66,7 +66,9 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit() {
         this.items$ = combineLatest([
-            this.accessoryInformation.trendingCategories$.pipe(startWith([])),
+            this.accessoryInformation
+                .getTrendingCategories()
+                .pipe(startWith([])),
             this.authentication.isLogged$,
         ]).pipe(
             switchMap(([categories, isLogged]) =>

@@ -79,20 +79,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
     }
 
-    private setScalableViewport(scalable: boolean): void {
-        const viewport = document.head.querySelector('meta[name="viewport"]')!;
-        viewport?.setAttribute(
-            'content',
-            viewport
-                .getAttribute('content')
-                ?.replace(
-                    `user-scalable=${scalable ? 'no' : 'yes'}`,
-                    `user-scalable=${scalable ? 'yes' : 'no'}`,
-                ) ?? '',
-        );
-        console.log(viewport.getAttribute('content'));
-    }
-
     public ngAfterViewInit(): void {
         this.warnings.showInitialWarningIfFirstTimeLoaded();
     }
@@ -124,5 +110,19 @@ export class AppComponent implements OnInit, AfterViewInit {
                 interval = null;
             }
         });
+    }
+
+    private setScalableViewport(scalable: boolean): void {
+        const viewport = document.head.querySelector('meta[name="viewport"]')!;
+        viewport?.setAttribute(
+            'content',
+            viewport
+                .getAttribute('content')
+                ?.replace(
+                    `user-scalable=${scalable ? 'no' : 'yes'}`,
+                    `user-scalable=${scalable ? 'yes' : 'no'}`,
+                ) ?? '',
+        );
+        console.log(viewport.getAttribute('content'));
     }
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
+import { Cacheable } from 'ts-cacheable';
 
 export interface Categories {
     [key: string]: string[];
@@ -14,12 +15,7 @@ export class CategoriesService {
         this.refreshCategories();
     }
 
-    private _trendingCategories: string[] | null = null;
     private _categories: Categories | null = null;
-
-    public get trendingCategories(): string[] | null {
-        return this._trendingCategories;
-    }
 
     public get categories(): Categories | null {
         return this._categories;
@@ -30,7 +26,6 @@ export class CategoriesService {
         return Object.keys(this.categories);
     }
 
-    private trendingCategoriesSubject = new ReplaySubject<void>(1);
     private categoriesSubject = new ReplaySubject<void>(1);
 
     public categories$: Observable<Categories> = this.categoriesSubject
@@ -41,21 +36,9 @@ export class CategoriesService {
         .asObservable()
         .pipe(map(() => this.macroCategories ?? []));
 
-    public trendingCategories$: Observable<string[]> =
-        this.trendingCategoriesSubject
-            .asObservable()
-            .pipe(map(() => this._trendingCategories ?? []));
-
-    public refreshTrendingCategories(cb?: Partial<Observer<string[]>>): void {
-        this.http
-            .get<string[]>(`categories/trending`)
-            .pipe(
-                tap((value) => {
-                    this._trendingCategories = value;
-                    this.trendingCategoriesSubject.next();
-                }),
-            )
-            .subscribe(cb);
+    @Cacheable()
+    public getTrendingCategories(): Observable<string[]> {
+        return this.http.get<string[]>(`categories/trending`);
     }
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {

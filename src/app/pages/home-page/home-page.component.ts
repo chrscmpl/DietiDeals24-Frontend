@@ -33,13 +33,15 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     private readonly subscriptions: Subscription[] = [];
 
+    public trendingCategories: string[] = [];
+
     constructor(
         public readonly categoriesService: CategoriesService,
         public readonly auctionsService: AuctionsService,
         public readonly windowService: WindowService,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.auctionsService.setIfAbsent(this.auctionsRequestKey, {
             queryParameters: {},
             pageSize: 10,
@@ -49,18 +51,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         this.categoryButtonsLoadingIndicator.start();
         this.subscriptions.push(
-            this.categoriesService.trendingCategories$.subscribe(() => {
-                this.categoryButtonsLoadingIndicator.stop();
-            }),
+            this.categoriesService
+                .getTrendingCategories()
+                .subscribe((categories) => {
+                    this.trendingCategories = categories;
+                    this.categoryButtonsLoadingIndicator.stop();
+                }),
         );
-        this.categoriesService.refreshTrendingCategories({
-            error: (err) => {
-                console.error(err);
-            },
-        });
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }

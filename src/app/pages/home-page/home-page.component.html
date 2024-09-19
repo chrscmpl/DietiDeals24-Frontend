@@ -60,10 +60,7 @@
             @if (
                 (categoryButtonsLoadingIndicator.isLoading$ | async) === false
             ) {
-                @for (
-                    category of categoriesService.trendingCategories$ | async;
-                    track $index
-                ) {
+                @for (category of trendingCategories; track $index) {
                     <p-button
                         outlined="true"
                         class="trending-category-button"
