@@ -272,7 +272,7 @@
     padding: var(--auction-details-padding);
     background-color: var(--component-color);
 
-    .auction-bid-btn {
+    .auction-bottom-btn {
         width: 60%;
         align-self: center;
         @include viewports.mobile {
@@ -509,6 +509,14 @@
             .carousel-icon {
                 font-size: 4rem !important;
             }
+        }
+    }
+
+    .auction-bottom-btn .p-button {
+        justify-content: center;
+
+        .p-button-label {
+            flex-grow: 0;
         }
     }
 }

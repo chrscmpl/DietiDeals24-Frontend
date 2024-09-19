@@ -216,7 +216,7 @@
                 }
                 @if (ownAuction && auction.status === auctionStatus.pending) {
                     <p-button
-                        class="auction-bid-btn"
+                        class="auction-bottom-btn"
                         label="Conclude"
                         [style]="{ padding: '1rem' }"
                         (onClick)="onConclude()"
@@ -226,14 +226,17 @@
                     (ownAuction || isWinner)
                 ) {
                     <p-button
-                        class="auction-bid-btn"
-                        label="Message"
+                        class="auction-bottom-btn"
+                        icon="pi pi-envelope"
+                        [label]="
+                            'Contact the ' + (ownAuction ? 'winner' : 'owner')
+                        "
                         [style]="{ padding: '1rem' }"
                         (onClick)="onMessage()"
                     />
                 } @else {
                     <p-button
-                        class="auction-bid-btn"
+                        class="auction-bottom-btn"
                         label="Make a bid"
                         [style]="{ padding: '1rem' }"
                         (onClick)="onBid()"
