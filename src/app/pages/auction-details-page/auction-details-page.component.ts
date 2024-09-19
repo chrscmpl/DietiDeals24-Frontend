@@ -32,6 +32,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { RippleModule } from 'primeng/ripple';
 import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -87,6 +88,8 @@ export class AuctionDetailsPageComponent
 
     public isMacroCategory: boolean = false;
 
+    public pendingEndTime: Date | null = null;
+
     @ViewChild('auctionDetailsContainer', { read: ElementRef })
     public containerElement!: ElementRef;
 
@@ -111,6 +114,13 @@ export class AuctionDetailsPageComponent
             this.isMacroCategory = this.categoriesService.isMacroCategory(
                 this.auction?.category ?? '',
             );
+
+            if (this.auction?.status === Auction.STATUSES.pending) {
+                this.pendingEndTime = new Date(
+                    this.auction.endTime.getTime() +
+                        environment.auctionPendingTime,
+                );
+            }
         });
 
         this.subscriptions.push(

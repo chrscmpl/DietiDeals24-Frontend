@@ -74,7 +74,8 @@ export class AuctionCardComponent implements OnInit {
         if (
             this.auction.userId &&
             this.auction.userId === this.authentication.loggedUser?.id &&
-            this.auction.status === Auction.STATUSES.pending
+            this.auction.status === Auction.STATUSES.pending &&
+            !this.router.url.includes('txn')
         ) {
             this.navigateToConclusion();
         } else {

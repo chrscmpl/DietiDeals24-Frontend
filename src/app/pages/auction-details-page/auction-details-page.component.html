@@ -192,8 +192,16 @@
                         <span class="auction-end-date"
                             >Until {{ auction.endTime | localDate }}</span
                         >
+                    } @else if (ownAuction && pendingEndTime) {
+                        <span style="color: var(--danger-color)">
+                            <i class="pi pi-clock"></i>&nbsp; The auction is
+                            pending, you have
+                            <dd24-timer [endDate]="pendingEndTime" />
+                            left to choose whether to accept or reject the
+                            winning bid
+                        </span>
                     } @else {
-                        <span>Ended on {{ auction.endTime | localDate }}</span>
+                        <span>Ended {{ auction.endTime | localDate }}</span>
                     }
                 </p>
 
