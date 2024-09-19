@@ -173,7 +173,7 @@
                         "
                     >
                     </span>
-                    @if (auction.bids) {
+                    @if (auction.bids && !auction.isOver) {
                         <span class="auction-bids-count">
                             {{ auction.bids }} bids made</span
                         >
