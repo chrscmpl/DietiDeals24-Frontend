@@ -105,13 +105,21 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         );
     }
 
-    googleLogin() {}
+    public googleSignIn(): void {
+        this.message.add({
+            severity: 'info',
+            summary: 'Not implemented',
+            detail: 'Google sign in is not implemented at this time',
+        });
+    }
 
     private onLoginSuccess(): void {
         this.navigation.navigateToRouteBeforeRedirection();
     }
 
-    private onLoginError(e: LoginException | GetAuthenticatedUserDataException): void {
+    private onLoginError(
+        e: LoginException | GetAuthenticatedUserDataException,
+    ): void {
         this.submissionLoading = false;
         if (e.error.status >= 500) {
             this.displayError('Server error', 'Please try again later');

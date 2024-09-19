@@ -5,16 +5,16 @@
         already have an account?
     </a>
 
-    <form class="google-registration">
+    <div class="google-registration">
         <p-button
             class="google-registration-btn p-fluid"
-            type="submit"
+            (onClick)="googleSignIn()"
             severity="secondary"
         >
             <img src="assets/google.svg" alt="google-logo" />
             Continue with Google
         </p-button>
-    </form>
+    </div>
 
     <p-divider class="divider" align="center">or</p-divider>
 
@@ -197,6 +197,7 @@
                             name="email"
                             placeholder="Your email"
                             id="email"
+                            autocomplete="email"
                         />
                     </dd24-input>
                 </div>
@@ -222,6 +223,7 @@
                             id="username"
                             pKeyFilter="alphanum"
                             [maxlength]="environment.usernameMaxLength"
+                            autocomplete="off"
                         />
                     </dd24-input>
                 </div>
@@ -257,6 +259,7 @@
                             [strongRegex]="environment.passwordStrongPattern"
                             [mediumRegex]="environment.passwordMediumPattern"
                             inputId="password"
+                            autocomplete="new-password"
                         />
                     </dd24-input>
                 </div>

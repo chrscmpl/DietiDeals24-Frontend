@@ -32,7 +32,7 @@ import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { AssetsService } from '../../../services/assets.service';
-import { Subscription, take } from 'rxjs';
+import { Subject, Subscription, take, throttleTime } from 'rxjs';
 import { RegistrationException } from '../../../exceptions/registration.exception';
 import { NavigationService } from '../../../services/navigation.service';
 import { WindowService } from '../../../services/window.service';
@@ -88,6 +88,7 @@ interface registrationForm {
 })
 export class RegistrationPageComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
+    private next$ = new Subject<void>();
     @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
     public registrationForm!: FormGroup<registrationForm>;
@@ -187,11 +188,18 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
                     : null;
             }),
         );
+
+        this.subscriptions.push(
+            this.next$.pipe(throttleTime(100)).subscribe(() => {
+                this.stepper.nextStep();
+            }),
+        );
     }
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((s) => s.unsubscribe());
         this.navigation.backAction = null;
+        this.next$.complete();
     }
 
     private initForm(): void {
@@ -270,7 +278,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     }
 
     public next(): void {
-        this.stepper.nextStep();
+        this.next$.next();
     }
 
     private onBack(defaultFn: () => void): void {
@@ -285,6 +293,14 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         }
 
         this.onRegister();
+    }
+
+    public googleSignIn(): void {
+        this.message.add({
+            severity: 'info',
+            summary: 'Not implemented',
+            detail: 'Google sign in is not implemented at this time',
+        });
     }
 
     private onRegister(): void {

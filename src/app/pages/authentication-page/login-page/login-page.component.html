@@ -3,16 +3,16 @@
     <a routerLink="../register" class="registration-link link">
         you don't have an account?
     </a>
-    <form class="google-login">
+    <div class="google-login">
         <p-button
             class="google-login-btn p-fluid"
-            type="submit"
+            (onClick)="googleSignIn()"
             severity="secondary"
         >
             <img src="assets/google.svg" alt="google-logo" />
             Continue with Google
         </p-button>
-    </form>
+    </div>
 
     <p-divider class="divider" align="center">or</p-divider>
 

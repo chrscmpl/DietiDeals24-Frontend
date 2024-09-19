@@ -73,6 +73,24 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.navigation.navigationStopped$.subscribe(() => {
             this.isLoadingRouteIndicator.stop();
         });
+
+        this.windowService.isMobile$.subscribe((isMobile) => {
+            this.setScalableViewport(!isMobile);
+        });
+    }
+
+    private setScalableViewport(scalable: boolean): void {
+        const viewport = document.head.querySelector('meta[name="viewport"]')!;
+        viewport?.setAttribute(
+            'content',
+            viewport
+                .getAttribute('content')
+                ?.replace(
+                    `user-scalable=${scalable ? 'no' : 'yes'}`,
+                    `user-scalable=${scalable ? 'yes' : 'no'}`,
+                ) ?? '',
+        );
+        console.log(viewport.getAttribute('content'));
     }
 
     public ngAfterViewInit(): void {
