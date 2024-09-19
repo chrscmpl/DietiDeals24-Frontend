@@ -13,7 +13,11 @@ export class ResetForgottenPasswordDataSerializer
     public serialize(
         data: ResetForgottenPasswordData,
     ): ResetForgottenPasswordDTO {
-        return data;
+        return {
+            userId: data.userId,
+            authToken: data.token,
+            newPassword: data.newPassword,
+        };
     }
 
     public serializeArray(

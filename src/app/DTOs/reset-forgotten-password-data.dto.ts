@@ -1,5 +1,5 @@
 export interface ResetForgottenPasswordDTO {
     userId: string;
-    token: string;
+    authToken: string;
     newPassword: string;
 }
