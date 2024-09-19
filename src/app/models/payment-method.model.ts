@@ -4,7 +4,7 @@ import {
     PaymentMethodDTO,
 } from '../DTOs/payment-method.dto';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 export abstract class PaymentMethod {
     protected _id: string;

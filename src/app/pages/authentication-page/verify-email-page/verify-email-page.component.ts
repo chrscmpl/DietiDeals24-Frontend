@@ -15,7 +15,7 @@ import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { EmailVerificationException } from '../../../exceptions/email-verification.exception';
-import { GetUserDataException } from '../../../exceptions/get-user-data.exception';
+import { GetAuthenticatedUserDataException } from '../../../exceptions/get-authenticated-user-data.exception';
 import { emailVerificationData } from '../../../models/email-verification-data.model';
 
 interface verificationForm {
@@ -104,7 +104,7 @@ export class VerifyEmailPageComponent implements OnInit {
     }
 
     private onVerificationError(
-        e: EmailVerificationException | GetUserDataException,
+        e: EmailVerificationException | GetAuthenticatedUserDataException,
     ): void {
         this.submissionLoading = false;
         if (e.error.status >= 500) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Message, MessageService } from 'primeng/api';
 import { environment } from '../../environments/environment';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodTypesByCategory } from '../helpers/payment-method-types-by-category';
 

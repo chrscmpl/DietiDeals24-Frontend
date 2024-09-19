@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 @Pipe({
     name: 'paymentMethodLabel',

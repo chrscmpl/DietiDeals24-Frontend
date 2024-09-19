@@ -3,7 +3,7 @@ import { PaymentMethod } from '../../models/payment-method.model';
 import { RadioButton, RadioButtonModule } from 'primeng/radiobutton';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaskedPipe } from '../../pipes/masked.pipe';
-import { PaymentMethodType } from '../../enums/payment-method-type';
+import { PaymentMethodType } from '../../enums/payment-method-type.enum';
 import { PaymentMethodLabelPipe } from '../../pipes/payment-method-label.pipe';
 import { WindowService } from '../../services/window.service';
 import { AsyncPipe } from '@angular/common';

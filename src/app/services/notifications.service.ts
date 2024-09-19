@@ -102,6 +102,7 @@ export class NotificationsService {
             .post(
                 `notifications/mark-as-read?notificationId=${notification.id}`,
                 {},
+                { responseType: 'text' },
             )
             .subscribe();
     }
@@ -111,7 +112,13 @@ export class NotificationsService {
             (notification) => (notification.read = true),
         );
         this.unreadNotificationsCount = 0;
-        this.http.post(`notifications/mark-all-as-read`, {}).subscribe();
+        this.http
+            .post(
+                'notifications/mark-all-as-read',
+                {},
+                { responseType: 'text' },
+            )
+            .subscribe();
     }
 
     public deleteOne(notification: DisplayableNotification): void {
@@ -124,6 +131,7 @@ export class NotificationsService {
         this.http
             .delete(
                 `notifications/mark-as-eliminated?notificationId=${notification.id}`,
+                { responseType: 'text' },
             )
             .subscribe();
     }
@@ -131,7 +139,11 @@ export class NotificationsService {
     public deleteAll(): void {
         this.request.editableElements.splice(0, this.notifications.length);
         this.unreadNotificationsCount = 0;
-        this.http.delete(`notifications/mark-all-as-eliminated`).subscribe();
+        this.http
+            .delete('notifications/mark-all-as-eliminated', {
+                responseType: 'text',
+            })
+            .subscribe();
     }
 
     public get unreadNotificationsCount(): number {

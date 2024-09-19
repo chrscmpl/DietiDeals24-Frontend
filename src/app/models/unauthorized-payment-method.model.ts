@@ -1,4 +1,4 @@
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 export abstract class UnauthorizedPaymentMethod {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

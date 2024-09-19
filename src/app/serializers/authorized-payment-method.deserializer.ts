@@ -7,7 +7,7 @@ import {
     AuthorizedIBAN,
     AuthorizedPaymentMethod,
 } from '../models/authorized-payment-method.model';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 @Injectable({
     providedIn: 'root',

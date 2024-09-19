@@ -6,7 +6,7 @@ import {
     UnauthorizedPaymentMethod,
 } from '../models/unauthorized-payment-method.model';
 import { UnauthorizedPaymentMethodRegistrationDTO } from '../DTOs/payment-method.dto';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 @Injectable({
     providedIn: 'root',

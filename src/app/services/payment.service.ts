@@ -4,7 +4,7 @@ import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient } from '@angular/common/http';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 import { PaymentMethodDTO } from '../DTOs/payment-method.dto';
 import { PaymentAuthorizationException } from '../exceptions/payment-authorization.exception';
 import { PaymentMethodDeserializer } from '../deserializers/payment-method.deserializer';

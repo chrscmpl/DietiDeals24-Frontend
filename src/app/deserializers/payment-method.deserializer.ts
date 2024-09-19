@@ -10,7 +10,7 @@ import {
     IBAN,
     PaymentMethod,
 } from '../models/payment-method.model';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 @Injectable({
     providedIn: 'root',

@@ -1,4 +1,4 @@
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 export interface PaymentMethodDTO {
     type: PaymentMethodType;

@@ -17,6 +17,7 @@ import { AuctionStatus } from '../enums/auction-status.enum';
 import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
+import { GetUserException } from '../exceptions/get-user.exception';
 
 export interface AuctionResolverOptions {
     isWinnerOrOwner?: boolean;
@@ -98,9 +99,11 @@ export class AuctionResolver {
             ),
             catchError((error) => {
                 const message: string =
-                    error instanceof HttpErrorResponse
-                        ? 'We could not find the requested auction'
-                        : error.message;
+                    error instanceof GetUserException
+                        ? 'Could not fetch the data of an user associated with this auction'
+                        : error instanceof HttpErrorResponse
+                          ? 'We could not find the requested auction'
+                          : error.message;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',

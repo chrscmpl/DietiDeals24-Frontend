@@ -1,5 +1,5 @@
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
-import { PaymentMethodType } from '../enums/payment-method-type';
+import { PaymentMethodType } from '../enums/payment-method-type.enum';
 
 export const paymentMethodTypesByCategory = new Map<
     PaymentMethodCategory,

@@ -18,7 +18,7 @@ import { PaymentMethodLabelPipe } from '../../../pipes/payment-method-label.pipe
 import { ButtonModule } from 'primeng/button';
 import { PaymentService } from '../../../services/payment.service';
 import { HttpException } from '../../../exceptions/http.exception';
-import { PaymentMethodType } from '../../../enums/payment-method-type';
+import { PaymentMethodType } from '../../../enums/payment-method-type.enum';
 import {
     NewPaymentMethodForm,
     PaymentMethodFormComponent,

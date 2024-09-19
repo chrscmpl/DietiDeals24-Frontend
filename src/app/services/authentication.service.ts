@@ -17,7 +17,7 @@ import {
 import { UserCredentials } from '../DTOs/authentication.dto';
 import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
 import { LoginException } from '../exceptions/login.exception';
-import { GetUserDataException } from '../exceptions/get-user-data.exception';
+import { GetAuthenticatedUserDataException } from '../exceptions/get-authenticated-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';
 import { EmailVerificationException } from '../exceptions/email-verification.exception';
 import { AuthenticatedUserDeserializer } from '../deserializers/authenticated-user.deserializer';
@@ -175,7 +175,7 @@ export class AuthenticationService {
                 this.deserializer.deserialize(dto),
             ),
             tap(this.setLoggedUser.bind(this)),
-            catchError((e) => throwError(() => new GetUserDataException(e))),
+            catchError((e) => throwError(() => new GetAuthenticatedUserDataException(e))),
         );
     }
 

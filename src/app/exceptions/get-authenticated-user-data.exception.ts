@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpException } from './http.exception';
 
-export class GetUserDataException extends HttpException {
+export class GetAuthenticatedUserDataException extends HttpException {
     public constructor(error: HttpErrorResponse) {
         super(error);
     }

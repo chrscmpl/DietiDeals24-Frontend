@@ -19,7 +19,7 @@ import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { LoginException } from '../../../exceptions/login.exception';
-import { GetUserDataException } from '../../../exceptions/get-user-data.exception';
+import { GetAuthenticatedUserDataException } from '../../../exceptions/get-authenticated-user-data.exception';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -111,7 +111,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         this.navigation.navigateToRouteBeforeRedirection();
     }
 
-    private onLoginError(e: LoginException | GetUserDataException): void {
+    private onLoginError(e: LoginException | GetAuthenticatedUserDataException): void {
         this.submissionLoading = false;
         if (e.error.status >= 500) {
             this.displayError('Server error', 'Please try again later');
