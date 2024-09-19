@@ -14,14 +14,22 @@ export class UserMessagingService {
     ) {}
 
     public sendMessage(message: Message): Observable<unknown> {
-        return this.http.post('message', this.serializer.serialize(message), {
-            responseType: 'text',
-        });
+        return this.http.post(
+            'message/forward/email',
+            this.serializer.serialize(message),
+            {
+                responseType: 'text',
+            },
+        );
     }
 
     public sendReport(message: Message): Observable<unknown> {
-        return this.http.post('report', this.serializer.serialize(message), {
-            responseType: 'text',
-        });
+        return this.http.post(
+            'message/report/email',
+            this.serializer.serialize(message),
+            {
+                responseType: 'text',
+            },
+        );
     }
 }
