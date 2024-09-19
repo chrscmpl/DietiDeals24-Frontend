@@ -48,8 +48,9 @@ export abstract class Auction {
         this._category = dto.category ?? null;
         this._description = dto.description ?? null;
         this._bids = dto.numberOfBids ?? null;
-        this._userId = String(dto.userId) ?? null;
-        this._lastBidderId = String(dto.currentBidderId) ?? null;
+        this._userId = dto.userId !== null ? String(dto.userId) : null;
+        this._lastBidderId =
+            dto.currentBidderId !== null ? String(dto.currentBidderId) : null;
         this._picturesUrls =
             dto.picturesUrls ?? (dto.pictureUrl ? [dto.pictureUrl] : []);
         this._ownBid =

@@ -18,6 +18,7 @@ import { MessageService } from 'primeng/api';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../services/user.service';
 import { GetUserException } from '../exceptions/get-user.exception';
+import { UserSummary } from '../models/user.model';
 
 export interface AuctionResolverOptions {
     isWinnerOrOwner?: boolean;
@@ -81,13 +82,13 @@ export class AuctionResolver {
             switchMap((auction) =>
                 forkJoin([
                     options?.includeUser
-                        ? this.userService.getSummary(auction.userId!)
+                        ? this.auctionOwner(auction)
                         : of(null),
                     options?.includeWinner ||
                     (options?.includeWinnerIfPresent &&
                         auction.isOver &&
                         auction.winnerId)
-                        ? this.userService.getSummary(auction.winnerId!)
+                        ? this.auctionWinner(auction)
                         : of(null),
                 ]).pipe(
                     map(([user, winner]) => {
@@ -159,6 +160,16 @@ export class AuctionResolver {
             throw new Error(
                 `Cannot access this auction because it has ${shouldHaveAlreadyBidded ? 'not ' : ''}already been bidden on by the user`,
             );
+    }
+
+    private auctionOwner(auction: Auction): Observable<UserSummary> {
+        if (!auction.userId) throw new Error('Auction has no owner');
+        return this.userService.getSummary(auction.userId);
+    }
+
+    private auctionWinner(auction: Auction): Observable<UserSummary> {
+        if (!auction.winnerId) throw new Error('Auction has no winner');
+        return this.userService.getSummary(auction.winnerId);
     }
 
     public static asResolveFn(
