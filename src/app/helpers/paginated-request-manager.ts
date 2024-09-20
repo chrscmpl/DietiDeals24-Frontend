@@ -1,4 +1,4 @@
-import { Observer, ReplaySubject, Subscription } from 'rxjs';
+import { Observer, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { PaginatedRequest, PaginatedRequestParams } from './paginated-request';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UninterruptedResettableObserver } from './uninterrupted-resettable-observer';
@@ -10,7 +10,7 @@ export class PaginatedRequestManager<Entity> {
     private readonly nextSubject = new ReplaySubject<Entity[]>(1);
     private readonly errorSubject = new ReplaySubject<HttpErrorResponse>(1);
     private readonly completeSubject = new ReplaySubject<void>(1);
-    private readonly resetSubject = new ReplaySubject<void>(1);
+    private readonly resetSubject = new Subject<void>();
 
     private readonly next$ = this.nextSubject.asObservable();
     private readonly error$ = this.errorSubject.asObservable();
