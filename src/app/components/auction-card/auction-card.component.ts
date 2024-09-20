@@ -46,7 +46,7 @@ export class AuctionCardComponent implements OnInit {
     @Input() public privateView: boolean = false;
 
     @Output() public loaded = new EventEmitter<number>();
-    public statuses = Auction.STATUSES;
+    public readonly statuses = Auction.STATUSES;
     public showImagePlaceholder: boolean = false;
     public pendingEndTime: Date | null = null;
 
@@ -83,9 +83,14 @@ export class AuctionCardComponent implements OnInit {
         }
     }
 
-    public onDelete(even: Event) {
-        even.stopPropagation();
-        this.auctioneerService.showAbortDialog(this.auction.id);
+    public onDelete(event: Event) {
+        event.stopPropagation();
+        this.auctioneerService.showAbortDialog(this.auction.id).subscribe();
+    }
+
+    public onMessage(event: Event) {
+        event.stopPropagation();
+        this.router.navigate(['message', this.auction?.id]);
     }
 
     private navigateToDetails(): void {

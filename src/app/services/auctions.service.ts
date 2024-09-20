@@ -96,6 +96,16 @@ export class AuctionsService {
         this.getRequest(key).manager.reset();
     }
 
+    public resetOn(
+        predicate: (params: Omit<RequestData, 'manager'>) => boolean,
+    ): void {
+        for (const value of this.requestsMap.values()) {
+            if (predicate(value)) {
+                value.manager.reset();
+            }
+        }
+    }
+
     public remove(key: RequestKey): void {
         this.getRequest(key).manager.clear();
         this.requestsMap.delete(key);

@@ -85,6 +85,20 @@
                 outlined="true"
                 (onClick)="onDelete($event)"
             />
+        } @else if (privateView && auction.status === statuses.accepted) {
+            <p-button
+                class="auction-card-btn"
+                icon="pi pi-envelope"
+                [label]="
+                    'Contact the ' +
+                    (auction.userId &&
+                    auction.userId === authentication.loggedUser?.id
+                        ? 'winner'
+                        : 'owner')
+                "
+                outlined="true"
+                (onClick)="onMessage($event)"
+            />
         }
         @if (showInfoBtn) {
             <p-button

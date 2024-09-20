@@ -30,13 +30,13 @@ export class CacheBustersService {
         });
 
         cacheBusters.activeBids$.subscribe(() => {
-            this.auctionsService.removeOn(
+            this.auctionsService.resetOn(
                 (request) => request.ownAuctions && !request.onlyAuctions,
             );
         });
 
         cacheBusters.ownActiveAuctions$.subscribe(() => {
-            this.auctionsService.removeOn(
+            this.auctionsService.resetOn(
                 (request) => request.ownAuctions && !request.onlyBids,
             );
         });

@@ -182,7 +182,9 @@ export class AuctionDetailsPageComponent
     }
 
     public onDelete(): void {
-        this.auctioneerService.showAbortDialog(this.auction!.id);
+        this.auctioneerService
+            .showAbortDialog(this.auction!.id)
+            .subscribe(this.onClose.bind(this));
     }
 
     public onNextPicture(): void {

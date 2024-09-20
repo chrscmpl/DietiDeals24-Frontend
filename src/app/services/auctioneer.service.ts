@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, Observer, throwError } from 'rxjs';
+import { catchError, Observable, Observer, take, throwError } from 'rxjs';
 import { CacheBuster } from 'ts-cacheable';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
@@ -250,34 +250,41 @@ export class AuctioneerService {
             );
     }
 
-    public showAbortDialog(id: string): void {
-        this.confirmation.confirm({
-            header: 'Are you sure?',
-            message:
-                "Are you sure you want to abort this auction? You won't be able to undo this action.",
-            icon: 'pi pi-exclamation-triangle',
-            acceptButtonStyleClass: 'p-button-danger',
-            acceptIcon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Delete',
-            rejectLabel: 'Cancel',
-            rejectIcon: 'pi pi-arrow-left',
-            rejectButtonStyleClass: 'p-button-outlined',
-            dismissableMask: true,
-            closeOnEscape: true,
-            accept: () =>
-                this.abortAuction(id).subscribe({
-                    next: () =>
-                        this.message.add({
-                            severity: 'success',
-                            summary: 'Auction aborted successfully',
-                        }),
-                    error: (e) =>
-                        this.message.add({
-                            severity: 'error',
-                            summary: e.message,
-                        }),
-                }),
-        });
+    public showAbortDialog(id: string): Observable<void> {
+        return new Observable<void>((subscriber) => {
+            this.confirmation.confirm({
+                header: 'Are you sure?',
+                message:
+                    "Are you sure you want to abort this auction? You won't be able to undo this action.",
+                icon: 'pi pi-exclamation-triangle',
+                acceptButtonStyleClass: 'p-button-danger',
+                acceptIcon: 'pi pi-exclamation-triangle',
+                acceptLabel: 'Delete',
+                rejectLabel: 'Cancel',
+                rejectIcon: 'pi pi-arrow-left',
+                rejectButtonStyleClass: 'p-button-outlined',
+                reject: () => subscriber.next(),
+                dismissableMask: true,
+                closeOnEscape: true,
+                accept: () =>
+                    this.abortAuction(id).subscribe({
+                        next: () => {
+                            subscriber.next();
+                            this.message.add({
+                                severity: 'success',
+                                summary: 'Auction deleted successfully',
+                            });
+                        },
+                        error: (e) => {
+                            subscriber.error(e);
+                            this.message.add({
+                                severity: 'error',
+                                summary: e.message,
+                            });
+                        },
+                    }),
+            });
+        }).pipe(take(1));
     }
 
     @CacheBuster({

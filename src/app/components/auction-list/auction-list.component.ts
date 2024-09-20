@@ -131,11 +131,11 @@ export class AuctionListComponent implements OnInit, OnDestroy {
                 reset: () => {
                     this.error = false;
                     this.showEmpty = false;
-                    this.startLoading();
                     if (this.requestKey)
                         this.pageSize = this.auctionsService.pageSize(
                             this.requestKey,
                         );
+                    this.more();
                 },
             }),
         );

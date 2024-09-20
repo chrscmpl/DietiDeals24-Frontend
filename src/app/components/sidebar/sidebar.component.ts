@@ -1,19 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SidebarModule } from 'primeng/sidebar';
 import { WindowService } from '../../services/window.service';
 import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from '../logo/logo.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { mainPages } from '../../helpers/links';
-import {
-    Observable,
-    combineLatest,
-    delay,
-    map,
-    of,
-    startWith,
-    switchMap,
-} from 'rxjs';
+import { Observable, catchError, combineLatest, map, of } from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -25,7 +17,7 @@ import { AuthenticationService } from '../../services/authentication.service';
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
     private readonly mainPagesMenuItems: MenuItem[] = mainPages.map((page) => {
         return {
             label: page.name,
@@ -37,7 +29,7 @@ export class SidebarComponent implements OnInit {
 
     constructor(
         public readonly windowService: WindowService,
-        private readonly accessoryInformation: CategoriesService,
+        private readonly categoriesService: CategoriesService,
         private readonly authentication: AuthenticationService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
@@ -62,52 +54,43 @@ export class SidebarComponent implements OnInit {
         });
     }
 
-    public items$: Observable<MenuItem[]> = of([]);
-
-    ngOnInit() {
-        this.items$ = combineLatest([
-            this.accessoryInformation
-                .getTrendingCategories()
-                .pipe(startWith([])),
-            this.authentication.isLogged$,
-        ]).pipe(
-            switchMap(([categories, isLogged]) =>
-                combineLatest([of(categories), of(isLogged)]).pipe(
-                    delay(categories.length ? 0 : 1000),
-                ),
-            ),
-            map(([categories, isLogged]) => {
-                const items: MenuItem[] = [...this.mainPagesMenuItems];
-                if (categories.length) {
-                    const categoriesItem: MenuItem = {
-                        label: 'Trending Categories',
-                        icon: 'pi pi-chart-line',
-                        items: categories.map((category) => {
-                            return {
-                                label: category,
-                                routerLink: ['/auctions'],
-                                queryParams: { category },
-                                command: () => this.hideSidebar(),
-                            };
-                        }),
-                    };
-                    items.splice(items.length - 2, 0, categoriesItem);
-                }
-                if (isLogged) {
-                    items.push({
-                        label: 'Logout',
-                        icon: 'pi pi-sign-out',
-                        command: () => {
-                            this.authentication.logout();
-                            this.hideSidebar();
-                        },
-                        routerLink: ['/'],
-                    });
-                }
-                return items;
-            }),
-        );
-    }
+    public items$: Observable<MenuItem[]> = combineLatest([
+        this.categoriesService
+            .getTrendingCategories()
+            .pipe(catchError(() => of([]))),
+        this.authentication.isLogged$,
+    ]).pipe(
+        map(([categories, isLogged]) => {
+            const items: MenuItem[] = [...this.mainPagesMenuItems];
+            if (categories.length) {
+                const categoriesItem: MenuItem = {
+                    label: 'Trending Categories',
+                    icon: 'pi pi-chart-line',
+                    items: categories.map((category) => {
+                        return {
+                            label: category,
+                            routerLink: ['/auctions'],
+                            queryParams: { category },
+                            command: () => this.hideSidebar(),
+                        };
+                    }),
+                };
+                items.splice(items.length - 2, 0, categoriesItem);
+            }
+            if (isLogged) {
+                items.push({
+                    label: 'Logout',
+                    icon: 'pi pi-sign-out',
+                    command: () => {
+                        this.authentication.logout();
+                        this.hideSidebar();
+                    },
+                    routerLink: ['/'],
+                });
+            }
+            return items;
+        }),
+    );
 
     public hideSidebar(): void {
         this.windowService.isSidebarVisible = false;
