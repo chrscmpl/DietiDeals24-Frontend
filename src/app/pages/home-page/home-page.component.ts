@@ -48,6 +48,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     public readonly auctionsRequestKey: string = '/home';
 
     public trendingCategories: string[] = [];
+    public showFullTrendingCategories: boolean = false;
 
     constructor(
         public readonly categoriesService: CategoriesService,
@@ -89,6 +90,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private onMobile(): void {
         this.resizeSubscription?.unsubscribe();
+        this.showFullTrendingCategories = false;
         this.trendingCategoriesButtonsContainer.nativeElement.style.height =
             'auto';
 
@@ -98,6 +100,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private onDesktop(): void {
         this.lastTrendingCategoriesButtonsHeight = null;
+        this.showFullTrendingCategories = true;
         this.trendingCategoriesButtonsContainer.nativeElement.style.paddingTop = `${HomePageComponent.TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING}px`;
         this.trendingCategoriesButtonsContainer.nativeElement.style.paddingBottom = `${HomePageComponent.TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING}px`;
         this.zone.runOutsideAngular(() => {

@@ -64,10 +64,7 @@
                 (categoryButtonsLoadingIndicator.isLoading$ | async) === false
             ) {
                 @for (category of trendingCategories; track $index) {
-                    @if (
-                        $index < 6 ||
-                        (windowService.isMobile$ | async) === false
-                    ) {
+                    @if ($index < 6 || showFullTrendingCategories) {
                         <p-button
                             outlined="true"
                             class="trending-category-button"
