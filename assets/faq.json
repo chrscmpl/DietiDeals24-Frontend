@@ -46,7 +46,7 @@
     },
     {
         "question": "Is my activity on the platform publicly visible to others?",
-        "answer": "It is possible for anyone to view the profile of the creators of the auctions they stumble upon, and it is also possible to view the profile of the winning bidder at the end of an auction. What is shown in your profile apart from your public information (username, bio, location, links), are your active auctions, all of your past winning bids, and all of your past auctions which concluded with you accepting an offer. What is NOT shown instead are your current bids on any active auction."
+        "answer": "It is possible for anyone to view the profile of the creators of the auctions they stumble upon, and it is also possible to view the profile of the winning bidder at the end of an auction. What is shown in your profile apart from your public information (username, bio, location, links), are your active auctions, all of your past winning bids, and all of your past auctions which you did not delete prematurely. What is NOT shown instead are your current bids on any active auction."
     },
     {
         "question": "What is privately visible to me on my personal page?",
@@ -54,10 +54,10 @@
     },
     {
         "question": "What happens in case of uncooperative behaviour?",
-        "answer": "In case an user fails to uphold his end of a deal, the affected user can report said behaviour to the platform DietiDeals24 to the email address dietideals24.support@gmail.com. This can be done before 30 days since the conclusion of the auction have passed. A user found guilty of uncooperative behaviour might be removed from the platform DietiDeals24."
+        "answer": "In case an user fails to uphold their end of a deal, the affected user can report said behaviour to the platform DietiDeals24. This can be done by navigating to the page of the specific auction, clicking the button that offers to contact the other user, and clicking the \"Write us a report\" button. A user found guilty of fraud or similar uncooperative behaviour might be removed from the platform DietiDeals24."
     },
     {
         "question": "I have received strange emails from DietiDeals24",
-        "answer": "Please make sure to only interact with emails sent from the official email addresses of DietiDeals24 which are dietideals24@gmail.com and dietideals24.support@gmail.com. DietiDeals24 will never ask for your password or any other private information directly through these channels."
+        "answer": "Please make sure to only interact with emails sent from the official email address dietideals24@gmail.com. DietiDeals24 will never ask for your password or any other private information directly through these channels."
     }
 ]
