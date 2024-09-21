@@ -28,17 +28,18 @@
                 $justify-content: center,
                 $align-content: start
             );
-            row-gap: 10000px;
+            row-gap: 0;
             line-height: normal;
             overflow: hidden;
-            grid-auto-rows: 1fr;
-            min-height: 3.5em;
+            grid-auto-rows: 0;
             .trending-category-button {
                 @include viewports.mobile {
                     width: 100%;
                 }
             }
             @include viewports.mobile {
+                grid-auto-rows: 1fr;
+                row-gap: 0.5em;
                 @include layouts.grid($template: 1fr / 1fr 1fr, $gap: 0.5em);
             }
             .trending-category-loading-button {

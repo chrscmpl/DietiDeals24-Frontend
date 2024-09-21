@@ -1,12 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    NgZone,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoriesService } from '../../services/categories.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -16,7 +8,7 @@ import { AuctionListComponent } from '../../components/auction-list/auction-list
 import { AuctionsService } from '../../services/auctions.service';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
-import { fromEvent, startWith, Subscription, take, throttleTime } from 'rxjs';
+import { combineLatest, Subscription, take } from 'rxjs';
 import { CarouselModule } from 'primeng/carousel';
 
 @Component({
@@ -33,28 +25,19 @@ import { CarouselModule } from 'primeng/carousel';
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.scss',
 })
-export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('trendingCategoriesButtonsContainer')
-    private readonly trendingCategoriesButtonsContainer!: ElementRef;
-    private lastTrendingCategoriesButtonsHeight: number | null = null;
-    private static readonly TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING = 5;
-
+export class HomePageComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    private resizeSubscription: Subscription | null = null;
-
-    public readonly categoryButtonsLoadingIndicator: LoadingIndicator =
+    public categoryButtonsLoadingIndicator: LoadingIndicator =
         new LoadingIndicator(0);
 
     public readonly auctionsRequestKey: string = '/home';
 
     public trendingCategories: string[] = [];
-    public showFullTrendingCategories: boolean = false;
 
     constructor(
         public readonly categoriesService: CategoriesService,
         public readonly auctionsService: AuctionsService,
         public readonly windowService: WindowService,
-        public readonly zone: NgZone,
     ) {}
 
     public ngOnInit(): void {
@@ -66,69 +49,21 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.categoryButtonsLoadingIndicator.start();
-        this.categoriesService
-            .getTrendingCategories()
-            .pipe(take(1))
-            .subscribe((categories) => {
-                this.trendingCategories = categories;
-                this.categoryButtonsLoadingIndicator.stop();
-            });
-    }
-
-    public ngAfterViewInit(): void {
         this.subscriptions.push(
-            this.windowService.isMobile$.subscribe((isMobile) =>
-                isMobile ? this.onMobile() : this.onDesktop(),
-            ),
+            combineLatest([
+                this.categoriesService.getTrendingCategories().pipe(take(1)),
+                this.windowService.isMobile$,
+            ]).subscribe(([categories, isMobile]) => {
+                this.trendingCategories = isMobile
+                    ? categories.slice(0, 6)
+                    : categories;
+
+                this.categoryButtonsLoadingIndicator.stop();
+            }),
         );
     }
 
     public ngOnDestroy(): void {
-        this.resizeSubscription?.unsubscribe();
-        this.subscriptions.forEach((sub) => sub.unsubscribe());
-    }
-
-    private onMobile(): void {
-        this.resizeSubscription?.unsubscribe();
-        this.showFullTrendingCategories = false;
-        this.trendingCategoriesButtonsContainer.nativeElement.style.height =
-            'auto';
-
-        this.trendingCategoriesButtonsContainer.nativeElement.style.paddingTop = 0;
-        this.trendingCategoriesButtonsContainer.nativeElement.style.paddingBottom = 0;
-    }
-
-    private onDesktop(): void {
-        this.lastTrendingCategoriesButtonsHeight = null;
-        this.showFullTrendingCategories = true;
-        this.trendingCategoriesButtonsContainer.nativeElement.style.paddingTop = `${HomePageComponent.TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING}px`;
-        this.trendingCategoriesButtonsContainer.nativeElement.style.paddingBottom = `${HomePageComponent.TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING}px`;
-        this.zone.runOutsideAngular(() => {
-            this.resizeSubscription = fromEvent(window, 'resize', {
-                passive: true,
-            })
-                .pipe(throttleTime(50), startWith(null))
-                .subscribe(
-                    this.setTrendingCategoriesButtonsFixedHeight.bind(this),
-                );
-        });
-    }
-
-    private setTrendingCategoriesButtonsFixedHeight(): void {
-        const height = this.getHightestTrendingCategoryButtonHeight();
-        if (this.lastTrendingCategoriesButtonsHeight === height) return;
-
-        this.lastTrendingCategoriesButtonsHeight = height;
-        this.trendingCategoriesButtonsContainer.nativeElement.style.height = `${height + HomePageComponent.TRENDING_CATEGORIES_BUTTONS_DESKTOP_PADDING * 2}px`;
-    }
-
-    private getHightestTrendingCategoryButtonHeight(): number {
-        const buttons: HTMLCollectionOf<HTMLButtonElement> =
-            this.trendingCategoriesButtonsContainer.nativeElement.querySelectorAll(
-                'button',
-            );
-        return Math.max(
-            ...Array.from(buttons).map((button) => button.offsetHeight),
-        );
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 }
