@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-import { map, skipUntil } from 'rxjs';
+import { map, take } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AuthenticationGuard {
 
     public canActivate(authenticate: boolean, state: RouterStateSnapshot) {
         return this.authenticationService.isLogged$.pipe(
-            skipUntil(this.authenticationService.initialized$),
+            take(1),
             map((isLogged) => {
                 if (authenticate === isLogged) return true;
                 if (!authenticate) return false;

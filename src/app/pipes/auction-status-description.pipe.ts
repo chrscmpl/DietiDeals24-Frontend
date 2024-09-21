@@ -23,7 +23,7 @@ export class AuctionStatusDescriptionPipe implements PipeTransform {
         else if (auction.status === Auction.STATUSES.pending)
             return of(this.transformPending(auction));
 
-        return this.authentication.initialized$.pipe(
+        return this.authentication.isLogged$.pipe(
             map(() => {
                 if (auction.status === Auction.STATUSES.accepted)
                     return this.transformAccepted(

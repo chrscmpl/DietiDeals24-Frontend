@@ -19,6 +19,8 @@ export enum NotificationType {
     OUT_BID = 'out-bid',
     WINNING_BID = 'winning-bid',
     BID_REJECTED = 'bid-rejected',
+    BID_AUCTION_ABORTED = 'bidded-auction-aborted',
+    AUCTION_OVER_ABORTED = 'auction-over-aborted',
 }
 
 export abstract class Notification implements DisplayableNotification {
@@ -191,6 +193,42 @@ class BidRejectedNotification extends Notification {
     }
 }
 
+class BidAuctionAbortedNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'Auction deleted';
+    }
+
+    public override get message(): string {
+        return `The auction you bid on was deleted`;
+    }
+
+    public override get link(): routerLinkType {
+        return [];
+    }
+}
+
+class AuctionOverAbortedNotification extends Notification {
+    public constructor(dto: NotificationDTO) {
+        super(dto);
+    }
+
+    public override get heading(): string {
+        return this.auction?.title ?? 'Auction over';
+    }
+
+    public override get message(): string {
+        return `Your auction ended with no bids`;
+    }
+
+    public override get link(): routerLinkType {
+        return [];
+    }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const NotificationConstructors = new Map<NotificationType, any>([
     [NotificationType.AUCTION_OVER, AuctionOverNotification],
@@ -200,4 +238,6 @@ export const NotificationConstructors = new Map<NotificationType, any>([
     [NotificationType.OUT_BID, OutBidNotification],
     [NotificationType.WINNING_BID, WinningBidNotification],
     [NotificationType.BID_REJECTED, BidRejectedNotification],
+    [NotificationType.BID_AUCTION_ABORTED, BidAuctionAbortedNotification],
+    [NotificationType.AUCTION_OVER_ABORTED, AuctionOverAbortedNotification],
 ]);

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-import { map, skipUntil } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -16,7 +16,6 @@ export class RedirectToPersonalPageGuard {
         const userId = route.params['user-id'];
 
         return this.authenticationService.isLogged$.pipe(
-            skipUntil(this.authenticationService.initialized$),
             map((isLogged) => {
                 return isLogged &&
                     userId === this.authenticationService.loggedUser?.id

@@ -52,7 +52,6 @@ import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-p
 export class AuthenticationService {
     private _isLogged = false;
     private _loggedUser: AuthenticatedUser | null = null;
-    private _initialized = false;
 
     public emailToVerify: string | null = null;
 
@@ -64,7 +63,6 @@ export class AuthenticationService {
         return this._loggedUser;
     }
 
-    private readonly initializedSubject = new ReplaySubject<void>(1);
     private readonly loggedUserSubject = new ReplaySubject<void>(1);
     private readonly isLoggedSubject = new ReplaySubject<void>(1);
 
@@ -80,10 +78,9 @@ export class AuthenticationService {
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
     ) {
-        this.isLoggedSubject.next();
         if (AuthenticationService.authorizationToken)
             this.loginUsingToken().subscribe();
-        else this.setInitialized();
+        else this.isLoggedSubject.next();
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
@@ -100,9 +97,6 @@ export class AuthenticationService {
             map(() => this.loggedUser as AuthenticatedUser),
             distinctUntilChanged(isEqual),
         );
-
-    public readonly initialized$: Observable<void> =
-        this.initializedSubject.asObservable();
 
     public login(
         credentials: UserCredentials,
@@ -175,7 +169,9 @@ export class AuthenticationService {
                 this.deserializer.deserialize(dto),
             ),
             tap(this.setLoggedUser.bind(this)),
-            catchError((e) => throwError(() => new GetAuthenticatedUserDataException(e))),
+            catchError((e) =>
+                throwError(() => new GetAuthenticatedUserDataException(e)),
+            ),
         );
     }
 
@@ -286,7 +282,8 @@ export class AuthenticationService {
     private loginUsingToken(): Observable<AuthenticatedUser> {
         return this.getAuthenticatedUserData().pipe(
             catchError((e) => {
-                this.setInitialized();
+                this._isLogged = false;
+                this.isLoggedSubject.next();
                 if (
                     e.status >= 400 &&
                     e.status < 500 &&
@@ -308,17 +305,10 @@ export class AuthenticationService {
     }
 
     private setLoggedUser(user: AuthenticatedUser): void {
-        this.setInitialized();
         this._isLogged = true;
         this._loggedUser = user;
         this.isLoggedSubject.next();
         this.loggedUserSubject.next();
-    }
-
-    private setInitialized() {
-        if (this._initialized) return;
-        this._initialized = true;
-        this.initializedSubject.next();
     }
 
     private showExpiredTokenError(): void {
