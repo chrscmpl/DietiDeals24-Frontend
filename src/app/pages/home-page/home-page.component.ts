@@ -48,6 +48,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
             eager: true,
         });
 
+        let loading = true;
         this.categoryButtonsLoadingIndicator.start();
         this.subscriptions.push(
             combineLatest([
@@ -58,7 +59,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
                     ? categories.slice(0, 6)
                     : categories;
 
-                this.categoryButtonsLoadingIndicator.stop();
+                if (loading) {
+                    loading = false;
+                    this.categoryButtonsLoadingIndicator.stop();
+                }
             }),
         );
     }
