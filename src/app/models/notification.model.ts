@@ -1,4 +1,5 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
+import { TransactionOperation } from '../enums/transaction-operation.enum';
 import { routerLinkType } from '../typeUtils/router-link-type';
 import { Auction } from './auction.model';
 
@@ -78,7 +79,7 @@ class AuctionOverNotification extends Notification {
     }
 
     public override get link(): routerLinkType {
-        return ['/auction/conclusion', this.auction?.id];
+        return ['txn', this.auction?.id, TransactionOperation.conclude];
     }
 }
 

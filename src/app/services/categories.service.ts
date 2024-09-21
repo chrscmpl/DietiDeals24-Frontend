@@ -38,12 +38,14 @@ export class CategoriesService {
 
     @Cacheable()
     public getTrendingCategories(): Observable<string[]> {
-        return this.http.get<string[]>(`categories/trending`);
+        return this.http.get<string[]>('categories/trending', {
+            params: { amount: 16 },
+        });
     }
 
     public refreshCategories(cb?: Partial<Observer<Categories>>): void {
         this.http
-            .get<Categories>(`categories/all`)
+            .get<Categories>('categories/all')
             .pipe(
                 map((categories) => {
                     const sorted: Categories = {};

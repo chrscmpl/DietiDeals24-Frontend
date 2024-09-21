@@ -43,7 +43,9 @@ export class WindowService {
         this.isMobile$.subscribe((isMobile) => {
             if (isMobile)
                 this.zone.runOutsideAngular(() => {
-                    this.resizeSubscription = fromEvent(window, 'resize')
+                    this.resizeSubscription = fromEvent(window, 'resize', {
+                        passive: true,
+                    })
                         .pipe(throttleTime(500))
                         .subscribe(() => {
                             this.zone.run(() => {

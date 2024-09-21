@@ -124,7 +124,7 @@ export class AuctionsService {
 
     @Cacheable({
         maxCacheCount: 16,
-        cacheBusterObserver: cacheBusters.authenticatedUserData$,
+        cacheBusterObserver: cacheBusters.auctionDetails$,
     })
     public getDetails(id: string): Observable<Auction> {
         return this.authentication.isLogged$.pipe(

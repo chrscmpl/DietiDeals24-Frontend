@@ -66,7 +66,7 @@ export class SidebarComponent {
                 const categoriesItem: MenuItem = {
                     label: 'Trending Categories',
                     icon: 'pi pi-chart-line',
-                    items: categories.map((category) => {
+                    items: categories.slice(0, 6).map((category) => {
                         return {
                             label: category,
                             routerLink: ['/auctions'],

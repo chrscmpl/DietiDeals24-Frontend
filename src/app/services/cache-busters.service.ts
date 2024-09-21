@@ -27,6 +27,7 @@ export class CacheBustersService {
 
         cacheBusters.authenticatedUserData$.subscribe(() => {
             cacheBusters.paymentMethods$.next();
+            cacheBusters.auctionDetails$.next();
         });
 
         cacheBusters.activeBids$.subscribe(() => {

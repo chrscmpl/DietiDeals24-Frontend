@@ -56,19 +56,26 @@
 
     <section class="trending-categories">
         <h2 class="home-page-section-header">Trending Categories</h2>
-        <div class="trending-categories-buttons">
+        <div
+            #trendingCategoriesButtonsContainer
+            class="trending-categories-buttons"
+        >
             @if (
                 (categoryButtonsLoadingIndicator.isLoading$ | async) === false
             ) {
                 @for (category of trendingCategories; track $index) {
-                    <p-button
-                        outlined="true"
-                        class="trending-category-button"
-                        [routerLink]="['/auctions']"
-                        [queryParams]="{ category }"
-                    >
-                        {{ category }}
-                    </p-button>
+                    @if (
+                        $index < 6 ||
+                        (windowService.isMobile$ | async) === false
+                    ) {
+                        <p-button
+                            outlined="true"
+                            class="trending-category-button"
+                            [routerLink]="['/auctions']"
+                            [queryParams]="{ category }"
+                            [label]="category"
+                        />
+                    }
                 }
             } @else {
                 @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
