@@ -28,7 +28,7 @@ import { CarouselModule } from 'primeng/carousel';
 export class HomePageComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     public categoryButtonsLoadingIndicator: LoadingIndicator =
-        new LoadingIndicator(0);
+        new LoadingIndicator(500);
 
     public readonly auctionsRequestKey: string = '/home';
 

@@ -231,8 +231,13 @@
         padding: 1ch;
     }
 
-    .trending-category-loading-button button:hover {
-        cursor: progress;
+    .trending-category-loading-button .p-disabled,
+    .trending-category-button.p-disabled {
+        opacity: 1;
+    }
+
+    .trending-category-loading-button .p-button {
+        padding: 0;
     }
 
     .your-page-button button {

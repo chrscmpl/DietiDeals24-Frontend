@@ -57,23 +57,23 @@
     <section class="trending-categories">
         <h2 class="home-page-section-header">Trending Categories</h2>
         <div class="trending-categories-buttons">
-            @if (
-                (categoryButtonsLoadingIndicator.isLoading$ | async) === false
-            ) {
-                @for (category of trendingCategories; track $index) {
-                    <p-button
-                        outlined="true"
-                        class="trending-category-button"
-                        [routerLink]="['/auctions']"
-                        [queryParams]="{ category }"
-                        [label]="category"
-                    />
-                }
-            } @else {
+            @for (category of trendingCategories; track $index) {
+                <p-button
+                    outlined="true"
+                    class="trending-category-button"
+                    [routerLink]="['/auctions']"
+                    [queryParams]="{ category }"
+                    [label]="category"
+                />
+            } @empty {
                 @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
                     <p-button
                         outlined="true"
                         class="trending-category-button trending-category-loading-button"
+                        [loading]="
+                            categoryButtonsLoadingIndicator.isLoading$ | async
+                        "
+                        disabled="true"
                     ></p-button>
                 }
             }
