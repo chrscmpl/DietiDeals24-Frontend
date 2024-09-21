@@ -285,8 +285,8 @@ export class AuthenticationService {
                 this._isLogged = false;
                 this.isLoggedSubject.next();
                 if (
-                    e.status >= 400 &&
-                    e.status < 500 &&
+                    e.error.status >= 400 &&
+                    e.error.status < 500 &&
                     AuthenticationService.authorizationToken
                 ) {
                     AuthenticationService.authorizationToken = null;
