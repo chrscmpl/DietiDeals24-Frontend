@@ -117,10 +117,15 @@ strong {
     body {
         user-select: none;
         scrollbar-width: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
     }
 
     .mobile-select {
         user-select: auto;
+        -webkit-user-select: auto;
+        -webkit-touch-callout: auto;
     }
 
     ::-webkit-scrollbar {

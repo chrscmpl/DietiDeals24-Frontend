@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavigationService } from './services/navigation.service';
+import { fromEvent, Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
 
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
+    private suppressContextMenuSubscription: Subscription | null = null;
 
     constructor(
         public readonly windowService: WindowService,
@@ -75,7 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
 
         this.windowService.isMobile$.subscribe((isMobile) => {
-            this.setScalableViewport(!isMobile);
+            this.makeWindowAdjustments(isMobile);
         });
     }
 
@@ -110,6 +112,22 @@ export class AppComponent implements OnInit, AfterViewInit {
                 interval = null;
             }
         });
+    }
+
+    private makeWindowAdjustments(isMobile: boolean): void {
+        this.setScalableViewport(!isMobile);
+
+        this.suppressContextMenuSubscription?.unsubscribe();
+        if (isMobile) {
+            this.suppressContextMenuSubscription = fromEvent(
+                document,
+                'contextmenu',
+            ).subscribe((event) => {
+                event.preventDefault();
+            });
+        } else {
+            this.suppressContextMenuSubscription = null;
+        }
     }
 
     private setScalableViewport(scalable: boolean): void {
