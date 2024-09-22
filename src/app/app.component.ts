@@ -1,4 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    OnInit,
+} from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CacheBustersService } from './services/cache-busters.service';
 import { HeaderComponent } from './components/header/header.component';
@@ -8,7 +13,7 @@ import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -53,13 +58,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     constructor(
         public readonly windowService: WindowService,
         private readonly router: Router,
-        private readonly primengConfig: PrimeNGConfig,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
         private readonly message: MessageService,
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
+        private readonly changeDetector: ChangeDetectorRef,
         _: CacheBustersService,
         __: ThemeService,
     ) {}
@@ -67,8 +72,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     public ngOnInit(): void {
         this.isLoadingRouteIndicator.start();
         this.redirectOnBadInitialRoute();
-        this.configurePrimeNG();
-        this.configureNotifications();
+        this.configureNotificationsPolling();
 
         this.navigation.navigationStart$.subscribe(() => {
             this.isLoadingRouteIndicator.start();
@@ -97,11 +101,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         );
     }
 
-    private configurePrimeNG(): void {
-        this.primengConfig.ripple = true;
-    }
-
-    private configureNotifications(): void {
+    private configureNotificationsPolling(): void {
         let interval: ReturnType<typeof setInterval> | null = null;
         this.authentication.isLogged$.subscribe((isLogged) => {
             if (isLogged) {
@@ -156,12 +156,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((e as any).deltaX < -80) {
             this.mobileToastHideTransformOptions = 'translateX(-100%)';
-            setTimeout(() => {
-                this.message.clear();
-                setTimeout(() => {
-                    this.mobileToastHideTransformOptions = 'translateX(100%)';
-                }, 50);
-            }, 50);
+            this.changeDetector.detectChanges();
+            this.message.clear();
+            this.mobileToastHideTransformOptions = 'translateX(100%)';
         }
     }
 }

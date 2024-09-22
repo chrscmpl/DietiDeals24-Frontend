@@ -20,7 +20,7 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { PasswordModule } from 'primeng/password';
@@ -158,7 +158,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         public readonly assets: AssetsService,
         private readonly navigation: NavigationService,
         private readonly windowService: WindowService,
-        private readonly route: ActivatedRoute,
     ) {}
 
     public ngOnInit(): void {
@@ -168,9 +167,12 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
             this.maxBirthdayDate.getFullYear() - 18,
         );
 
-        this.route.data.pipe(take(1)).subscribe((data) => {
-            this.countries = data['countries'];
-        });
+        this.locationsService
+            .getCountries()
+            .pipe(take(1))
+            .subscribe((countries) => {
+                this.countries = countries;
+            });
 
         this.assets
             .getPlainText('tos.txt')

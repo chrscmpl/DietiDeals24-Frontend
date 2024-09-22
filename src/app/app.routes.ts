@@ -153,7 +153,6 @@ export const routes: Routes = [
         resolve: {
             rulesets: RulesetDescriptionResolver.asResolveFn(),
             currencyCodes: CurrencyCodesResolver.asResolveFn(),
-            countries: CountriesResolver.asResolveFn(),
         },
     },
     {

@@ -9,7 +9,7 @@ import { paymentMethodTypesByCategory } from '../helpers/payment-method-types-by
     providedIn: 'root',
 })
 export class WarningsService {
-    private static readonly INITIAL_WARNING_COUNTER = 5;
+    private static readonly INITIAL_WARNING_COUNTER = 3;
     private static readonly INITIAL_WARNING_LIFE = 10 * 60 * 1000;
     private static readonly INITIAL_WARNING_ITEM_NAME = 'warn-again-counter';
     private static readonly TRANSACTION_WARNING_LIFE = 10 * 1000;

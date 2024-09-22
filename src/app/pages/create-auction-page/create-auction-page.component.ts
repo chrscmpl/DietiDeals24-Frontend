@@ -228,8 +228,14 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.rulesets = data['rulesets'];
             this.currencyCodes = data['currencyCodes'];
-            this.countries = data['countries'];
         });
+
+        this.locationsService
+            .getCountries()
+            .pipe(take(1))
+            .subscribe((countries) => {
+                this.countries = countries;
+            });
 
         this.subscriptions.push(
             this.form.valueChanges.subscribe(() => {

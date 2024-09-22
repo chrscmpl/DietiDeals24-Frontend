@@ -5,13 +5,18 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom, isDevMode } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideServiceWorker } from '@angular/service-worker';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+    ConfirmationService,
+    MessageService,
+    PrimeNGConfig,
+} from 'primeng/api';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { PrependBackendHostInterceptor } from './interceptors/prepend-backend-host.interceptor';
 import 'hammerjs';
 import { HammerGestureConfig, HammerModule } from '@angular/platform-browser';
-import { HammerConfig } from './config/hammer.config';
+import { CustomHammerConfig } from './config/hammer.config';
+import { CustomPrimeNGConfig } from './config/primeng.config';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -25,7 +30,11 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom([BrowserAnimationsModule, HammerModule]),
         {
             provide: HammerGestureConfig,
-            useClass: HammerConfig,
+            useClass: CustomHammerConfig,
+        },
+        {
+            provide: PrimeNGConfig,
+            useClass: CustomPrimeNGConfig,
         },
         MessageService,
         ConfirmationService,

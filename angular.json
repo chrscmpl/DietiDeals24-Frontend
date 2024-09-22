@@ -49,11 +49,6 @@
                                 "inject": false
                             },
                             {
-                                "input": "src/styles/theme/dark/variations/alien.scss",
-                                "bundleName": "theme-dark-alien",
-                                "inject": false
-                            },
-                            {
                                 "input": "src/styles/theme/dark/variations/oled.scss",
                                 "bundleName": "theme-dark-oled",
                                 "inject": false
