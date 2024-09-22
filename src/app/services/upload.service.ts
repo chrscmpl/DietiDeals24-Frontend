@@ -7,11 +7,9 @@ import {
     from,
     map,
     Observable,
-    Observer,
     of,
     switchMap,
     take,
-    tap,
     throwError,
 } from 'rxjs';
 
@@ -26,8 +24,6 @@ import { BACKEND_REQUEST } from '../tokens/generic-request.token';
     providedIn: 'root',
 })
 export class UploadService {
-    private nextUploadUrl: string | null = null;
-
     private uploadedFileIdCounter = 0;
 
     private uploadedFileNextId$ = of(null).pipe(
@@ -39,15 +35,6 @@ export class UploadService {
 
     constructor(private readonly http: HttpClient) {}
 
-    public prepareNextUploadUrl(cb?: Partial<Observer<string>>): void {
-        (this.nextUploadUrl
-            ? of(this.nextUploadUrl)
-            : this.getNextUploadUrl().pipe(
-                  tap((url) => (this.nextUploadUrl = url)),
-              )
-        ).subscribe(cb);
-    }
-
     public upload(file: File): Observable<UploadedFile> {
         return forkJoin([
             this.getNextUploadUrl(),
@@ -56,7 +43,6 @@ export class UploadService {
         ]).pipe(
             take(1),
             switchMap(([url, compressedFile, id]) => {
-                this.nextUploadUrl = null;
                 const formData = new FormData();
                 formData.append('file', compressedFile);
                 return this.http
@@ -78,11 +64,6 @@ export class UploadService {
     }
 
     private getNextUploadUrl(): Observable<string> {
-        const nextUploadUrl = this.nextUploadUrl;
-        if (nextUploadUrl) {
-            this.nextUploadUrl = null;
-            return of(nextUploadUrl);
-        }
         return this.http
             .get<string>(`upload-url`)
             .pipe(

@@ -54,9 +54,6 @@ export class UploaderComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.setControl();
 
-        if (this.control.value?.length !== this.maxSize)
-            this.uploader.prepareNextUploadUrl();
-
         if (this.control.value?.length)
             this.files = this.control.value.map((f) => f.file);
     }
@@ -92,8 +89,6 @@ export class UploaderComponent implements OnInit, OnDestroy {
 
                         if (--filesToUpload === 0) {
                             this.control.setValue(compact(this.control.value));
-                            if (control.value?.length !== this?.maxFiles)
-                                uploader.prepareNextUploadUrl();
                             this?.fileUploading$.next(false);
                         }
                     },
