@@ -52,6 +52,7 @@
         "@angular-eslint/template-parser": "17.3.0",
         "@angular/cli": "^17.0.0",
         "@angular/compiler-cli": "^17.3.10",
+        "@types/hammerjs": "^2.0.45",
         "@types/jasmine": "~5.1.0",
         "@types/lodash-es": "^4.17.12",
         "@typescript-eslint/eslint-plugin": "7.2.0",

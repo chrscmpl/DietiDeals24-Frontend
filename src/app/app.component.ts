@@ -1,10 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CacheBustersService } from './services/cache-busters.service';
 import { HeaderComponent } from './components/header/header.component';
@@ -50,12 +44,11 @@ import { fromEvent, Subscription } from 'rxjs';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    @ViewChild('toast', { read: ElementRef }) public toast!: ElementRef;
-
     private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
 
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
     private suppressContextMenuSubscription: Subscription | null = null;
+    public mobileToastHideTransformOptions = 'translateX(100%)';
 
     constructor(
         public readonly windowService: WindowService,
@@ -63,7 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly primengConfig: PrimeNGConfig,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
-        public readonly message: MessageService,
+        private readonly message: MessageService,
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
@@ -92,7 +85,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.warnings.showInitialWarningIfFirstTimeLoaded();
-        this.configureToastSwipeGestures();
     }
 
     public onMainRouterOutletActivate(): void {
@@ -153,7 +145,23 @@ export class AppComponent implements OnInit, AfterViewInit {
         );
     }
 
-    private configureToastSwipeGestures(): void {
-        console.log(this.toast.nativeElement);
+    public onToastSwipeRight(e: Event): void {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((e as any).deltaX > 80) {
+            this.message.clear();
+        }
+    }
+
+    public onToastSwipeLeft(e: Event): void {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((e as any).deltaX < -80) {
+            this.mobileToastHideTransformOptions = 'translateX(-100%)';
+            setTimeout(() => {
+                this.message.clear();
+                setTimeout(() => {
+                    this.mobileToastHideTransformOptions = 'translateX(100%)';
+                }, 50);
+            }, 50);
+        }
     }
 }

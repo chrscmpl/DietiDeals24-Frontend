@@ -10,7 +10,8 @@ import { AuthenticationInterceptor } from './interceptors/authentication.interce
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { PrependBackendHostInterceptor } from './interceptors/prepend-backend-host.interceptor';
 import 'hammerjs';
-import { HammerModule } from '@angular/platform-browser';
+import { HammerGestureConfig, HammerModule } from '@angular/platform-browser';
+import { HammerConfig } from './config/hammer.config';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -22,6 +23,10 @@ export const appConfig: ApplicationConfig = {
             ]),
         ),
         importProvidersFrom([BrowserAnimationsModule, HammerModule]),
+        {
+            provide: HammerGestureConfig,
+            useClass: HammerConfig,
+        },
         MessageService,
         ConfirmationService,
         OneCharUpperPipe,

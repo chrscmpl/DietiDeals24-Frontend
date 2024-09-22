@@ -53,7 +53,7 @@
         [baseZIndex]="99999999999"
         [hideTransformOptions]="
             (windowService.isMobile$ | async)
-                ? 'translateX(100%)'
+                ? mobileToastHideTransformOptions
                 : 'translateY(-100%)'
         "
         [showTransformOptions]="
@@ -61,7 +61,8 @@
                 ? 'translateX(100%)'
                 : 'translateY(100%)'
         "
-        (swipe)="message.clear()"
+        (swiperight)="onToastSwipeRight($event)"
+        (swipeleft)="onToastSwipeLeft($event)"
     >
     </p-toast>
 </div>
