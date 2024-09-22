@@ -9,7 +9,7 @@
             </button>
             <dd24-logo class="logo"></dd24-logo>
             <div class="spacer"></div>
-            @if ((authenticationService.isLogged$ | async) === false) {
+            @if ((authenticationService.isLogged$ | async) !== true) {
                 <p-button
                     class="nav-auth-btn"
                     severity="secondary"

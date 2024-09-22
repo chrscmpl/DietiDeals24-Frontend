@@ -47,5 +47,21 @@
     <router-outlet class="overlay-outlet" name="overlay"></router-outlet>
     <dd24-sidebar class="sidebar"></dd24-sidebar>
     <p-confirmDialog class="dialog" [baseZIndex]="9999999999"></p-confirmDialog>
-    <p-toast class="toast" [baseZIndex]="99999999999"></p-toast>
+    <p-toast
+        #toast
+        class="toast"
+        [baseZIndex]="99999999999"
+        [hideTransformOptions]="
+            (windowService.isMobile$ | async)
+                ? 'translateX(100%)'
+                : 'translateY(-100%)'
+        "
+        [showTransformOptions]="
+            (windowService.isMobile$ | async)
+                ? 'translateX(100%)'
+                : 'translateY(100%)'
+        "
+        (swipe)="message.clear()"
+    >
+    </p-toast>
 </div>

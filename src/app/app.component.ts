@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CacheBustersService } from './services/cache-busters.service';
 import { HeaderComponent } from './components/header/header.component';
@@ -8,7 +14,7 @@ import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';
 import { MobileHeaderComponent } from './components/mobile-header/mobile-header.component';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ThemeService } from './services/theme.service';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -44,6 +50,8 @@ import { fromEvent, Subscription } from 'rxjs';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
+    @ViewChild('toast', { read: ElementRef }) public toast!: ElementRef;
+
     private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
 
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
@@ -55,6 +63,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly primengConfig: PrimeNGConfig,
         private readonly authentication: AuthenticationService,
         private readonly notifications: NotificationsService,
+        public readonly message: MessageService,
         private readonly warnings: WarningsService,
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
@@ -83,6 +92,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.warnings.showInitialWarningIfFirstTimeLoaded();
+        this.configureToastSwipeGestures();
     }
 
     public onMainRouterOutletActivate(): void {
@@ -141,5 +151,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                     `user-scalable=${scalable ? 'yes' : 'no'}`,
                 ) ?? '',
         );
+    }
+
+    private configureToastSwipeGestures(): void {
+        console.log(this.toast.nativeElement);
     }
 }

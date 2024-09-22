@@ -9,6 +9,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuthenticationInterceptor } from './interceptors/authentication.interceptor';
 import { OneCharUpperPipe } from './pipes/one-char-upper.pipe';
 import { PrependBackendHostInterceptor } from './interceptors/prepend-backend-host.interceptor';
+import 'hammerjs';
+import { HammerModule } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -19,7 +21,7 @@ export const appConfig: ApplicationConfig = {
                 AuthenticationInterceptor.asHttpInterceptorFn(),
             ]),
         ),
-        importProvidersFrom([BrowserAnimationsModule]),
+        importProvidersFrom([BrowserAnimationsModule, HammerModule]),
         MessageService,
         ConfirmationService,
         OneCharUpperPipe,
