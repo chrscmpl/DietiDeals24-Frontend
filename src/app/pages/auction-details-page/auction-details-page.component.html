@@ -151,7 +151,7 @@
                         severity="secondary"
                         (click)="onClose()"
                     ></p-button>
-                    @if (!disableShare) {
+                    @if (!isPreview) {
                         <p-button
                             class="overlay-btn share-btn"
                             icon="pi pi-share-alt"
@@ -264,7 +264,7 @@
                         ></i>
                     </button>
 
-                    @if (!disableShare) {
+                    @if (!isPreview) {
                         <button
                             class="auction-details-navbar-btn custom-ripple"
                             pRipple

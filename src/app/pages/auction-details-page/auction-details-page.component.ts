@@ -84,8 +84,6 @@ export class AuctionDetailsPageComponent
 
     public imageCarouselPage: number = 0;
 
-    public disableShare: boolean = false;
-
     public isMacroCategory: boolean = false;
 
     public pendingEndTime: Date | null = null;
@@ -111,7 +109,6 @@ export class AuctionDetailsPageComponent
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.auction = data['auction'];
-            this.disableShare = !this.auction?.id;
             this.initCarousel();
             this.isMacroCategory = this.categoriesService.isMacroCategory(
                 this.auction?.category ?? '',
@@ -174,11 +171,31 @@ export class AuctionDetailsPageComponent
     }
 
     public onShare(): void {
+        this.windowService.isMobile$.pipe(take(1)).subscribe((isMobile) => {
+            if (isMobile && navigator.share !== undefined) {
+                this.shareUsingNavigator();
+            } else {
+                this.shareUsingClipboard();
+            }
+        });
+    }
+
+    private shareUsingClipboard(): void {
         this.clipboard.copy(`${location.origin}/auctions/${this.auction?.id}`);
         this.message.add({
             severity: 'info',
             summary: 'Link copied to clipboard',
         });
+    }
+
+    private shareUsingNavigator(): void {
+        navigator
+            .share({
+                title: 'Share this auction',
+                text: `Check out this auction: ${this.auction?.title}`,
+                url: `${location.origin}/auctions/${this.auction?.id}`,
+            })
+            .catch(() => this.shareUsingClipboard());
     }
 
     public onDelete(): void {
