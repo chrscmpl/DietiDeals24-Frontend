@@ -37,7 +37,7 @@ export class UploadService {
 
     public upload(file: File): Observable<UploadedFile> {
         return forkJoin([
-            this.getNextUploadUrl(),
+            this.getNextUploadUrl(file),
             this.compressFile(file),
             this.uploadedFileNextId$,
         ]).pipe(
@@ -63,10 +63,19 @@ export class UploadService {
         );
     }
 
-    private getNextUploadUrl(): Observable<string> {
+    private getNextUploadUrl(file: File): Observable<string> {
+        const fileExtension = file.type.startsWith('image/')
+            ? 'webp'
+            : file.name.split('.').pop() || '';
         return this.http
-            .get<string>(`upload-url`)
+            .get<{ url: string }>(
+                'files/upload/picture/pre-signed-upload-url',
+                {
+                    params: { fileExtension },
+                },
+            )
             .pipe(
+                map((data) => data.url),
                 catchError((error) =>
                     throwError(() => new GetNextUploadUrlException(error)),
                 ),
