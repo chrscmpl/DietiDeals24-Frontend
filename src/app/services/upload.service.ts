@@ -42,11 +42,9 @@ export class UploadService {
             this.uploadedFileNextId$,
         ]).pipe(
             take(1),
-            switchMap(([url, compressedFile, id]) => {
-                const formData = new FormData();
-                formData.append('file', compressedFile);
-                return this.http
-                    .put(url, formData, {
+            switchMap(([url, compressedFile, id]) =>
+                this.http
+                    .put(url, compressedFile, {
                         context: new HttpContext().set(BACKEND_REQUEST, false),
                     })
                     .pipe(
@@ -58,8 +56,8 @@ export class UploadService {
                             file,
                             id,
                         })),
-                    );
-            }),
+                    ),
+            ),
         );
     }
 
