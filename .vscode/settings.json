@@ -14,5 +14,6 @@
         },
         "editor.formatOnSave": false
     },
-    "cSpell.words": ["Ruleset", "Rulesets"]
+    "cSpell.words": ["Ruleset", "Rulesets"],
+    "editor.insertSpaces": true
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Observer, ReplaySubject, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { Country } from '../models/country.model';
 import { CountryDTO } from '../DTOs/country.dto';

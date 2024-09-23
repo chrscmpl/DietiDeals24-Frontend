@@ -1,15 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    catchError,
-    map,
-    Observable,
-    of,
-    switchMap,
-    take,
-    throwError,
-} from 'rxjs';
-import { Cacheable, CacheBuster } from 'ts-cacheable';
+import { catchError, Observable, throwError } from 'rxjs';
+import { CacheBuster } from 'ts-cacheable';
 import { BidPlacementException } from '../exceptions/bid-placement.exception';
 import { BidCreationData } from '../models/bid-creation-data.model';
 import { BidCreationSerializer } from '../serializers/bid-creation.serializer';
