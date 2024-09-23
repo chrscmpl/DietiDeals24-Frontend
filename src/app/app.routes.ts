@@ -35,7 +35,7 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { UserResolver } from './resolvers/user.resolver';
 import { RedirectToPersonalPageGuard } from './guards/redirect-to-personal-page.guard';
 import { TextAssetResolver } from './resolvers/text-asset.resolver';
-import { PaymentMethodsResolver } from './resolvers/payment-methods..resolver';
+import { PaymentMethodsResolver } from './resolvers/payment-methods.resolver';
 import { CountriesResolver } from './resolvers/countries.resolver';
 import { MessagePageComponent } from './pages/message-page/message-page.component';
 

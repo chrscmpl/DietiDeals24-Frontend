@@ -10,7 +10,7 @@ import { AsyncPipe } from '@angular/common';
 import { AuctionsService } from '../../services/auctions.service';
 import { WindowService } from '../../services/window.service';
 import { SideSearchSectionComponent } from '../../components/side-search-section/side-search-section.component';
-import { SearchService } from '../../services/search-service.service';
+import { SearchService } from '../../services/search.service';
 import {
     combineLatest,
     debounceTime,

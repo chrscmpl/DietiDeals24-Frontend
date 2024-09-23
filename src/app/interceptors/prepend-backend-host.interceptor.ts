@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { BACKEND_REQUEST } from '../tokens/generic-request.token';
+import { BACKEND_REQUEST } from '../tokens/backend-request.token';
 
 @Injectable({
     providedIn: 'root',

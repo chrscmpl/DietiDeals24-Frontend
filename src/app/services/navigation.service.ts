@@ -21,7 +21,7 @@ import {
     switchMap,
     take,
 } from 'rxjs';
-import { SearchService } from './search-service.service';
+import { SearchService } from './search.service';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { Location } from '@angular/common';
 

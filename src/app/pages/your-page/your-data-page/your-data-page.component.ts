@@ -36,7 +36,7 @@ import { UnauthorizedPaymentMethod } from '../../../models/unauthorized-payment-
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
 import { AuthenticatedUser } from '../../../models/authenticated-user.model';
 import { InputComponent } from '../../../components/input/input.component';
-import { ToReactiveForm } from '../../../typeUtils/to-reactive-form';
+import { ToReactiveForm } from '../../../typeUtils/to-reactive-form.type';
 import {
     userLink,
     userLinkCreationData,

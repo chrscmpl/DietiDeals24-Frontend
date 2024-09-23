@@ -15,7 +15,7 @@ import { MenuItem } from 'primeng/api';
 import { AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { routerLinkType } from '../../typeUtils/router-link-type';
+import { routerLinkType } from '../../typeUtils/router-link.type';
 
 @Component({
     selector: 'dd24-user-page',

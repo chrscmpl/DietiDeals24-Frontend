@@ -9,7 +9,7 @@ import {
 import { tap } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
-import { BACKEND_REQUEST } from '../tokens/generic-request.token';
+import { BACKEND_REQUEST } from '../tokens/backend-request.token';
 
 @Injectable({
     providedIn: 'root',

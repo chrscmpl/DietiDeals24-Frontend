@@ -19,7 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { CategorySelectionComponent } from './category-selection/category-selection.component';
 import { Router } from '@angular/router';
-import { Nullable } from '../../typeUtils/nullable';
+import { Nullable } from '../../typeUtils/nullable.type';
 import { AuctionRuleSet } from '../../enums/auction-ruleset.enum';
 import { CategoriesService } from '../../services/categories.service';
 import { filter, Subscription, take } from 'rxjs';
@@ -28,7 +28,7 @@ import { WindowService } from '../../services/window.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SearchPolicy } from '../../enums/search-policy.enum';
 import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
-import { SearchService } from '../../services/search-service.service';
+import { SearchService } from '../../services/search.service';
 
 interface searchForm {
     keywords: FormControl<string | null>;

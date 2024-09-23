@@ -18,7 +18,7 @@ import { UploadedFile } from '../models/uploaded-file.model';
 import { UploadException } from '../exceptions/upload.exception';
 import { GetNextUploadUrlException } from '../exceptions/get-next-upload-url.exception';
 import { FileCompressionException } from '../exceptions/file-compression.exception';
-import { BACKEND_REQUEST } from '../tokens/generic-request.token';
+import { BACKEND_REQUEST } from '../tokens/backend-request.token';
 
 @Injectable({
     providedIn: 'root',

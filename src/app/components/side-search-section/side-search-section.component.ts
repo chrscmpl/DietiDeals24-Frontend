@@ -11,7 +11,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { map, Observable, Subscription, take } from 'rxjs';
 import { DividerModule } from 'primeng/divider';
 import { InputSwitchChangeEvent, InputSwitchModule } from 'primeng/inputswitch';
-import { SearchService } from '../../services/search-service.service';
+import { SearchService } from '../../services/search.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';

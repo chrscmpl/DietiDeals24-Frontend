@@ -2,7 +2,7 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BACKEND_REQUEST } from '../tokens/generic-request.token';
+import { BACKEND_REQUEST } from '../tokens/backend-request.token';
 
 @Injectable({
     providedIn: 'root',
