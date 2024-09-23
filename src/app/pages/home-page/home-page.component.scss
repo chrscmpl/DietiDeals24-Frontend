@@ -53,10 +53,6 @@
 
         @include viewports.ultraWide {
             grid-template-columns: 1fr 1fr;
-
-            > * {
-                height: 100% !important;
-            }
         }
     }
 
@@ -102,6 +98,11 @@
         border: var(--border);
 
         height: calc(var(--card-height) * 0.75);
+
+        @include viewports.ultraWide {
+            height: var(--card-height);
+        }
+
         .your-page-banner-img-container {
             border-bottom: none;
             .your-page-banner-text {

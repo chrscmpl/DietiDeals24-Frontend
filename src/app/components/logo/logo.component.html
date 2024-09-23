@@ -3,6 +3,7 @@
     routerLink="/home"
     (click)="clickEvent.emit()"
     (keypress)="clickEvent.emit()"
+    [style]="containerStyle"
     tabindex="0"
 >
     <img src="assets/logo.svg" alt="logo" class="logo" draggable="false" />

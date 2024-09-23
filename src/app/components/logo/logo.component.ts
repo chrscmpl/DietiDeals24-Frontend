@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,5 +9,8 @@ import { RouterLink } from '@angular/router';
     styleUrl: './logo.component.scss',
 })
 export class LogoComponent {
+    @Input() public containerStyle: {
+        [key: string]: string | number | boolean;
+    } = {};
     @Output() public clickEvent: EventEmitter<void> = new EventEmitter<void>();
 }
