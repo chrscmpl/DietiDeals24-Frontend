@@ -1,13 +1,20 @@
 {
+    "id": "https://dietideals24.click",
     "name": "DietiDeals24",
     "short_name": "DietiDeals24",
+    "description": "DietiDeals24 is the newest auction platform to make the best deals.",
+    "categories": ["shopping"],
     "lang": "en-US",
+    "dir": "ltr",
     "theme_color": "#000000",
     "background_color": "#ffffff",
     "display": "standalone",
     "scope": "./",
     "start_url": "./",
     "orientation": "portrait-primary",
+    "launch_handler": {
+        "client_mode": ["navigate-existing", "auto"]
+    },
     "icons": [
         {
             "src": "assets/icons/icon-72x72.png",
