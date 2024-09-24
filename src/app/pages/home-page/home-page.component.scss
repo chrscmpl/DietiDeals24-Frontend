@@ -97,7 +97,7 @@
         border-radius: var(--border-radius-large);
         border: var(--border);
 
-        height: calc(var(--card-height) * 0.75);
+        min-height: calc(var(--card-height) * 0.75);
 
         @include viewports.ultraWide {
             height: var(--card-height);

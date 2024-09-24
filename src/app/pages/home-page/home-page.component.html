@@ -66,7 +66,7 @@
                     [label]="category"
                 />
             } @empty {
-                @for (index of [1, 2, 3, 4, 5, 6]; track $index) {
+                @for (i of trendingCategoriesPlaceholders; track $index) {
                     <p-button
                         outlined="true"
                         class="trending-category-button trending-category-loading-button"
@@ -115,6 +115,7 @@
                         class="banner-img your-page-image"
                         src="assets/your-page-banner.webp"
                         alt="your-page-banner"
+                        style="min-height: 0"
                     />
                     <p class="your-page-banner-text text-regular text-large">
                         See how your auctions are currently doing.

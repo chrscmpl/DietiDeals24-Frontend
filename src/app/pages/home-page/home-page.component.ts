@@ -33,6 +33,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     public readonly auctionsRequestKey: string = '/home';
 
     public trendingCategories: string[] = [];
+    public trendingCategoriesPlaceholders: null[] = Array(6).fill(null);
 
     constructor(
         public readonly categoriesService: CategoriesService,
@@ -50,6 +51,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         let loading = true;
         this.categoryButtonsLoadingIndicator.start();
+        this.subscriptions.push(
+            this.windowService.isMobile$.subscribe((isMobile) => {
+                this.trendingCategoriesPlaceholders = Array(
+                    isMobile ? 6 : 20,
+                ).fill(null);
+            }),
+        );
         this.subscriptions.push(
             combineLatest([
                 this.categoriesService.getTrendingCategories().pipe(take(1)),
