@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, NgZone } from '@angular/core';
 import { RulesetDescription } from '../../models/ruleset-description.model';
 import { MenuItem } from 'primeng/api';
-import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
+import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind.helper';
 import { AuctionKind } from '../../enums/auction-kind.enum';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';

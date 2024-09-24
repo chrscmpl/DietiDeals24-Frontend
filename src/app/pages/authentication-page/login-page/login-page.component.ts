@@ -15,7 +15,7 @@ import { InputComponent } from '../../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
 import { UserCredentials } from '../../../DTOs/authentication.dto';
 import { environment } from '../../../../environments/environment';
-import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { LoginException } from '../../../exceptions/login.exception';

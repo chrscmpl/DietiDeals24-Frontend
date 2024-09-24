@@ -16,7 +16,7 @@ import {
     AuthorizedIBAN,
     AuthorizedPaymentMethod,
 } from '../models/authorized-payment-method.model';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 import { DeletePaymentMethodException } from '../exceptions/delete-payment-method.exception';
 import { GetPaymentMethodsException } from '../exceptions/get-payment-methods.exception';
 import { AuthorizedPaymentMethodSerializer } from '../serializers/authorized-payment-method.deserializer';

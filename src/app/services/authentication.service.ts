@@ -28,7 +28,7 @@ import { emailVerificationData } from '../models/email-verification-data.model';
 import { MessageService } from 'primeng/api';
 import { Cacheable, CacheBuster } from 'ts-cacheable';
 import { isEqual } from 'lodash-es';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 import { userLinkCreationData } from '../models/user-link.model';
 import { UserLinkSerializer } from '../serializers/user-link.serializer';
 import { DeleteUserLinkException } from '../exceptions/delete-user-link.exception';

@@ -3,7 +3,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuctionCardComponent } from '../../components/auction-card/auction-card.component';
-import { LoadingIndicator } from '../../helpers/loading-indicator';
+import { LoadingIndicator } from '../../helpers/loading-indicator.helper';
 import { AuctionListComponent } from '../../components/auction-list/auction-list.component';
 import { AuctionsService } from '../../services/auctions.service';
 import { ButtonModule } from 'primeng/button';

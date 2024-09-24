@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PaginatedRequestParams } from '../helpers/paginated-request';
-import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
+import { PaginatedRequestParams } from '../helpers/paginated-request.helper';
+import { PaginatedRequestManager } from '../helpers/paginated-request-manager.helper';
 import { map, Observable, Subscription, switchMap, take } from 'rxjs';
-import { UninterruptedResettableObserver } from '../helpers/uninterrupted-resettable-observer';
+import { UninterruptedResettableObserver } from '../helpers/uninterrupted-resettable-observer.helper';
 import { AuctionDTO } from '../DTOs/auction.dto';
 import { Auction } from '../models/auction.model';
 import { Cacheable } from 'ts-cacheable';
 import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
 import { AuctionDeserializer } from '../deserializers/auction.deserializer';
 import { defaults, omit } from 'lodash-es';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 import { environment } from '../../environments/environment';
 import { AuthenticationService } from './authentication.service';
 

@@ -12,7 +12,7 @@ import { AbstractControl, ControlContainer } from '@angular/forms';
 import {
     inputErrorMessagesManager,
     errorMessage,
-} from '../../helpers/input-error-messages-manager';
+} from '../../helpers/input-error-messages-manager.helper';
 import { AsyncPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 

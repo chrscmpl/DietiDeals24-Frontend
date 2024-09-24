@@ -20,7 +20,7 @@ import { AuctionCreationException } from '../exceptions/auction-creation.excepti
 import { AuctionCreationSerializer } from '../serializers/auction-creation.serializer';
 import { AuctionAcceptanceData } from '../models/auction-acceptance-data.model';
 import { AuctionAcceptanceDataSerializer } from '../serializers/auction-acceptance-data.serializer';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 import { AbortAuctionException } from '../exceptions/abort-auction.exception';
 import { ConfirmationService, MessageService } from 'primeng/api';
 

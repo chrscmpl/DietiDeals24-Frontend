@@ -25,11 +25,11 @@ import { ButtonModule } from 'primeng/button';
 import { AuctionCreationCategorySelectionComponent } from '../../components/auction-creation-category-selection/auction-creation-category-selection.component';
 import { CategoriesService } from '../../services/categories.service';
 import { WindowService } from '../../services/window.service';
-import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind';
+import { auctionRuleSetsByKind } from '../../helpers/auction-rulesets-by-kind.helper';
 import { AuctionKind } from '../../enums/auction-kind.enum';
 import { InputComponent } from '../../components/input/input.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { reactiveFormsUtils } from '../../helpers/reactive-forms-utils';
+import { reactiveFormsUtils } from '../../helpers/reactive-forms-utils.helper';
 import { environment } from '../../../environments/environment';
 import { ProductConditions } from '../../enums/product-conditions.enum';
 import {

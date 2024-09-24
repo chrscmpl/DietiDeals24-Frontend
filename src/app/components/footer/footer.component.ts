@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { link, mainPages } from '../../helpers/links';
+import { link, mainPages } from '../../helpers/links.helper';
 import { RouterLink } from '@angular/router';
 
 @Component({

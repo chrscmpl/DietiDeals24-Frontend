@@ -9,7 +9,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MessageService } from 'primeng/api';
 import { RequestForgottenPasswordResetException } from '../../../exceptions/request-forgotten-password-reset.exception';

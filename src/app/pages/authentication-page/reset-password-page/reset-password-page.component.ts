@@ -14,7 +14,7 @@ import { take } from 'rxjs';
 import { InputComponent } from '../../../components/input/input.component';
 import { environment } from '../../../../environments/environment';
 import { PasswordModule } from 'primeng/password';
-import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ResetForgottenPasswordException } from '../../../exceptions/reset-forgotten-password.exception';
 import { MessageService } from 'primeng/api';

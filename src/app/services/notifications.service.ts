@@ -4,7 +4,7 @@ import { NotificationResponse } from '../DTOs/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';
-import { PaginatedRequestManager } from '../helpers/paginated-request-manager';
+import { PaginatedRequestManager } from '../helpers/paginated-request-manager.helper';
 import { NotificationDeserializer } from '../deserializers/notification.deserializer';
 
 @Injectable({

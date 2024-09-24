@@ -8,7 +8,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CacheBustersService } from './services/cache-busters.service';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { LoadingIndicator } from './helpers/loading-indicator';
+import { LoadingIndicator } from './helpers/loading-indicator.helper';
 import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { WindowService } from './services/window.service';
 import { MobileNavbarComponent } from './components/mobile-navbar/mobile-navbar.component';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { merge } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { AuctionsService } from './auctions.service';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 
 @Injectable({
     providedIn: 'root',

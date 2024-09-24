@@ -4,7 +4,7 @@ import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
 import { Subscription } from 'rxjs';
 import { CardsPlaceholderComponent } from '../card-placeholder/card-placeholder.component';
-import { LoadingIndicator } from '../../helpers/loading-indicator';
+import { LoadingIndicator } from '../../helpers/loading-indicator.helper';
 import { AsyncPipe } from '@angular/common';
 import { AuctionsService, RequestKey } from '../../services/auctions.service';
 

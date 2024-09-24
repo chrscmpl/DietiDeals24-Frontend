@@ -4,7 +4,7 @@ import { WindowService } from '../../services/window.service';
 import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from '../logo/logo.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { mainPages } from '../../helpers/links';
+import { mainPages } from '../../helpers/links.helper';
 import { Observable, catchError, combineLatest, map, of } from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';

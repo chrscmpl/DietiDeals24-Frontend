@@ -22,7 +22,7 @@ import {
 import { environment } from '../../../../environments/environment';
 import { InputComponent } from '../../../components/input/input.component';
 import { PasswordModule } from 'primeng/password';
-import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils';
+import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ChangePasswordException } from '../../../exceptions/change-password.exception';
 

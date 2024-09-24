@@ -7,7 +7,7 @@ import {
     Output,
 } from '@angular/core';
 import { InputComponent } from '../input/input.component';
-import { errorMessage } from '../../helpers/input-error-messages-manager';
+import { errorMessage } from '../../helpers/input-error-messages-manager.helper';
 import { AbstractControl, ControlContainer } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';

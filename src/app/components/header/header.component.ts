@@ -3,7 +3,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { SearchSectionComponent } from '../search-section/search-section.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
-import { link, mainPages } from '../../helpers/links';
+import { link, mainPages } from '../../helpers/links.helper';
 import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../services/window.service';
 import { LogoComponent } from '../logo/logo.component';

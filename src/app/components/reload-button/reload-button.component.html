@@ -4,6 +4,7 @@
         class="reload-prompt-button"
         severity="secondary"
         (click)="emitReload()"
+        [style]="{ borderColor: 'var(--text-color-3)' }"
     >
         <i class="pi pi-refresh" [class.spin]="spin"></i>
     </p-button>

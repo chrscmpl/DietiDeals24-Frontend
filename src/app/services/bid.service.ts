@@ -6,7 +6,7 @@ import { BidPlacementException } from '../exceptions/bid-placement.exception';
 import { BidCreationData } from '../models/bid-creation-data.model';
 import { BidCreationSerializer } from '../serializers/bid-creation.serializer';
 import { AuthenticationService } from './authentication.service';
-import { cacheBusters } from '../helpers/cache-busters';
+import { cacheBusters } from '../helpers/cache-busters.helper';
 
 @Injectable({
     providedIn: 'root',
