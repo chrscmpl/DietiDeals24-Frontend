@@ -5,7 +5,7 @@ import { CacheBuster } from 'ts-cacheable';
 import { BidAcceptanceException } from '../exceptions/bid-acceptance.exception';
 import { BidRejectionException } from '../exceptions/bid-rejection.exception';
 import { AuctionCreationData } from '../models/auction-creation-data.model';
-import { ToReactiveForm } from '../typeUtils/to-reactive-form.type';
+import { ToReactiveForm } from '../type-utils/to-reactive-form.type';
 import {
     AbstractControl,
     FormBuilder,

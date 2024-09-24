@@ -1,6 +1,6 @@
 import { NotificationDTO } from '../DTOs/notification.dto';
 import { TransactionOperation } from '../enums/transaction-operation.enum';
-import { routerLinkType } from '../typeUtils/router-link.type';
+import { routerLinkType } from '../type-utils/router-link.type';
 import { Auction } from './auction.model';
 
 export interface DisplayableNotification {

@@ -14,7 +14,7 @@ import { InputComponent } from '../input/input.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { isValid as isValidIBAN } from 'iban-ts';
 import { WarningsService } from '../../services/warnings.service';
-import { ToReactiveForm } from '../../typeUtils/to-reactive-form.type';
+import { ToReactiveForm } from '../../type-utils/to-reactive-form.type';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DescendantsAttributesDirective } from '../../directives/descentant-attributes.directive';
 
