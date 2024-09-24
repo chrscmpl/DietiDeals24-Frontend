@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { AuctionCreationDTO } from '../DTOs/auction.dto';
+import { AuctionCreationDTO } from '../dtos/auction.dto';
 import { AuctionCreationData } from '../models/auction-creation-data.model';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 

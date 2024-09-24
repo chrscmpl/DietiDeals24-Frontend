@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { AuthorizedPaymentMethodRegistrationDTO } from '../DTOs/payment-method.dto';
+import { AuthorizedPaymentMethodRegistrationDTO } from '../dtos/payment-method.dto';
 
 import {
     AuthorizedCreditCard,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { userLinkCreationDTO } from '../DTOs/user-link.dto';
+import { userLinkCreationDTO } from '../dtos/user-link.dto';
 import { userLinkCreationData } from '../models/user-link.model';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { BidCreationDTO } from '../DTOs/bid.dto';
+import { BidCreationDTO } from '../dtos/bid.dto';
 import { BidCreationData } from '../models/bid-creation-data.model';
 import { AuthorizedPaymentMethodSerializer } from './authorized-payment-method.deserializer';
 

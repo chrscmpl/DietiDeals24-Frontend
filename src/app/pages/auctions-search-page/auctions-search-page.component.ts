@@ -23,7 +23,7 @@ import {
     tap,
 } from 'rxjs';
 import { SearchSectionComponent } from '../../components/search-section/search-section.component';
-import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
+import { AuctionSearchParameters } from '../../dtos/auction-search-parameters.dto';
 
 @Component({
     selector: 'dd24-auctions-search-page',

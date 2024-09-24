@@ -20,7 +20,7 @@ export class ReloadButtonComponent implements OnDestroy {
     private unSpinTimeout?: ReturnType<typeof setTimeout>;
     public spin: boolean = false;
 
-    emitReload(): void {
+    public emitReload(): void {
         this.spin = true;
         this.unSpinTimeout = setTimeout(() => {
             if (this) {
@@ -30,7 +30,7 @@ export class ReloadButtonComponent implements OnDestroy {
         }, 150);
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         if (this.unSpinTimeout) clearTimeout(this.unSpinTimeout);
     }
 }

@@ -1,4 +1,4 @@
-import { UserDTO, UserSummaryDTO } from '../DTOs/user.dto';
+import { UserDTO, UserSummaryDTO } from '../dtos/user.dto';
 import { userLink } from './user-link.model';
 
 export class UserSummary {

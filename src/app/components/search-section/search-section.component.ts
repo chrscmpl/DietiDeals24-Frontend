@@ -27,7 +27,7 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { WindowService } from '../../services/window.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SearchPolicy } from '../../enums/search-policy.enum';
-import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
+import { AuctionSearchParameters } from '../../dtos/auction-search-parameters.dto';
 import { SearchService } from '../../services/search.service';
 
 interface searchForm {

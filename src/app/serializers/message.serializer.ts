@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { MessageDTO } from '../DTOs/message.dto';
+import { MessageDTO } from '../dtos/message.dto';
 import { Message } from '../models/message.model';
 
 @Injectable({

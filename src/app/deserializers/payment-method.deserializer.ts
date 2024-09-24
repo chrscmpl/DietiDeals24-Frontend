@@ -4,7 +4,7 @@ import {
     CreditCardDTO,
     IBANDTO,
     PaymentMethodDTO,
-} from '../DTOs/payment-method.dto';
+} from '../dtos/payment-method.dto';
 import {
     CreditCard,
     IBAN,

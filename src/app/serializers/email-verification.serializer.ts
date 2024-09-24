@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { emailVerificationData } from '../models/email-verification-data.model';
-import { emailVerificationDTO } from '../DTOs/authentication.dto';
+import { emailVerificationDTO } from '../dtos/authentication.dto';
 
 @Injectable({
     providedIn: 'root',

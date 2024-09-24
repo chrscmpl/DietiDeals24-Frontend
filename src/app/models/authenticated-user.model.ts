@@ -1,4 +1,4 @@
-import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
+import { AuthenticatedUserDTO } from '../dtos/authentication.dto';
 import { userLink } from './user-link.model';
 
 export class AuthenticatedUser {

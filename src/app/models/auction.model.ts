@@ -2,7 +2,7 @@ import {
     AuctionDTO,
     ReverseAuctionDTO,
     SilentAuctionDTO,
-} from '../DTOs/auction.dto';
+} from '../dtos/auction.dto';
 import { AuctionKind } from '../enums/auction-kind.enum';
 import { AuctionStatus } from '../enums/auction-status.enum';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';

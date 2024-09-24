@@ -22,7 +22,7 @@ import {
     take,
 } from 'rxjs';
 import { SearchService } from './search.service';
-import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
+import { AuctionSearchParameters } from '../dtos/auction-search-parameters.dto';
 import { Location } from '@angular/common';
 
 type query = Params | AuctionSearchParameters;

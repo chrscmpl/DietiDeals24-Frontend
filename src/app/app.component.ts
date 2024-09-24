@@ -26,6 +26,7 @@ import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavigationService } from './services/navigation.service';
 import { fromEvent, Subscription } from 'rxjs';
+import { TimerService } from './services/timer.service';
 
 @Component({
     selector: 'dd24-root',
@@ -49,8 +50,6 @@ import { fromEvent, Subscription } from 'rxjs';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    private static readonly NOTIFICATION_REFRESH_INTERVAL = 1000 * 60;
-
     public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
     private suppressContextMenuSubscription: Subscription | null = null;
     public mobileToastHideTransformOptions = 'translateX(100%)';
@@ -65,6 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
         private readonly changeDetector: ChangeDetectorRef,
+        private readonly timer: TimerService,
         _: CacheBustersService,
         __: ThemeService,
     ) {}
@@ -102,16 +102,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     private configureNotificationsPolling(): void {
-        let interval: ReturnType<typeof setInterval> | null = null;
+        let subscription: Subscription | null = null;
         this.authentication.isLogged$.subscribe((isLogged) => {
             if (isLogged) {
-                interval = setInterval(
+                subscription = this.timer.nextMinute$.subscribe(
                     this.notifications.refresh.bind(this.notifications),
-                    AppComponent.NOTIFICATION_REFRESH_INTERVAL,
                 );
-            } else if (interval) {
-                clearInterval(interval);
-                interval = null;
+            } else if (subscription) {
+                subscription.unsubscribe();
+                subscription = null;
             }
         });
     }

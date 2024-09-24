@@ -9,7 +9,7 @@ import {
     AuctionDTO,
     ReverseAuctionDTO,
     SilentAuctionDTO,
-} from '../DTOs/auction.dto';
+} from '../dtos/auction.dto';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 
 @Injectable({

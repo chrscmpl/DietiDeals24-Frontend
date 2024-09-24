@@ -44,14 +44,16 @@ export class MobileHeaderComponent {
         this.zone.runOutsideAngular(() => {
             const title = this.getTitle();
             if (title) this.setLongTitle(title, false);
-            setTimeout(() => {
-                const title = this.getTitle();
-                if (title)
-                    this.setLongTitle(
-                        title,
-                        title.clientHeight < title.scrollHeight,
-                    );
-            }, 50);
+            this.zone.runOutsideAngular(() => {
+                setTimeout(() => {
+                    const title = this.getTitle();
+                    if (title)
+                        this.setLongTitle(
+                            title,
+                            title.clientHeight < title.scrollHeight,
+                        );
+                }, 50);
+            });
         });
     }
 

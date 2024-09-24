@@ -14,8 +14,8 @@ import {
     throwError,
     withLatestFrom,
 } from 'rxjs';
-import { UserCredentials } from '../DTOs/authentication.dto';
-import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
+import { UserCredentials } from '../dtos/authentication.dto';
+import { AuthenticatedUserDTO } from '../dtos/authentication.dto';
 import { LoginException } from '../exceptions/login.exception';
 import { GetAuthenticatedUserDataException } from '../exceptions/get-authenticated-user-data.exception';
 import { RegistrationException } from '../exceptions/registration.exception';

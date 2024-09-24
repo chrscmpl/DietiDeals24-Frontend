@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { Country } from '../models/country.model';
-import { CountryDTO } from '../DTOs/country.dto';
+import { CountryDTO } from '../dtos/country.dto';
 import { Cacheable } from 'ts-cacheable';
 import { CountryDeserializer } from '../deserializers/country.deserializer';
 

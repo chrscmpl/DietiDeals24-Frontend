@@ -2,7 +2,7 @@ import {
     CreditCardDTO,
     IBANDTO,
     PaymentMethodDTO,
-} from '../DTOs/payment-method.dto';
+} from '../dtos/payment-method.dto';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { PaymentMethodType } from '../enums/payment-method-type.enum';
 

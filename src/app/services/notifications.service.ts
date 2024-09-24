@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DisplayableNotification } from '../models/notification.model';
-import { NotificationResponse } from '../DTOs/notification.dto';
+import { NotificationResponse } from '../dtos/notification.dto';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { filter, map, Observable, ReplaySubject, Subject } from 'rxjs';

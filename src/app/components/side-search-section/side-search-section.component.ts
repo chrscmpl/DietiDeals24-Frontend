@@ -18,7 +18,7 @@ import { MenuItem } from 'primeng/api';
 import { AsyncPipe } from '@angular/common';
 import { OneCharUpperPipe } from '../../pipes/one-char-upper.pipe';
 import { SearchPolicy } from '../../enums/search-policy.enum';
-import { AuctionSearchParameters } from '../../DTOs/auction-search-parameters.dto';
+import { AuctionSearchParameters } from '../../dtos/auction-search-parameters.dto';
 
 interface sideSearchForm {
     policy: FormControl<SearchPolicy | null>;

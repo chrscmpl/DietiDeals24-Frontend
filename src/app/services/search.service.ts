@@ -15,7 +15,7 @@ import {
 } from 'rxjs';
 import { AuctionRuleSet } from '../enums/auction-ruleset.enum';
 import { Nullable } from '../type-utils/nullable.type';
-import { AuctionSearchParameters } from '../DTOs/auction-search-parameters.dto';
+import { AuctionSearchParameters } from '../dtos/auction-search-parameters.dto';
 import { SearchPolicy } from '../enums/search-policy.enum';
 import { isEqual, isNil, omitBy } from 'lodash-es';
 

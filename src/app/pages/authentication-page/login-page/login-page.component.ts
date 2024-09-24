@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    NgZone,
+    OnInit,
+} from '@angular/core';
 import {
     FormBuilder,
     FormControl,
@@ -13,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { InputComponent } from '../../../components/input/input.component';
 import { DividerModule } from 'primeng/divider';
-import { UserCredentials } from '../../../DTOs/authentication.dto';
+import { UserCredentials } from '../../../dtos/authentication.dto';
 import { environment } from '../../../../environments/environment';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { MessageService } from 'primeng/api';
@@ -52,6 +58,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         private readonly formBuilder: FormBuilder,
         private readonly element: ElementRef,
         private readonly message: MessageService,
+        private readonly zone: NgZone,
     ) {}
 
     ngOnInit(): void {
@@ -72,10 +79,14 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
     }
 
     public ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.patchValueFromNativeElement('email', '#email');
-            this.patchValueFromNativeElement('password', '#password');
-        }, 500);
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                this.zone.run(() => {
+                    this.patchValueFromNativeElement('email', '#email');
+                    this.patchValueFromNativeElement('password', '#password');
+                });
+            }, 500);
+        });
     }
 
     private patchValueFromNativeElement(

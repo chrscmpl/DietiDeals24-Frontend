@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserSummary } from '../models/user.model';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { UserDTO } from '../DTOs/user.dto';
+import { UserDTO } from '../dtos/user.dto';
 import { Cacheable } from 'ts-cacheable';
 import { UserDeserializer } from '../deserializers/user.deserializer';
 import { UserSummaryDeserializer } from '../deserializers/user-summary.deserializer';

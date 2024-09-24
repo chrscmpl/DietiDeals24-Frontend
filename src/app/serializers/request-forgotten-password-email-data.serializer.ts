@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
-import { RequestForgottenPasswordEmailDTO } from '../DTOs/request-forgotten-password-email.dto';
+import { RequestForgottenPasswordEmailDTO } from '../dtos/request-forgotten-password-email.dto';
 import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
 
 @Injectable({

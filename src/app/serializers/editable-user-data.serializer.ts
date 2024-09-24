@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { editableUserData } from '../models/editable-user-data.model';
-import { editableUserDataDTO } from '../DTOs/editable-user-data.dto';
+import { editableUserDataDTO } from '../dtos/editable-user-data.dto';
 import { omitBy } from 'lodash-es';
 
 @Injectable({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Serializer } from './serializer.interface';
 import { AuthorizedPaymentMethodSerializer } from './authorized-payment-method.deserializer';
 import { AuctionAcceptanceData } from '../models/auction-acceptance-data.model';
-import { AuctionAcceptanceDataDTO } from '../DTOs/auction-acceptance-data.dto';
+import { AuctionAcceptanceDataDTO } from '../dtos/auction-acceptance-data.dto';
 import { AuthorizedPaymentMethod } from '../models/authorized-payment-method.model';
 
 @Injectable({

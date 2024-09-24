@@ -1,5 +1,4 @@
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     Input,
@@ -7,6 +6,8 @@ import {
     OnInit,
 } from '@angular/core';
 import { IntervalPipe } from '../../pipes/interval.pipe';
+import { TimerService } from '../../services/timer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'dd24-timer',
@@ -14,33 +15,33 @@ import { IntervalPipe } from '../../pipes/interval.pipe';
     imports: [IntervalPipe],
     templateUrl: './timer.component.html',
     styleUrl: './timer.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent implements OnInit, OnDestroy {
     public timeAmount: number = 0;
+    private timerSubscription!: Subscription;
     @Input({ required: true }) endDate!: Date;
-    private timerTimeout!: ReturnType<typeof setTimeout>;
-    private timerInterval?: ReturnType<typeof setInterval>;
 
-    constructor(private readonly changeDetector: ChangeDetectorRef) {}
+    constructor(
+        private readonly timer: TimerService,
+        private readonly changeDetector: ChangeDetectorRef,
+    ) {}
 
     public ngOnInit(): void {
+        this.updateTimer();
+        this.timerSubscription = this.timer.nextMinute$.subscribe(() => {
+            this.updateTimer();
+            this.changeDetector.detectChanges();
+            if (this.timeAmount <= 0) this.timerSubscription.unsubscribe();
+        });
+    }
+
+    private updateTimer(): void {
         this.timeAmount = Math.floor(
             (this.endDate.getTime() - Date.now()) / 1000,
         );
-        this.timerTimeout = setTimeout(() => {
-            this.timerInterval = setInterval(() => {
-                this.timeAmount -= 60;
-                this.changeDetector.markForCheck();
-                if (this.timeAmount <= 0) {
-                    clearInterval(this.timerInterval);
-                }
-            }, 60000);
-        }, this.timeAmount % 60);
     }
 
     public ngOnDestroy(): void {
-        clearTimeout(this.timerTimeout);
-        clearInterval(this.timerInterval);
+        this.timerSubscription.unsubscribe();
     }
 }

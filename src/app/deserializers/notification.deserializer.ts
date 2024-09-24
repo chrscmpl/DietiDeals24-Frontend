@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Deserializer } from './deserializer.interface';
-import { NotificationDTO } from '../DTOs/notification.dto';
+import { NotificationDTO } from '../dtos/notification.dto';
 import {
     Notification,
     NotificationConstructors,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Deserializer } from './deserializer.interface';
-import { AuthenticatedUserDTO } from '../DTOs/authentication.dto';
+import { AuthenticatedUserDTO } from '../dtos/authentication.dto';
 import { AuthenticatedUser } from '../models/authenticated-user.model';
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Auction } from '../../models/auction.model';
 import { AuctionCardComponent } from '../auction-card/auction-card.component';
 import { ReloadButtonComponent } from '../reload-button/reload-button.component';
@@ -66,7 +66,10 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         return this._requestKey;
     }
 
-    public constructor(private readonly auctionsService: AuctionsService) {}
+    public constructor(
+        private readonly auctionsService: AuctionsService,
+        private readonly zone: NgZone,
+    ) {}
 
     public ngOnInit(): void {
         this.init();
@@ -147,13 +150,17 @@ export class AuctionListComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.loadingIndicator.start();
         this.showEmpty = false;
-        setTimeout(() => {
-            if (!this) return;
-            if (this.loading) {
-                this.stopLoading();
-                this.error = true;
-            }
-        }, this.loadingIndicator.startDelay + AuctionListComponent.LOADING_STOP_FALLBACK_DELAY);
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                if (!this) return;
+                if (this.loading) {
+                    this.zone.run(() => {
+                        this.stopLoading();
+                        this.error = true;
+                    });
+                }
+            }, this.loadingIndicator.startDelay + AuctionListComponent.LOADING_STOP_FALLBACK_DELAY);
+        });
     }
 
     private stopLoading(): void {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Deserializer } from './deserializer.interface';
-import { CreditCardAuthorizationDataDTO } from '../DTOs/payment-method.dto';
+import { CreditCardAuthorizationDataDTO } from '../dtos/payment-method.dto';
 import { CreditCardAuthorizationData } from '../models/credit-card-authorization-data.model';
 
 @Injectable({
