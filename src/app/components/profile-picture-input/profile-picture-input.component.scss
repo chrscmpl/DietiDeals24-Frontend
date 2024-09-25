@@ -5,6 +5,7 @@
     overflow: hidden;
     position: relative;
     border: 3px solid var(--outline-color);
+    aspect-ratio: 1/1;
 
     &:focus {
         border: 3px solid var(--accent-color-1);

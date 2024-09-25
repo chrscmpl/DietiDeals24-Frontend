@@ -7,7 +7,7 @@
 >
     <p-avatar
         class="profile-pic-avatar"
-        icon="pi pi-user"
+        [icon]="picture ? '' : 'pi pi-user'"
         shape="circle"
         [image]="picture ?? undefined"
         [style]="{
