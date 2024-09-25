@@ -16,6 +16,8 @@ export class ProfilePictureInputComponent {
     @Output() public pictureSelection: EventEmitter<File> =
         new EventEmitter<File>();
 
+    public imageError: boolean = false;
+
     public constructor(private readonly message: MessageService) {}
 
     public onPictureSelection(e: Event): void {

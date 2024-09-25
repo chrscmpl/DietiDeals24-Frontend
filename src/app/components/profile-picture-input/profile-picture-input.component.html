@@ -7,13 +7,14 @@
 >
     <p-avatar
         class="profile-pic-avatar"
-        [icon]="picture ? '' : 'pi pi-user'"
+        [icon]="!picture || imageError ? 'pi pi-user' : undefined"
         shape="circle"
         [image]="picture ?? undefined"
         [style]="{
             width: '6rem',
             height: '6rem'
         }"
+        (onImageError)="imageError = true"
     />
     <div class="change-profile-pic-btn">
         <i class="pi pi-pen-to-square"></i>

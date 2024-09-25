@@ -61,7 +61,7 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
         private readonly zone: NgZone,
     ) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.loginForm = this.formBuilder.group<loginForm>({
             email: new FormControl(null, {
                 validators: [Validators.required, Validators.email],
