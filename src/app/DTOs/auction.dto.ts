@@ -10,7 +10,7 @@ export interface AuctionDTO {
     country: string;
     city: string;
     endTime: string;
-    pictureUrl?: string | null;
+    picturesUrl?: string | null;
     currency: string;
 
     category?: string | null;
