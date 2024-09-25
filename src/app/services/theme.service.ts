@@ -206,8 +206,9 @@ export class ThemeService {
                 ?.setAttribute('content', themeColor);
     }
 
-    private onFirstThemeLoad(): void {
+    private onFirstThemeLoad(theme: string): void {
         this.checkStorageIntegrity();
+        this.unCacheUnusedThemes(theme);
     }
 
     private checkStorageIntegrity(): void {
@@ -226,5 +227,22 @@ export class ThemeService {
 
         if (darkVariation && !this.darkThemeVariations.includes(darkVariation))
             this.setThemeVariation('dark', 'default');
+    }
+
+    private unCacheUnusedThemes(theme: string): void {
+        caches.keys().then((cacheNames) => {
+            cacheNames.forEach((cacheName) => {
+                if (!cacheName.includes('themes')) return;
+                caches.open(cacheName).then((cache) => {
+                    cache.keys().then((requests) => {
+                        requests.forEach((request) => {
+                            if (!request.url.includes(`theme-${theme}.css`)) {
+                                cache.delete(request);
+                            }
+                        });
+                    });
+                });
+            });
+        });
     }
 }
