@@ -6,7 +6,7 @@ import {
     OnInit,
 } from '@angular/core';
 import { IntervalPipe } from '../../pipes/interval.pipe';
-import { TimerService } from '../../services/timer.service';
+import { IntervalService } from '../../services/interval.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -22,7 +22,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     @Input({ required: true }) endDate!: Date;
 
     constructor(
-        private readonly timer: TimerService,
+        private readonly timer: IntervalService,
         private readonly changeDetector: ChangeDetectorRef,
     ) {}
 
@@ -30,7 +30,7 @@ export class TimerComponent implements OnInit, OnDestroy {
         this.updateTimer();
         this.timerSubscription = this.timer.nextMinute$.subscribe(() => {
             this.updateTimer();
-            this.changeDetector.detectChanges();
+            this.changeDetector.markForCheck();
             if (this.timeAmount <= 0) this.timerSubscription.unsubscribe();
         });
     }

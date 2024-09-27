@@ -4,7 +4,7 @@ import { interval, startWith, Subject, switchMap, timer } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class TimerService {
+export class IntervalService {
     private _nextMinute$ = new Subject<void>();
 
     public nextMinute$ = this._nextMinute$.asObservable();

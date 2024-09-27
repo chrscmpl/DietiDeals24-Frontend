@@ -1,6 +1,6 @@
 export const environment = {
     isProd: true,
-    backendHost: 'http://192.168.1.21:8080',
+    backendHost: 'https://api.dietideals24.click',
     disableWarnings: false,
     maximumCachedUserAuctionsRequests: 9,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,

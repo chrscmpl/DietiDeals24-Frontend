@@ -26,7 +26,7 @@ import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavigationService } from './services/navigation.service';
 import { fromEvent, Subscription } from 'rxjs';
-import { TimerService } from './services/timer.service';
+import { IntervalService } from './services/interval.service';
 
 @Component({
     selector: 'dd24-root',
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly navigation: NavigationService,
         private readonly viewportScroller: ViewportScroller,
         private readonly changeDetector: ChangeDetectorRef,
-        private readonly timer: TimerService,
+        private readonly timer: IntervalService,
         _: CacheBustersService,
         __: ThemeService,
     ) {}
