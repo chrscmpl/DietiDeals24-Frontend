@@ -1,6 +1,6 @@
 export const environment = {
     isProd: false,
-    backendHost: 'http://localhost:8080',
+    backendHost: 'http://localhost',
     disableWarnings: false,
     maximumCachedUserAuctionsRequests: 9,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,

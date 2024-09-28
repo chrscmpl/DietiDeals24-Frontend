@@ -43,7 +43,7 @@
                 @include layouts.grid($template: 1fr / 1fr 1fr, $gap: 0.5em);
             }
             .trending-category-loading-button {
-                height: 3.5em;
+                height: 3.5rem;
             }
         }
     }
@@ -224,6 +224,7 @@
     }
 
     .trending-category-button button {
+        min-height: 3.5rem;
         @include layouts.flex(row, center, center);
         word-wrap: break-word;
     }

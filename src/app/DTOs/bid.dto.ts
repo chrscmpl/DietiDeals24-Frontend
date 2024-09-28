@@ -20,5 +20,5 @@ export type BidCreationDTO =
     | {
           auctionId: string;
           bidAmount: number;
-          OneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
+          oneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
       };

@@ -24,7 +24,7 @@ export class BidCreationSerializer
             ? 'paymentMethodId'
             : bid.paymentMethod.save
               ? 'paymentMethodToBeSaved'
-              : 'OneTimePaymentMethod';
+              : 'oneTimePaymentMethod';
 
         return {
             auctionId: bid.auctionId,

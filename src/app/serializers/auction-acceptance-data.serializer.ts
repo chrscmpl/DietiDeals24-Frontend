@@ -37,7 +37,7 @@ export class AuctionAcceptanceDataSerializer
                 ? 'paymentMethodId'
                 : auctionConclusionData.paymentMethod.save
                   ? 'paymentMethodToBeSaved'
-                  : 'OneTimePaymentMethod';
+                  : 'oneTimePaymentMethod';
 
             paymentMethod[paymentMethodKey] =
                 auctionConclusionData.paymentMethod.id ??

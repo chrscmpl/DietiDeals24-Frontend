@@ -11,5 +11,5 @@ export type AuctionAcceptanceDataDTO =
       }
     | {
           auctionId: string;
-          OneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
+          oneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO;
       };

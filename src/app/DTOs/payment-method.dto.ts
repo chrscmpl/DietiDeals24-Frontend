@@ -54,4 +54,4 @@ export type UnauthorizedPaymentMethodRegistrationDTO =
 export type ChosenPaymentMethodDTO =
     | { paymentMethodId: string }
     | { paymentMethodToBeSaved: AuthorizedPaymentMethodRegistrationDTO }
-    | { OneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO };
+    | { oneTimePaymentMethod: AuthorizedPaymentMethodRegistrationDTO };
