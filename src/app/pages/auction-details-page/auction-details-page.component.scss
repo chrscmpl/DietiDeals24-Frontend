@@ -71,7 +71,7 @@
     margin-bottom: 0;
 
     @include viewports.mobile {
-        height: min(12rem, 20dvh);
+        height: 30dvh;
     }
 }
 

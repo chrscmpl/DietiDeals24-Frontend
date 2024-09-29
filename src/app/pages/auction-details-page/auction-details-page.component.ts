@@ -192,7 +192,7 @@ export class AuctionDetailsPageComponent
         navigator
             .share({
                 title: 'Share this auction',
-                text: `Check out this auction: ${this.auction?.title}`,
+                text: `Check out this auction: ${this.auction?.title}\n`,
                 url: `${location.origin}/auctions/${this.auction?.id}`,
             })
             .catch(() => this.shareUsingClipboard());
