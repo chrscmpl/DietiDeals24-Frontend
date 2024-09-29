@@ -50,7 +50,7 @@ import { IntervalService } from './services/interval.service';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    public readonly isLoadingRouteIndicator = new LoadingIndicator(100);
+    public readonly isLoadingRouteIndicator = new LoadingIndicator(500);
     private suppressContextMenuSubscription: Subscription | null = null;
     public mobileToastHideTransformOptions = 'translateX(100%)';
 
