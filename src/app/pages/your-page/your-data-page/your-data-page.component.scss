@@ -169,6 +169,9 @@
 
 .private-area-input {
     max-width: 100%;
+    @include viewports.mobile {
+        width: 100%;
+    }
 }
 
 .payment-methods-form-wrapper {
@@ -204,11 +207,7 @@
 }
 
 .add-method-btns {
-    @include layouts.flex(row, row, stretch, 0.5rem, wrap);
-}
-
-.add-method-btn {
-    flex-grow: 1;
+    @include layouts.flex(row, row, start, 0.5rem, wrap);
 }
 
 .new-payment-method-form {

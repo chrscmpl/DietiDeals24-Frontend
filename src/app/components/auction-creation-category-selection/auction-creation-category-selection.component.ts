@@ -92,7 +92,7 @@ export class AuctionCreationCategorySelectionComponent
                 .pipe(
                     debounceTime(500),
                     map((event) => (event.target as HTMLInputElement).value),
-                    filter((value) => value.length > 1),
+                    filter((value) => value.length !== 1),
                 )
                 .subscribe(this.onFilter.bind(this)),
         );
@@ -111,9 +111,11 @@ export class AuctionCreationCategorySelectionComponent
     }
 
     private filterCategories(value: string): void {
-        this.filteredCategories = this.categories.filter((category) =>
-            category.value.toLowerCase().includes(value.toLowerCase()),
-        );
+        this.filteredCategories = value.length
+            ? this.categories.filter((category) =>
+                  category.value.toLowerCase().includes(value.toLowerCase()),
+              )
+            : this.categories;
     }
 
     private setControl(): void {

@@ -54,7 +54,8 @@
     padding: var(--auction-details-padding);
 
     @include viewports.mobile {
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         height: 100%;
         min-height: 0;
         background-color: var(--background-color);
@@ -284,6 +285,8 @@
 
     @include viewports.mobile {
         box-shadow: var(--mobile-overlay-shadow-top);
+        overflow-y: visible;
+        z-index: 10;
         border-top-right-radius: var(--border-radius-large);
         border-top-left-radius: var(--border-radius-large);
         padding: calc(var(--auction-details-padding) * 2);
