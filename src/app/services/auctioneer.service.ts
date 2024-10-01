@@ -138,6 +138,9 @@ export class AuctioneerService {
 
     public resetAuctionCreation(): void {
         this.auctionCreationForm.reset();
+        this.auctionCreationForm.controls.details.controls.currency.setValue(
+            /* getLocaleCurrencyCode(this.locale) ?? */ 'EUR',
+        );
         this.auctionCreationForm.controls.details.controls.city.disable();
         this.isAuctionCreationCategoryAProduct = null;
         this._auctionCreationActiveStep = 0;
