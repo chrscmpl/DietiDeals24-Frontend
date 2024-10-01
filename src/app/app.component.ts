@@ -25,7 +25,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { WarningsService } from './services/warnings.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavigationService } from './services/navigation.service';
-import { fromEvent, Subscription } from 'rxjs';
+import { filter, fromEvent, Subscription, take } from 'rxjs';
 import { IntervalService } from './services/interval.service';
 
 @Component({
@@ -85,6 +85,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.windowService.isMobile$.subscribe((isMobile) => {
             this.makeWindowAdjustments(isMobile);
         });
+
+        this.isLoadingRouteIndicator.isLoading$
+            .pipe(filter((loading) => loading))
+            .subscribe(() => this.onLoadingAnimationStart());
     }
 
     public ngAfterViewInit(): void {
@@ -159,5 +163,20 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.message.clear();
             this.mobileToastHideTransformOptions = 'translateX(100%)';
         }
+    }
+
+    private onLoadingAnimationStart(): void {
+        const scrollYPositionBeforeNavigation = window.scrollY;
+        const urlBeforeNavigation = this.router.url;
+        this.navigation.navigationStopped$.pipe(take(1)).subscribe((e) => {
+            if (urlBeforeNavigation === e.url.replace(/\(.*?\)/g, '')) {
+                setTimeout(() => {
+                    this.viewportScroller.scrollToPosition([
+                        0,
+                        scrollYPositionBeforeNavigation ?? 0,
+                    ]);
+                }, 50);
+            }
+        });
     }
 }
