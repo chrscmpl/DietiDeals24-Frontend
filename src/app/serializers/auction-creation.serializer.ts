@@ -30,14 +30,9 @@ export class AuctionCreationSerializer
             country: auction.details.country,
             city: auction.details.city,
             currency: auction.details.currency,
-            endTime: `${
-                new Date(
-                    auction.details.endTime.getTime() -
-                        auction.details.endTime.getTimezoneOffset() * 60000,
-                )
-                    .toISOString()
-                    .split('.')[0]
-            }Z`,
+            endTime: auction.details.endTime
+                .toISOString()
+                .replace(/\.[0-9]{3}/, ''),
             picturesUrls: auction.pictures.map((picture) => picture.url),
             [startingBidKey]: auction.details.startingBid,
         };
