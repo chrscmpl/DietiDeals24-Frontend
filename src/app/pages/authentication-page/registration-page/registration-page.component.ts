@@ -378,6 +378,8 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         const countryControl =
             this.registrationForm.controls.userData.controls.country;
         if (countryControl.valid && countryControl.value) {
+            this.cities = [];
+            this.filteredCities = [];
             this.locationsService
                 .getCities(countryControl.value)
                 .subscribe((cities) => {

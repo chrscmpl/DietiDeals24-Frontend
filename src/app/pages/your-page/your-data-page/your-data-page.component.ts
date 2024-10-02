@@ -492,6 +492,9 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (!countryValue) return;
 
+        this.cities = [];
+        this.filteredCities = [];
+
         this.geographicalLocations
             .getCities(countryValue)
             .subscribe((cities) => {

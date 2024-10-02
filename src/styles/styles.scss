@@ -533,4 +533,8 @@ i {
 
 .p-avatar {
     background: none;
+
+    img {
+        object-fit: cover;
+    }
 }

@@ -431,6 +431,8 @@ export class CreateAuctionPageComponent implements OnInit, OnDestroy {
     private getCities(): void {
         const countryControl = this.form.controls.details.controls.country;
         if (countryControl.valid && countryControl.value) {
+            this.cities = [];
+            this.filteredCities = [];
             this.locationsService
                 .getCities(countryControl.value)
                 .subscribe((cities) => {
