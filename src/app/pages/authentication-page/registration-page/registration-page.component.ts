@@ -39,6 +39,7 @@ import { WindowService } from '../../../services/window.service';
 import { omit } from 'lodash-es';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { UserRegistrationData } from '../../../models/user-registration-data.model';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 interface userDataForm {
     name: FormControl<string | null>;
@@ -82,6 +83,7 @@ interface registrationForm {
         DialogModule,
         CheckboxModule,
         KeyFilterModule,
+        GoogleSigninButtonModule,
     ],
     templateUrl: './registration-page.component.html',
     styleUrl: './registration-page.component.scss',

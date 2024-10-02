@@ -6,14 +6,11 @@
     </a>
 
     <div class="google-registration">
-        <p-button
-            class="google-registration-btn p-fluid"
-            (onClick)="googleSignIn()"
-            severity="secondary"
-        >
-            <img src="assets/google.svg" alt="google-logo" />
-            Continue with Google
-        </p-button>
+        <asl-google-signin-button
+            type="standard"
+            size="large"
+            text="continue_with"
+        ></asl-google-signin-button>
     </div>
 
     <p-divider class="divider" align="center">or</p-divider>

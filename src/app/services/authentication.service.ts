@@ -45,6 +45,8 @@ import { ResetForgottenPasswordException } from '../exceptions/reset-forgotten-p
 import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgotten-password-data.serializer';
 import { RequestForgottenPasswordEmailSerializer } from '../serializers/request-forgotten-password-email-data.serializer';
 import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -77,10 +79,28 @@ export class AuthenticationService {
         private readonly resetForgottenPasswordDataSerializer: ResetForgottenPasswordDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
+        private readonly socials: SocialAuthService,
+        private readonly router: Router,
     ) {
         if (AuthenticationService.authorizationToken)
             this.loginUsingToken().subscribe();
         else this.isLoggedSubject.next();
+
+        this.socials.authState
+            .pipe(
+                withLatestFrom(this.isLogged$),
+                filter(([_, isLogged]) => !isLogged),
+                map(([user]) => user),
+            )
+            .subscribe((user) => {
+                if (!user) return;
+                this.loginUsingSocials(user.idToken, user.provider).subscribe({
+                    error: () =>
+                        this.router.navigate(['/auth/social-registration'], {
+                            state: { user },
+                        }),
+                });
+            });
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
@@ -114,6 +134,25 @@ export class AuthenticationService {
                 }),
             )
             .subscribe(cb);
+    }
+
+    private loginUsingSocials(
+        tokenId: string,
+        provider: string,
+    ): Observable<unknown> {
+        return this.http
+            .post(
+                'login/social',
+                { tokenId, provider },
+                { observe: 'response' },
+            )
+            .pipe(
+                catchError((e) => throwError(() => new LoginException(e))),
+                switchMap((res: HttpResponse<unknown>) => {
+                    AuthenticationService.extractToken(res);
+                    return this.loginUsingToken();
+                }),
+            );
     }
 
     public register(

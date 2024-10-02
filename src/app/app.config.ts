@@ -17,6 +17,11 @@ import 'hammerjs';
 import { HammerGestureConfig, HammerModule } from '@angular/platform-browser';
 import { CustomHammerConfig } from './config/hammer.config';
 import { CustomPrimeNGConfig } from './config/primeng.config';
+import {
+    GoogleLoginProvider,
+    SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
+import { AuthenticationService } from './services/authentication.service';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -44,5 +49,29 @@ export const appConfig: ApplicationConfig = {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',
         }),
+        {
+            provide: 'SocialAuthServiceConfig',
+            useValue: {
+                autoLogin: false,
+                lang: 'en',
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider(
+                            '204255150104-09laqhd05kocqpg8ngc1ujoaqi75af4v.apps.googleusercontent.com',
+                            {
+                                prompt: AuthenticationService.authorizationToken
+                                    ? 'none'
+                                    : 'select_account',
+                                // scopes: ['profile', 'email'],
+                            },
+                        ),
+                    },
+                ],
+                onError: (err) => {
+                    console.error(err);
+                },
+            } as SocialAuthServiceConfig,
+        },
     ],
 };

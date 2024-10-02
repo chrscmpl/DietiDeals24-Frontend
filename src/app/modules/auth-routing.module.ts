@@ -8,6 +8,8 @@ import { AuthenticationPageComponent } from '../pages/authentication-page/authen
 import { VerifyEmailPageComponent } from '../pages/authentication-page/verify-email-page/verify-email-page.component';
 import { EmailVerificationGuard } from '../guards/email-verification.guard';
 import { ResetPasswordPageComponent } from '../pages/authentication-page/reset-password-page/reset-password-page.component';
+import { SocialRegistrationPageComponent } from '../pages/authentication-page/social-registration-page/social-registration-page.component';
+import { SocialUserResolver } from '../resolvers/social-user.resolver';
 
 const routes: Routes = [
     {
@@ -28,6 +30,12 @@ const routes: Routes = [
                 path: 'register',
                 title: 'Sign Up',
                 component: RegistrationPageComponent,
+            },
+            {
+                path: 'social-registration',
+                title: 'Complete Your Registration',
+                component: SocialRegistrationPageComponent,
+                resolve: { user: SocialUserResolver.asResolveFn() },
             },
             {
                 path: 'forgot-password',
