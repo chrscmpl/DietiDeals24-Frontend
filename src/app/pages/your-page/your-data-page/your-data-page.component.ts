@@ -264,8 +264,12 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
 
+        const newLink = newLinkForm.value as userLinkCreationData;
+
+        newLink.url = `https://${newLink.url.replace(/$https:\/\//, '')}`;
+
         this.authentication
-            .addLink(newLinkForm.value as userLinkCreationData)
+            .addLink(newLink)
             .pipe(
                 switchMap(() => this.authentication.getAuthenticatedUserData()),
             )
@@ -396,7 +400,7 @@ export class YourDataPageComponent implements OnInit, AfterViewInit, OnDestroy {
                     validators: [
                         Validators.required,
                         Validators.pattern(
-                            /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
+                            /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/,
                         ),
                         this.validateUrl.bind(this),
                     ],

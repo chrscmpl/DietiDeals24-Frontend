@@ -32,6 +32,7 @@
         height: 100%;
         align-self: center;
         width: var(--card-height);
+        height: var(--card-height);
         overflow: hidden;
 
         @include viewports.mobile {

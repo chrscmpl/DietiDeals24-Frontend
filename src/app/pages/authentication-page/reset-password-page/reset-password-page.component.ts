@@ -8,7 +8,7 @@ import {
     ValidationErrors,
     Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { take } from 'rxjs';
 import { InputComponent } from '../../../components/input/input.component';
@@ -32,6 +32,7 @@ interface ResetPasswordForm {
         ReactiveFormsModule,
         InputComponent,
         PasswordModule,
+        RouterLink,
     ],
     templateUrl: './reset-password-page.component.html',
     styleUrl: './reset-password-page.component.scss',
