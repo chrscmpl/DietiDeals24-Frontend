@@ -33,6 +33,7 @@
                 class="change-password-btn"
                 label="Change password"
                 icon="pi pi-pen-to-square"
+                [disabled]="disableEditPasswordForm"
                 (onClick)="showEditPasswordForm()"
             />
         } @else {

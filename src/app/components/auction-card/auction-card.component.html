@@ -58,7 +58,11 @@
                 @if ((windowService.isMobile$ | async) === false) {
                     (Until {{ auction.endTime | localDate }})
                 }
-            } @else if (privateView && pendingEndTime) {
+            } @else if (
+                privateView &&
+                auction.userId === authentication.loggedUser?.id &&
+                pendingEndTime
+            ) {
                 <span class="pending-timer">
                     <i class="pi pi-clock"></i>&nbsp; The auction is pending,
                     you have

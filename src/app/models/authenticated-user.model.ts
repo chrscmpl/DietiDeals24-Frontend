@@ -1,4 +1,5 @@
 import { AuthenticatedUserDTO } from '../dtos/authentication.dto';
+import { AccountProvider } from '../enums/account-provider.enum';
 import { userLink } from './user-link.model';
 
 export class AuthenticatedUser {
@@ -17,6 +18,7 @@ export class AuthenticatedUser {
     private _city: string;
     private _bio: string | null;
     private _links: userLink[];
+    private _provider: AccountProvider;
 
     public constructor(dto: AuthenticatedUserDTO) {
         this._id = String(dto.userId);
@@ -39,6 +41,7 @@ export class AuthenticatedUser {
                 name: link.description,
                 url: link.link,
             })) ?? [];
+        this._provider = dto.provider;
     }
 
     public get id(): string {
@@ -107,5 +110,9 @@ export class AuthenticatedUser {
 
     public set links(value: userLink[]) {
         this._links = value;
+    }
+
+    public get provider(): AccountProvider {
+        return this._provider;
     }
 }

@@ -9,6 +9,9 @@
         margin-top: 1rem;
         width: 100%;
         @include box.padding-horizontal(3rem);
+        min-height: 44px;
+        display: flex;
+        justify-content: center;
     }
 
     .divider {

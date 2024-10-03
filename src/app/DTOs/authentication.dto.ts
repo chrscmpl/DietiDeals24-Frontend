@@ -1,3 +1,4 @@
+import { AccountProvider } from '../enums/account-provider.enum';
 import { userLinkDTO } from './user-link.dto';
 
 export interface AuthenticatedUserDTO {
@@ -16,6 +17,7 @@ export interface AuthenticatedUserDTO {
     city: string;
     bio?: string | null;
     links?: userLinkDTO[] | null;
+    provider: AccountProvider;
 }
 
 export interface UserRegistrationDTO {

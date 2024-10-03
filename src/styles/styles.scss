@@ -539,3 +539,13 @@ i {
         object-fit: cover;
     }
 }
+
+.google-signin-button > div,
+#credential_picker_container {
+    color-scheme: light;
+}
+
+#credential_picker_container,
+#credential_picker_iframe {
+    display: none;
+}

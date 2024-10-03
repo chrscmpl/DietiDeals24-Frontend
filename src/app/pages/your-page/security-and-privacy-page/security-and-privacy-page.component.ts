@@ -25,6 +25,7 @@ import { PasswordModule } from 'primeng/password';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { ChangePasswordException } from '../../../exceptions/change-password.exception';
+import { AccountProvider } from '../../../enums/account-provider.enum';
 
 interface EditPasswordForm {
     oldPassword: FormControl<string | null>;
@@ -54,6 +55,7 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
     securityAndPrivacySection!: ElementRef;
 
     public editPasswordForm!: FormGroup<EditPasswordForm>;
+    public disableEditPasswordForm = false;
     public user!: AuthenticatedUser;
     public maskEmail = true;
     public submissionLoading = false;
@@ -87,6 +89,8 @@ export class SecurityAndPrivacyPageComponent implements OnInit {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.termsOfServiceText = data['tos'];
             this.user = data['userData'];
+            if (this.user.provider !== AccountProvider.DD24)
+                this.disableEditPasswordForm = true;
         });
 
         this.initForm();
