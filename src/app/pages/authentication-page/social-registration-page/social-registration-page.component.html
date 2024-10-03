@@ -8,6 +8,32 @@
     >
         <div class="inner-form">
             <div class="input">
+                <label for="username">Username*</label>
+                <dd24-input
+                    controlName="username"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'an username is required'
+                        }
+                    ]"
+                >
+                    <input
+                        class="p-fluid"
+                        type="text"
+                        pInputText
+                        formControlName="username"
+                        name="username"
+                        placeholder="An unique username"
+                        id="username"
+                        pKeyFilter="alphanum"
+                        [maxlength]="environment.usernameMaxLength"
+                        autocomplete="off"
+                    />
+                </dd24-input>
+            </div>
+
+            <div class="input">
                 <label for="name">Name*</label>
                 <dd24-input
                     controlName="name"

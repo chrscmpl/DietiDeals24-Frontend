@@ -34,6 +34,20 @@ export interface emailVerificationDTO {
     code: string;
 }
 
+export interface SocialLoginDTO {
+    oauthToken: string;
+}
+
+export interface SocialRegistrationDTO {
+    username: string;
+    name: string;
+    surname: string;
+    birthday: string;
+    country: string;
+    city: string;
+    oauthToken: string;
+}
+
 export interface UserCredentials {
     email: string;
     password: string;

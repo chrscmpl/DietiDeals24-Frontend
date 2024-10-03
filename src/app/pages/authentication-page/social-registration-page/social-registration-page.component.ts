@@ -9,7 +9,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
-import { take } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { InputComponent } from '../../../components/input/input.component';
 import { CalendarModule } from 'primeng/calendar';
@@ -23,8 +23,15 @@ import {
 import { GeographicalLocationsService } from '../../../services/geographical-locations.service';
 import { Country } from '../../../models/country.model';
 import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper';
+import { UploadService } from '../../../services/upload.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { SocialRegistrationData } from '../../../models/social-registration.model';
+import { SocialRegistrationException } from '../../../exceptions/social-registration.exception';
+import { MessageService } from 'primeng/api';
+import { NavigationService } from '../../../services/navigation.service';
 
 interface CompleteUserDataForm {
+    username: FormControl<string | null>;
     name: FormControl<string | null>;
     surname: FormControl<string | null>;
     birthday: FormControl<Date | null>;
@@ -69,15 +76,16 @@ export class SocialRegistrationPageComponent implements OnInit {
         private readonly http: HttpClient,
         private readonly formBuilder: FormBuilder,
         private readonly locationsService: GeographicalLocationsService,
+        private readonly upload: UploadService,
+        private readonly authentication: AuthenticationService,
+        private readonly navigation: NavigationService,
+        private readonly message: MessageService,
     ) {}
 
     public ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
             this.user = data['user'];
             this.initForm();
-            this.http
-                .post('oauth/google/debug', { oauthToken: this.user.idToken })
-                .subscribe();
             this.handleCityControl();
         });
 
@@ -100,11 +108,72 @@ export class SocialRegistrationPageComponent implements OnInit {
         }
 
         this.submissionLoading = true;
+
+        this.authentication
+            .registerUsingSocials({
+                socialUser: this.user,
+                ...this.completeUserDataForm.value,
+            } as SocialRegistrationData)
+            .pipe(
+                switchMap(() => this.uploadUserPicture()),
+                switchMap((url) => {
+                    if (url) {
+                        return this.authentication
+                            .editUser({
+                                profilePictureUrl: url,
+                            })
+                            .pipe(catchError(() => of(null)));
+                    }
+                    return of(null);
+                }),
+            )
+            .subscribe({
+                next: () => this.onRegistrationSuccess(),
+                error: (e) => this.onRegistrationError(e),
+            });
+    }
+
+    private onRegistrationSuccess(): void {
+        this.submissionLoading = false;
+        this.navigation.navigateToRouteBeforeRedirection();
+    }
+
+    private onRegistrationError(e: SocialRegistrationException): void {
+        this.submissionLoading = false;
+        if (e.error.status > 500) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Server error',
+                detail: 'An error occurred on the server. Please try again later',
+            });
+        } else if (e.error.status === 0) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Network error',
+                detail: 'Check your connection and try again',
+            });
+        } else if (e.error.status === 409) {
+            this.message.add({
+                severity: 'error',
+                summary: 'Usernames already in use',
+                detail: 'Please try again',
+            });
+        } else {
+            this.message.add({
+                severity: 'error',
+                summary: 'An error occurred',
+                detail: 'Please try again',
+            });
+        }
     }
 
     private initForm(): void {
         this.completeUserDataForm =
             this.formBuilder.group<CompleteUserDataForm>({
+                username: new FormControl<string | null>(null, {
+                    validators: [Validators.required],
+                    updateOn: 'blur',
+                }),
                 name: new FormControl<string | null>(
                     this.user.firstName ?? null,
                     {
@@ -130,6 +199,19 @@ export class SocialRegistrationPageComponent implements OnInit {
                 }),
             });
         this.completeUserDataForm.controls.city.disable();
+    }
+
+    private uploadUserPicture(): Observable<string | null> {
+        return this.http.get(this.user.photoUrl, { responseType: 'blob' }).pipe(
+            map((blob) => {
+                const fileName = `${this.user.id}.${blob.type.split('/')[1]}`;
+                return new File([blob], fileName, { type: blob.type });
+            }),
+            switchMap((file) => this.upload.upload(file)),
+            map((uploadedFile) => uploadedFile.url),
+            catchError(() => of(null)),
+            take(1),
+        );
     }
 
     private handleCityControl(): void {

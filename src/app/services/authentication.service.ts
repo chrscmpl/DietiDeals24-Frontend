@@ -46,6 +46,11 @@ import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgo
 import { RequestForgottenPasswordEmailSerializer } from '../serializers/request-forgotten-password-email-data.serializer';
 import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
 import { SocialUser } from '@abacritt/angularx-social-login';
+import { SocialLoginSerializer } from '../serializers/social-login.serializer';
+import { SocialRegistrationSerializer } from '../serializers/social-registration.serializer';
+import { SocialLoginException } from '../exceptions/social-login.exception';
+import { SocialRegistrationData } from '../models/social-registration.model';
+import { SocialRegistrationException } from '../exceptions/social-registration.exception';
 
 @Injectable({
     providedIn: 'root',
@@ -77,6 +82,8 @@ export class AuthenticationService {
         private readonly requestForgottenPasswordEmailSerializer: RequestForgottenPasswordEmailSerializer,
         private readonly resetForgottenPasswordDataSerializer: ResetForgottenPasswordDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
+        private readonly socialLoginSerializer: SocialLoginSerializer,
+        private readonly socialRegistrationSerializer: SocialRegistrationSerializer,
         private readonly messageService: MessageService,
     ) {
         if (AuthenticationService.authorizationToken)
@@ -120,12 +127,14 @@ export class AuthenticationService {
     public loginUsingSocials(user: SocialUser): Observable<unknown> {
         return this.http
             .post(
-                `login/${user.provider.toLowerCase()}`,
-                { accountId: user.id, token: user.idToken },
+                `oauth/${user.provider.toLowerCase()}/login`,
+                this.socialLoginSerializer.serialize(user),
                 { observe: 'response' },
             )
             .pipe(
-                catchError((e) => throwError(() => new LoginException(e))),
+                catchError((e) =>
+                    throwError(() => new SocialLoginException(e)),
+                ),
                 switchMap((res: HttpResponse<unknown>) => {
                     AuthenticationService.extractToken(res);
                     return this.loginUsingToken();
@@ -151,6 +160,29 @@ export class AuthenticationService {
                 ),
             )
             .subscribe(cb);
+    }
+
+    public registerUsingSocials(
+        data: SocialRegistrationData,
+    ): Observable<unknown> {
+        return this.http
+            .post(
+                `oauth/${data.socialUser.provider.toLowerCase()}/register`,
+                this.socialRegistrationSerializer.serialize(data),
+                {
+                    responseType: 'text',
+                    observe: 'response',
+                },
+            )
+            .pipe(
+                catchError((e) =>
+                    throwError(() => new SocialRegistrationException(e)),
+                ),
+                switchMap((res: HttpResponse<unknown>) => {
+                    AuthenticationService.extractToken(res);
+                    return this.loginUsingToken();
+                }),
+            );
     }
 
     public verifyEmail(
