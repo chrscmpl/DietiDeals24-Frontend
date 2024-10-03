@@ -45,8 +45,7 @@ import { ResetForgottenPasswordException } from '../exceptions/reset-forgotten-p
 import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgotten-password-data.serializer';
 import { RequestForgottenPasswordEmailSerializer } from '../serializers/request-forgotten-password-email-data.serializer';
 import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
-import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { Router } from '@angular/router';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 @Injectable({
     providedIn: 'root',
@@ -79,28 +78,10 @@ export class AuthenticationService {
         private readonly resetForgottenPasswordDataSerializer: ResetForgottenPasswordDataSerializer,
         private readonly emailVerificationSerializer: EmailVerificationSerializer,
         private readonly messageService: MessageService,
-        private readonly socials: SocialAuthService,
-        private readonly router: Router,
     ) {
         if (AuthenticationService.authorizationToken)
             this.loginUsingToken().subscribe();
         else this.isLoggedSubject.next();
-
-        this.socials.authState
-            .pipe(
-                withLatestFrom(this.isLogged$),
-                filter(([_, isLogged]) => !isLogged),
-                map(([user]) => user),
-            )
-            .subscribe((user) => {
-                if (!user) return;
-                this.loginUsingSocials(user).subscribe({
-                    error: () =>
-                        this.router.navigate(['/auth/social-registration'], {
-                            state: { user },
-                        }),
-                });
-            });
     }
 
     public readonly isLogged$: Observable<boolean> = this.isLoggedSubject
@@ -136,7 +117,7 @@ export class AuthenticationService {
             .subscribe(cb);
     }
 
-    private loginUsingSocials(user: SocialUser): Observable<unknown> {
+    public loginUsingSocials(user: SocialUser): Observable<unknown> {
         return this.http
             .post(
                 `login/${user.provider.toLowerCase()}`,
