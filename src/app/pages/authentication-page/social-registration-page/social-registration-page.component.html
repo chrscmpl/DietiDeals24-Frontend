@@ -1,1 +1,158 @@
-<div>SOCIAL LOGIN PAGE</div>
+<div class="form-card dd24-auth-form">
+    <h1 class="form-header">Complete your registration</h1>
+
+    <form
+        class="registration-form"
+        [formGroup]="completeUserDataForm"
+        (ngSubmit)="onSubmit()"
+    >
+        <div class="inner-form">
+            <div class="input">
+                <label for="name">Name*</label>
+                <dd24-input
+                    controlName="name"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'a name is required'
+                        }
+                    ]"
+                >
+                    <input
+                        class="p-fluid"
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                        formControlName="name"
+                        name="name"
+                        placeholder="Your name"
+                        id="name"
+                    />
+                </dd24-input>
+            </div>
+
+            <div class="input">
+                <label for="surname">Surname*</label>
+                <dd24-input
+                    controlName="surname"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'a surname is required'
+                        }
+                    ]"
+                >
+                    <input
+                        class="p-fluid"
+                        type="text"
+                        pInputText
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                        formControlName="surname"
+                        name="surname"
+                        placeholder="Your surname"
+                        id="surname"
+                    />
+                </dd24-input>
+            </div>
+            <div class="input">
+                <label for="birthday">Birthday*</label>
+                <dd24-input
+                    controlName="birthday"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'a birthday is required'
+                        }
+                    ]"
+                >
+                    <p-calendar
+                        class="p-fluid"
+                        formControlName="birthday"
+                        name="birthday"
+                        [showIcon]="true"
+                        iconDisplay="input"
+                        placeholder="dd/mm/yyyy"
+                        dateFormat="dd/mm/yy"
+                        inputId="birthday"
+                        [minDate]="minBirthdayDate"
+                        [maxDate]="maxBirthdayDate"
+                        [defaultDate]="defaultBirthdayDate"
+                    />
+                </dd24-input>
+            </div>
+            <div class="input">
+                <label for="country">Country*</label>
+                <dd24-input
+                    controlName="country"
+                    [errorMessages]="[
+                        {
+                            validation: 'required',
+                            message: 'a country is required'
+                        }
+                    ]"
+                >
+                    <p-autoComplete
+                        class="p-fluid"
+                        formControlName="country"
+                        name="country"
+                        placeholder="The country you live in"
+                        emptyMessage="No countries found"
+                        [suggestions]="filteredCountries"
+                        optionLabel="name"
+                        optionValue="code"
+                        forceSelection="true"
+                        minLength="2"
+                        (completeMethod)="completeCountries($event)"
+                        inputId="country"
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                    >
+                    </p-autoComplete>
+                </dd24-input>
+            </div>
+            <div class="input">
+                <label
+                    for="city"
+                    [class.p-disabled]="
+                        completeUserDataForm.controls.city.disabled
+                    "
+                    >City*</label
+                >
+                <dd24-input
+                    controlName="city"
+                    [errorMessages]="[
+                        {
+                            customValidation: 'noCountrySelected',
+                            message:
+                                'You must select a country before selecting a city'
+                        },
+                        {
+                            validation: 'required',
+                            message: 'a city is required'
+                        }
+                    ]"
+                >
+                    <p-autoComplete
+                        class="p-fluid"
+                        formControlName="city"
+                        name="city"
+                        placeholder="The city you live in"
+                        emptyMessage="No cities found"
+                        [suggestions]="filteredCities"
+                        forceSelection="true"
+                        (completeMethod)="completeCities($event)"
+                        inputId="city"
+                        [pKeyFilter]="environment.alphaAndWhiteSpacePattern"
+                        minLength="2"
+                    ></p-autoComplete>
+                </dd24-input>
+            </div>
+        </div>
+
+        <p-button
+            class="next-btn"
+            label="Register"
+            type="submit"
+            [loading]="submissionLoading"
+        ></p-button>
+    </form>
+</div>

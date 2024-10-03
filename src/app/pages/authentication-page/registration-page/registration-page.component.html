@@ -21,8 +21,6 @@
         class="registration-form"
         [formGroup]="registrationForm"
         (ngSubmit)="onSubmit()"
-        (keypress)="onKeyPressed($event)"
-        tabindex="0"
     >
         @if (activeStep === 0) {
             <div class="inner-form" formGroupName="userData">

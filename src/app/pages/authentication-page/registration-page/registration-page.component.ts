@@ -299,14 +299,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
         this.onRegister();
     }
 
-    public googleSignIn(): void {
-        this.message.add({
-            severity: 'info',
-            summary: 'Not implemented',
-            detail: 'Google sign in is not implemented at this time',
-        });
-    }
-
     private onRegister(): void {
         reactiveFormsUtils.forceValidation(
             this.registrationForm.controls.credentials.controls.confirmPassword,
@@ -370,10 +362,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
             this.showErrorToast('An error occurred', 'Please try again later.');
         }
         console.error(e.error);
-    }
-
-    public onKeyPressed(event: KeyboardEvent): void {
-        if (event.key === 'Enter') this.onSubmit();
     }
 
     private getCities(): void {

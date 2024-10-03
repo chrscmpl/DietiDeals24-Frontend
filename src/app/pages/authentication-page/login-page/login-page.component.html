@@ -4,14 +4,11 @@
         you don't have an account?
     </a>
     <div class="google-login">
-        <p-button
-            class="google-login-btn p-fluid"
-            (onClick)="googleSignIn()"
-            severity="secondary"
-        >
-            <img src="assets/google.svg" alt="google-logo" />
-            Continue with Google
-        </p-button>
+        <asl-google-signin-button
+            type="standard"
+            size="large"
+            text="continue_with"
+        ></asl-google-signin-button>
     </div>
 
     <p-divider class="divider" align="center">or</p-divider>

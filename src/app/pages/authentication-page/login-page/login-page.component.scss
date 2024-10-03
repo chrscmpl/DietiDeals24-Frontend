@@ -49,12 +49,4 @@
         font-weight: var(--font-weight-bolder);
         color: var(--text-color-3);
     }
-
-    .google-login-btn button {
-        @include layouts.flex(row, center, center, 1ch);
-        background-color: white;
-        color: black;
-        padding: 0.5rem;
-        font-weight: 500;
-    }
 }

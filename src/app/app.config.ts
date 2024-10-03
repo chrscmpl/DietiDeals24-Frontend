@@ -21,7 +21,6 @@ import {
     GoogleLoginProvider,
     SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
-import { AuthenticationService } from './services/authentication.service';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -60,9 +59,7 @@ export const appConfig: ApplicationConfig = {
                         provider: new GoogleLoginProvider(
                             '204255150104-09laqhd05kocqpg8ngc1ujoaqi75af4v.apps.googleusercontent.com',
                             {
-                                prompt: AuthenticationService.authorizationToken
-                                    ? 'none'
-                                    : 'select_account',
+                                prompt: 'none',
                                 // scopes: ['profile', 'email'],
                             },
                         ),

@@ -1,0 +1,27 @@
+@use "layouts";
+@use "box";
+
+.form-card {
+    color: var(--text-color-1);
+
+    .form-header {
+        text-align: center;
+    }
+
+    .registration-form {
+        @include layouts.flex(column, start, stretch);
+        @include box.padding-horizontal(3rem);
+        width: 100%;
+        gap: 1rem;
+        font-size: var(--font-size-medium);
+        font-weight: var(--font-weight-normal);
+        .inner-form {
+            @include layouts.flex(column, start, stretch, 1em);
+        }
+    }
+
+    .inner-form {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+}

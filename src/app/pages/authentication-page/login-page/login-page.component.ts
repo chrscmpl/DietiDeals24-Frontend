@@ -26,6 +26,7 @@ import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { LoginException } from '../../../exceptions/login.exception';
 import { GetAuthenticatedUserDataException } from '../../../exceptions/get-authenticated-user-data.exception';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 interface loginForm {
     email: FormControl<string | null>;
@@ -43,6 +44,7 @@ interface loginForm {
         ButtonModule,
         PasswordModule,
         DividerModule,
+        GoogleSigninButtonModule,
     ],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.scss',
@@ -114,14 +116,6 @@ export class LoginPageComponent implements OnInit, AfterViewInit {
                 error: this.onLoginError.bind(this),
             },
         );
-    }
-
-    public googleSignIn(): void {
-        this.message.add({
-            severity: 'info',
-            summary: 'Not implemented',
-            detail: 'Google sign in is not implemented at this time',
-        });
     }
 
     private onLoginSuccess(): void {

@@ -45,7 +45,7 @@ import { ResetForgottenPasswordException } from '../exceptions/reset-forgotten-p
 import { ResetForgottenPasswordDataSerializer } from '../serializers/reset-forgotten-password-data.serializer';
 import { RequestForgottenPasswordEmailSerializer } from '../serializers/request-forgotten-password-email-data.serializer';
 import { RequestForgottenPasswordEmailData } from '../models/request-forgotten-password-email-data.model';
-import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -94,7 +94,7 @@ export class AuthenticationService {
             )
             .subscribe((user) => {
                 if (!user) return;
-                this.loginUsingSocials(user.idToken, user.provider).subscribe({
+                this.loginUsingSocials(user).subscribe({
                     error: () =>
                         this.router.navigate(['/auth/social-registration'], {
                             state: { user },
@@ -136,14 +136,11 @@ export class AuthenticationService {
             .subscribe(cb);
     }
 
-    private loginUsingSocials(
-        tokenId: string,
-        provider: string,
-    ): Observable<unknown> {
+    private loginUsingSocials(user: SocialUser): Observable<unknown> {
         return this.http
             .post(
-                'login/social',
-                { tokenId, provider },
+                `login/${user.provider.toLowerCase()}`,
+                { accountId: user.id, token: user.idToken },
                 { observe: 'response' },
             )
             .pipe(
