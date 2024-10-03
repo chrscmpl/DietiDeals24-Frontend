@@ -1,5 +1,5 @@
 import { SocialUser } from '@abacritt/angularx-social-login';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -29,6 +29,7 @@ import { SocialRegistrationData } from '../../../models/social-registration.mode
 import { SocialRegistrationException } from '../../../exceptions/social-registration.exception';
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
+import { BACKEND_REQUEST } from '../../../tokens/backend-request.token';
 
 interface CompleteUserDataForm {
     username: FormControl<string | null>;
@@ -202,16 +203,21 @@ export class SocialRegistrationPageComponent implements OnInit {
     }
 
     private uploadUserPicture(): Observable<string | null> {
-        return this.http.get(this.user.photoUrl, { responseType: 'blob' }).pipe(
-            map((blob) => {
-                const fileName = `${this.user.id}.${blob.type.split('/')[1]}`;
-                return new File([blob], fileName, { type: blob.type });
-            }),
-            switchMap((file) => this.upload.upload(file)),
-            map((uploadedFile) => uploadedFile.url),
-            catchError(() => of(null)),
-            take(1),
-        );
+        return this.http
+            .get(this.user.photoUrl, {
+                responseType: 'blob',
+                context: new HttpContext().set(BACKEND_REQUEST, false),
+            })
+            .pipe(
+                map((blob) => {
+                    const fileName = `${this.user.id}.${blob.type.split('/')[1]}`;
+                    return new File([blob], fileName, { type: blob.type });
+                }),
+                switchMap((file) => this.upload.upload(file)),
+                map((uploadedFile) => uploadedFile.url),
+                catchError(() => of(null)),
+                take(1),
+            );
     }
 
     private handleCityControl(): void {

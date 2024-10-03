@@ -79,7 +79,6 @@ const routes: Routes = [
                             '204255150104-09laqhd05kocqpg8ngc1ujoaqi75af4v.apps.googleusercontent.com',
                             {
                                 prompt: 'none',
-                                // scopes: ['profile', 'email'],
                             },
                         ),
                     },
