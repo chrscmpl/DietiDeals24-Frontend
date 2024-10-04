@@ -1,6 +1,7 @@
 export const environment = {
     isProd: true,
     backendHost: 'https://api.dietideals24.click',
+    logoUrl: 'https://uploads.dietideals24.click/logo.png',
     disableWarnings: false,
     maximumCachedUserAuctionsRequests: 9,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,
