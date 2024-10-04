@@ -24,5 +24,14 @@ The DietiDeals24 app offers both light and dark themes, with multiple variations
 
 ## Screenshots
 
-![Desktop Screenshot 1](src/assets/screenshots/desktop-wide-1.jpg)
-![Mobile Screenshot 1](src/assets/screenshots/mobile-portrait-1.jpg)
+<img src="src/assets/screenshots/desktop-wide-1.jpg" alt="Desktop Screenshot 1" style="max-height: 300px"/>
+<img src="src/assets/screenshots/mobile-portrait-1.jpg" alt="Mobile Screenshot 1" style="max-height: 300px"/>
+
+<img src="src/assets/screenshots/desktop-wide-2.jpg" alt="Desktop Screenshot 2" style="max-height: 300px"/>
+<img src="src/assets/screenshots/mobile-portrait-2.jpg" alt="Mobile Screenshot 2" style="max-height: 300px"/>
+
+<img src="src/assets/screenshots/desktop-wide-3.jpg" alt="Desktop Screenshot 3" style="max-height: 300px"/>
+<img src="src/assets/screenshots/mobile-portrait-3.jpg" alt="Mobile Screenshot 3" style="max-height: 300px"/>
+
+<img src="src/assets/screenshots/desktop-wide-4.jpg" alt="Desktop Screenshot 4" style="max-height: 300px"/>
+<img src="src/assets/screenshots/mobile-portrait-4.jpg" alt="Mobile Screenshot 4" style="max-height: 300px"/>

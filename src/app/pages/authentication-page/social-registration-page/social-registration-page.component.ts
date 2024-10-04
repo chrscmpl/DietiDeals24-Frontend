@@ -206,6 +206,7 @@ export class SocialRegistrationPageComponent implements OnInit, OnDestroy {
         }
 
         this.submissionLoading = true;
+        this.error = '';
 
         this.authentication
             .registerUsingSocials({
@@ -253,7 +254,7 @@ export class SocialRegistrationPageComponent implements OnInit, OnDestroy {
         } else if (e.error.status === 409) {
             this.message.add({
                 severity: 'error',
-                summary: 'Usernames already in use',
+                summary: 'Username is already in use',
                 detail: 'Please try again',
             });
         } else {
