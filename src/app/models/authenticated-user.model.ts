@@ -7,7 +7,7 @@ export class AuthenticatedUser {
     private _username: string;
     private _name: string;
     private _surname: string;
-    private _birthday: string;
+    private _birthday: Date;
     private _email: string;
     private _onlineAuctionsCounter: number;
     private _activeBidsCounter: number;
@@ -25,7 +25,7 @@ export class AuthenticatedUser {
         this._username = dto.username;
         this._name = dto.name;
         this._surname = dto.surname;
-        this._birthday = dto.birthday;
+        this._birthday = new Date(dto.birthday);
         this._email = dto.email;
         this._onlineAuctionsCounter = dto.onlineAuctionsCounter ?? 0;
         this._activeBidsCounter = dto.onlineBidsCounter ?? 0;
@@ -60,7 +60,7 @@ export class AuthenticatedUser {
         return this._surname;
     }
 
-    public get birthday(): string {
+    public get birthday(): Date {
         return this._birthday;
     }
 

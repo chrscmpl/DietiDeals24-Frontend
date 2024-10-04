@@ -42,7 +42,7 @@ import {
     userLinkCreationData,
 } from '../../../models/user-link.model';
 import { AuthenticationService } from '../../../services/authentication.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { UploadService } from '../../../services/upload.service';
 import { ProfilePictureInputComponent } from '../../../components/profile-picture-input/profile-picture-input.component';
@@ -92,6 +92,7 @@ interface editYourDataForm {
         EditableFieldComponent,
         KeyFilterModule,
         AutoCompleteModule,
+        DatePipe,
     ],
     templateUrl: './your-data-page.component.html',
     styleUrl: './your-data-page.component.scss',

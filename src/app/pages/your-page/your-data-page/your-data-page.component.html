@@ -294,7 +294,11 @@
                         pInputText
                         disabled
                         id="private-area-{{ field.key }}"
-                        [value]="user[field.key]"
+                        [value]="
+                            field.key !== 'birthday'
+                                ? user[field.key]
+                                : (user.birthday | date: 'yyyy-MM-dd')
+                        "
                     />
                 </div>
             }
