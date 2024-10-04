@@ -291,7 +291,7 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        if (this.activeStep !== 2) {
+        if (this.activeStep !== this.steps.length - 1) {
             this.next();
             return;
         }

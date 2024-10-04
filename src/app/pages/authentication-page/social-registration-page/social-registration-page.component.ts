@@ -1,6 +1,6 @@
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { HttpClient, HttpContext } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
     AutoCompleteCompleteEvent,
@@ -9,7 +9,15 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
-import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
+import {
+    catchError,
+    map,
+    Observable,
+    of,
+    Subscription,
+    switchMap,
+    take,
+} from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { InputComponent } from '../../../components/input/input.component';
 import { CalendarModule } from 'primeng/calendar';
@@ -30,6 +38,14 @@ import { SocialRegistrationException } from '../../../exceptions/social-registra
 import { MessageService } from 'primeng/api';
 import { NavigationService } from '../../../services/navigation.service';
 import { BACKEND_REQUEST } from '../../../tokens/backend-request.token';
+import {
+    Step,
+    StepperComponent,
+} from '../../../components/stepper/stepper.component';
+import { WindowService } from '../../../services/window.service';
+import { DialogModule } from 'primeng/dialog';
+import { AssetsService } from '../../../services/assets.service';
+import { CheckboxModule } from 'primeng/checkbox';
 
 interface CompleteUserDataForm {
     username: FormControl<string | null>;
@@ -38,6 +54,15 @@ interface CompleteUserDataForm {
     birthday: FormControl<Date | null>;
     country: FormControl<string | null>;
     city: FormControl<string | null>;
+}
+
+interface privacyPolicyForm {
+    accept: FormControl<boolean>;
+}
+
+interface SocialRegistrationForm {
+    userData: FormGroup<CompleteUserDataForm>;
+    privacyPolicy: FormGroup<privacyPolicyForm>;
 }
 
 @Component({
@@ -51,14 +76,21 @@ interface CompleteUserDataForm {
         InputComponent,
         CalendarModule,
         ReactiveFormsModule,
+        StepperComponent,
+        DialogModule,
+        CheckboxModule,
     ],
     templateUrl: './social-registration-page.component.html',
     styleUrl: './social-registration-page.component.scss',
 })
-export class SocialRegistrationPageComponent implements OnInit {
+export class SocialRegistrationPageComponent implements OnInit, OnDestroy {
+    private readonly subscriptions: Subscription[] = [];
     public user!: SocialUser;
     public submissionLoading: boolean = false;
-    public completeUserDataForm!: FormGroup<CompleteUserDataForm>;
+    public socialRegistrationForm!: FormGroup<SocialRegistrationForm>;
+    public activeStep: number = 0;
+    public error: string = '';
+    @ViewChild(StepperComponent) public stepper!: StepperComponent;
 
     public readonly environment = environment;
 
@@ -72,6 +104,30 @@ export class SocialRegistrationPageComponent implements OnInit {
     public maxBirthdayDate: Date = new Date();
     public defaultBirthdayDate: Date = new Date(2000, 0, 1);
 
+    private onNextuserData = (): boolean => {
+        if (!this.socialRegistrationForm.controls.userData.valid) {
+            reactiveFormsUtils.markAllAsDirty(
+                this.socialRegistrationForm.controls.userData,
+            );
+            return false;
+        }
+        return true;
+    };
+
+    public steps: Step[] = [
+        {
+            title: 'Your data',
+            nextCallback: this.onNextuserData.bind(this),
+        },
+        {
+            title: 'Privacy policy',
+        },
+    ];
+
+    public privacyPolicyDialogVisible: boolean = false;
+
+    public tos: string = '';
+
     public constructor(
         private readonly route: ActivatedRoute,
         private readonly http: HttpClient,
@@ -81,6 +137,8 @@ export class SocialRegistrationPageComponent implements OnInit {
         private readonly authentication: AuthenticationService,
         private readonly navigation: NavigationService,
         private readonly message: MessageService,
+        private readonly windowService: WindowService,
+        private readonly assets: AssetsService,
     ) {}
 
     public ngOnInit(): void {
@@ -100,11 +158,50 @@ export class SocialRegistrationPageComponent implements OnInit {
             .subscribe((countries) => {
                 this.countries = countries;
             });
+
+        this.subscriptions.push(
+            this.windowService.isMobile$.subscribe((isMobile) => {
+                this.navigation.backAction = isMobile
+                    ? this.onBack.bind(this)
+                    : null;
+            }),
+        );
+
+        this.assets
+            .getPlainText('tos.txt')
+            .pipe(take(1))
+            .subscribe((tos) => {
+                this.tos = tos;
+            });
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((s) => s.unsubscribe());
+        this.navigation.backAction = null;
+    }
+
+    public next(): void {
+        this.stepper.nextStep();
+    }
+
+    private onBack(defaultFn: () => void): void {
+        if (this.activeStep > 0) this.stepper.prevStep();
+        else defaultFn();
     }
 
     public onSubmit(): void {
-        if (!this.completeUserDataForm.valid) {
-            reactiveFormsUtils.markAllAsDirty(this.completeUserDataForm);
+        if (this.activeStep !== this.steps.length - 1) {
+            this.next();
+            return;
+        }
+
+        this.onRegister();
+    }
+
+    private onRegister(): void {
+        if (!this.socialRegistrationForm.valid) {
+            reactiveFormsUtils.markAllAsDirty(this.socialRegistrationForm);
+            this.error = 'You must accept the privacy policy to continue';
             return;
         }
 
@@ -113,7 +210,7 @@ export class SocialRegistrationPageComponent implements OnInit {
         this.authentication
             .registerUsingSocials({
                 socialUser: this.user,
-                ...this.completeUserDataForm.value,
+                ...this.socialRegistrationForm.controls.userData.value,
             } as SocialRegistrationData)
             .pipe(
                 switchMap(() => this.uploadUserPicture()),
@@ -169,37 +266,45 @@ export class SocialRegistrationPageComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.completeUserDataForm =
-            this.formBuilder.group<CompleteUserDataForm>({
-                username: new FormControl<string | null>(null, {
-                    validators: [Validators.required],
-                    updateOn: 'blur',
-                }),
-                name: new FormControl<string | null>(
-                    this.user.firstName ?? null,
-                    {
+        this.socialRegistrationForm =
+            this.formBuilder.group<SocialRegistrationForm>({
+                userData: this.formBuilder.group<CompleteUserDataForm>({
+                    username: new FormControl<string | null>(null, {
                         validators: [Validators.required],
                         updateOn: 'blur',
-                    },
-                ),
-                surname: new FormControl<string | null>(
-                    this.user.lastName ?? null,
-                    {
+                    }),
+                    name: new FormControl<string | null>(
+                        this.user.firstName ?? null,
+                        {
+                            validators: [Validators.required],
+                            updateOn: 'blur',
+                        },
+                    ),
+                    surname: new FormControl<string | null>(
+                        this.user.lastName ?? null,
+                        {
+                            validators: [Validators.required],
+                            updateOn: 'blur',
+                        },
+                    ),
+                    birthday: new FormControl<Date | null>(null, {
                         validators: [Validators.required],
-                        updateOn: 'blur',
-                    },
-                ),
-                birthday: new FormControl<Date | null>(null, {
-                    validators: [Validators.required],
+                    }),
+                    country: new FormControl<string | null>(null, {
+                        validators: Validators.required,
+                    }),
+                    city: new FormControl<string | null>(null, {
+                        validators: Validators.required,
+                    }),
                 }),
-                country: new FormControl<string | null>(null, {
-                    validators: Validators.required,
-                }),
-                city: new FormControl<string | null>(null, {
-                    validators: Validators.required,
+                privacyPolicy: this.formBuilder.group<privacyPolicyForm>({
+                    accept: new FormControl<boolean>(false, {
+                        validators: [Validators.requiredTrue],
+                        nonNullable: true,
+                    }),
                 }),
             });
-        this.completeUserDataForm.controls.city.disable();
+        this.socialRegistrationForm.controls.userData.controls.city.disable();
     }
 
     private uploadUserPicture(): Observable<string | null> {
@@ -221,9 +326,10 @@ export class SocialRegistrationPageComponent implements OnInit {
     }
 
     private handleCityControl(): void {
-        this.completeUserDataForm.controls.country.valueChanges.subscribe(
+        this.socialRegistrationForm.controls.userData.controls.country.valueChanges.subscribe(
             (v) => {
-                const cityControl = this.completeUserDataForm.controls.city;
+                const cityControl =
+                    this.socialRegistrationForm.controls.userData.controls.city;
 
                 cityControl.setValue(null);
                 cityControl.markAsUntouched();
@@ -238,7 +344,8 @@ export class SocialRegistrationPageComponent implements OnInit {
     }
 
     private getCities(): void {
-        const countryControl = this.completeUserDataForm.controls.country;
+        const countryControl =
+            this.socialRegistrationForm.controls.userData.controls.country;
         if (countryControl.valid && countryControl.value) {
             this.cities = [];
             this.filteredCities = [];

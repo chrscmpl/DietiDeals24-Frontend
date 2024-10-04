@@ -1,11 +1,19 @@
 @use "layouts";
 @use "box";
+@use "viewports";
 
 .form-card {
     color: var(--text-color-1);
 
     .form-header {
         text-align: center;
+    }
+
+    @include viewports.mobile {
+        .stepper {
+            align-self: center;
+            width: 80%;
+        }
     }
 
     .registration-form {
@@ -23,5 +31,48 @@
     .inner-form {
         margin-top: 1rem;
         margin-bottom: 1rem;
+    }
+}
+
+.privacy-policy-preview {
+    @include layouts.flex(column, start, stretch);
+    border-radius: var(--border-radius-medium);
+    border: var(--border);
+    padding: 0.5em;
+    font-size: var(--font-size-medium);
+    height: 6em;
+    overflow: hidden;
+    color: var(--text-color-2);
+    position: relative;
+    cursor: pointer;
+
+    .privacy-policy-preview-mask {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background: linear-gradient(
+            rgba(255, 255, 255, 0),
+            var(--component-color) 120%
+        );
+    }
+
+    .privacy-policy-preview-top {
+        @include layouts.flex(row, space-between, center);
+
+        > span {
+            font-weight: var(--font-weight-bolder);
+        }
+    }
+}
+
+.privacy-policy-checkbox {
+    vertical-align: middle;
+    margin-right: 1ch;
+
+    + label {
+        vertical-align: middle;
+        cursor: pointer;
     }
 }

@@ -17,7 +17,7 @@
 
     <p-divider class="divider" align="center">or</p-divider>
 
-    <dd24-stepper [steps]="steps" [(activeStep)]="activeStep"></dd24-stepper>
+    <dd24-stepper [steps]="steps" [(activeStep)]="activeStep" />
 
     <form
         class="registration-form"
@@ -324,10 +324,10 @@
         }
         <p-button
             class="next-btn"
-            [label]="activeStep !== 2 ? 'Next' : 'Register'"
+            [label]="activeStep !== steps.length - 1 ? 'Next' : 'Register'"
             type="submit"
             [loading]="submissionLoading"
-        ></p-button>
+        />
     </form>
     <p-dialog
         class="privacy-policy-dialog custom-dialog"
