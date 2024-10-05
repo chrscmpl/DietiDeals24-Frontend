@@ -9,35 +9,39 @@
         @if ((authentication.loggedUser$ | async)?.id === auction.user?.id) {
             <p>
                 You have accepted
+                <strong translate="no">
+                    {{ auction.winner?.username }}
+                </strong>
                 {{
-                    auction.winner?.username +
-                        (auction.winner &&
-                        auction.winner.username[
-                            auction.winner.username.length - 1
-                        ] === "s"
-                            ? "'"
-                            : "'s")
+                    auction.winner &&
+                    auction.winner.username[
+                        auction.winner.username.length - 1
+                    ] === "s"
+                        ? "'"
+                        : "'s"
                 }}
                 bid of
                 <strong>{{
                     (auction.winningBid | currency: auction.currency) ?? "null"
                 }}</strong>
-                for <strong>{{ auction.title }}</strong
+                for <strong translate="no">{{ auction.title }}</strong
                 >.
             </p>
         } @else {
             <p>
-                {{ auction.user?.username }} has accepted your bid of
+                <strong translate="no">{{ auction.user?.username }}</strong> has
+                accepted your bid of
                 <strong>{{
                     (auction.winningBid | currency: auction.currency) ?? "null"
                 }}</strong>
-                for <strong>{{ auction.title }}</strong
+                for <strong translate="no">{{ auction.title }}</strong
                 >.
             </p>
         }
     } @else {
         <p>
-            Write us a report about <strong>{{ auction.title }}</strong
+            Write us a report about
+            <strong translate="no">{{ auction.title }}</strong
             >.
         </p>
     }

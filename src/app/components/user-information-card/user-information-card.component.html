@@ -25,7 +25,7 @@
                 height: '2rem'
             }"
         />
-        <h3 class="user-username">
+        <h3 class="user-username" translate="no">
             {{ user.username }}
         </h3>
         <span class="user-location"
@@ -94,11 +94,11 @@
     </span>
 
     @if (user.bio) {
-        <span class="user-bio">{{ user.bio }}</span>
+        <span class="user-bio" translate="no">{{ user.bio }}</span>
     }
 
     @if (user.links.length) {
-        <span class="user-links">
+        <span class="user-links" translate="no">
             @for (link of user.links; track $index) {
                 <a class="user-link" [href]="link.url" target="_blank">
                     <i class="pi pi-link"></i

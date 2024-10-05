@@ -23,7 +23,9 @@
         <div class="auction-card-divider"></div>
     }
     <div class="auction-card-title-container">
-        <span class="auction-card-title wk-nowrap">{{ auction.title }}</span>
+        <span class="auction-card-title wk-nowrap" translate="no">{{
+            auction.title
+        }}</span>
         <span class="auction-card-secondary-line wk-nowrap">
             @if (auction.conditions) {
                 {{ auction.conditions }} |

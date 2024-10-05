@@ -115,7 +115,7 @@
                         [city]="auction.city"
                     ></dd24-user-preview>
                 }
-                <h1 class="auction-title mobile-select">
+                <h1 class="auction-title mobile-select" translate="no">
                     {{ auction.title }}
                 </h1>
                 <p class="auction-conditions">{{ auction.conditions ?? "" }}</p>
@@ -124,7 +124,10 @@
                     [class.auction-description-expanded]="
                         expanded || !expandable
                     "
-                    ><p class="auction-description mobile-select">
+                    ><p
+                        class="auction-description mobile-select"
+                        translate="no"
+                    >
                         {{ auction.description ?? "" }}
                     </p>
                     @if (expandable && !expanded) {
