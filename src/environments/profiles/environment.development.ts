@@ -1,7 +1,6 @@
 export const environment = {
     isProd: false,
     backendHost: 'http://localhost',
-    logoUrl: '/assets/logo.svg',
     disableWarnings: false,
     maximumCachedUserAuctionsRequests: 9,
     passwordPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).+$/,
