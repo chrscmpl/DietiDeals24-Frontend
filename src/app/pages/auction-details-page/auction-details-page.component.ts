@@ -33,6 +33,7 @@ import { RippleModule } from 'primeng/ripple';
 import { AuctionStatusDescriptionPipe } from '../../pipes/auction-status-description.pipe';
 import { AuctioneerService } from '../../services/auctioneer.service';
 import { environment } from '../../../environments/environment';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
     selector: 'dd24-auction-details-page',
@@ -104,6 +105,7 @@ export class AuctionDetailsPageComponent
         private readonly navigation: NavigationService,
         private readonly categoriesService: CategoriesService,
         private readonly auctioneerService: AuctioneerService,
+        private readonly seoService: SeoService,
     ) {}
 
     public ngOnInit(): void {
@@ -119,6 +121,10 @@ export class AuctionDetailsPageComponent
                     this.auction.endTime.getTime() +
                         environment.auctionPendingTime,
                 );
+            }
+
+            if (this.auction?.picturesUrls.length) {
+                this.seoService.setOGImage(this.auction.picturesUrls[0]);
             }
         });
 
@@ -162,6 +168,7 @@ export class AuctionDetailsPageComponent
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((sub) => sub.unsubscribe());
+        this.seoService.resetOGImage();
     }
 
     public onClose(): void {
