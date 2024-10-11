@@ -13,7 +13,7 @@ import { reactiveFormsUtils } from '../../../helpers/reactive-forms-utils.helper
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MessageService } from 'primeng/api';
 import { RequestForgottenPasswordResetException } from '../../../exceptions/request-forgotten-password-reset.exception';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 interface ForgotPasswordForm {
     emailOrUsername: FormControl<string | null>;
@@ -41,14 +41,18 @@ export class ForgotPasswordPageComponent implements OnInit {
         private readonly formBuilder: FormBuilder,
         private readonly authentication: AuthenticationService,
         private readonly message: MessageService,
+        private readonly route: ActivatedRoute,
     ) {}
 
     public ngOnInit(): void {
         this.forgotPasswordForm = this.formBuilder.group({
-            emailOrUsername: new FormControl<string | null>(null, {
-                updateOn: 'blur',
-                validators: [Validators.required],
-            }),
+            emailOrUsername: new FormControl<string | null>(
+                this.route.snapshot.data['email'] ?? null,
+                {
+                    updateOn: 'blur',
+                    validators: [Validators.required],
+                },
+            ),
         });
     }
 

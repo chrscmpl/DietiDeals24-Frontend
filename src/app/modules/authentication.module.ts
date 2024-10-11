@@ -9,7 +9,7 @@ import { VerifyEmailPageComponent } from '../pages/authentication-page/verify-em
 import { EmailVerificationGuard } from '../guards/email-verification.guard';
 import { ResetPasswordPageComponent } from '../pages/authentication-page/reset-password-page/reset-password-page.component';
 import { SocialRegistrationPageComponent } from '../pages/authentication-page/social-registration-page/social-registration-page.component';
-import { SocialUserResolver } from '../resolvers/social-user.resolver';
+import { ItemFromNavigationExtrasResolver } from '../resolvers/item-from-navigation-extras.resolver';
 import {
     GoogleLoginProvider,
     SocialAuthServiceConfig,
@@ -40,12 +40,23 @@ const routes: Routes = [
                 path: 'social-registration',
                 title: 'Complete Your Registration',
                 component: SocialRegistrationPageComponent,
-                resolve: { user: SocialUserResolver.asResolveFn() },
+                resolve: {
+                    user: ItemFromNavigationExtrasResolver.asResolveFn({
+                        key: 'user',
+                        required: true,
+                    }),
+                },
             },
             {
                 path: 'forgot-password',
                 title: 'Forgot Password',
                 component: ForgotPasswordPageComponent,
+                resolve: {
+                    email: ItemFromNavigationExtrasResolver.asResolveFn({
+                        key: 'email',
+                        required: false,
+                    }),
+                },
             },
             {
                 path: 'reset-password/:id/:token',

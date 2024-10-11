@@ -73,7 +73,11 @@
                 </dd24-input>
             </div>
         </section>
-        <a routerLink="../forgot-password" class="link forgot-password">
+        <a
+            routerLink="../forgot-password"
+            [state]="{ email: loginForm.controls.email.value ?? null }"
+            class="link forgot-password"
+        >
             forgot your password?
         </a>
         <p-button
