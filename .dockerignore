@@ -1,0 +1,12 @@
+node_modules
+dist
+.idea
+.nx
+.angular
+.vscode
+.editorconfig
+.eslintrc.json
+.gitignore
+.prettierrc
+LICENSE
+README.md

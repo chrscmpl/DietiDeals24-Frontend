@@ -275,6 +275,7 @@ export const routes: Routes = [
     },
     {
         path: 'message/:auction-id',
+        title: 'Message',
         component: MessagePageComponent,
         canActivate: [
             ShowUIGuard.asCanActivateFn(true),
