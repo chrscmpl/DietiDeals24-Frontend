@@ -239,14 +239,6 @@ export class AuctionDetailsPageComponent
         this.displayCarouselOverlay = false;
     }
 
-    public hideCarouselOverlayKeypress(e: KeyboardEvent) {
-        if (e.key === 'Enter') this.hideCarouselOverlay();
-    }
-
-    public showCarouselOverlayKeypress(e: KeyboardEvent) {
-        if (e.key === 'Enter') this.showCarouselOverlay();
-    }
-
     public onImageCarouselNavigation(e: CarouselPageEvent) {
         if (typeof e.page === 'number') this.imageCarouselPage = e.page;
     }

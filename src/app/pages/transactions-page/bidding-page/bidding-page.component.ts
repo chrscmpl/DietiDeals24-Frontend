@@ -22,7 +22,6 @@ import { ButtonModule } from 'primeng/button';
 import { WindowService } from '../../../services/window.service';
 import { AuctionKindPipe } from '../../../pipes/auction-kind.pipe';
 import { CurrencyDecimalDigitsPipe } from '../../../pipes/currency-decimal-digits.pipe';
-import { PaymentService } from '../../../services/payment.service';
 import { CurrencySymbolPipe } from '../../../pipes/currency-symbol.pipe';
 
 interface BidForm {
@@ -60,7 +59,6 @@ export class BiddingPageComponent implements OnInit {
         private readonly router: Router,
         private readonly formBuilder: FormBuilder,
         public readonly windowService: WindowService,
-        private readonly paymentService: PaymentService,
         @Inject(LOCALE_ID) public readonly locale: string,
     ) {}
 
@@ -77,7 +75,6 @@ export class BiddingPageComponent implements OnInit {
                 updateOn: 'submit',
             }),
         });
-        this.paymentService.getPaymentMethods().subscribe();
     }
 
     private validateBidAmount(): ValidationErrors | null {

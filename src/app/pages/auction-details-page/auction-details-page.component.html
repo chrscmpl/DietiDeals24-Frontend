@@ -13,7 +13,7 @@
                     class="carousel-item-mask"
                     (click)="hideCarouselOverlay()"
                     tabindex="0"
-                    (keypress)="hideCarouselOverlayKeypress($event)"
+                    (keyup.enter)="hideCarouselOverlay()"
                 ></div>
                 @if (!picture.isEmpty && !isPictureErrored(picture.index)) {
                     <img
@@ -23,7 +23,7 @@
                         (error)="onImageError(picture.index)"
                         (click)="showCarouselOverlay()"
                         tabindex="0"
-                        (keypress)="showCarouselOverlayKeypress($event)"
+                        (keyup.enter)="showCarouselOverlay()"
                     />
                 } @else {
                     <div class="auction-image-placeholder">

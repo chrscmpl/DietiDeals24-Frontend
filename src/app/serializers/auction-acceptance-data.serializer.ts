@@ -53,8 +53,8 @@ export class AuctionAcceptanceDataSerializer
     }
 
     public serializeArray(
-        bids: AuctionAcceptanceData[],
+        data: AuctionAcceptanceData[],
     ): AuctionAcceptanceDataDTO[] {
-        return bids.map((bid) => this.serialize(bid));
+        return data.map((d) => this.serialize(d));
     }
 }
