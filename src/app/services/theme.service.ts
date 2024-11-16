@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { isEqual } from 'lodash-es';
+import { localStorageWithConsent } from '../helpers/local-storage-with-consent.helper';
 
 export type theme = 'light' | 'dark';
 
@@ -148,7 +149,7 @@ export class ThemeService {
     }
 
     private saveThemeToStorage(theme: theme | null): void {
-        if (theme) localStorage.setItem('theme', theme);
+        if (theme) localStorageWithConsent.setItem('theme', theme);
         else localStorage.removeItem('theme');
     }
 
@@ -157,7 +158,7 @@ export class ThemeService {
     }
 
     private saveThemeVariationToStorage(theme: theme, variation: string): void {
-        localStorage.setItem(`${theme}-theme-variation`, variation);
+        localStorageWithConsent.setItem(`${theme}-theme-variation`, variation);
     }
 
     private createStyleSheetLink(): HTMLLinkElement {

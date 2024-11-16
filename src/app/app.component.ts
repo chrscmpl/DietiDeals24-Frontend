@@ -27,6 +27,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NavigationService } from './services/navigation.service';
 import { filter, fromEvent, Subscription, take } from 'rxjs';
 import { IntervalService } from './services/interval.service';
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
+import { localStorageWithConsent } from './helpers/local-storage-with-consent.helper';
 
 @Component({
     selector: 'dd24-root',
@@ -65,6 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private readonly viewportScroller: ViewportScroller,
         private readonly changeDetector: ChangeDetectorRef,
         private readonly timer: IntervalService,
+        private readonly ccService: NgcCookieConsentService,
         _: CacheBustersService,
         __: ThemeService,
     ) {}
@@ -89,6 +92,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isLoadingRouteIndicator.isLoading$
             .pipe(filter((loading) => loading))
             .subscribe(() => this.onLoadingAnimationStart());
+
+        this.ccService.statusChange$.subscribe((status) => {
+            if (status.status === 'allow') localStorageWithConsent.addConsent();
+            else if (status.status === 'deny') localStorage.clear();
+        });
     }
 
     public ngAfterViewInit(): void {

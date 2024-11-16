@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { PaymentMethodType } from '../enums/payment-method-type.enum';
 import { PaymentMethodCategory } from '../enums/payment-method-category.enum';
 import { paymentMethodTypesByCategory } from '../helpers/payment-method-types-by-category.helper';
+import { localStorageWithConsent } from '../helpers/local-storage-with-consent.helper';
 
 @Injectable({
     providedIn: 'root',
@@ -57,7 +58,7 @@ export class WarningsService {
         );
 
         if (timesWarned > 0) {
-            localStorage.setItem(
+            localStorageWithConsent.setItem(
                 WarningsService.INITIAL_WARNING_ITEM_NAME,
                 String(timesWarned - 1),
             );
@@ -66,7 +67,7 @@ export class WarningsService {
 
         this.showInitialWarning();
 
-        localStorage.setItem(
+        localStorageWithConsent.setItem(
             WarningsService.INITIAL_WARNING_ITEM_NAME,
             String(WarningsService.INITIAL_WARNING_COUNTER - 1),
         );

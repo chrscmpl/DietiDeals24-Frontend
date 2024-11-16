@@ -17,6 +17,8 @@ import 'hammerjs';
 import { HammerGestureConfig, HammerModule } from '@angular/platform-browser';
 import { CustomHammerConfig } from './config/hammer.config';
 import { CustomPrimeNGConfig } from './config/primeng.config';
+import { cookieConfig } from './config/cookie-consent.config';
+import { provideNgcCookieConsent } from 'ngx-cookieconsent';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -40,6 +42,7 @@ export const appConfig: ApplicationConfig = {
         ConfirmationService,
         OneCharUpperPipe,
         { provide: LOCALE_ID, useValue: 'en-US' },
+        provideNgcCookieConsent(cookieConfig),
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',

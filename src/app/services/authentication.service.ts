@@ -51,6 +51,7 @@ import { SocialRegistrationSerializer } from '../serializers/social-registration
 import { SocialLoginException } from '../exceptions/social-login.exception';
 import { SocialRegistrationData } from '../models/social-registration.model';
 import { SocialRegistrationException } from '../exceptions/social-registration.exception';
+import { localStorageWithConsent } from '../helpers/local-storage-with-consent.helper';
 
 @Injectable({
     providedIn: 'root',
@@ -378,7 +379,7 @@ export class AuthenticationService {
     }
 
     private static set authorizationToken(token: string | null) {
-        if (token) localStorage.setItem('authorizationToken', token);
+        if (token) localStorageWithConsent.setItem('authorizationToken', token);
         else localStorage.removeItem('authorizationToken');
     }
 
