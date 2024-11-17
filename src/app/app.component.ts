@@ -94,8 +94,12 @@ export class AppComponent implements OnInit, AfterViewInit {
             .subscribe(() => this.onLoadingAnimationStart());
 
         this.ccService.statusChange$.subscribe((status) => {
-            if (status.status === 'allow') localStorageWithConsent.addConsent();
-            else if (status.status === 'deny') localStorage.clear();
+            if (status.status === 'allow')
+                localStorageWithConsent.consent = true;
+            else if (status.status === 'deny') {
+                localStorageWithConsent.consent = false;
+                localStorage.clear();
+            }
         });
     }
 

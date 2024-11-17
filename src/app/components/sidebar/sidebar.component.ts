@@ -9,6 +9,7 @@ import { Observable, catchError, combineLatest, map, of } from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
 import { MenuItem } from 'primeng/api';
 import { AuthenticationService } from '../../services/authentication.service';
+import { NgcCookieConsentService } from 'ngx-cookieconsent';
 
 @Component({
     selector: 'dd24-sidebar',
@@ -31,6 +32,7 @@ export class SidebarComponent {
         public readonly windowService: WindowService,
         private readonly categoriesService: CategoriesService,
         private readonly authentication: AuthenticationService,
+        private readonly ccService: NgcCookieConsentService,
     ) {
         this.mainPagesMenuItems.splice(this.mainPagesMenuItems.length - 1, 0, {
             label: 'Settings',
@@ -91,6 +93,12 @@ export class SidebarComponent {
             return items;
         }),
     );
+
+    public showCookiePolicy(e: Event): void {
+        e.preventDefault();
+        this.hideSidebar();
+        this.ccService.open();
+    }
 
     public hideSidebar(): void {
         this.windowService.isSidebarVisible = false;

@@ -14,5 +14,13 @@
     <div class="sidebar-content">
         <dd24-logo (clickEvent)="hideSidebar()"></dd24-logo>
         <p-panelMenu [model]="(items$ | async) ?? []"></p-panelMenu>
+        <div class="spacer"></div>
+        <a
+            class="cookie-consent"
+            (click)="showCookiePolicy($event)"
+            (keyup.enter)="showCookiePolicy($event)"
+            tabindex="0"
+            >Cookie policy</a
+        >
     </div>
 </p-sidebar>

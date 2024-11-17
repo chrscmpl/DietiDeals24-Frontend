@@ -12,7 +12,7 @@
         "watch-broadcast": "ng serve --watch --configuration development --host 0.0.0.0",
         "watch": "ng serve --watch --configuration development",
         "deploy": "ng deploy --repo=https://github.com/chrscmpl/DietiDeals24-Frontend.git",
-        "deploy-aws": "npm run build && aws s3 sync dist/dieti-deals24-frontend/browser s3://www.dietideals24.click --delete --profile frontend-user",
+        "deploy-aws": "npm run build && aws s3 sync dist/dieti-deals24-frontend/browser s3://www.dietideals24.click --delete --profile dd24-frontend-user",
         "test": "ng test",
         "lint": "ng lint",
         "backend": "git --git-dir=../DietiDeals24-Backend/.git --work-tree=../DietiDeals24-Backend pull && docker-compose -f ../DietiDeals24-Backend/docker-compose.yaml up",

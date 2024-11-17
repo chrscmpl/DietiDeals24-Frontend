@@ -3,10 +3,22 @@
 
 .sidebar-content {
     @include layouts.flex(column, start, stretch, 2rem);
+    height: 100%;
 }
 
 .close-icon {
     color: var(--outline-color);
+}
+
+.spacer {
+    flex: 1;
+}
+
+.cookie-consent {
+    color: var(--link-color);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
 }
 
 :host ::ng-deep {

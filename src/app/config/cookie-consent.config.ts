@@ -1,5 +1,4 @@
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
-import { localStorageWithConsent } from '../helpers/local-storage-with-consent.helper';
 
 export const cookieConfig: NgcCookieConsentConfig = {
     cookie: {
@@ -15,5 +14,4 @@ export const cookieConfig: NgcCookieConsentConfig = {
     },
     theme: 'edgeless',
     type: 'opt-out',
-    enabled: !localStorageWithConsent.consent,
 };
