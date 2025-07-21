@@ -24,41 +24,26 @@ The DietiDeals24 app offers both light and dark themes, with multiple variations
 
 ## Screenshots
 
-<table cellspacing="0" cellpadding="0" style="border-collapse: collapse; border: none;">
-  <tr>
-    <td style="width: 74%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/desktop-wide-1.jpg" alt="Desktop Screenshot 1" style="width: 100%; height: 400px;">
-    </td>
-    <td style="width: 6%; padding: 0; border: none;"></td>
-    <td style="width: 20%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/mobile-portrait-1.jpg" alt="Mobile Screenshot 1" style="width: 100%; height: 400px;">
-    </td>
-  </tr>
-    <tr>
-    <td style="width: 74%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/desktop-wide-2.jpg" alt="Desktop Screenshot 2" style="width: 100%; height: 400px;">
-    </td>
-    <td style="width: 6%; padding: 0; border: none;"></td>
-    <td style="width: 20%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/mobile-portrait-2.jpg" alt="Mobile Screenshot 2" style="width: 100%; height: 400px;">
-    </td>
-  </tr>
-    <tr>
-    <td style="width: 74%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/desktop-wide-3.jpg" alt="Desktop Screenshot 3" style="width: 100%; height: 400px;">
-    </td>
-    <td style="width: 6%; padding: 0; border: none;"></td>
-    <td style="width: 20%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/mobile-portrait-3.jpg" alt="Mobile Screenshot 3" style="width: 100%; height: 400px;">
-    </td>
-  </tr>
-  <tr>
-    <td style="width: 74%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/desktop-wide-4.jpg" alt="Desktop Screenshot 4" style="width: 100%; height: 400px;">
-    </td>
-    <td style="width: 6%; padding: 0; border: none;"></td>
-    <td style="width: 20%; vertical-align: bottom; padding: 0; border: none;">
-      <img src="src/assets/screenshots/mobile-portrait-4.jpg" alt="Mobile Screenshot 4" style="width: 100%; height: 400px;">
-    </td>
-  </tr>
-</table>
+<p float="left">
+      <img src="src/assets/screenshots/desktop-wide-1.jpg" alt="Desktop Screenshot 1" style="width: 75%;">
+      &nbsp
+      <img src="src/assets/screenshots/mobile-portrait-1.jpg" alt="Mobile Screenshot 1" style="width: 20%;">
+</p>
+
+<p float="left">
+      <img src="src/assets/screenshots/desktop-wide-2.jpg" alt="Desktop Screenshot 2" style="width: 75%;">
+      &nbsp
+      <img src="src/assets/screenshots/mobile-portrait-2.jpg" alt="Mobile Screenshot 2" style="width: 20%;">
+</p>
+
+<p float="left">
+      <img src="src/assets/screenshots/desktop-wide-3.jpg" alt="Desktop Screenshot 3" style="width: 75%;">
+      &nbsp
+      <img src="src/assets/screenshots/mobile-portrait-3.jpg" alt="Mobile Screenshot 3" style="width: 20%;">
+</p>
+
+<p float="left">
+      <img src="src/assets/screenshots/desktop-wide-4.jpg" alt="Desktop Screenshot 4" style="width: 75%;">
+      &nbsp
+      <img src="src/assets/screenshots/mobile-portrait-4.jpg" alt="Mobile Screenshot 4" style="width: 20%;">
+</p>
